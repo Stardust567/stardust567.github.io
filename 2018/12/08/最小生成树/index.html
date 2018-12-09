@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="Stardust">
 <meta property="og:description" content="Prime算法（稠密矩阵；邻接矩阵）: 从点0开始不断拉相邻权重最小且不构成回路的点进来（形成一个超点）Kruskal（稀疏矩阵；邻接表）: 在原图中不断找权重最小的边“记录在案”，保证不构成回路（与标记过的点不属于同一连通分量gno）">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-12-08T15:49:40.780Z">
+<meta property="og:updated_time" content="2018-12-09T04:32:45.238Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="最小生成树">
 <meta name="twitter:description" content="Prime算法（稠密矩阵；邻接矩阵）: 从点0开始不断拉相邻权重最小且不构成回路的点进来（形成一个超点）Kruskal（稀疏矩阵；邻接表）: 在原图中不断找权重最小的边“记录在案”，保证不构成回路（与标记过的点不属于同一连通分量gno）">
@@ -393,7 +393,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  511
+                  517
                 </span>
               
 
@@ -430,12 +430,11 @@
       
 
       
-        <p>Prime算法（稠密矩阵；邻接矩阵）: 从点0开始不断拉相邻权重最小且不构成回路的点进来（形成一个超点）<br>Kruskal（稀疏矩阵；邻接表）: 在原图中不断找权重最小的边“记录在案”，保证不构成回路（与标记过的点不属于同一连通分量gno）<br><a id="more"></a><br>1.Prime算法（稠密矩阵；邻接矩阵）</p>
-<p>从点0开始不断拉相邻权重最小且不构成回路的点进来（形成一个超点）</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">​</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">prime</span><span class="params">(<span class="keyword">int</span> G[N][N])</span></span>&#123;</span><br><span class="line">	Edge edges[N];</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;N;i++)&#123;</span><br><span class="line">		edges[i].vex = <span class="number">0</span>;<span class="comment">//表示"0"到各个节点 </span></span><br><span class="line">		edges[i].cost = G[<span class="number">0</span>][i];<span class="comment">//距离 </span></span><br><span class="line">	&#125;</span><br><span class="line">	edges[<span class="number">0</span>].cost = <span class="number">0</span>;<span class="comment">//距离"0"表示不可达 </span></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"%d   "</span>,edges[<span class="number">0</span>].vex);</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> a=<span class="number">1</span>;a&lt;N;a++)&#123;</span><br><span class="line">		<span class="keyword">int</span> k = select(edges);</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"%d(last: %d)   "</span>,k,edges[k].vex);</span><br><span class="line">		edges[k].cost = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;N;i++)&#123;</span><br><span class="line">			<span class="keyword">if</span>(G[k][i]&lt;edges[i].cost)&#123;</span><br><span class="line">				edges[i].vex = k;<span class="comment">//表示到i这个点是从k走更近一点</span></span><br><span class="line">				edges[i].cost = G[k][i]; </span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">select</span><span class="params">(Edge edges[])</span></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> val = INT_MAX;<span class="keyword">int</span> idx = <span class="number">-1</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;N;i++)&#123;</span><br><span class="line">		<span class="keyword">if</span>(edges[i].cost&lt;val&amp;&amp;edges[i].cost&gt;<span class="number">0</span>)&#123;</span><br><span class="line">			val = edges[i].cost;</span><br><span class="line">			idx = i;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> idx;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">​</span><br></pre></td></tr></table></figure>
-<p>2.Kruskal（稀疏矩阵；邻接表）</p>
-<p>在原图中不断找权重最小的边“记录在案”，保证不构成回路（与标记过的点不属于同一连通分量gno）</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">​</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">kruskal</span><span class="params">(TGraph* G)</span></span>&#123;</span><br><span class="line">    heapsort(G);<span class="comment">//稍微排个序</span></span><br><span class="line">    <span class="keyword">int</span> idx=<span class="number">1</span>;<span class="keyword">int</span> num=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;G-&gt;nv;i++)&#123;</span><br><span class="line">		<span class="keyword">while</span>(<span class="number">1</span>)&#123;</span><br><span class="line">			<span class="keyword">if</span>(G-&gt;pv[G-&gt;pe[idx].va].gno!=G-&gt;pv[G-&gt;pe[idx].vb].gno)&#123;</span><br><span class="line">				<span class="keyword">int</span> a=G-&gt;pv[G-&gt;pe[idx].va].gno,b=G-&gt;pv[G-&gt;pe[idx].vb].gno;</span><br><span class="line">				<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>;j&lt;idx;j++)&#123;</span><br><span class="line">					<span class="keyword">if</span>(G-&gt;pv[G-&gt;pe[j].va].gno==a) G-&gt;pv[G-&gt;pe[j].va].gno=b;</span><br><span class="line">					<span class="keyword">if</span>(G-&gt;pv[G-&gt;pe[j].vb].gno==a) G-&gt;pv[G-&gt;pe[j].vb].gno=b;</span><br><span class="line">				&#125;</span><br><span class="line">				G-&gt;pv[G-&gt;pe[idx].va].gno=b;</span><br><span class="line">				<span class="built_in">printf</span>(<span class="string">"%d-%d  "</span>,G-&gt;pe[idx].va,G-&gt;pe[idx].vb);<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span> idx++;</span><br><span class="line">		&#125;</span><br><span class="line">		idx++;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">​</span><br></pre></td></tr></table></figure>
+        <p>Prime算法（稠密矩阵；邻接矩阵）: 从点0开始不断拉相邻权重最小且不构成回路的点进来（形成一个超点）<br>Kruskal（稀疏矩阵；邻接表）: 在原图中不断找权重最小的边“记录在案”，保证不构成回路（与标记过的点不属于同一连通分量gno）<br><a id="more"></a></p>
+<h3 id="Prime算法（稠密矩阵；邻接矩阵）"><a href="#Prime算法（稠密矩阵；邻接矩阵）" class="headerlink" title="Prime算法（稠密矩阵；邻接矩阵）"></a>Prime算法（稠密矩阵；邻接矩阵）</h3><p>从点0开始不断拉相邻权重最小且不构成回路的点进来（形成一个超点）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">void prime(int G[N][N])&#123;</span><br><span class="line">	Edge edges[N];</span><br><span class="line">	for(int i=0;i&lt;N;i++)&#123;</span><br><span class="line">		edges[i].vex = 0;//表示&quot;0&quot;到各个节点 </span><br><span class="line">		edges[i].cost = G[0][i];//距离 </span><br><span class="line">	&#125;</span><br><span class="line">	edges[0].cost = 0;//距离&quot;0&quot;表示不可达 </span><br><span class="line">	printf(&quot;%d   &quot;,edges[0].vex);</span><br><span class="line">	for(int a=1;a&lt;N;a++)&#123;</span><br><span class="line">		int k = select(edges);</span><br><span class="line">		printf(&quot;%d(last: %d)   &quot;,k,edges[k].vex);</span><br><span class="line">		edges[k].cost = 0;</span><br><span class="line">		for(int i=0;i&lt;N;i++)&#123;</span><br><span class="line">			if(G[k][i]&lt;edges[i].cost)&#123;</span><br><span class="line">				edges[i].vex = k;//表示到i这个点是从k走更近一点</span><br><span class="line">				edges[i].cost = G[k][i]; </span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">int select(Edge edges[])&#123;</span><br><span class="line">	int val = INT_MAX;int idx = -1;</span><br><span class="line">	for(int i=0;i&lt;N;i++)&#123;</span><br><span class="line">		if(edges[i].cost&lt;val&amp;&amp;edges[i].cost&gt;0)&#123;</span><br><span class="line">			val = edges[i].cost;</span><br><span class="line">			idx = i;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	return idx;</span><br><span class="line">&#125;</span><br><span class="line">​</span><br></pre></td></tr></table></figure>
+<h3 id="Kruskal（稀疏矩阵；邻接表）"><a href="#Kruskal（稀疏矩阵；邻接表）" class="headerlink" title="Kruskal（稀疏矩阵；邻接表）"></a>Kruskal（稀疏矩阵；邻接表）</h3><p>在原图中不断找权重最小的边“记录在案”，保证不构成回路（与标记过的点不属于同一连通分量gno）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">void kruskal(TGraph* G)&#123;</span><br><span class="line">    heapsort(G);//稍微排个序</span><br><span class="line">    int idx=1;int num=0;</span><br><span class="line">	for(int i=1;i&lt;G-&gt;nv;i++)&#123;</span><br><span class="line">		while(1)&#123;</span><br><span class="line">			if(G-&gt;pv[G-&gt;pe[idx].va].gno!=G-&gt;pv[G-&gt;pe[idx].vb].gno)&#123;</span><br><span class="line">				int a=G-&gt;pv[G-&gt;pe[idx].va].gno,b=G-&gt;pv[G-&gt;pe[idx].vb].gno;</span><br><span class="line">				for(int j=1;j&lt;idx;j++)&#123;</span><br><span class="line">					if(G-&gt;pv[G-&gt;pe[j].va].gno==a) G-&gt;pv[G-&gt;pe[j].va].gno=b;</span><br><span class="line">					if(G-&gt;pv[G-&gt;pe[j].vb].gno==a) G-&gt;pv[G-&gt;pe[j].vb].gno=b;</span><br><span class="line">				&#125;</span><br><span class="line">				G-&gt;pv[G-&gt;pe[idx].va].gno=b;</span><br><span class="line">				printf(&quot;%d-%d  &quot;,G-&gt;pe[idx].va,G-&gt;pe[idx].vb);break;</span><br><span class="line">			&#125;</span><br><span class="line">			else idx++;</span><br><span class="line">		&#125;</span><br><span class="line">		idx++;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">​</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -542,8 +541,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -603,6 +611,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Prime算法（稠密矩阵；邻接矩阵）"><span class="nav-number">1.</span> <span class="nav-text">Prime算法（稠密矩阵；邻接矩阵）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Kruskal（稀疏矩阵；邻接表）"><span class="nav-number">2.</span> <span class="nav-text">Kruskal（稀疏矩阵；邻接表）</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

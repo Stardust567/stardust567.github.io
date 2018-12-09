@@ -81,21 +81,21 @@
 
 
 
-<meta name="description" content="平衡二叉搜索树（Self-balancing binary search tree）又被称为AVL树（有别于AVL算法）：">
+<meta name="description" content="平衡二叉搜索树（Self-balancing binary search tree）又被称为AVL树（有别于AVL算法）它是一棵空树或它的左右两个子树的高度差的绝对值不超过1，并且左右两个子树都是一棵平衡二叉树。">
 <meta name="keywords" content="数据结构,大一">
 <meta property="og:type" content="article">
 <meta property="og:title" content="AVLtree">
 <meta property="og:url" content="http://yoursite.com/2018/12/08/AVLtree/index.html">
 <meta property="og:site_name" content="Stardust">
-<meta property="og:description" content="平衡二叉搜索树（Self-balancing binary search tree）又被称为AVL树（有别于AVL算法）：">
+<meta property="og:description" content="平衡二叉搜索树（Self-balancing binary search tree）又被称为AVL树（有别于AVL算法）它是一棵空树或它的左右两个子树的高度差的绝对值不超过1，并且左右两个子树都是一棵平衡二叉树。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://img-blog.csdn.net/20180623190626223?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5MjEzNzU1/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
 <meta property="og:image" content="https://img-blog.csdn.net/20180623190657715?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5MjEzNzU1/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
 <meta property="og:image" content="https://img-blog.csdn.net/20180625213754570?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5MjEzNzU1/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
-<meta property="og:updated_time" content="2018-12-08T15:37:36.045Z">
+<meta property="og:updated_time" content="2018-12-09T04:43:53.463Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="AVLtree">
-<meta name="twitter:description" content="平衡二叉搜索树（Self-balancing binary search tree）又被称为AVL树（有别于AVL算法）：">
+<meta name="twitter:description" content="平衡二叉搜索树（Self-balancing binary search tree）又被称为AVL树（有别于AVL算法）它是一棵空树或它的左右两个子树的高度差的绝对值不超过1，并且左右两个子树都是一棵平衡二叉树。">
 <meta name="twitter:image" content="https://img-blog.csdn.net/20180623190626223?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5MjEzNzU1/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
 
 
@@ -397,7 +397,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  458
+                  451
                 </span>
               
 
@@ -434,15 +434,18 @@
       
 
       
-        <p>平衡二叉搜索树（Self-balancing binary search tree）又被称为AVL树（有别于AVL算法）：<br><a id="more"></a><br>它是一棵空树或它的左右两个子树的高度差的绝对值不超过1，并且左右两个子树都是一棵平衡二叉树。</p>
-<p>1.引入：在说平衡二叉树之前，我们先需要谈谈二叉排序树，详见我之前在《排序》中所写。当排序树构建出来过于“畸形”，两边不对称，极端一点就是一路下来毫无分叉，那么显然，它的时间复杂度就是n，为了避免这种情况或者说，为了找寻最优情况，我们希望我们构建出来的二叉树可以两边对称平衡一下，使其树的深度为lonn而非n，为此，我们引入平衡二叉树的概念。</p>
-<p>2.调整：旋转。当每次插入一个结点后，我们根据这棵树的现状对它进行旋转操作，可以简单的分为：</p>
-<p>（1）单旋：在A结点的左孩子的左子树或者右孩子的右子树上插入结点。</p>
-<p> 直接将B结点提上来，再把离A最近的子树滑给A。<br><img src="https://img-blog.csdn.net/20180623190626223?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5MjEzNzU1/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt=""><br>（2）双旋：在A结点的左孩子的右子树或者右孩子的左子树上插入结点。</p>
-<p> 直接将C提到A、B之间，再把C的子树分别分给A、B所缺的位置。<br><img src="https://img-blog.csdn.net/20180623190657715?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5MjEzNzU1/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt=""><br>3.删除：</p>
-<p>（1）查找：现在平衡树中查找到关键字相同的结点p</p>
-<p>（2）删除：分以下几种情况：</p>
-<p>叶结点：直接删除就好<br>单分支结点：把后面那个孩子结点接上来就好啦<br>双分支结点：把这个双分支结点p的值，用其中序前驱结点q的值替代后，直接删掉结点q<br><img src="https://img-blog.csdn.net/20180625213754570?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5MjEzNzU1/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt=""></p>
+        <p>平衡二叉搜索树（Self-balancing binary search tree）又被称为AVL树（有别于AVL算法）<br>它是一棵空树或它的左右两个子树的高度差的绝对值不超过1，并且左右两个子树都是一棵平衡二叉树。<br><a id="more"></a></p>
+<h3 id="引入："><a href="#引入：" class="headerlink" title="引入："></a>引入：</h3><p>在说平衡二叉树之前，我们先需要谈谈二叉排序树，详见我之前在《排序》中所写。当排序树构建出来过于“畸形”，两边不对称，极端一点就是一路下来毫无分叉，那么显然，它的时间复杂度就是n，为了避免这种情况或者说，为了找寻最优情况，我们希望我们构建出来的二叉树可以两边对称平衡一下，使其树的深度为lonn而非n，为此，我们引入平衡二叉树的概念。</p>
+<h3 id="调整-旋转-："><a href="#调整-旋转-：" class="headerlink" title="调整(旋转)："></a>调整(旋转)：</h3><p>当每次插入一个结点后，我们根据这棵树的现状对它进行旋转操作，可以简单的分为：</p>
+<h4 id="单旋："><a href="#单旋：" class="headerlink" title="单旋："></a>单旋：</h4><p> 在A结点的左孩子的左子树或者右孩子的右子树上插入结点。</p>
+<p> 直接将B结点提上来，再把离A最近的子树滑给A。<br><img src="https://img-blog.csdn.net/20180623190626223?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5MjEzNzU1/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt=""></p>
+<h4 id="双旋："><a href="#双旋：" class="headerlink" title="双旋："></a>双旋：</h4><p> 在A结点的左孩子的右子树或者右孩子的左子树上插入结点。</p>
+<p> 直接将C提到A、B之间，再把C的子树分别分给A、B所缺的位置。<br><img src="https://img-blog.csdn.net/20180623190657715?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5MjEzNzU1/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt=""></p>
+<h3 id="删除："><a href="#删除：" class="headerlink" title="删除："></a>删除：</h3><p>####查找：<br>现在平衡树中查找到关键字相同的结点p</p>
+<p>####删除：<br>分以下几种情况：</p>
+<p>#####叶结点：<br> 直接删除就好</p>
+<p>#####单分支结点：<br> 把后面那个孩子结点接上来就好啦</p>
+<p>#####双分支结点：<br> 把这个双分支结点p的值，用其中序前驱结点q的值替代后，直接删掉结点q<br><img src="https://img-blog.csdn.net/20180625213754570?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5MjEzNzU1/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt=""></p>
 
       
     </div>
@@ -548,8 +551,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -609,6 +621,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#引入："><span class="nav-number">1.</span> <span class="nav-text">引入：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#调整-旋转-："><span class="nav-number">2.</span> <span class="nav-text">调整(旋转)：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#单旋："><span class="nav-number">2.1.</span> <span class="nav-text">单旋：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#双旋："><span class="nav-number">2.2.</span> <span class="nav-text">双旋：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除："><span class="nav-number">3.</span> <span class="nav-text">删除：</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

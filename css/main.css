@@ -1877,7 +1877,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #ccdb53;
+  background: #33712e;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -3060,9 +3060,10 @@ pre .javascript .function {
 }
 body {
   background: url("/images/background.jpg");
-  background-attachment: fixed;
   background-size: cover;
-  background-position: 50% 30%;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
 }
 .post-body a {
   color: #0593d3;
@@ -3081,4 +3082,21 @@ code {
   padding: 1px 4px;
   word-break: break-all;
   border-radius: 4px;
+}
+.header {
+  background: url("http://i2.bvimg.com/671322/cb9512326c1ee15f.png");
+}
+.footer {
+  background: #fbfcfc none repeat scroll !important;
+}
+#sidebar {
+  background: url("http://i2.bvimg.com/671322/cb9512326c1ee15f.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+#sidebar p,
+#sidebar span,
+#sidebar a {
+  color: #99a3a4;
 }

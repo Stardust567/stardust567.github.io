@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="概念：哈夫曼树也称为最优二叉树，是一种带权路径长度最短的二叉树。（树的带权路径长度：树中所有的叶结点的权值乘上其到根结点的路径长度，然后进行加和的结果）哈夫曼树中根结点为第0层，N个权值构成一棵有N个叶结点的二叉树，相应的叶结点的路径长度为其层数。树的路径长度是从树根到每一结点的路径长度之和，记为WPL 易证哈夫曼树的WPL是最小的。">
+<meta name="description" content="哈夫曼树也称为最优二叉树，是一种带权路径长度最短的完全二叉树。最经典的用法就是做无损数据压缩的huffman coding 概念：哈夫曼树也称为最优二叉树，是一种带权路径长度最短的完全二叉树（Complete Binary Tree）树的带权路径长度：树中所有的叶结点的权值乘上其深度（到根结点的路径长度），然后进行加和的结果。哈夫曼树中根结点为第0层，N个权值构成一棵有N个叶结点的二叉树，相应的叶">
 <meta name="keywords" content="数据结构,大一">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Huffman">
+<meta property="og:title" content="Huffman Tree">
 <meta property="og:url" content="http://yoursite.com/2018/12/08/Huffman/index.html">
 <meta property="og:site_name" content="Stardust&#39;s Blog">
-<meta property="og:description" content="概念：哈夫曼树也称为最优二叉树，是一种带权路径长度最短的二叉树。（树的带权路径长度：树中所有的叶结点的权值乘上其到根结点的路径长度，然后进行加和的结果）哈夫曼树中根结点为第0层，N个权值构成一棵有N个叶结点的二叉树，相应的叶结点的路径长度为其层数。树的路径长度是从树根到每一结点的路径长度之和，记为WPL 易证哈夫曼树的WPL是最小的。">
+<meta property="og:description" content="哈夫曼树也称为最优二叉树，是一种带权路径长度最短的完全二叉树。最经典的用法就是做无损数据压缩的huffman coding 概念：哈夫曼树也称为最优二叉树，是一种带权路径长度最短的完全二叉树（Complete Binary Tree）树的带权路径长度：树中所有的叶结点的权值乘上其深度（到根结点的路径长度），然后进行加和的结果。哈夫曼树中根结点为第0层，N个权值构成一棵有N个叶结点的二叉树，相应的叶">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-12-10T11:23:10.202Z">
+<meta property="og:updated_time" content="2018-12-11T06:03:38.067Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Huffman">
-<meta name="twitter:description" content="概念：哈夫曼树也称为最优二叉树，是一种带权路径长度最短的二叉树。（树的带权路径长度：树中所有的叶结点的权值乘上其到根结点的路径长度，然后进行加和的结果）哈夫曼树中根结点为第0层，N个权值构成一棵有N个叶结点的二叉树，相应的叶结点的路径长度为其层数。树的路径长度是从树根到每一结点的路径长度之和，记为WPL 易证哈夫曼树的WPL是最小的。">
+<meta name="twitter:title" content="Huffman Tree">
+<meta name="twitter:description" content="哈夫曼树也称为最优二叉树，是一种带权路径长度最短的完全二叉树。最经典的用法就是做无损数据压缩的huffman coding 概念：哈夫曼树也称为最优二叉树，是一种带权路径长度最短的完全二叉树（Complete Binary Tree）树的带权路径长度：树中所有的叶结点的权值乘上其深度（到根结点的路径长度），然后进行加和的结果。哈夫曼树中根结点为第0层，N个权值构成一棵有N个叶结点的二叉树，相应的叶">
 
 
 
@@ -128,7 +128,7 @@
 
 
 
-  <title>Huffman | Stardust's Blog</title>
+  <title>Huffman Tree | Stardust's Blog</title>
   
 
 
@@ -315,7 +315,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Huffman</h1>
+          <h1 class="post-title" itemprop="name headline">Huffman Tree</h1>
         
 
         <div class="post-meta">
@@ -377,7 +377,7 @@
 
           
           
-             <span id="/2018/12/08/Huffman/" class="leancloud_visitors" data-flag-title="Huffman">
+             <span id="/2018/12/08/Huffman/" class="leancloud_visitors" data-flag-title="Huffman Tree">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -404,7 +404,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1.3k
+                  1.4k
                 </span>
               
 
@@ -420,7 +420,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  6min
+                  7min
                 </span>
               
             </div>
@@ -441,7 +441,8 @@
       
 
       
-        <h3 id="概念："><a href="#概念：" class="headerlink" title="概念："></a>概念：</h3><p>哈夫曼树也称为最优二叉树，是一种带权路径长度最短的二叉树。（树的带权路径长度：树中所有的叶结点的权值乘上其到根结点的路径长度，然后进行加和的结果）哈夫曼树中根结点为第0层，N个权值构成一棵有N个叶结点的二叉树，相应的叶结点的路径长度为其层数。树的路径长度是从树根到每一结点的路径长度之和，记为WPL 易证哈夫曼树的WPL是最小的。</p>
+        <p>哈夫曼树也称为最优二叉树，是一种带权路径长度最短的完全二叉树。<br>最经典的用法就是做无损数据压缩的huffman coding</p>
+<h3 id="概念："><a href="#概念：" class="headerlink" title="概念："></a>概念：</h3><p>哈夫曼树也称为最优二叉树，是一种带权路径长度最短的完全二叉树（Complete Binary Tree）<br>树的带权路径长度：树中所有的叶结点的权值乘上其深度（到根结点的路径长度），然后进行加和的结果。<br>哈夫曼树中根结点为第0层，N个权值构成一棵有N个叶结点的二叉树，相应的叶结点的路径长度为其层数。树的路径长度是从树根到每一结点的路径长度之和，记为WPL 易证哈夫曼树的WPL是最小的。</p>
 <a id="more"></a>
 <h3 id="原理："><a href="#原理：" class="headerlink" title="原理："></a>原理：</h3><p>编码表是通过对源符号出现的概率进行评估的方式得到，出现概率高的符号使用较短的编码，反之则使用较长的编码，由此实现编码后字符串的平均长度的期望值降低，从而达到无损压缩数据的目的。</p>
 <h3 id="举例："><a href="#举例：" class="headerlink" title="举例："></a>举例：</h3><p>根据文本文件得出45个不同字符，通过所给的函数初始化哈夫曼树，根据45个初始节点完善填充整个（2*n-1 = 89）哈夫曼数组，再根据哈夫曼数组制作密码本，进行文件的压缩（加密）与解压（解密）的功能实现。</p>

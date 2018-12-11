@@ -776,7 +776,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  588
+                  605
                 </span>
               
 
@@ -814,7 +814,7 @@
 
       
         
-          <p>图的储存结构：邻接矩阵，邻接表，十字链表，邻接多重表，边集数组<br>
+          <p>图的储存结构：邻接矩阵，邻接表，十字链表，邻接多重表，边集数组<br>实现方式：矩阵，链表构成的数组*3，三元组<br>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018/12/09/图的储存结构/#more" rel="contents">
@@ -968,7 +968,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  509
+                  469
                 </span>
               
 
@@ -1006,7 +1006,7 @@
 
       
         
-          <p>Prime算法（稠密矩阵；邻接矩阵）: 从点0开始不断拉相邻权重最小且不构成回路的点进来（形成一个超点）<br>Kruskal（稀疏矩阵；邻接表）: 在原图中不断找权重最小的边“记录在案”，保证不构成回路（与标记过的点不属于同一连通分量gno）<br>
+          <p>Prime：从点0开始不断拉相邻权重最小且不构成回路的点进来<br>Kruskal：在原图中不断找权重最小的边“记录在案”，保证不构成回路<br>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018/12/08/最小生成树/#more" rel="contents">
@@ -1352,7 +1352,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  451
+                  440
                 </span>
               
 
@@ -1390,7 +1390,7 @@
 
       
         
-          <p>平衡二叉搜索树（Self-balancing binary search tree）又被称为AVL树（有别于AVL算法）<br>它是一棵空树或它的左右两个子树的高度差的绝对值不超过1，并且左右两个子树都是一棵平衡二叉树。<br>
+          <p>平衡二叉搜索树(Self-balancing binary search tree)又被称为AVL树（有别于AVL算法）<br>它左右的两个子树高度差的绝对值不超过1，且左右两个子树都是平衡二叉树。<br>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018/12/08/AVLtree/#more" rel="contents">
@@ -1657,7 +1657,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/12/08/Huffman/" itemprop="url">Huffman</a></h1>
+                <a class="post-title-link" href="/2018/12/08/Huffman/" itemprop="url">Huffman Tree</a></h1>
         
 
         <div class="post-meta">
@@ -1709,7 +1709,7 @@
 
           
           
-             <span id="/2018/12/08/Huffman/" class="leancloud_visitors" data-flag-title="Huffman">
+             <span id="/2018/12/08/Huffman/" class="leancloud_visitors" data-flag-title="Huffman Tree">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1736,7 +1736,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1.3k
+                  1.4k
                 </span>
               
 
@@ -1752,7 +1752,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  6min
+                  7min
                 </span>
               
             </div>
@@ -1774,7 +1774,8 @@
 
       
         
-          <h3 id="概念："><a href="#概念：" class="headerlink" title="概念："></a>概念：</h3><p>哈夫曼树也称为最优二叉树，是一种带权路径长度最短的二叉树。（树的带权路径长度：树中所有的叶结点的权值乘上其到根结点的路径长度，然后进行加和的结果）哈夫曼树中根结点为第0层，N个权值构成一棵有N个叶结点的二叉树，相应的叶结点的路径长度为其层数。树的路径长度是从树根到每一结点的路径长度之和，记为WPL 易证哈夫曼树的WPL是最小的。</p>
+          <p>哈夫曼树也称为最优二叉树，是一种带权路径长度最短的完全二叉树。<br>最经典的用法就是做无损数据压缩的huffman coding</p>
+<h3 id="概念："><a href="#概念：" class="headerlink" title="概念："></a>概念：</h3><p>哈夫曼树也称为最优二叉树，是一种带权路径长度最短的完全二叉树（Complete Binary Tree）<br>树的带权路径长度：树中所有的叶结点的权值乘上其深度（到根结点的路径长度），然后进行加和的结果。<br>哈夫曼树中根结点为第0层，N个权值构成一棵有N个叶结点的二叉树，相应的叶结点的路径长度为其层数。树的路径长度是从树根到每一结点的路径长度之和，记为WPL 易证哈夫曼树的WPL是最小的。</p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018/12/08/Huffman/#more" rel="contents">
@@ -1966,8 +1967,7 @@
 
       
         
-          <p>普通的查找匹配需要在失配时回溯到失配串第二位继续开始查找是否匹配，复杂度过高。</p>
-<p>于是我们想着能不能一次不回头的走到底，针对模式串创建了一个辅助数组（next数组）<br>
+          <p>普通的查找匹配需要在失配时回溯到失配串第二位继续开始查找是否匹配，复杂度过高。<br>于是我们想着能不能一次不回头的走到底，针对模式串创建了一个辅助数组（next数组）<br>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018/12/08/KMP/#more" rel="contents">

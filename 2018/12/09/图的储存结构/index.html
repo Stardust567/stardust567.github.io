@@ -81,21 +81,21 @@
 
 
 
-<meta name="description" content="图的储存结构：邻接矩阵，邻接表，十字链表，邻接多重表，边集数组">
+<meta name="description" content="图的储存结构：邻接矩阵，邻接表，十字链表，邻接多重表，边集数组实现方式：矩阵，链表构成的数组*3，三元组">
 <meta name="keywords" content="数据结构,大一,图论">
 <meta property="og:type" content="article">
 <meta property="og:title" content="图的储存结构">
 <meta property="og:url" content="http://yoursite.com/2018/12/09/图的储存结构/index.html">
 <meta property="og:site_name" content="Stardust&#39;s Blog">
-<meta property="og:description" content="图的储存结构：邻接矩阵，邻接表，十字链表，邻接多重表，边集数组">
+<meta property="og:description" content="图的储存结构：邻接矩阵，邻接表，十字链表，邻接多重表，边集数组实现方式：矩阵，链表构成的数组*3，三元组">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://i2.bvimg.com/671322/22ac473a4c22e290.png">
 <meta property="og:image" content="http://i2.bvimg.com/671322/671750ba12677785.png">
 <meta property="og:image" content="http://i2.bvimg.com/671322/8b1248d318a4f3a2.png">
-<meta property="og:updated_time" content="2018-12-10T11:24:09.052Z">
+<meta property="og:updated_time" content="2018-12-11T05:53:49.315Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="图的储存结构">
-<meta name="twitter:description" content="图的储存结构：邻接矩阵，邻接表，十字链表，邻接多重表，边集数组">
+<meta name="twitter:description" content="图的储存结构：邻接矩阵，邻接表，十字链表，邻接多重表，边集数组实现方式：矩阵，链表构成的数组*3，三元组">
 <meta name="twitter:image" content="http://i2.bvimg.com/671322/22ac473a4c22e290.png">
 
 
@@ -408,7 +408,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  588
+                  605
                 </span>
               
 
@@ -445,7 +445,7 @@
       
 
       
-        <p>图的储存结构：邻接矩阵，邻接表，十字链表，邻接多重表，边集数组<br><a id="more"></a></p>
+        <p>图的储存结构：邻接矩阵，邻接表，十字链表，邻接多重表，边集数组<br>实现方式：矩阵，链表构成的数组*3，三元组<br><a id="more"></a></p>
 <h3 id="邻接矩阵（n个结点，构造n-n的矩阵，各点值可达为1，不可达为0）"><a href="#邻接矩阵（n个结点，构造n-n的矩阵，各点值可达为1，不可达为0）" class="headerlink" title="邻接矩阵（n个结点，构造n*n的矩阵，各点值可达为1，不可达为0）"></a>邻接矩阵（n个结点，构造n*n的矩阵，各点值可达为1，不可达为0）</h3><p>当我们需要将权重赋在矩阵上时，各点值若可达，则为其权重；不可达则为∞（INT_MAX）；对角元为0</p>
 <h3 id="邻接表（n个结点，构造有n个首结点的数组，每个首结点拉出一条含该首结点所有可达结点的链表）"><a href="#邻接表（n个结点，构造有n个首结点的数组，每个首结点拉出一条含该首结点所有可达结点的链表）" class="headerlink" title="邻接表（n个结点，构造有n个首结点的数组，每个首结点拉出一条含该首结点所有可达结点的链表）"></a>邻接表（n个结点，构造有n个首结点的数组，每个首结点拉出一条含该首结点所有可达结点的链表）</h3><p><img src="http://i2.bvimg.com/671322/22ac473a4c22e290.png" alt=""></p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">​</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">node</span>&#123;</span></span><br><span class="line">	<span class="keyword">int</span> vex;</span><br><span class="line">	<span class="keyword">int</span> cost;<span class="comment">//对应VNode到该点的权重</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">node</span>* <span class="title">next</span>;</span></span><br><span class="line">&#125;ENode;</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span>&#123;</span></span><br><span class="line">	<span class="keyword">int</span> vex;</span><br><span class="line">	ENode* next;</span><br><span class="line">&#125;VNode;</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span>&#123;</span></span><br><span class="line">	VNode adjlist[N];</span><br><span class="line">	<span class="keyword">int</span> nv,ne;</span><br><span class="line">&#125;TGraph;</span><br><span class="line">​</span><br></pre></td></tr></table></figure>

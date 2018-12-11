@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="Stardust&#39;s Blog">
 <meta property="og:description" content="梯度下降算法是机器学习领域中非常常用的优化算法。本文通过对梯度下降算法、AdaGrad算法、SGD算法、动量算法以及牛顿动量算法的介绍，将比较基础的梯度下降算法变种介绍给读者。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-12-11T13:31:42.226Z">
+<meta property="og:updated_time" content="2018-12-11T13:39:13.559Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="梯度下降">
 <meta name="twitter:description" content="梯度下降算法是机器学习领域中非常常用的优化算法。本文通过对梯度下降算法、AdaGrad算法、SGD算法、动量算法以及牛顿动量算法的介绍，将比较基础的梯度下降算法变种介绍给读者。">
@@ -444,7 +444,7 @@
         <p>梯度下降算法是机器学习领域中非常常用的优化算法。本文通过对梯度下降算法、AdaGrad算法、SGD算法、动量算法以及牛顿动量算法的介绍，将比较基础的梯度下降算法变种介绍给读者。<a id="more"></a></p>
 <h3 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h3><p>对于一个含参的函数，通过不断求解当前点的梯度值，并以该梯度值成负比例的步长不断更新所求点，以求解出使其函数值最小的一组参数。</p>
 <h3 id="思想"><a href="#思想" class="headerlink" title="思想"></a>思想</h3><p>对于一个含参的函数，以与函数在当前点梯度（近似）成负比例的步长来不断更新该参数，使其不断向该参数偏导为0的点逼近，以找到函数的局部最小值。    当我们从损失函数的某一点出发，在该点附近做出以常数η为参数的一个邻域，根据微积分所学的知识可知，我们在该邻域上一定可以找出一个找到极小值。我们以该极小值点为下一步我们需要跟进的点，更新之后我们再在该点附近做出以常数η为参数的一个邻域并重复以上过程。通过这样的不断更新，我们理论上一定可以找出一个全局的极小值点或者是导数为0的驻点。<br>关于在某一邻域上如何找到该邻域上的局部最小值点。我们可以通过泰勒展开，该邻域上的损失函数可以近似写成 $L(\theta)=L(a,b)+u(\theta_1-a)+v(\theta_2-b)$也就是我们所熟知的全微分方程。令 $\Delta\theta_1=\theta_1-a;\Delta\theta_2=\theta_2-b$ 因为L(a,b)为一个常数，所以L的极小值直接取决于 u+ v同时我们可以将其书写成向量的形式$(\Delta\theta_1,\Delta\theta_2)·(u,v)$显然$(\Delta\theta_1,\Delta\theta_2)$与(u,v)反向时L最小，即<br>$$<br>  \begin{bmatrix}<br>   \Delta\theta_1 \\<br>   \Delta\theta_2<br>  \end{bmatrix}<br>=-\eta<br>  \begin{bmatrix}<br>   u \\<br>   v<br>  \end{bmatrix}<br>$$其中u和v分别为函数的偏导数值且η取值越小该结果越准确。</p>
-<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>用均方误差构造一个以f（f(x)= b+w*x）为自变量的二元损失函数 ：<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">L(f)=L(w,b)=((y - (w * x + b))**<span class="number">2</span>).sum()/len(x)</span><br></pre></td></tr></table></figure></p>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>用均方误差构造一个以函数f为自变量的二元损失函数 ：<br>(因为f = w*x + b所以也可以看出以w和b为自变量的函数)<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">L(f)=L(w,b)=((y - (w * x + b))**<span class="number">2</span>).sum()/len(x)</span><br></pre></td></tr></table></figure></p>
 <p>首先考虑只有一个参数 w 的损失函数，随机的选取一个初始点，计算此时 L 对 w 的微分，然后顺着切线下降的方向更改 w 的值<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">w = w - grad(w)*learning_rate</span><br></pre></td></tr></table></figure></p>
 <p>此后，w会不断靠近微分近似为0的点以达成目标。同样方法求出所有参数的值。而实际上我们所需要的是不断同时更新损失函数所需要的所有参数的值，我们在编程中只需要让所有参数的更新在同一次迭代过程中更新即可，因为当迭代次数足够多的时候，每一次的迭代都可以看成在很短的一个小时间段中进行，因此每次迭代的不同参数更新可以近似看成时在同一时间段所更新的，即达到了我们要求梯度下降同时更新损失函数中含有的所有参数的要求。</p>
 <h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>学习率的不确定性所带来的一系列问题，比如若学习率过大，导致每次更新的步长过大，而过大的步长有可能并不符合实际更新的情况，导致了过大的学习率会使不断更新的参数在最值点上方震荡，甚至直接跨过最值点使损失函数值不断增大，无法逼近最值点；如果学习率过小，尽管较小的学习率符合我们梯度下降的数学原理，可以求得较为准确的符合我们预期的参数值。但是同时，过小的学习率会使更新的速度较慢，在计算中往往导致浪费计算机时间与性能，在我们的日常实际生活运用中可能会等不及出结果。</p>

@@ -89,14 +89,14 @@
 <meta property="og:site_name" content="Stardust&#39;s Blog">
 <meta property="og:description" content="平衡二叉搜索树(Self-balancing binary search tree)又被称为AVL树（有别于AVL算法）它左右的两个子树高度差的绝对值不超过1，且左右两个子树都是平衡二叉树。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://i2.bvimg.com/671322/26068bd5bc2cb6dcs.png">
-<meta property="og:image" content="http://i2.bvimg.com/671322/3f4a94a6e1a8e887s.png">
-<meta property="og:image" content="http://i2.bvimg.com/671322/2abdc5431b3d5617s.png">
-<meta property="og:updated_time" content="2018-12-11T06:05:51.070Z">
+<meta property="og:image" content="https://i.loli.net/2018/12/12/5c10c9117e416.png">
+<meta property="og:image" content="https://i.loli.net/2018/12/12/5c10c946410b3.png">
+<meta property="og:image" content="https://i.loli.net/2018/12/12/5c10c9909e5ef.png">
+<meta property="og:updated_time" content="2018-12-12T08:41:01.231Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="AVLtree">
 <meta name="twitter:description" content="平衡二叉搜索树(Self-balancing binary search tree)又被称为AVL树（有别于AVL算法）它左右的两个子树高度差的绝对值不超过1，且左右两个子树都是平衡二叉树。">
-<meta name="twitter:image" content="http://i2.bvimg.com/671322/26068bd5bc2cb6dcs.png">
+<meta name="twitter:image" content="https://i.loli.net/2018/12/12/5c10c9117e416.png">
 
 
 
@@ -449,15 +449,15 @@
 <h3 id="引入："><a href="#引入：" class="headerlink" title="引入："></a>引入：</h3><p>在说平衡二叉树之前，我们先需要谈谈二叉排序树，详见我之前在《排序》中所写。当排序树构建出来过于“畸形”，两边不对称，极端一点就是一路下来毫无分叉，那么显然，它的时间复杂度就是n，为了避免这种情况或者说，为了找寻最优情况，我们希望我们构建出来的二叉树可以两边对称平衡一下，使其树的深度为lonn而非n，为此，我们引入平衡二叉树的概念。</p>
 <h3 id="调整-旋转-："><a href="#调整-旋转-：" class="headerlink" title="调整(旋转)："></a>调整(旋转)：</h3><p>当每次插入一个结点后，我们根据这棵树的现状对它进行旋转操作，可以简单的分为：</p>
 <h4 id="单旋："><a href="#单旋：" class="headerlink" title="单旋："></a>单旋：</h4><p> 在A结点的左孩子的左子树或者右孩子的右子树上插入结点。</p>
-<p> 直接将B结点提上来，再把离A最近的子树滑给A。<br><img src="http://i2.bvimg.com/671322/26068bd5bc2cb6dcs.png" alt=""></p>
+<p> 直接将B结点提上来，再把离A最近的子树滑给A。<br><img src="https://i.loli.net/2018/12/12/5c10c9117e416.png" alt=""></p>
 <h4 id="双旋："><a href="#双旋：" class="headerlink" title="双旋："></a>双旋：</h4><p> 在A结点的左孩子的右子树或者右孩子的左子树上插入结点。</p>
-<p> 直接将C提到A、B之间，再把C的子树分别分给A、B所缺的位置。<br><img src="http://i2.bvimg.com/671322/3f4a94a6e1a8e887s.png" alt=""></p>
+<p> 直接将C提到A、B之间，再把C的子树分别分给A、B所缺的位置。<br><img src="https://i.loli.net/2018/12/12/5c10c946410b3.png" alt=""></p>
 <h3 id="删除："><a href="#删除：" class="headerlink" title="删除："></a>删除：</h3><h4 id="查找："><a href="#查找：" class="headerlink" title="查找："></a>查找：</h4><p>现在平衡树中查找到关键字相同的结点p</p>
 <h4 id="删除：-1"><a href="#删除：-1" class="headerlink" title="删除："></a>删除：</h4><p>分以下几种情况：</p>
 <ul>
 <li>叶结点：直接删除就好</li>
 <li>单分支结点：把后面那个孩子结点接上来就好啦</li>
-<li>双分支结点：把这个双分支结点p的值，用其中序前驱结点q的值替代后，直接删掉结点q<br><img src="http://i2.bvimg.com/671322/2abdc5431b3d5617s.png" alt=""></li>
+<li>双分支结点：把这个双分支结点p的值，用其中序前驱结点q的值替代后，直接删掉结点q<br><img src="https://i.loli.net/2018/12/12/5c10c9909e5ef.png" alt=""></li>
 </ul>
 
       
@@ -589,7 +589,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -600,7 +600,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -611,7 +611,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

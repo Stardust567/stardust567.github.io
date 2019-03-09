@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="Stardust&#39;s Blog">
 <meta property="og:description" content="Dijkstra : 从点v0开始，不断把距V0距离最小的点拉进超点（注意：权重值一定要是正的）Floyd : 如果i-&amp;gt;k-&amp;gt;j的距离比直接i-&amp;gt;j要短的话，更新一下dist的距离和path的路径">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-09T13:55:00.140Z">
+<meta property="og:updated_time" content="2019-03-09T13:58:46.613Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="图的最短路径">
 <meta name="twitter:description" content="Dijkstra : 从点v0开始，不断把距V0距离最小的点拉进超点（注意：权重值一定要是正的）Floyd : 如果i-&amp;gt;k-&amp;gt;j的距离比直接i-&amp;gt;j要短的话，更新一下dist的距离和path的路径">
@@ -404,7 +404,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  555
+                  550
                 </span>
               
 
@@ -447,7 +447,7 @@
 <h3 id="Floyd"><a href="#Floyd" class="headerlink" title="Floyd"></a>Floyd</h3><p>如果i-&gt;k-&gt;j的距离比直接i-&gt;j要短的话，更新一下dist的距离和path的路径</p>
 <p><em>（特别注意：关于循环的顺序，k一定在最外层循环，不然程序会出现差错，以下为解释）</em></p>
 <p>k在最外层保证了每次k变动后会遍历图上所有的点以达成完备的更新。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">void dist_init(int dist[N][N])&#123;</span><br><span class="line">	freopen(&quot;SP_edge.txt&quot;,&quot;r&quot;,stdin);</span><br><span class="line">	for(int i=0;i&lt;N;i++) for(int j=0;j&lt;N;j++) dist[i][j]=INT_MAX;</span><br><span class="line">	int va,vb,cost;</span><br><span class="line">	while(scanf(&quot;%d %d %d\n&quot;,&amp;va,&amp;vb,&amp;cost)==3) dist[va][vb] = cost;</span><br><span class="line">	for(int i=0;i&lt;N;i++) dist[i][i] = 0;</span><br><span class="line">&#125;</span><br><span class="line">void path_init(int path[N][N])&#123;</span><br><span class="line">	for(int i=0;i&lt;N;i++) for(int j=0;j&lt;N;j++) path[i][j]=i;</span><br><span class="line">&#125;</span><br><span class="line">void floyd(int dist[N][N],int path[N][N])&#123;</span><br><span class="line">	for(int k=0;j&lt;N;j++)&#123;</span><br><span class="line">		for(int i=0;i&lt;N;i++)&#123;</span><br><span class="line">			for(int j=0;k&lt;N;k++)&#123;</span><br><span class="line">				if(dist[i][k]+dist[k][j]&lt;dist[i][j]&amp;&amp;dist[i][k]!=INT_MAX&amp;&amp;dist[k][j]!=INT_MAX)&#123;</span><br><span class="line">					dist[i][j]=dist[i][k]+dist[k][j];path[i][j]=k;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">​</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">​</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dist_init</span><span class="params">(<span class="keyword">int</span> dist[N][N])</span></span>&#123;</span><br><span class="line">	freopen(<span class="string">"SP_edge.txt"</span>,<span class="string">"r"</span>,<span class="built_in">stdin</span>);</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;N;i++) <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;N;j++) dist[i][j]=INT_MAX;</span><br><span class="line">	<span class="keyword">int</span> va,vb,cost;</span><br><span class="line">	<span class="keyword">while</span>(<span class="built_in">scanf</span>(<span class="string">"%d %d %d\n"</span>,&amp;va,&amp;vb,&amp;cost)==<span class="number">3</span>) dist[va][vb] = cost;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;N;i++) dist[i][i] = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">path_init</span><span class="params">(<span class="keyword">int</span> path[N][N])</span></span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;N;i++) <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;N;j++) path[i][j]=i;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">floyd</span><span class="params">(<span class="keyword">int</span> dist[N][N],<span class="keyword">int</span> path[N][N])</span></span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> k=<span class="number">0</span>;j&lt;N;j++)&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;N;i++)&#123;</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;k&lt;N;k++)&#123;</span><br><span class="line">				<span class="keyword">if</span>(dist[i][k]+dist[k][j]&lt;dist[i][j]&amp;&amp;dist[i][k]!=INT_MAX&amp;&amp;dist[k][j]!=INT_MAX)&#123;</span><br><span class="line">					dist[i][j]=dist[i][k]+dist[k][j];path[i][j]=k;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">​</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -1318,7 +1318,15 @@
         }
       });
     </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/shizuku.model.json"},"display":{"superSample":2,"width":125,"height":125,"position":"right","hOffset":30,"vOffset":0},"mobile":{"show":false,"scale":0.05},"react":{"opacityDefault":1,"opacityOnHover":0.2},"log":false,"tagMode":false});</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config("");
 </script>
@@ -1335,13 +1343,5 @@
 <script type="text/javascript" src="">
 </script>
 <!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
-  
-
-
-  
-
-  
-
-<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/shizuku.model.json"},"display":{"superSample":2,"width":125,"height":125,"position":"right","hOffset":30,"vOffset":0},"mobile":{"show":false,"scale":0.05},"react":{"opacityDefault":1,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+<!-- hexo-inject:end --></body>
 </html>

@@ -1,0 +1,1487 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="大二,OS,进程,系统调用,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="&amp;emsp;&amp;emsp;Linux内核中设置了一组用于实现各种系统功能的子程序，称为系统调用（system call）。同时它还提供些C语言函数库，这些库对系统调用进行包装和扩展。由于这些库函数与系统调用的关系非常紧密，习惯上把这些函数也称为系统调用。&amp;emsp;&amp;emsp;一般的，进程不能访问内核所占内存也不能调用内核函数，而系统调用显然是个例外。原理是进程先用适当的值填充寄存器，然后调用一个特">
+<meta name="keywords" content="大二,OS,进程,系统调用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OS系统调用">
+<meta property="og:url" content="https://stardust567.github.io/post/2019/03/18/OS系统调用/index.html">
+<meta property="og:site_name" content="Stardust&#39;s Blog">
+<meta property="og:description" content="&amp;emsp;&amp;emsp;Linux内核中设置了一组用于实现各种系统功能的子程序，称为系统调用（system call）。同时它还提供些C语言函数库，这些库对系统调用进行包装和扩展。由于这些库函数与系统调用的关系非常紧密，习惯上把这些函数也称为系统调用。&amp;emsp;&amp;emsp;一般的，进程不能访问内核所占内存也不能调用内核函数，而系统调用显然是个例外。原理是进程先用适当的值填充寄存器，然后调用一个特">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://i.loli.net/2019/03/18/5c8fa09144527.jpg">
+<meta property="og:updated_time" content="2019-03-19T07:48:52.494Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="OS系统调用">
+<meta name="twitter:description" content="&amp;emsp;&amp;emsp;Linux内核中设置了一组用于实现各种系统功能的子程序，称为系统调用（system call）。同时它还提供些C语言函数库，这些库对系统调用进行包装和扩展。由于这些库函数与系统调用的关系非常紧密，习惯上把这些函数也称为系统调用。&amp;emsp;&amp;emsp;一般的，进程不能访问内核所占内存也不能调用内核函数，而系统调用显然是个例外。原理是进程先用适当的值填充寄存器，然后调用一个特">
+<meta name="twitter:image" content="https://i.loli.net/2019/03/18/5c8fa09144527.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":15,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://stardust567.github.io/post/2019/03/18/OS系统调用/">
+
+
+
+
+
+  <title>OS系统调用 | Stardust's Blog</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-130666690-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?HqDOiGSjrA";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Stardust's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">stardust1084062596@gmail.com</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://stardust567.github.io/post/2019/03/18/OS系统调用/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Stardust567">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Stardust's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">OS系统调用</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-18T17:33:13+08:00">
+                2019-03-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/OS/" itemprop="url" rel="index">
+                    <span itemprop="name">OS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/post/2019/03/18/OS系统调用/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/post/2019/03/18/OS系统调用/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/post/2019/03/18/OS系统调用/" class="leancloud_visitors" data-flag-title="OS系统调用">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                  <span class="post-meta-divider">|</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  5.5k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  21min
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>&emsp;&emsp;Linux内核中设置了一组用于实现各种系统功能的子程序，称为<em>系统调用（system call）</em>。同时它还提供些C语言函数库，这些库对系统调用进行包装和扩展。由于这些库函数与系统调用的关系非常紧密，习惯上把这些函数也称为系统调用。<br>&emsp;&emsp;一般的，进程不能访问内核所占内存也不能调用内核函数，而系统调用显然是个例外。原理是进程先用适当的值填充寄存器，然后调用一个特殊的指令，该指令会跳到事先定义的内核中的一个位置<em>（该位置用户进程可读但不可写）</em>。<a id="more"></a><br>&emsp;&emsp;Intel CPU中，这个由中断0x80实现。硬件知道一旦你跳到<em>这个位置（system_call）</em>，你就不再是限制模式下运行的用户，而“成为”了操作系统的内核<del>接下来你就可以为所欲为</del>。这个过程会检查系统调用号，该号码告诉内核进程请求哪种服务。然后查看<em>系统调用表(sys_call_table)</em>找到所调用的内核函数入口地址。接着调用函数，等返回后做一些系统检查，最后返回到进程（或到其他进程，如果这个进程时间用尽）。</p>
+<p><strong>进程是可并发执行的程序在一个数据集合上的运行过程。</strong></p>
+<p>为防止和正常的返回值混淆，系统调用并不直接返回错误码，而是将错误码放入一个名为errno的全局变量中。若系统调用失败，可以读出errno的值来锁定问题。errno不同数值所代表的错误消息定义在errno.h中，可以通过命令<code>man 3 errno</code>来察看它们。<br>需要注意的是，errno的值只在函数发生错误时设置，如果函数不发生错误，errno的值就无定义，并不会被置为0。另外，在处理errno前最好先把它的值存入另一个变量，因为在错误处理过程中，即使像printf()这样的函数出错时也会改变errno的值。</p>
+<h2 id="getpid"><a href="#getpid" class="headerlink" title="getpid"></a>getpid</h2><p>在2.4.4版内核中，getpid是第20号系统调用，其在Linux函数库中的原型是：</p>
+<blockquote>
+<p><code>#include&lt;sys/types.h&gt; /* 提供类型pid_t的定义 */</code><br><code>#include&lt;unistd.h&gt; /* 提供函数的定义 */</code><br><code>pid_t getpid(void);</code></p>
+</blockquote>
+<p>getpid的作用很简单，就是返回当前进程的进程ID<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line">main()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"The current process ID is %d\n"</span>,getpid());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>The current process ID is 1980</p>
+</blockquote>
+<p><em>注意，该程序的定义里并没包含头文件sys/types.h，这是因为我们在程序中没有用到pid_t类型，pid_t类型即为进程ID的类型。事实上，在i386架构上（就是我们一般PC计算机的架构），pid_t类型是和int类型完全兼容的，我们可以就把它当做个整形，比如用”%d”把它打印出来。</em></p>
+<h2 id="fork"><a href="#fork" class="headerlink" title="fork"></a>fork</h2><p>在2.4.4版内核中，fork是第2号系统调用，其在Linux函数库中的原型是：</p>
+<blockquote>
+<p><code>#include&lt;sys/types.h&gt; /* 提供类型pid_t的定义 */</code><br><code>#include&lt;unistd.h&gt; /* 提供函数的定义 */</code><br><code>pid_t fork(void);</code></p>
+</blockquote>
+<p>fork系统调用的作用是复制一个进程。当一个进程调用它，完成后就出现两个几乎一模一样的进程，我们也由此得到了一个新进程。<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#inlcude<span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line">main()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">pid_t</span> pid;    </span><br><span class="line">    <span class="comment">/*此时仅有一个进程*/</span></span><br><span class="line">    pid=fork();</span><br><span class="line">    <span class="comment">/*此时已经有两个进程在同时运行*/</span></span><br><span class="line">    <span class="keyword">if</span>(pid&lt;<span class="number">0</span>) <span class="built_in">printf</span>(<span class="string">"error in fork!"</span>);</span><br><span class="line">      <span class="keyword">else</span> <span class="keyword">if</span>(pid==<span class="number">0</span>)</span><br><span class="line">          <span class="built_in">printf</span>(<span class="string">"I am the child process, my process ID is %d\n"</span>,getpid());</span><br><span class="line">      <span class="keyword">else</span></span><br><span class="line">          <span class="built_in">printf</span>(<span class="string">"I am the parent process, my process ID is %d\n"</span>,getpid());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>I am the parent process, my process ID is 1991<br>I am the child process, my process ID is 1992</p>
+</blockquote>
+<p>看这个程序的时候，头脑中必须首先了解一个概念：在语句pid=fork()之前，只有一个进程在执行这段代码，但在这条语句之后，就变成两个进程在执行了，这两个进程的代码部分完全相同，将要执行的下一条语句都是if(pid==0)<br>两个进程中，原先就存在的那个被称作“父进程”，新出现的那个被称作“子进程”。父子进程的区别除了进程标志符PID不同外，变量pid的值也不相同，pid存放的是fork的返回值。fork调用的一个奇妙之处就是它仅仅被调用一次，却能够返回两次，它可能有三种不同的返回值：</p>
+<ol>
+<li>在父进程中，fork返回新创建子进程的进程ID；</li>
+<li>在子进程中，fork返回0；</li>
+<li>如果出现错误，fork返回一个负值(当前的进程数已经达到了系统规定的上限<em>这时errno的值被设置为EAGAIN</em>或系统内存不足<em>这时errno的值被设置为ENOMEM</em>）。</li>
+</ol>
+<h2 id="exit"><a href="#exit" class="headerlink" title="exit"></a>exit</h2><p>在2.4.4版内核中，exit是第1号调用，其在Linux函数库中的原型是：</p>
+<blockquote>
+<p><code>#include&lt;stdlib.h&gt;</code><br><code>void exit(int status);</code></p>
+</blockquote>
+<p>这个系统调用是用来终止一个进程的。无论在程序中的什么位置，只要执行到exit系统调用，进程就会停止剩下的所有操作，清除包括PCB在内的各种数据结构，并终止本进程的运行。<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line">main()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"this process will exit!\n"</span>);</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"never be displayed!\n"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>this process will exit!</p>
+</blockquote>
+<p>进程在<code>exit(0)</code>处直接终止，并不会打印后面的printf。exit带有一个整型的参数status，可以用这个参数传递进程结束时的状态，比如正常结束的为0。</p>
+<h2 id="exit-1"><a href="#exit-1" class="headerlink" title="_exit"></a>_exit</h2><p>_exit在Linux函数库中的原型是：</p>
+<blockquote>
+<p><code>#include&lt;unistd.h&gt;</code><br><code>void _exit(int status);</code></p>
+</blockquote>
+<p>和exit比较一下，<code>exit()</code>函数定义在stdlib.h中，而<code>_exit()</code>定义在unistd.h中。<br>但两者真正的区别在于exit()函数在调用exit系统调用之前要检查文件的打开情况，把文件缓冲区中的内容写回文件，也就是所谓的“清理I/O缓冲”。<br>举个例子，如果同样的两行printf，加上不同的终止调用，会发生什么：</p>
+<blockquote>
+<p><code>main(){</code><br><code>printf(&quot;output begin\n&quot;);</code><br><code>printf(&quot;content in buffer&quot;);</code><br><code>exit(0); # _exit(0);</code><br><code>}</code></p>
+</blockquote>
+<p><code>exit(0)</code>会完成两句printf,但<code>_exit(0)</code>可能完成第一句printf就终止了。这应该不难理解，系统先把前两个printf存入buff，然后一边I/O一边往后执行，如果是<code>_exit(0)</code>不管缓存死活，那就直接结束了啊。<br>但是exit后的进程并不是就灰飞烟灭了，它有个让人毛骨悚然的名字，<em>僵尸进程（Zombie）</em></p>
+<h2 id="进程状态"><a href="#进程状态" class="headerlink" title="进程状态"></a>进程状态</h2><p>下面就让我用一些形象的比喻，来对进程短暂的一生作一个小小的总结：</p>
+<p>随着一句fork，一个新进程呱呱落地，但它这时只是老进程的一个克隆。</p>
+<p>然后随着exec，新进程脱胎换骨，离家独立，开始了为人民服务的职业生涯。</p>
+<p>人有生老病死，进程也一样，它可以是自然死亡，即运行到main函数的最后一个”}”，从容地离我们而去；也可以是自杀，自杀有2种方式，一种是调用exit函数，一种是在main函数内使用return，无论哪一种方式，它都可以留下遗书，放在返回值里保留下来；它还甚至能可被谋杀，被其它进程通过另外一些方式结束他的生命。</p>
+<p>进程死掉以后，会留下一具僵尸，wait和waitpid充当了殓尸工，把僵尸推去火化，使其最终归于无形。</p>
+<p>这就是进程完整的一生。下面简单介绍下进程的状态：分linux内核代码定义的状态和常用状态。</p>
+<p>由Linux内核代码宏定义出的“TASK_REPORT”：</p>
+<blockquote>
+<p><code>/* get_task_state() */</code><br><code>#define TASK_REPORT    (TASK_RUNNING | TASK_INTERRUPTIBLE |</code><br><code>TASK_UNINTERRUPTIBLE | __TASK_STOPPED |&gt;</code><br><code>__TASK_TRACED | EXIT_ZOMBIE | EXIT_DEAD)</code></p>
+</blockquote>
+<p>可以得到七个基本的进程状态，即：<br><strong>R运行状态TASK_RUNNING</strong>进程要么正在执行，要么正要准备执行。<br><strong>S可中断睡眠状态TASK_INTERRUPTIBLE</strong>进程被阻塞，直到某个条件变为真。条件一旦达成，进程的状态就被设置为TASK_RUNNING。<br><strong>D不可中断睡眠状态TASK_UNINTERRUPTIBLE</strong>进程不会立即响应信号。这种状态一般用于内核某些不能被打断的进程，比如等待磁盘或网络I / O的设备驱动程序使用。<br><strong>T停止状态__TASK_STOPPED</strong>可以通过发送SIGSTOP信号给进程来停止进程，可以发送SIGCONT信号让进程继续运行<br><strong>t追踪状态__TASK_TRACED</strong>进程被debugger等进程监视。处于TASK_TRACED状态的进程不能响应SIGCONT信号而被唤醒。<br><strong>Z僵尸状态EXIT_ZOMBIE</strong>进程的执行被终止，但是其父进程还没有使用wait()等系统调用来获知它的终止信息。此时进程几乎的所有资源将被回收，没有任何可执行代码，也不能被调度，仅留下task_struct结构（以及少数资源）记载了些供人凭吊的信息。<br><strong>X死亡状态EXIT_DEAD</strong>进程的最终状态，即将被销毁，ls都没了的那种。<br>常用的状态转换图：<br><img src="https://i.loli.net/2019/03/18/5c8fa09144527.jpg" alt=""></p>
+<h2 id="wait"><a href="#wait" class="headerlink" title="wait"></a>wait</h2><p>wait的函数原型是：</p>
+<blockquote>
+<p><code>#include &lt;sys/types.h&gt; /* 提供类型pid_t的定义 */</code><br><code>#include &lt;sys/wait.h&gt;</code><br><code>pid_t wait(int *status)</code></p>
+</blockquote>
+<p>进程一旦调用了wait，就立即阻塞自己，由wait自动分析是否当前进程的某个子进程已经退出，如果让它找到了这样一个已经变成僵尸的子进程，wait就会收集这个子进程的信息，并把它彻底销毁后返回；如果没有找到这样一个子进程，wait就会一直阻塞在这里，直到有一个出现为止。<br>参数status用来保存被收集进程退出时的一些状态，它是一个指向int类型的指针。但如果我们对这个子进程是如何死掉的毫不在意，只想把这个僵尸进程消灭掉（多数情况如此），我们就可以设定这个参数为NULL:<code>pid = wait(NULL);</code>如果成功，wait会返回被收集的子进程的PID，如果调用进程没有子进程，调用就会失败，此时wait返回-1<em>errno被置为ECHILD</em>。<br>如果想知道status，那就准备个int指针，也可以<code>int status</code>然后传<code>wait(&amp;status)</code>这时就可以调用专门的<em>宏（macro）</em>来获取信息：</p>
+<ol>
+<li>WIFEXITED(status) 这个宏用来指出子进程是否为正常退出的，如果是，它会返回一个非零值。</li>
+<li>WEXITSTATUS(status) 这个宏用来提取子进程的返回值，如果子进程调用exit(5)退出，WEXITSTATUS(status)就会返回5<em>（注意，如果进程不是正常退出的，也就是说，WIFEXITED返回0，这个值就毫无意义）</em></li>
+</ol>
+<h2 id="waitpid"><a href="#waitpid" class="headerlink" title="waitpid"></a>waitpid</h2><p>waitpid的函数原型是：</p>
+<blockquote>
+<p><code>#include &lt;sys/types.h&gt; /* 提供类型pid_t的定义 */</code><br><code>#include &lt;sys/wait.h&gt;</code><br><code>pid_t waitpid(pid_t pid,int *status,int options)</code></p>
+</blockquote>
+<p>just多了pid和options两个参数：</p>
+<ul>
+<li>参数 pid 为欲等待的子进程的识别码：<ul>
+<li>pid &lt; -1 ；等待进程组 ID 为 pid 绝对值的进程组中的任何子进程；</li>
+<li>pid = -1 ；等待任何子进程，此时 waitpid() 相当于 wait()。实际上，wait()就是 pid = -1、options = 0 的waitpid()</li>
+<li>pid = 0 ；等待进程组 ID 与当前进程相同的任何子进程（也就是等待同一个进程组中的任何子进程）；</li>
+<li>pid &gt; 0 ；等待任何子进程 ID 为 pid 的子进程，只要指定的子进程还没有结束，waitpid() 就会一直等下去。</li>
+</ul>
+</li>
+<li>参数 options提供一些额外的选项来控制 waitpid()：<ul>
+<li>WNOHANG；如果没有任何已经结束了的子进程，则马上返回，不等待；</li>
+<li>WUNTRACED；如果子进程进入暂停执行的情况，则马上返回，但结束状态不予理会；</li>
+<li>也可以将这两个选项组合起来使用，使用 OR 操作</li>
+<li>如果不想使用这两个选项，也可以直接把 options 设为0，则 waitpid() 会一直等待，直到有进程退出</li>
+</ul>
+</li>
+<li>waitpid()的返回值，有三种：<ul>
+<li>正常返回时，waitpid() 返回收集到的子进程的PID；</li>
+<li>如果设置了 WNOHANG，而调用 waitpid() 时，没有发现已退出的子进程可收集，则返回0；</li>
+<li>如果调用出错，则返回 -1，这时erron 会被设置为相应的值以指示错误所在。（当 pid 所指示的子进程不存在，或此进程存在，但不是调用进程的子进程， waitpid() 就会返回出错，这时 erron 被设置为 ECHILD）</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/wait.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line">main()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">pid_t</span> pc, pr;</span><br><span class="line">         </span><br><span class="line">    pc=fork();</span><br><span class="line">    <span class="keyword">if</span>(pc&lt;<span class="number">0</span>)     <span class="comment">/* 如果fork出错 */</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"Error occured on forking.\n"</span>);</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(pc==<span class="number">0</span>)&#123;     <span class="comment">/* 如果是子进程 */</span></span><br><span class="line">        sleep(<span class="number">10</span>);  <span class="comment">/* 睡眠10秒 */</span></span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/* 如果是父进程 */</span></span><br><span class="line">    <span class="keyword">do</span>&#123;</span><br><span class="line">        pr=waitpid(pc, <span class="literal">NULL</span>, WNOHANG);  <span class="comment">/* WNOHANG参数:waitpid不会在这等待 */</span></span><br><span class="line">        <span class="keyword">if</span>(pr==<span class="number">0</span>)&#123;          <span class="comment">/* 如果没有收集到子进程 */</span></span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"No child exited\n"</span>);</span><br><span class="line">            sleep(<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;<span class="keyword">while</span>(pr==<span class="number">0</span>);              <span class="comment">/* 没有收集到子进程，就回去继续尝试 */</span></span><br><span class="line">    <span class="keyword">if</span>(pr==pc)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"successfully get child %d\n"</span>, pr);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"some error occured\n"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>No child exited<br>No child exited<br>No child exited<br>No child exited<br>No child exited<br>No child exited<br>No child exited<br>No child exited<br>No child exited<br>No child exited<br>successfully get child 1526</p>
+</blockquote>
+<p>我们让父进程和子进程分别睡眠了10秒钟和1秒钟，代表它们分别作了10秒钟和1秒钟的工作。父子进程都有工作要做，父进程利用工作的简短间歇察看子进程的是否退出，如退出就收集它。</p>
+<h2 id="exec"><a href="#exec" class="headerlink" title="exec"></a>exec</h2><p>Question:既然所有新进程都是由fork产生的，而且由fork产生的子进程和父进程几乎完全一样，那岂不是意味着系统中所有的进程都应该一模一样了吗？而且，就我们的常识来说，当我们执行一个程序的时候，新产生的进程的内容应就是程序的内容才对。是我们理解错了吗？<br>实际上在Linux中，exec指的是一组函数，一共有6个，分别是：</p>
+<blockquote>
+<p><code>#include &lt;unistd.h&gt;</code><br><code>int execl(const char *path, const char *arg, ...);</code><br><code>int execlp(const char *file, const char *arg, ...);</code><br><code>int execle(const char *path, const char *arg, ..., char *const envp[]);</code><br><code>int execv(const char *path, char *const argv[]);</code><br><code>int execvp(const char *file, char *const argv[]);</code><br><code>int execve(const char *path, char *const argv[], char *const envp[]);</code></p>
+</blockquote>
+<p><em>其中只有execve是真正意义上的系统调用，其它都是在此基础上经过包装的库函数。</em></p>
+<p>exec函数族的作用是根据指定的文件名找到可执行文件，并用它来取代调用进程的内容，换句话说，就是在调用进程内部执行一个可执行文件。这里的可执行文件既可以是二进制文件，也可以是任何Linux下可执行的脚本文件。</p>
+<p>与一般情况不同，exec函数族的函数执行成功后不会返回，因为调用进程的实体，包括代码段，数据段和堆栈等都已经被新的内容取代，只留下进程ID等一些表面上的信息仍保持原样，颇有些神似”三十六计”中的”金蝉脱壳”。看上去还是旧的躯壳，却已经注入了新的灵魂。只有调用失败了，它们才会返回一个-1，从原程序的调用点接着往下执行。</p>
+<p>现在我们应该明白了，Linux下是如何执行新程序的，每当有进程认为自己不能为系统和拥护做出任何贡献了，他就可以发挥最后一点余热，调用任何一个exec，让自己以新的面貌重生；或者，更普遍的情况是，如果一个进程想执行另一个程序，它就可以fork出一个新进程，然后调用任何一个exec，这样看起来就好像通过执行应用程序而产生了一个新进程一样。</p>
+<p>事实上第二种情况被应用得如此普遍，以至于Linux专门为其作了优化，我们已经知道，fork会将调用进程的所有内容原封不动的拷贝到新产生的子进程中去，这些拷贝的动作很消耗时间，而如果fork完之后我们马上就调用exec，这些辛辛苦苦拷贝来的东西又会被立刻抹掉，这看起来非常不划算，于是人们设计了一种<em>写时拷贝（copy-on-write）</em>技术，使得fork结束后并不立刻复制父进程的内容，而是到了真正实用的时候才复制，这样如果下一条语句是exec，它就不会白白作无用功了，也就提高了效率。</p>
+<p>在学习它们之前，先来了解一下我们习以为常的main函数。</p>
+<blockquote>
+<p><code>int main(int argc, char *argv[], char *envp[])</code></p>
+</blockquote>
+<p>参数argc指出了运行该程序时命令行参数的个数，数组argv存放了所有的命令行参数，数组envp存放了所有的环境变量。环境变量指的是一组值，从用户登录后就一直存在，很多应用程序需要依靠它来确定系统的一些细节，我们最常见的环境变量是PATH，它指出了应到哪里去搜索应用程序，如/bin；HOME也是比较常见的环境变量，它指出了我们在系统中的个人目录。环境变量一般以字符串”XXX=xxx”的形式存在，XXX表示变量名，xxx表示变量的值。</p>
+<p>值得一提的是，argv数组和envp数组存放的都是指向字符串的指针，这两个数组都以一个NULL元素表示数组的结尾。</p>
+<p>我们可以通过以下这个程序来观看传到argc、argv和envp里的都是什么东西：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[], <span class="keyword">char</span> *envp[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n### ARGC ###\n%d\n"</span>, argc);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n### ARGV ###\n"</span>);</span><br><span class="line">    <span class="keyword">while</span>(*argv)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%s\n"</span>, *(argv++));</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n### ENVP ###\n"</span>);</span><br><span class="line">    <span class="keyword">while</span>(*envp)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%s\n"</span>, *(envp++));</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>编译<code>cc main.c -o main</code>然后运行，故意加几个没有任何作用的命令行参数<code>./main -xx 000</code> </p>
+<blockquote>
+<p>### ARGC ###<br>3<br>### ARGV ###<br>./main<br>-xx<br>000<br>### ENVP ###<br>PWD=/home/lei<br>REMOTEHOST=dt.laser.com<br>HOSTNAME=localhost.localdomain<br>QTDIR=/usr/lib/qt-2.3.1<br>LESSOPEN=|/usr/bin/lesspipe.sh %s<br>KDEDIR=/usr<br>USER=lei<br>LS_COLORS=<br>MACHTYPE=i386-redhat-linux-gnu<br>MAIL=/var/spool/mail/lei<br>INPUTRC=/etc/inputrc<br>LANG=en_US<br>LOGNAME=lei<br>SHLVL=1<br>SHELL=/bin/bash<br>HOSTTYPE=i386<br>OSTYPE=linux-gnu<br>HISTSIZE=1000<br>TERM=ansi<br>HOME=/home/lei<br>PATH=/usr/local/bin:/bin:/usr/bin:/usr/X11R6/bin:/home/lei/bin<br>_=./main</p>
+</blockquote>
+<p>我们看到，程序将”./main”作为第1个命令行参数，所以共有3个命令行参数。这可能与平时习惯的说法有些不同。<br>现在回过头来看一下exec函数族，先把注意力集中在execve上：</p>
+<blockquote>
+<p><code>int execve(const char *path, char *const argv[], char *const envp[]);</code></p>
+</blockquote>
+<p>对比一下main函数的完整形式，就会发现这两个函数里的argv和envp是完全一一对应的关系。execve第1个参数path是被执行应用程序的完整路径，第2个参数argv就是传给被执行应用程序的命令行参数，第3个参数envp是传给被执行应用程序的环境变量。<br>留心看一下这6个函数还可以发现，前3个函数都是以execl开头的，后3个都是以execv开头的，它们的区别在于，execv开头的函数是以”char *argv[]”这样的形式传递命令行参数，而execl开头的函数采用了我们更容易习惯的方式，把参数一个一个列出来，然后以一个NULL表示结束。这里的NULL的作用和argv数组里的NULL作用是一样的。</p>
+<p>在全部6个函数中，只有execle和execve使用了char *envp[]传递环境变量，其它的4个函数都没有这个参数，这并不意味着它们不传递环境变量，这4个函数将把默认的环境变量不做任何修改地传给被执行的应用程序。而execle和execve会用指定的环境变量去替代默认的那些。</p>
+<p>还有2个以p结尾的函数execlp和execvp，咋看起来，它们和execl与execv的差别很小，事实也确是如此，除execlp和execvp之外的4个函数都要求，它们的第1个参数path必须是一个完整的路径，如”/bin/ls”；而execlp和execvp的第1个参数file可以简单到仅仅是一个文件名，如”ls”，这两个函数可以自动到环境变量PATH制定的目录里去寻找。<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line">main()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">char</span> *envp[]=&#123;<span class="string">"PATH=/tmp"</span>,</span><br><span class="line">            <span class="string">"USER=lei"</span>,</span><br><span class="line">            <span class="string">"STATUS=testing"</span>,</span><br><span class="line">            <span class="literal">NULL</span>&#125;;</span><br><span class="line">    <span class="keyword">char</span> *argv_execv[]=&#123;<span class="string">"echo"</span>, <span class="string">"excuted by execv"</span>, <span class="literal">NULL</span>&#125;;</span><br><span class="line">    <span class="keyword">char</span> *argv_execvp[]=&#123;<span class="string">"echo"</span>, <span class="string">"executed by execvp"</span>, <span class="literal">NULL</span>&#125;;</span><br><span class="line">    <span class="keyword">char</span> *argv_execve[]=&#123;<span class="string">"env"</span>, <span class="literal">NULL</span>&#125;;</span><br><span class="line">    <span class="keyword">if</span>(fork()==<span class="number">0</span>)</span><br><span class="line">        <span class="keyword">if</span>(execl(<span class="string">"/bin/echo"</span>, <span class="string">"echo"</span>, <span class="string">"executed by execl"</span>, <span class="literal">NULL</span>)&lt;<span class="number">0</span>)</span><br><span class="line">            perror(<span class="string">"Err on execl"</span>);</span><br><span class="line">    <span class="keyword">if</span>(fork()==<span class="number">0</span>)</span><br><span class="line">        <span class="keyword">if</span>(execlp(<span class="string">"echo"</span>, <span class="string">"echo"</span>, <span class="string">"executed by execlp"</span>, <span class="literal">NULL</span>)&lt;<span class="number">0</span>)</span><br><span class="line">            perror(<span class="string">"Err on execlp"</span>);</span><br><span class="line">    <span class="keyword">if</span>(fork()==<span class="number">0</span>)</span><br><span class="line">        <span class="keyword">if</span>(execle(<span class="string">"/usr/bin/env"</span>, <span class="string">"env"</span>, <span class="literal">NULL</span>, envp)&lt;<span class="number">0</span>)</span><br><span class="line">            perror(<span class="string">"Err on execle"</span>);</span><br><span class="line">    <span class="keyword">if</span>(fork()==<span class="number">0</span>)</span><br><span class="line">        <span class="keyword">if</span>(execv(<span class="string">"/bin/echo"</span>, argv_execv)&lt;<span class="number">0</span>)</span><br><span class="line">            perror(<span class="string">"Err on execv"</span>);</span><br><span class="line">    <span class="keyword">if</span>(fork()==<span class="number">0</span>)</span><br><span class="line">        <span class="keyword">if</span>(execvp(<span class="string">"echo"</span>, argv_execvp)&lt;<span class="number">0</span>)</span><br><span class="line">            perror(<span class="string">"Err on execvp"</span>);</span><br><span class="line">    <span class="keyword">if</span>(fork()==<span class="number">0</span>)</span><br><span class="line">        <span class="keyword">if</span>(execve(<span class="string">"/usr/bin/env"</span>, argv_execve, envp)&lt;<span class="number">0</span>)</span><br><span class="line">            perror(<span class="string">"Err on execve"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>程序里调用了2个Linux常用的系统命令，echo和env。echo会把后面跟的命令行参数原封不动的打印出来，env用来列出所有环境变量。</p>
+<p>由于各个子进程执行的顺序无法控制，所以有可能出现一个比较混乱的输出–各子进程打印的结果交杂在一起，而不是严格按照程序中列出的次序。</p>
+<blockquote>
+<p>executed by execl<br>PATH=/tmp<br>USER=lei<br>STATUS=testing<br>executed by execlp<br>excuted by execv<br>executed by execvp<br>PATH=/tmp<br>USER=lei<br>STATUS=testing</p>
+</blockquote>
+<p>果然不出所料，execle输出的结果跑到了execlp前面。</p>
+<p>在平时的编程中，如果用到了exec函数族，一定记得要加错误判断语句。因为与其他系统调用比起来，exec很容易受伤，被执行文件的位置，权限等很多因素都能导致该调用的失败。最常见的错误是：</p>
+<ul>
+<li>找不到文件或路径，此时errno被设置为ENOENT；</li>
+<li>数组argv和envp忘记用NULL结束，此时errno被设置为EFAULT；</li>
+<li>没有对要执行文件的运行权限，此时errno被设置为EACCES。</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+	
+	
+	
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/大二/" rel="tag"># 大二</a>
+          
+            <a href="/tags/OS/" rel="tag"># OS</a>
+          
+            <a href="/tags/进程/" rel="tag"># 进程</a>
+          
+            <a href="/tags/系统调用/" rel="tag"># 系统调用</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/2019/02/14/恋L/" rel="next" title="恋与L">
+                <i class="fa fa-chevron-left"></i> 恋与L
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Stardust567</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.555dreams.xin/" title="555的梦工厂" target="_blank">555的梦工厂</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#getpid"><span class="nav-number">1.</span> <span class="nav-text">getpid</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fork"><span class="nav-number">2.</span> <span class="nav-text">fork</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#exit"><span class="nav-number">3.</span> <span class="nav-text">exit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#exit-1"><span class="nav-number">4.</span> <span class="nav-text">_exit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程状态"><span class="nav-number">5.</span> <span class="nav-text">进程状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wait"><span class="nav-number">6.</span> <span class="nav-text">wait</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#waitpid"><span class="nav-number">7.</span> <span class="nav-text">waitpid</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#exec"><span class="nav-number">8.</span> <span class="nav-text">exec</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Stardust567</span>
+
+  
+</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'Stardust567',
+            repo: 'stardust567.github.io',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '9dfc299bfe3f9db6938b3da9754d2518ad66349c',
+            
+                client_id: '966fe09a3cd09cf0a46a'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("bABdvcserWST8hctdXncW0he-gzGzoHsz", "Ng2B24N8TgiGzK8fKds99MLc");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/shizuku.model.json"},"display":{"superSample":2,"width":125,"height":125,"position":"right","hOffset":30,"vOffset":0},"mobile":{"show":false,"scale":0.05},"react":{"opacityDefault":1,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>

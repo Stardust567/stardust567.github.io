@@ -81,19 +81,19 @@
 
 
 
-<meta name="description" content="&amp;emsp;&amp;emsp;Linux内核中设置了一组用于实现各种系统功能的子程序，称为系统调用（system call）。同时它还提供些C语言函数库，这些库对系统调用进行包装和扩展。由于这些库函数与系统调用的关系非常紧密，习惯上把这些函数也称为系统调用。本文为作者在大二写OS作业时整理而得，安利文章系统调用跟我学写得真的很舒服，本文很多内容都源于此。">
+<meta name="description" content="&amp;emsp;&amp;emsp;Linux内核中设置了一组用于实现各种系统功能的子程序，称为系统调用（system call）。同时它还提供些C语言函数库，这些库对系统调用进行包装和扩展。由于这些库函数与系统调用的关系非常紧密，习惯上把这些函数也称为系统调用。本文是作者在大二写OS作业时整理的，安利文章系统调用跟我学这篇写得真的很舒服，本文很多内容都源于此。">
 <meta name="keywords" content="大二,OS,进程,系统调用">
 <meta property="og:type" content="article">
 <meta property="og:title" content="OS系统调用">
 <meta property="og:url" content="https://stardust567.github.io/post/22713.html">
 <meta property="og:site_name" content="Stardust&#39;s Blog">
-<meta property="og:description" content="&amp;emsp;&amp;emsp;Linux内核中设置了一组用于实现各种系统功能的子程序，称为系统调用（system call）。同时它还提供些C语言函数库，这些库对系统调用进行包装和扩展。由于这些库函数与系统调用的关系非常紧密，习惯上把这些函数也称为系统调用。本文为作者在大二写OS作业时整理而得，安利文章系统调用跟我学写得真的很舒服，本文很多内容都源于此。">
+<meta property="og:description" content="&amp;emsp;&amp;emsp;Linux内核中设置了一组用于实现各种系统功能的子程序，称为系统调用（system call）。同时它还提供些C语言函数库，这些库对系统调用进行包装和扩展。由于这些库函数与系统调用的关系非常紧密，习惯上把这些函数也称为系统调用。本文是作者在大二写OS作业时整理的，安利文章系统调用跟我学这篇写得真的很舒服，本文很多内容都源于此。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.loli.net/2019/03/18/5c8fa09144527.jpg">
-<meta property="og:updated_time" content="2019-03-20T04:08:08.917Z">
+<meta property="og:updated_time" content="2019-03-20T12:02:15.802Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="OS系统调用">
-<meta name="twitter:description" content="&amp;emsp;&amp;emsp;Linux内核中设置了一组用于实现各种系统功能的子程序，称为系统调用（system call）。同时它还提供些C语言函数库，这些库对系统调用进行包装和扩展。由于这些库函数与系统调用的关系非常紧密，习惯上把这些函数也称为系统调用。本文为作者在大二写OS作业时整理而得，安利文章系统调用跟我学写得真的很舒服，本文很多内容都源于此。">
+<meta name="twitter:description" content="&amp;emsp;&amp;emsp;Linux内核中设置了一组用于实现各种系统功能的子程序，称为系统调用（system call）。同时它还提供些C语言函数库，这些库对系统调用进行包装和扩展。由于这些库函数与系统调用的关系非常紧密，习惯上把这些函数也称为系统调用。本文是作者在大二写OS作业时整理的，安利文章系统调用跟我学这篇写得真的很舒服，本文很多内容都源于此。">
 <meta name="twitter:image" content="https://i.loli.net/2019/03/18/5c8fa09144527.jpg">
 
 
@@ -369,13 +369,24 @@
                   <i class="fa fa-comment-o"></i>
                 </span>
                 <a href="/post/22713.html#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count gitment-comments-count" data-xid="/post/22713.html" itemprop="commentsCount"></span>
+                  <span class="post-comments-count valine-comment-count" data-xid="/post/22713.html" itemprop="commentCount"></span>
                 </a>
               </span>
             
           
 
           
+          
+             <span id="/post/22713.html" class="leancloud_visitors" data-flag-title="OS系统调用">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
           
 
           
@@ -430,7 +441,7 @@
       
 
       
-        <p>&emsp;&emsp;Linux内核中设置了一组用于实现各种系统功能的子程序，称为<em>系统调用（system call）</em>。同时它还提供些C语言函数库，这些库对系统调用进行包装和扩展。由于这些库函数与系统调用的关系非常紧密，习惯上把这些函数也称为系统调用。<br>本文为作者在大二写OS作业时整理而得，安利文章<a href="https://www.ibm.com/developerworks/cn/linux/kernel/syscall/part3/index.html" target="_blank" rel="noopener">系统调用跟我学</a>写得真的很舒服，本文很多内容都源于此。<br><a id="more"></a><br>&emsp;&emsp;一般情况下进程不能访问内核所占内存也不能调用内核函数，但有一般就会有例外，系统调用就是例外。它的原理是进程先用适当的值填充寄存器，然后调用一个特殊的指令，该指令会跳到事先定义的内核中的一个位置<em>（该位置用户进程可读但不可写）</em>。<br>&emsp;&emsp;Intel CPU中，这个由中断0x80实现。硬件知道一旦你跳到<em>这个位置（system_call）</em>，你就不再是限制模式下运行的用户，而“成为”了操作系统的内核<del>接下来你就可以为所欲为</del>。这个过程会检查系统调用号，该号码告诉内核进程请求哪种服务。然后查看<em>系统调用表(sys_call_table)</em>找到所调用的内核函数入口地址。接着调用函数，等返回后做一些系统检查，最后返回到进程（或到其他进程，如果这个进程时间用尽）。</p>
+        <p>&emsp;&emsp;Linux内核中设置了一组用于实现各种系统功能的子程序，称为<em>系统调用（system call）</em>。同时它还提供些C语言函数库，这些库对系统调用进行包装和扩展。由于这些库函数与系统调用的关系非常紧密，习惯上把这些函数也称为系统调用。<em>本文是作者在大二写OS作业时整理的，安利文章<a href="https://www.ibm.com/developerworks/cn/linux/kernel/syscall/part3/index.html" target="_blank" rel="noopener">系统调用跟我学</a>这篇写得真的很舒服，本文很多内容都源于此。</em><br><a id="more"></a><br>&emsp;&emsp;一般情况下进程不能访问内核所占内存也不能调用内核函数，但有一般就会有例外，系统调用就是例外。它的原理是进程先用适当的值填充寄存器，然后调用一个特殊的指令，该指令会跳到事先定义的内核中的一个位置<em>（该位置用户进程可读但不可写）</em>。<br>&emsp;&emsp;Intel CPU中，这个由中断0x80实现。硬件知道一旦你跳到<em>这个位置（system_call）</em>，你就不再是限制模式下运行的用户，而“成为”了操作系统的内核<del>接下来你就可以为所欲为</del>。这个过程会检查系统调用号，该号码告诉内核进程请求哪种服务。然后查看<em>系统调用表(sys_call_table)</em>找到所调用的内核函数入口地址。接着调用函数，等返回后做一些系统检查，最后返回到进程（或到其他进程，如果这个进程时间用尽）。</p>
 <p><strong>进程是可并发执行的程序在一个数据集合上的运行过程。</strong></p>
 <p>为防止和正常的返回值混淆，系统调用并不直接返回错误码，而是将错误码放入一个名为errno的全局变量中。若系统调用失败，可以读出errno的值来锁定问题。errno不同数值所代表的错误消息定义在errno.h中，可以通过命令<code>man 3 errno</code>来察看它们。<br>需要注意的是，errno的值只在函数发生错误时设置，如果函数不发生错误，errno的值就无定义，并不会被置为0。另外，在处理errno前最好先把它的值存入另一个变量，因为在错误处理过程中，即使像printf()这样的函数出错时也会改变errno的值。</p>
 <h2 id="getpid"><a href="#getpid" class="headerlink" title="getpid"></a>getpid</h2><p>在2.4.4版内核中，getpid是第20号系统调用，其在Linux函数库中的原型是：</p>
@@ -639,11 +650,7 @@
 
   
     <div class="comments" id="comments">
-      
-        <div id="gitment-container"></div>
-      
     </div>
-
   
 
 
@@ -947,50 +954,30 @@
 
 
 
-<!-- LOCAL: You can save these files to your site and update links -->
-    
-        
-        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
-        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
-    
-<!-- END LOCAL -->
-
-    
-      <style>
-        a.gitment-editor-footer-tip { display: none; }
-        .gitment-container.gitment-footer-container { display: none; }
-      </style>
-    
-
-    
-      <script type="text/javascript">
-      function renderGitment(){
-        var gitment = new Gitmint({
-            id: window.location.pathname, 
-            owner: 'Stardust567',
-            repo: 'stardust567.github.io',
-            
-            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
-            
-            oauth: {
-            
-            
-                client_secret: '9dfc299bfe3f9db6938b3da9754d2518ad66349c',
-            
-                client_id: '966fe09a3cd09cf0a46a'
-            }});
-        gitment.render('gitment-container');
-      }
-
-      
-      renderGitment();
-      
-      </script>
-    
 
 
 
-
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'bABdvcserWST8hctdXncW0he-gzGzoHsz',
+        appKey: 'Ng2B24N8TgiGzK8fKds99MLc',
+        placeholder: 'Why so serious？（来呀~快活呀~~）',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
 
 
 
@@ -1318,6 +1305,113 @@
 
 
   
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("bABdvcserWST8hctdXncW0he-gzGzoHsz", "Ng2B24N8TgiGzK8fKds99MLc");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
 
   
 

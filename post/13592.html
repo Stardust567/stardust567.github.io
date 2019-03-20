@@ -81,19 +81,19 @@
 
 
 
-<meta name="description" content="关于Java多线程的简单入门知识注意协调不同线程驱动的任务之间对资源的使用">
+<meta name="description" content="关于Java多线程的简单入门知识其中最为重要的就是协调不同线程驱动的任务之间对资源的使用（刚整理这篇的时候还没学OS，等OS学完后再回来修改&amp;amp;对比总结一下）希望我能成功填坑orz">
 <meta name="keywords" content="大二,Java,多线程">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java多线程入门">
 <meta property="og:url" content="https://stardust567.github.io/post/13592.html">
 <meta property="og:site_name" content="Stardust&#39;s Blog">
-<meta property="og:description" content="关于Java多线程的简单入门知识注意协调不同线程驱动的任务之间对资源的使用">
+<meta property="og:description" content="关于Java多线程的简单入门知识其中最为重要的就是协调不同线程驱动的任务之间对资源的使用（刚整理这篇的时候还没学OS，等OS学完后再回来修改&amp;amp;对比总结一下）希望我能成功填坑orz">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.loli.net/2018/12/12/5c1109a616e2e.jpg">
-<meta property="og:updated_time" content="2019-03-20T03:28:08.232Z">
+<meta property="og:updated_time" content="2019-03-20T12:05:56.706Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java多线程入门">
-<meta name="twitter:description" content="关于Java多线程的简单入门知识注意协调不同线程驱动的任务之间对资源的使用">
+<meta name="twitter:description" content="关于Java多线程的简单入门知识其中最为重要的就是协调不同线程驱动的任务之间对资源的使用（刚整理这篇的时候还没学OS，等OS学完后再回来修改&amp;amp;对比总结一下）希望我能成功填坑orz">
 <meta name="twitter:image" content="https://i.loli.net/2018/12/12/5c1109a616e2e.jpg">
 
 
@@ -369,13 +369,24 @@
                   <i class="fa fa-comment-o"></i>
                 </span>
                 <a href="/post/13592.html#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count gitment-comments-count" data-xid="/post/13592.html" itemprop="commentsCount"></span>
+                  <span class="post-comments-count valine-comment-count" data-xid="/post/13592.html" itemprop="commentCount"></span>
                 </a>
               </span>
             
           
 
           
+          
+             <span id="/post/13592.html" class="leancloud_visitors" data-flag-title="Java多线程入门">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
           
 
           
@@ -393,7 +404,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  3.4k
+                  3.5k
                 </span>
               
 
@@ -409,7 +420,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  12min
+                  13min
                 </span>
               
             </div>
@@ -430,11 +441,11 @@
       
 
       
-        <p>关于Java多线程的简单入门知识<br>注意协调不同线程驱动的任务之间对资源的使用<br><a id="more"></a></p>
+        <p>关于Java多线程的简单入门知识<br>其中最为重要的就是协调不同线程驱动的任务之间对资源的使用<br><em>（刚整理这篇的时候还没学OS，等OS学完后再回来修改&amp;对比总结一下）<del>希望我能成功填坑orz</del></em><br><a id="more"></a></p>
 <h3 id="并发的概念"><a href="#并发的概念" class="headerlink" title="并发的概念"></a>并发的概念</h3><ol>
 <li><strong>进程：</strong>每个进程都有独立的代码和数据空间（进程上下文），进程间的切换会有较大的开销，一个进程包含1–n个线程。（进程是资源分配的最小单位）</li>
 <li><strong>线程：</strong>同一类线程共享代码和数据空间，每个线程有独立的运行栈和程序计数器(PC)，线程切换开销小。（线程是cpu调度的最小单位）</li>
-<li><strong>更快的执行：</strong> 并发可以将任务分解到多个CPU上执行，但并发通常是提高运行在单处理器上的程序的性能。为什么实际运用会这么反直觉？——因为<strong>阻塞</strong>，当某个任务因为程序控制范围之外的条件（比如I/O）不能继续执行时，如果没有并发，那么整个主进程都将因此停止下来，直到外部条件发生变化。</li>
+<li><strong>更快的执行：</strong> 并行可以将任务分解到多个CPU上执行，但并发通常是提高运行在单处理器上的程序的性能。为什么实际运用会这么反直觉？——因为<strong>阻塞</strong>，当某个任务因为程序控制范围之外的条件（比如I/O）不能继续执行时，如果没有并发，那么整个主进程都将因此停止下来，直到外部条件发生变化。</li>
 <li><strong>Java的并发：</strong> Java的并发系统与操作系统不同，会共享类如内存和I/O这样的资源，因此Java多线程最基本的困难就在于协调不同线程驱动的任务之间对资源的使用，以使得这些资源不会同时被多个任务访问。<ul>
 <li>Java的线程机制是在由执行程序表示的单一进程中创建任务。</li>
 <li>对于资源各个线程是抢占式的，调度机制会周期性地中断线程，将上下文切换到另一个线程。</li>
@@ -603,11 +614,7 @@
 
   
     <div class="comments" id="comments">
-      
-        <div id="gitment-container"></div>
-      
     </div>
-
   
 
 
@@ -911,50 +918,30 @@
 
 
 
-<!-- LOCAL: You can save these files to your site and update links -->
-    
-        
-        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
-        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
-    
-<!-- END LOCAL -->
-
-    
-      <style>
-        a.gitment-editor-footer-tip { display: none; }
-        .gitment-container.gitment-footer-container { display: none; }
-      </style>
-    
-
-    
-      <script type="text/javascript">
-      function renderGitment(){
-        var gitment = new Gitmint({
-            id: window.location.pathname, 
-            owner: 'Stardust567',
-            repo: 'stardust567.github.io',
-            
-            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
-            
-            oauth: {
-            
-            
-                client_secret: '9dfc299bfe3f9db6938b3da9754d2518ad66349c',
-            
-                client_id: '966fe09a3cd09cf0a46a'
-            }});
-        gitment.render('gitment-container');
-      }
-
-      
-      renderGitment();
-      
-      </script>
-    
 
 
 
-
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'bABdvcserWST8hctdXncW0he-gzGzoHsz',
+        appKey: 'Ng2B24N8TgiGzK8fKds99MLc',
+        placeholder: 'Why so serious？（来呀~快活呀~~）',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
 
 
 
@@ -1282,6 +1269,113 @@
 
 
   
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("bABdvcserWST8hctdXncW0he-gzGzoHsz", "Ng2B24N8TgiGzK8fKds99MLc");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
 
   
 

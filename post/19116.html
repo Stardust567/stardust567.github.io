@@ -70,7 +70,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="大二,机器学习,概率模型,">
 
 
 
@@ -81,13 +81,21 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="Stardust&#39;s Blog">
-<meta property="og:url" content="https://stardust567.github.io/page/2/index.html">
+<meta name="description" content="Hidden Markov Model(HMM)是一种关于时序的概率模型，最初由 L. E. Baum 和其它一些学者发表在一系列的统计学论文中，随后在语言识别，自然语言处理以及生物信息等领域体现了很大的价值。本文通过个人的理解以及《统计学习方法》 中的公式推导对HMM的定义及其三个基本问题进行了简单的介绍。">
+<meta name="keywords" content="大二,机器学习,概率模型">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hidden Markov Model">
+<meta property="og:url" content="https://stardust567.github.io/post/19116.html">
 <meta property="og:site_name" content="Stardust&#39;s Blog">
+<meta property="og:description" content="Hidden Markov Model(HMM)是一种关于时序的概率模型，最初由 L. E. Baum 和其它一些学者发表在一系列的统计学论文中，随后在语言识别，自然语言处理以及生物信息等领域体现了很大的价值。本文通过个人的理解以及《统计学习方法》 中的公式推导对HMM的定义及其三个基本问题进行了简单的介绍。">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://i.loli.net/2018/12/14/5c1350d47ce76.png">
+<meta property="og:image" content="https://i.loli.net/2018/12/14/5c1374048ece8.png">
+<meta property="og:updated_time" content="2019-03-20T03:28:08.238Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Stardust&#39;s Blog">
+<meta name="twitter:title" content="Hidden Markov Model">
+<meta name="twitter:description" content="Hidden Markov Model(HMM)是一种关于时序的概率模型，最初由 L. E. Baum 和其它一些学者发表在一系列的统计学论文中，随后在语言识别，自然语言处理以及生物信息等领域体现了很大的价值。本文通过个人的理解以及《统计学习方法》 中的公式推导对HMM的定义及其三个基本问题进行了简单的介绍。">
+<meta name="twitter:image" content="https://i.loli.net/2018/12/14/5c1350d47ce76.png">
 
 
 
@@ -117,13 +125,13 @@
 
 
 
-  <link rel="canonical" href="https://stardust567.github.io/page/2/">
+  <link rel="canonical" href="https://stardust567.github.io/post/19116.html">
 
 
 
 
 
-  <title>Stardust's Blog</title>
+  <title>Hidden Markov Model | Stardust's Blog</title>
   
 
 
@@ -161,8 +169,7 @@
     
   
 
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left 
-  page-home">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
@@ -277,9 +284,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -292,7 +299,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://stardust567.github.io/post/11574.html">
+    <link itemprop="mainEntityOfPage" href="https://stardust567.github.io/post/19116.html">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Stardust567">
@@ -309,9 +316,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/post/11574.html" itemprop="url">图的最短路径</a></h1>
+          <h1 class="post-title" itemprop="name headline">Hidden Markov Model</h1>
         
 
         <div class="post-meta">
@@ -323,8 +328,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-08T23:40:14+08:00">
-                2018-12-08
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-14T14:23:45+08:00">
+                2018-12-14
               </time>
             
 
@@ -346,8 +351,8 @@
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/数据结构/" itemprop="url" rel="index">
-                    <span itemprop="name">数据结构</span>
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
                   </a>
                 </span>
 
@@ -358,6 +363,16 @@
           
 
           
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/post/19116.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/post/19116.html" itemprop="commentsCount"></span>
+                </a>
+              </span>
             
           
 
@@ -379,7 +394,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  550
+                  4.3k
                 </span>
               
 
@@ -395,7 +410,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  2min
+                  17min
                 </span>
               
             </div>
@@ -416,18 +431,76 @@
       
 
       
-        
-          <p>Dijkstra : 从点v0开始，不断把距V0距离最小的点拉进超点（注意：权重值一定要是正的）<br>Floyd : 如果i-&gt;k-&gt;j的距离比直接i-&gt;j要短的话，更新一下dist的距离和path的路径<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/post/11574.html#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
+        <p>Hidden Markov Model(HMM)是一种关于时序的概率模型，最初由 L. E. Baum 和其它一些学者发表在一系列的统计学论文中，随后在语言识别，自然语言处理以及生物信息等领域体现了很大的价值。本文通过个人的理解以及《统计学习方法》 中的公式推导对HMM的定义及其三个基本问题进行了简单的介绍。<a id="more"></a></p>
+<h2 id="Markov-model"><a href="#Markov-model" class="headerlink" title="Markov model"></a>Markov model</h2><p> 在介绍隐马尔可夫模型前我们先来介绍一下基础的马尔可夫链。马尔可夫链是一个随机模型描述序列可能的事件，其中每个事件的概率仅取决于在先前事件获得的状态 。粗略地说，以系统的当前状态为条件，其未来和过去的状态是相互独立的。<br> 马尔可夫链的节点是状态，边是<strong>转移概率</strong>，是template CPD（条件概率分布）的一种有向状态转移表达。马尔可夫过程可以看做是一个自动机 ，以一定的概率在各个状态之间跳转。接下来以一阶马尔可夫链（first-order Markov chain）举例，N 次观测的序列的联合概率分布为：</p>
+<p>$$p(x_1,…,x_n)=p(x_1)\prod_{i=2}^n p(x_n|x_{n-1}) \quad$$</p>
+<p> 由于每个事件发生的概率仅于前一件事件有关，即有：</p>
+<p>$$p(x_n |x_1,…,x_{n-1} )=p(x_n |x_{n-1})$$</p>
+<p> 下面介绍马尔可夫链的一个重要性质，<strong>当n趋向于无穷时，p（Xn）趋向于一个定值。</strong>首先将每个事件的转移概率相整合成一个转移概率矩阵，假设每个事件的发生概率只与前一个事件的状态有关，共计n个状态的话，我们可以用一个n*n的矩阵P来表示转移概率，即 当我们有初始状态矩阵 时（ 表示初始状态为第i个状态的概率）则第n个状态的概率矩阵为 通过线性代数知识将转移概率矩阵做对角化，可得无穷个P矩阵相乘为一个常数，即马尔可夫链的极限收敛定理，马尔可夫链的这一性质对于其实际运用有重要的意义与作用。</p>
+<h2 id="HMM定义"><a href="#HMM定义" class="headerlink" title="HMM定义"></a>HMM定义</h2><p> 在正常的马尔可夫模型中，状态对于观察者来说是直接可见的。这样状态的转换概率便是全部的参数。而在实际情况中，较为本质的状态转换通常是较为<strong>隐性即无法实际观测的</strong>，但是受该状态影响的变量是我们所可以观测的，由此，我们来介绍隐马尔可夫模型。在隐马尔可夫模型中，状态并不是直接可见的，但受状态影响的某些变量则是可见的。每一个隐性状态对于可观测的显性状态都有一概率分布，我们将这个概率称之为<strong>发射概率</strong>。<br> 由此，如果我们有n个隐性状态的状态集合Q和有m个显性状态的观测集合V的话，假设I是长度为T的状态序列，O是对应的观测序列。我们就可设置转移一个$n \times n$的转移概率矩阵A和一个$m \times n$的发射概率矩阵B，π是初始状态概率向量：</p>
+<p>$n \times n$的转移概率矩阵A:<br> $ \qquad a_{ij}=P(i_{t+1}=q_j│i_t=q_i ) \qquad i=1,…,N;j=1,…,N$<br>$m \times n$的发射概率矩阵B:<br> $ \qquad b_j (k)=P(o_t=v_k│i_t=q_j ) \qquad k=1,…,M;j=1,…,N$<br>π是初始状态概率向量:<br> $ \qquad π_i=P(i_1=q_i) \qquad i=1,…,N;j=1,…,N$</p>
+<p> 状态转移概率矩阵A与初始状态概率向量π确定了隐藏的马尔可夫链，生成不可观测的状态序列。发射概率矩阵B确定了如何从状态生成观测，与状态序列综合确定了如何产生观测序列。隐马尔可夫模型就是由基本的A,B,π三个矩阵或向量加上具体的状态集合Q和观测序列V所构成的。<br> 接下来我以维基百科上的一个经典例子来作为算法实际运用的实例 ：</p>
+<blockquote>
+<p>“Consider two friends, Alice and Bob, who live far apart from each other and who talk together daily over the telephone about what they did that day. Bob is only interested in three activities: walking in the park, shopping, and cleaning his apartment. The choice of what to do is determined exclusively by the weather on a given day. Alice has no definite information about the weather, but she knows general trends. Based on what Bob tells her he did each day, Alice tries to guess what the weather must have been like.<br>Alice believes that the weather operates as a discrete Markov chain. There are two states, “Rainy” and “Sunny”, but she cannot observe them directly, that is, they are hidden from her. On each day, there is a certain chance that Bob will perform one of the following activities, depending on the weather: “walk”, “shop”, or “clean”. Since Bob tells Alice about his activities, those are the observations. The entire system is that of a hidden Markov model (HMM).<br>Alice knows the general weather trends in the area, and what Bob likes to do on average. In other words, the parameters of the HMM are known. 。”</p>
+</blockquote>
+<p> 这段稍显繁琐的文字可以转换成一张较为简洁易懂的状态转换图，如下：<br><img src="https://i.loli.net/2018/12/14/5c1350d47ce76.png" alt=""></p>
+<h2 id="HMM基本问题"><a href="#HMM基本问题" class="headerlink" title="HMM基本问题"></a>HMM基本问题</h2><ol>
+<li>概率计算问题：给定模型λ(A,B,π)和观测序列O,计算在模型λ下观测序列O出现的概率P(O|λ)为多少。</li>
+<li>学习问题：己知观测序列O,估计模型参数λ(A,B,π)使得在该模型下观测序列概率P(O|λ)最大。即用极大似然估计的方法估计参数。</li>
+<li>预测问题：也称为解码（decoding)问题。已知模型λ(A,B,π)和观测序列O，求对给定观测序列条件概率P(I|O)最大的状态序列I。即给定观测序列，求最有可能的对应的状态序列。</li>
+</ol>
+<h3 id="概率计算"><a href="#概率计算" class="headerlink" title="概率计算"></a>概率计算</h3><ol>
+<li><h4 id="直接计算"><a href="#直接计算" class="headerlink" title="直接计算"></a>直接计算</h4>给定模型，求给定长度为T的观测序列的概率，直接计算法思路是枚举所有的长度T的状态序列，计算该状态序列与观测序列的联合概率（隐状态发射到观测），再用全概率公式对所有枚举项求和。在状态种类为N的情况下，一共有N^T种排列组合，每种组合计算联合概率的计算量为T，总的复杂度为O(T*N^T)，并不可取。</li>
+<li><h4 id="前向计算"><a href="#前向计算" class="headerlink" title="前向计算"></a>前向计算</h4><p><strong>前向算法的介绍</strong><br>前向计算中最为重要的一步的就是前向概率的设定，对于给定隐马尔可夫模型λ(A,B,π)，定义到时刻t为止的观测序列为O且状态为 的概率为前向概率，记作</p>
+<p>$$α_t (i)=P(o_1,o_2,…,o_t,i_t=q_i |λ)$$ </p>
+<p>对于每一个时间点上的状态，都是用一个长度为n的概率矩阵来标记，转移到下一个状态前需要满足当前状态的观测值和已知观测序列一致，达成这个条件后即可正常转移到下一个状态，依次下去我们便可以递推地求得下一个前向概率及观测序列概率P(O|λ)</p>
+<ul>
+<li>初值<br>$$α_1 (i)=π_i b_i (o_1 ) \qquad i=1,…,N$$<br>前向概率的定义中一共限定了两个条件，一是到当前为止的观测序列，另一个是当前的状态。所以初值的计算也有两项（观测和状态），一项是初始状态概率，另一项是发射到当前观测的概率。</li>
+<li>递推对t=1,2…T-1<br>$$\alpha_{t+1} (i)=[\sum_{j=1}^N \alpha_t (j) a_{ji}] b_i(o_{t+1}) \qquad i=1,…,N$$<br>每次递推同样由两部分构成，括号中是当前状态为i且观测序列的前t个符合要求的概率，括号外的是状态i发射观测t+1的概率。</li>
+<li>终止<br>$$P(O|λ)=\sum_{i=1}^N[α_T (i)] \qquad i=1,…,N $$</li>
+</ul>
+<p>由于到了时间T，一共有N种状态发射了最后那个观测，所以最终的结果要用全概率公式将这些概率加起来。<br>由于每次递推都是在前一次的基础上进行的，所以降低了复杂度。</p>
+<h5 id="前向算法实例"><a href="#前向算法实例" class="headerlink" title="前向算法实例"></a>前向算法实例</h5><p>以之前天气的例子来说明前向算法，HMM模型可以写成：<br>$$A=\begin{bmatrix} 0.7 &amp; 0.3 \\ 0.4 &amp; 0.6 \\ \end{bmatrix} $$<br>$$B=\begin{bmatrix} 0.1 &amp; 0.4 &amp; 0.5 \\ 0.6 &amp; 0.3 &amp; 0.1 \\ \end{bmatrix} $$<br>$$π=[0.6,0.4]^T$$<br>$$O=（散步，购物，扫除）$$<br>假如我们想计算在（0.6,0.4）的初始状态下鲍比在未来三天分别按顺序做散步，购物，扫除的概率是多大，按照前向概率法计算，步骤如下：</p>
+<ul>
+<li>计算初值——初始状态下散步的前向概率：<br>$\alpha_1 (1)=π_1 b_1 (o_1 )=0.06$<br>$\alpha_1 (2)=π_2 b_2 (o_1 )=0.24$</li>
+<li>递推计算——本质还是转移概率乘上发射概率：<br>$\alpha_2 (1)=\sum_{j=1}^2[\alpha_1 (j) a_{j1} ] b_1 (o_2 )=(0.042+0.096)×0.4=0.0552$<br>$\alpha_2 (2)=\sum_{j=1}^2[\alpha_1 (j) a_{j2} ] b_2 (o_2 )=(0.018+0.144)×0.3=0.0198$<br>$\alpha_3 (1)=\sum_{j=1}^2[\alpha_3 (j) a_{j1} ] b_1 (o_3 )=(0.03864+0.00792)×0.5=0.02328$<br>$\alpha_3 (2)=\sum_{j=1}^2[\alpha_3 (j) a_{j2} ] b_2 (o_3 )=(0.01656+0.01188)×0.5=0.01422$ </li>
+<li>终止：<br>$P(O│λ)=\sum_{i=1}^N[\alpha_T (i)]=0.03750 $</li>
+</ul>
+</li>
+<li><h4 id="后向计算"><a href="#后向计算" class="headerlink" title="后向计算"></a>后向计算</h4><p>后向计算与前向计算相类似，只是定义了后向概率，再次不多做赘述。</p>
+</li>
+</ol>
+<h3 id="Baum-Welch算法"><a href="#Baum-Welch算法" class="headerlink" title="Baum-Welch算法"></a>Baum-Welch算法</h3><p>假设给定训练数据只包含S个长度为T的观测序列O而没有对应的状态序列，目标是学习隐马尔可夫模型λ(A,B,π)的参数。我们将观测序列数据看作观测数据O，状态序列数据看作不可观测的隐数据I，那么隐马尔可夫模型事实上是一个含有隐变量的概率模型：<br>$$P(O│λ)=\sum [P(O│I,λ)P(I|λ)]$$<br>它的参数学习可以由EM算法实现。这里简单介绍一下EM算法，EM算法即Expectation Maximization期望最大算法。这个算法的引入可以从极大似然估计入手，极大似然估计是对于单分布问题通过已经发生的事件来估计概率模型中的位置参数，但事实上存在很多多分布问题，你只有最后的观测序列结果，但对于其具体的隐藏状态一无所知，比如经典的高斯混合模型。这个时候我们所采取的措施是先假设一组隐藏状态概率，然后进行极大似然估计，再用极大似然估计后的参数将原参数更新，这样不断迭代直至最后估计值收敛，具体的公式推导与证明只给明出处 ，在此并不细说。</p>
+<ol>
+<li><p>确定完全数据的对数似然函数<br>所有观测数据写成$O=(o_1,o_2,…,o_T)$,所有隐数据写成$I=(i_1,i_2,…,i_T)$，完全数据是$(O,I)=(o_1,o_2,…,o_T,i_1,i_2,…,i_T)$,。完全数据的对数似然函数是logP(O,I|λ)。</p>
+</li>
+<li><p>EM算法的E步：求Q函数<br>$$Q(\lambda,\hat\lambda)=\sum_I[logP(O,I|\lambda)P(O,I|\hat\lambda)]$$<br>其中，λ ̅是隐马尔可夫模型参数的当前估计值，λ是要极大化的隐马尔可夫模型参数。<br>$$P(O,I│\lambda)=\pi_{i_1} b_{i_1} (o_1 ) a_{i_1 i_2 } b_{i_2} (o_2 )…a_{i_{T-1} i_T } b_{i_T} (o_T ) $$<br>这个式子从左到右依次是初始概率、发射概率、转移概率、发射概率……<br>于是函数Q可以写成：<br>$$<br>Q(\lambda,\hat\lambda)=\sum_I[log\pi_(i_1 ) P(O,I|\lambda)]\\<br>+\sum_I(\sum_{t=1}^{T-1}[loga_{i_{t+1} \, i_t } ])  P(O,I│\hat\lambda)+\sum_I(\sum_{t=1}^Tlogb_{i_t}(o_t))P(O,I│\hat\lambda)<br>$$<br>式中求和都是对所有训练数据的序列总长度T进行的。这个式子是将$$P(O,I│λ)=π_{i_1} b_{i_1} (o_1 ) a_{i_1 i_2} b_{i_2} (o_2 )…a_{i_(T-1) \, i_T } b_{i_T} (o_T )$$代入$Q(\lambda ,\hat\lambda)=\sum_I logP(O,I\mid\lambda)P(O,I\mid\hat\lambda)$后，将初始概率、转移概率、发射概率这三部分乘积的对数拆分为对数之和，所以有三项。</p>
+</li>
+<li><p>EM算法的M步:极大化Q函数求模型参数λ(A,B,π)，由于要极大化的参数在Q函数表达式中单独地出现在3个项中，所以只需对各项分别极大化。<br>第1项可以写成：<br>$$\sum_Ilog\pi_{i_1} P(O,I|\hat\lambda)=\sum_{i=1}^Nlog\pi_i P(O,i_1=i|\hat\lambda)$$</p>
+<p>注意到$\pi_i$满足约束条件利用拉格朗日乘子法，写出拉格朗日函数。这个方法更简单明了的说法就是求条件极值，与微积分下册第五章第九节 所说内容几乎一致：</p>
+</li>
+</ol>
+<p>$$\sum_{i=1}^Nlog\pi_i P (O,i_1=i\mid\hat\lambda)+\gamma(\sum_{i=1}^N\pi_i-1)$$ </p>
+<p> 对其求偏导数并令结果为0</p>
+<p>$$\frac{\partial}{\partial\pi_i} [\sum_{i=1}^Nlog\pi_i P (O,i_1=i\mid\hat\lambda)+\gamma(\sum_{i=1}^N\pi_i-1)]=0 $$</p>
+<p>  得到:</p>
+<p>$$P(O,i_1=i│\hat\lambda)+\gamma\pi_i=0 $$</p>
+<p>  这个求导是很简单的，求和项中非i的项对π_i求导都是0，logπ的导数是1/π，γ那边求导就剩下π_i自己对自己求导，也就是γ。等式两边同时乘以π_i就得到了上式。<br>  对i求和得到γ：</p>
+<p>$$\gamma=-P(O|\hat\lambda) $$</p>
+<p> 代入$P(O,i_1=i│\hat\lambda)+\gamma\pi_i=0$中得到：</p>
+<p>$$\pi_i=\frac{P(o,i_1=i│\hat\lambda)}{P(O|\hat\lambda)} $$</p>
+<p> 同理可以求得：</p>
+<p>$$a_{ij}=\frac{\sum_{i=1}^{T-1}P (O,i_t=i,i_{t+1}=j\mid\hat\lambda)}{\sum_{i=1}^{T-1}P (O,i_t=i\mid\hat\lambda)}$$<br>$$b_j (k)=\frac{\sum_{i=1}^TP (O,i_t=j\mid\hat\lambda )I(o_t=v_(k))}{\sum_{i=1}^{T-1}P (O,i_t=i\mid\hat\lambda ) } $$</p>
+<h3 id="预测算法"><a href="#预测算法" class="headerlink" title="预测算法"></a>预测算法</h3><h4 id="维特比算法"><a href="#维特比算法" class="headerlink" title="维特比算法"></a>维特比算法</h4><p> 维特比算法实际是用动态规划解隐马尔可夫模型预测问题，即用动态规划求概率最大路径（最优路径）。这时一条路径对应着一个状态序列。<br> 根据动态规划原理，最优路径具有这样的特性：如果最优路径在时刻t通过结点 ,那么这一路径从结点 到终点 的部分路径，对于从 到 的所有可能的部分路径来说，必须是最优的。因为假如不是这样，那么从 到 就有另一条更好的部分路径存在，如果把它和从 到达 的部分路径连接起来，就会形成一条比原来的路径更优的路径，这是矛盾的。依据这一原理，我们只需从时刻t=l开始，递推地计算在时刻t状态为i的各条部分路径的最大概率，直至得到时刻t=T状态为i的各条路径的最大概率。时刻t=T的最大概率即为最优路径的概率P,最优路径的终结点 也同时得到。之后，为了找出最优路径的各个结点，从终结点 开始，由后向前逐步求得结点 ,得到最优路径——这就是维特比算法 。<br> 换一种更加形象易懂的说法，假设将我们所有的状态拉成一个n*T的图，或者说一个每层有n个神经元，总共有T层的全连接神经网络。现在每一层的每个节点都会有来自上一层n个节点的连接，但我们只取其中概率最大的那一条边，将其他边全部“失活”，这样每个连接层都只剩n条边存在，不断递推直到最后一层为止，取最后一层概率最大的边为整个最优路径的概率，并不断回推得到最优路径。</p>
+<h4 id="维特比算法的实例"><a href="#维特比算法的实例" class="headerlink" title="维特比算法的实例"></a>维特比算法的实例</h4><p> 我们再以之前天气的例子来说明前向算法，将HMM模型写成：<br> $$A=\begin{bmatrix} 0.7 &amp; 0.3 \\ 0.4 &amp; 0.6 \\ \end{bmatrix} $$<br> $$B=\begin{bmatrix} 0.1 &amp; 0.4 &amp; 0.5 \\ 0.6 &amp; 0.3 &amp; 0.1 \\ \end{bmatrix} $$<br> $$π=[0.6,0.4]^T$$<br> $$O=（散步，购物，扫除）$$<br> 假如在（0.6,0.4）的初始状态下，我们知道了Bob在接下来三天里分别按顺序做散步，购物，扫除，现在我们想知道那边的天气大概是什么样，按照维特比算法计算，步骤如下：</p>
+<ul>
+<li>初始化：在t=1时，对每个状态i，求i观测o_1为散步的概率δ_1 (i)：<br>$δ_1 (1)=0.6×0.1=0.06$<br>$δ_1 (2)=0.4×0.6=0.24$</li>
+<li>在t=2时，对每个状态i，i=1,2，求在t=1时状态为j观测为散步并在t=2时状态为i观测为购物的路径的最大概率，记录此最大概率为δ_2 (i)，则：<br>$δ_2 (i)=max⁡[\delta_1 (j) a_{ji}]b_i (o_2) \qquad (1≤j≤2)$</li>
+<li>通过该公式不断递推计算，我们可以很清楚的得到如下这张路径图：<br><img src="https://i.loli.net/2018/12/14/5c1374048ece8.png" alt=""><br>所以最优路径为（晴天，雨天，雨天）发生概率为（即最大概率）为0.01344</li>
+</ul>
+
       
-    </p></div>
+    </div>
     
     
     
@@ -442,376 +515,44 @@
 
     <footer class="post-footer">
       
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://stardust567.github.io/post/27676.html">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Stardust567">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Stardust's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/post/27676.html" itemprop="url">AVLtree</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-08T23:32:09+08:00">
-                2018-12-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
+        <div class="post-tags">
           
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/数据结构/" itemprop="url" rel="index">
-                    <span itemprop="name">数据结构</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
+            <a href="/tags/大二/" rel="tag"># 大二</a>
           
-
+            <a href="/tags/机器学习/" rel="tag"># 机器学习</a>
           
-            
+            <a href="/tags/概率模型/" rel="tag"># 概率模型</a>
           
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                  <span class="post-meta-divider">|</span>
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  440
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  1min
-                </span>
-              
-            </div>
-          
-
-          
-
         </div>
-      </header>
-    
+      
 
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
+      
       
       
 
       
-        
-          <p>平衡二叉搜索树(Self-balancing binary search tree)又被称为AVL树（有别于AVL算法）<br>它左右的两个子树高度差的绝对值不超过1，且左右两个子树都是平衡二叉树。<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/post/27676.html#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/13592.html" rel="next" title="Java多线程入门">
+                <i class="fa fa-chevron-left"></i> Java多线程入门
+              </a>
+            
           </div>
-          <!--/noindex-->
-        
-      
-    </p></div>
-    
-    
-    
 
-	
-	
-	
+          <span class="post-nav-divider"></span>
 
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://stardust567.github.io/post/20571.html">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Stardust567">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Stardust's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/post/20571.html" itemprop="url">Tree</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
+          <div class="post-nav-prev post-nav-item">
             
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-08T23:25:45+08:00">
-                2018-12-08
-              </time>
+              <a href="/post/9391.html" rel="prev" title="恋与序">
+                恋与序 <i class="fa fa-chevron-right"></i>
+              </a>
             
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/数据结构/" itemprop="url" rel="index">
-                    <span itemprop="name">数据结构</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                  <span class="post-meta-divider">|</span>
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  1k
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  6min
-                </span>
-              
-            </div>
-          
-
-          
-
+          </div>
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          <p>这里是关于二叉树的一系列函数C的代码<br><del>二叉树的编程我觉着可以帮助你学习递归 : )</del><br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/post/20571.html#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </p></div>
-    
-    
-    
-
-	
-	
-	
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -821,738 +562,11 @@
   </article>
 
 
-    
+
+    <div class="post-spread">
       
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://stardust567.github.io/post/32862.html">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Stardust567">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Stardust's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/post/32862.html" itemprop="url">Huffman Tree</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-08T23:22:03+08:00">
-                2018-12-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/数据结构/" itemprop="url" rel="index">
-                    <span itemprop="name">数据结构</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                  <span class="post-meta-divider">|</span>
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  1.4k
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  7min
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>哈夫曼树也称为最优二叉树，是一种带权路径长度最短的完全二叉树。<br>最经典的用法就是做无损数据压缩的huffman coding
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/post/32862.html#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </p></div>
-    
-    
-    
-
-	
-	
-	
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
+    </div>
   </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://stardust567.github.io/post/31301.html">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Stardust567">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Stardust's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/post/31301.html" itemprop="url">KMP</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-18T23:09:54+08:00">
-                2018-06-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/数据结构/" itemprop="url" rel="index">
-                    <span itemprop="name">数据结构</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                  <span class="post-meta-divider">|</span>
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  628
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  3min
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>普通的查找匹配需要在失配时回溯到失配串第二位继续开始查找是否匹配，复杂度过高。<br>于是我们想着能不能一次不回头的走到底，针对模式串创建了一个辅助数组（next数组）<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/post/31301.html#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </p></div>
-    
-    
-    
-
-	
-	
-	
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://stardust567.github.io/post/62922.html">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Stardust567">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Stardust's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/post/62922.html" itemprop="url">方寸间的茶，骨子里的美</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-24T14:08:16+08:00">
-                2018-04-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/随记/" itemprop="url" rel="index">
-                    <span itemprop="name">随记</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                  <span class="post-meta-divider">|</span>
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  4.6k
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  15min
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>喜欢，从来都是简单随性的，它可能是雨天里脚踏在水坑上清脆的回响和扬起奇妙弧度的水花；也可能是夏日里偶然撞见的白色衬衫和“刺啦”一声打开的汽水罐……这些，是生活在这青葱岁月的我们所定义的喜欢，而在唐宋元明清，一扇又一扇翩跹舞开的帘幕下藏着的，是那个时代的人们心底最敏感、最柔软却又最热烈的喜欢——诗词。
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/post/62922.html#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </p></div>
-    
-    
-    
-
-	
-	
-	
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://stardust567.github.io/post/32430.html">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Stardust567">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Stardust's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/post/32430.html" itemprop="url">深夜</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-20T00:22:50+08:00">
-                2018-02-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/随记/" itemprop="url" rel="index">
-                    <span itemprop="name">随记</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                  <span class="post-meta-divider">|</span>
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  267
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  1min
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>不知道现在的自己所思考的究竟和以前的自己所想的有多少出入。也不知道现在自己所坚持的和以前的自己有多少区别。能做的，只有坚信着未来不断前进。未来是一个闪着光的字眼，闪着一种叫希望的光。
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/post/32430.html#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </p></div>
-    
-    
-    
-
-	
-	
-	
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-  </section>
-
-  
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
-  </nav>
-
 
 
           </div>
@@ -1560,6 +574,17 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
 
         </div>
         
@@ -1580,8 +605,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -1659,6 +693,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Markov-model"><span class="nav-number">1.</span> <span class="nav-text">Markov model</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HMM定义"><span class="nav-number">2.</span> <span class="nav-text">HMM定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HMM基本问题"><span class="nav-number">3.</span> <span class="nav-text">HMM基本问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#概率计算"><span class="nav-number">3.1.</span> <span class="nav-text">概率计算</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#直接计算"><span class="nav-number">3.1.1.</span> <span class="nav-text">直接计算</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#前向计算"><span class="nav-number">3.1.2.</span> <span class="nav-text">前向计算</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#前向算法实例"><span class="nav-number">3.1.2.1.</span> <span class="nav-text">前向算法实例</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#后向计算"><span class="nav-number">3.1.3.</span> <span class="nav-text">后向计算</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Baum-Welch算法"><span class="nav-number">3.2.</span> <span class="nav-text">Baum-Welch算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#预测算法"><span class="nav-number">3.3.</span> <span class="nav-text">预测算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#维特比算法"><span class="nav-number">3.3.1.</span> <span class="nav-text">维特比算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#维特比算法的实例"><span class="nav-number">3.3.2.</span> <span class="nav-text">维特比算法的实例</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -1795,6 +845,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
@@ -1846,6 +900,30 @@
       </style>
     
 
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'Stardust567',
+            repo: 'stardust567.github.io',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '9dfc299bfe3f9db6938b3da9754d2518ad66349c',
+            
+                client_id: '966fe09a3cd09cf0a46a'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
     
 
 

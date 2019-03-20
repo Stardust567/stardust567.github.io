@@ -70,7 +70,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="数据结构,大一,图论,">
 
 
 
@@ -81,13 +81,18 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="Stardust&#39;s Blog">
-<meta property="og:url" content="https://stardust567.github.io/tags/恋爱物语/index.html">
+<meta name="description" content="Dijkstra : 从点v0开始，不断把距V0距离最小的点拉进超点（注意：权重值一定要是正的）Floyd : 如果i-&amp;gt;k-&amp;gt;j的距离比直接i-&amp;gt;j要短的话，更新一下dist的距离和path的路径">
+<meta name="keywords" content="数据结构,大一,图论">
+<meta property="og:type" content="article">
+<meta property="og:title" content="图的最短路径">
+<meta property="og:url" content="https://stardust567.github.io/post/11574.html">
 <meta property="og:site_name" content="Stardust&#39;s Blog">
+<meta property="og:description" content="Dijkstra : 从点v0开始，不断把距V0距离最小的点拉进超点（注意：权重值一定要是正的）Floyd : 如果i-&amp;gt;k-&amp;gt;j的距离比直接i-&amp;gt;j要短的话，更新一下dist的距离和path的路径">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-03-20T03:28:08.221Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Stardust&#39;s Blog">
+<meta name="twitter:title" content="图的最短路径">
+<meta name="twitter:description" content="Dijkstra : 从点v0开始，不断把距V0距离最小的点拉进超点（注意：权重值一定要是正的）Floyd : 如果i-&amp;gt;k-&amp;gt;j的距离比直接i-&amp;gt;j要短的话，更新一下dist的距离和path的路径">
 
 
 
@@ -117,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="https://stardust567.github.io/tags/恋爱物语/">
+  <link rel="canonical" href="https://stardust567.github.io/post/11574.html">
 
 
 
 
 
-  <title>标签: 恋爱物语 | Stardust's Blog</title>
+  <title>图的最短路径 | Stardust's Blog</title>
   
 
 
@@ -161,7 +166,7 @@
     
   
 
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left ">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
@@ -277,78 +282,228 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block tag">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>恋爱物语<small>标签</small>
-        </h1>
-      </div>
+  
 
-      
-        
+  
+  
+  
 
   <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://stardust567.github.io/post/11574.html">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Stardust567">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Stardust's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/post/16623.html" itemprop="url">
-              
-                <span itemprop="name">恋与L</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">图的最短路径</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-02-14T20:17:39+08:00" content="2019-02-14">
-          02-14
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-08T23:40:14+08:00">
+                2018-12-08
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/post/11574.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/post/11574.html" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                  <span class="post-meta-divider">|</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  550
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  2min
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-        
+      
 
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/post/9391.html" itemprop="url">
-              
-                <span itemprop="name">恋与序</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-02-12T13:32:34+08:00" content="2019-02-12">
-          02-12
-        </time>
-      </div>
-
-    </header>
-  </article>
-
+      
+        <p>Dijkstra : 从点v0开始，不断把距V0距离最小的点拉进超点（注意：权重值一定要是正的）<br>Floyd : 如果i-&gt;k-&gt;j的距离比直接i-&gt;j要短的话，更新一下dist的距离和path的路径<br><a id="more"></a></p>
+<h3 id="Dijkstra"><a href="#Dijkstra" class="headerlink" title="Dijkstra"></a>Dijkstra</h3><p>从点v0开始，不断把距V0距离最小的点拉进超点（注意：权重值一定要是正的）</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">​</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dijkstra</span><span class="params">(<span class="keyword">int</span> G[N][N],<span class="keyword">int</span> v0,<span class="keyword">int</span> path[],<span class="keyword">int</span> s[])</span></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> dist[N];</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;N;i++)&#123;</span><br><span class="line">		dist[i]=G[v0][i];</span><br><span class="line">		<span class="keyword">if</span>(dist[i]&lt;INT_MAX) path[i]=v0;<span class="comment">//记录前驱，即“0”</span></span><br><span class="line">		<span class="keyword">else</span> path[i] = <span class="number">-1</span>; </span><br><span class="line">	&#125;dist[v0]=<span class="number">-1</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> a=<span class="number">0</span>;a&lt;N;a++)&#123;</span><br><span class="line">		<span class="keyword">int</span> idx=<span class="number">-1</span>,min=INT_MAX;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;N;i++)&#123;</span><br><span class="line">			<span class="keyword">if</span>(dist[i]&gt;<span class="number">0</span>&amp;&amp;dist[i]&lt;min)&#123;</span><br><span class="line">				idx = i;min = dist[i];</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span>(idx&lt;<span class="number">0</span>) <span class="keyword">break</span>;s[idx]=min;</span><br><span class="line">		dist[idx] = <span class="number">-1</span>;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;N;i++)&#123;</span><br><span class="line">			<span class="keyword">if</span>(dist[i]&gt;<span class="number">0</span>&amp;&amp;G[idx][i]!=INT_MAX&amp;&amp;min+G[idx][i]&lt;dist[i])&#123;</span><br><span class="line">				dist[i]=min+G[idx][i];</span><br><span class="line">				path[i] = idx;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">(<span class="keyword">int</span> path[N],<span class="keyword">int</span> s[N])</span></span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;N;i++) <span class="keyword">if</span>(path[i]&gt;=<span class="number">0</span>) <span class="built_in">printf</span>(<span class="string">"node :%2d(pre:%2d) s:%d \n"</span>,i,path[i],s[i]);</span><br><span class="line">&#125;</span><br><span class="line">​</span><br></pre></td></tr></table></figure>
+<h3 id="Floyd"><a href="#Floyd" class="headerlink" title="Floyd"></a>Floyd</h3><p>如果i-&gt;k-&gt;j的距离比直接i-&gt;j要短的话，更新一下dist的距离和path的路径</p>
+<p><em>（特别注意：关于循环的顺序，k一定在最外层循环，不然程序会出现差错，以下为解释）</em></p>
+<p>k在最外层保证了每次k变动后会遍历图上所有的点以达成完备的更新。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">​</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dist_init</span><span class="params">(<span class="keyword">int</span> dist[N][N])</span></span>&#123;</span><br><span class="line">	freopen(<span class="string">"SP_edge.txt"</span>,<span class="string">"r"</span>,<span class="built_in">stdin</span>);</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;N;i++) <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;N;j++) dist[i][j]=INT_MAX;</span><br><span class="line">	<span class="keyword">int</span> va,vb,cost;</span><br><span class="line">	<span class="keyword">while</span>(<span class="built_in">scanf</span>(<span class="string">"%d %d %d\n"</span>,&amp;va,&amp;vb,&amp;cost)==<span class="number">3</span>) dist[va][vb] = cost;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;N;i++) dist[i][i] = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">path_init</span><span class="params">(<span class="keyword">int</span> path[N][N])</span></span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;N;i++) <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;N;j++) path[i][j]=i;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">floyd</span><span class="params">(<span class="keyword">int</span> dist[N][N],<span class="keyword">int</span> path[N][N])</span></span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> k=<span class="number">0</span>;j&lt;N;j++)&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;N;i++)&#123;</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;k&lt;N;k++)&#123;</span><br><span class="line">				<span class="keyword">if</span>(dist[i][k]+dist[k][j]&lt;dist[i][j]&amp;&amp;dist[i][k]!=INT_MAX&amp;&amp;dist[k][j]!=INT_MAX)&#123;</span><br><span class="line">					dist[i][j]=dist[i][k]+dist[k][j];path[i][j]=k;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">​</span><br></pre></td></tr></table></figure>
 
       
     </div>
+    
+    
+    
 
+	
+	
+	
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/数据结构/" rel="tag"># 数据结构</a>
+          
+            <a href="/tags/大一/" rel="tag"># 大一</a>
+          
+            <a href="/tags/图论/" rel="tag"># 图论</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/27676.html" rel="next" title="AVLtree">
+                <i class="fa fa-chevron-left"></i> AVLtree
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/post/57313.html" rel="prev" title="最小生成树">
+                最小生成树 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -356,6 +511,17 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
 
         </div>
         
@@ -376,8 +542,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -455,6 +630,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Dijkstra"><span class="nav-number">1.</span> <span class="nav-text">Dijkstra</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Floyd"><span class="nav-number">2.</span> <span class="nav-text">Floyd</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -591,6 +782,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
@@ -642,6 +837,30 @@
       </style>
     
 
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'Stardust567',
+            repo: 'stardust567.github.io',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '9dfc299bfe3f9db6938b3da9754d2518ad66349c',
+            
+                client_id: '966fe09a3cd09cf0a46a'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
     
 
 

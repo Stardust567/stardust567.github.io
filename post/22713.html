@@ -81,19 +81,19 @@
 
 
 
-<meta name="description" content="&amp;emsp;&amp;emsp;Linux内核中设置了一组用于实现各种系统功能的子程序，称为系统调用（system call）。同时它还提供些C语言函数库，这些库对系统调用进行包装和扩展。由于这些库函数与系统调用的关系非常紧密，习惯上把这些函数也称为系统调用。本文是作者在大二写OS作业时整理的，安利文章系统调用跟我学这篇写得真的很舒服，本文很多内容都源于此。">
+<meta name="description" content="Linux内核中设置了一组用于实现各种系统功能的子程序，称为系统调用（system call）。同时它还提供些C语言函数库，这些库对系统调用进行包装和扩展。由于这些库函数与系统调用的关系非常紧密，习惯上把这些函数也称为系统调用。本文是作者在大二写OS作业时整理的，安利文章系统调用跟我学这篇写得真的很舒服，本文很多内容都源于此。">
 <meta name="keywords" content="大二,OS,进程,系统调用">
 <meta property="og:type" content="article">
 <meta property="og:title" content="OS系统调用">
 <meta property="og:url" content="https://stardust567.github.io/post/22713.html">
 <meta property="og:site_name" content="Stardust&#39;s Blog">
-<meta property="og:description" content="&amp;emsp;&amp;emsp;Linux内核中设置了一组用于实现各种系统功能的子程序，称为系统调用（system call）。同时它还提供些C语言函数库，这些库对系统调用进行包装和扩展。由于这些库函数与系统调用的关系非常紧密，习惯上把这些函数也称为系统调用。本文是作者在大二写OS作业时整理的，安利文章系统调用跟我学这篇写得真的很舒服，本文很多内容都源于此。">
+<meta property="og:description" content="Linux内核中设置了一组用于实现各种系统功能的子程序，称为系统调用（system call）。同时它还提供些C语言函数库，这些库对系统调用进行包装和扩展。由于这些库函数与系统调用的关系非常紧密，习惯上把这些函数也称为系统调用。本文是作者在大二写OS作业时整理的，安利文章系统调用跟我学这篇写得真的很舒服，本文很多内容都源于此。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.loli.net/2019/03/18/5c8fa09144527.jpg">
-<meta property="og:updated_time" content="2019-03-20T12:02:15.802Z">
+<meta property="og:updated_time" content="2019-03-20T13:00:37.603Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="OS系统调用">
-<meta name="twitter:description" content="&amp;emsp;&amp;emsp;Linux内核中设置了一组用于实现各种系统功能的子程序，称为系统调用（system call）。同时它还提供些C语言函数库，这些库对系统调用进行包装和扩展。由于这些库函数与系统调用的关系非常紧密，习惯上把这些函数也称为系统调用。本文是作者在大二写OS作业时整理的，安利文章系统调用跟我学这篇写得真的很舒服，本文很多内容都源于此。">
+<meta name="twitter:description" content="Linux内核中设置了一组用于实现各种系统功能的子程序，称为系统调用（system call）。同时它还提供些C语言函数库，这些库对系统调用进行包装和扩展。由于这些库函数与系统调用的关系非常紧密，习惯上把这些函数也称为系统调用。本文是作者在大二写OS作业时整理的，安利文章系统调用跟我学这篇写得真的很舒服，本文很多内容都源于此。">
 <meta name="twitter:image" content="https://i.loli.net/2019/03/18/5c8fa09144527.jpg">
 
 
@@ -441,7 +441,7 @@
       
 
       
-        <p>&emsp;&emsp;Linux内核中设置了一组用于实现各种系统功能的子程序，称为<em>系统调用（system call）</em>。同时它还提供些C语言函数库，这些库对系统调用进行包装和扩展。由于这些库函数与系统调用的关系非常紧密，习惯上把这些函数也称为系统调用。<em>本文是作者在大二写OS作业时整理的，安利文章<a href="https://www.ibm.com/developerworks/cn/linux/kernel/syscall/part3/index.html" target="_blank" rel="noopener">系统调用跟我学</a>这篇写得真的很舒服，本文很多内容都源于此。</em><br><a id="more"></a><br>&emsp;&emsp;一般情况下进程不能访问内核所占内存也不能调用内核函数，但有一般就会有例外，系统调用就是例外。它的原理是进程先用适当的值填充寄存器，然后调用一个特殊的指令，该指令会跳到事先定义的内核中的一个位置<em>（该位置用户进程可读但不可写）</em>。<br>&emsp;&emsp;Intel CPU中，这个由中断0x80实现。硬件知道一旦你跳到<em>这个位置（system_call）</em>，你就不再是限制模式下运行的用户，而“成为”了操作系统的内核<del>接下来你就可以为所欲为</del>。这个过程会检查系统调用号，该号码告诉内核进程请求哪种服务。然后查看<em>系统调用表(sys_call_table)</em>找到所调用的内核函数入口地址。接着调用函数，等返回后做一些系统检查，最后返回到进程（或到其他进程，如果这个进程时间用尽）。</p>
+        <p>Linux内核中设置了一组用于实现各种系统功能的子程序，称为<em>系统调用（system call）</em>。同时它还提供些C语言函数库，这些库对系统调用进行包装和扩展。由于这些库函数与系统调用的关系非常紧密，习惯上把这些函数也称为系统调用。<em>本文是作者在大二写OS作业时整理的，安利文章<a href="https://www.ibm.com/developerworks/cn/linux/kernel/syscall/part3/index.html" target="_blank" rel="noopener">系统调用跟我学</a>这篇写得真的很舒服，本文很多内容都源于此。</em><br><a id="more"></a><br>一般情况下进程不能访问内核所占内存也不能调用内核函数，但有一般就会有例外，系统调用就是例外。它的原理是进程先用适当的值填充寄存器，然后调用一个特殊的指令，该指令会跳到事先定义的内核中的一个位置<em>（该位置用户进程可读但不可写）</em>。<br>Intel CPU中，这个由中断0x80实现。硬件知道一旦你跳到<em>这个位置（system_call）</em>，你就不再是限制模式下运行的用户，而“成为”了操作系统的内核<del>接下来你就可以为所欲为</del>。这个过程会检查系统调用号，该号码告诉内核进程请求哪种服务。然后查看<em>系统调用表(sys_call_table)</em>找到所调用的内核函数入口地址。接着调用函数，等返回后做一些系统检查，最后返回到进程（或到其他进程，如果这个进程时间用尽）。</p>
 <p><strong>进程是可并发执行的程序在一个数据集合上的运行过程。</strong></p>
 <p>为防止和正常的返回值混淆，系统调用并不直接返回错误码，而是将错误码放入一个名为errno的全局变量中。若系统调用失败，可以读出errno的值来锁定问题。errno不同数值所代表的错误消息定义在errno.h中，可以通过命令<code>man 3 errno</code>来察看它们。<br>需要注意的是，errno的值只在函数发生错误时设置，如果函数不发生错误，errno的值就无定义，并不会被置为0。另外，在处理errno前最好先把它的值存入另一个变量，因为在错误处理过程中，即使像printf()这样的函数出错时也会改变errno的值。</p>
 <h2 id="getpid"><a href="#getpid" class="headerlink" title="getpid"></a>getpid</h2><p>在2.4.4版内核中，getpid是第20号系统调用，其在Linux函数库中的原型是：</p>
@@ -531,7 +531,7 @@
 <p>No child exited<br>No child exited<br>No child exited<br>No child exited<br>No child exited<br>No child exited<br>No child exited<br>No child exited<br>No child exited<br>No child exited<br>successfully get child 1526</p>
 </blockquote>
 <p>我们让父进程和子进程分别睡眠了10秒钟和1秒钟，代表它们分别作了10秒钟和1秒钟的工作。父子进程都有工作要做，父进程利用工作的简短间歇察看子进程的是否退出，如退出就收集它。</p>
-<h2 id="exec"><a href="#exec" class="headerlink" title="exec"></a>exec</h2><p>Question:既然所有新进程都是由fork产生的，而且由fork产生的子进程和父进程几乎完全一样，那岂不是意味着系统中所有的进程都应该一模一样了吗？而且，就我们的常识来说，当我们执行一个程序的时候，新产生的进程的内容应就是程序的内容才对。是我们理解错了吗？<br>实际上在Linux中，exec指的是一组函数，一共有6个，分别是：</p>
+<h2 id="exec"><a href="#exec" class="headerlink" title="exec"></a>exec</h2><p><em>Question</em>:既然所有新进程都是由fork产生的，而且由fork产生的子进程和父进程几乎完全一样，那岂不是意味着系统中所有的进程都应该一模一样了吗？而且，就我们的常识来说，当我们执行一个程序的时候，新产生的进程的内容应就是程序的内容才对。是我们理解错了吗？<br>实际上在Linux中，exec指的是一组函数，一共有6个，分别是：</p>
 <blockquote>
 <p><code>#include &lt;unistd.h&gt;</code><br><code>int execl(const char *path, const char *arg, ...);</code><br><code>int execlp(const char *file, const char *arg, ...);</code><br><code>int execle(const char *path, const char *arg, ..., char *const envp[]);</code><br><code>int execv(const char *path, char *const argv[]);</code><br><code>int execvp(const char *file, char *const argv[]);</code><br><code>int execve(const char *path, char *const argv[], char *const envp[]);</code></p>
 </blockquote>
@@ -1455,15 +1455,7 @@
         }
       });
     </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
-
-
-  
-
-  
-
-<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/shizuku.model.json"},"display":{"superSample":2,"width":125,"height":125,"position":"right","hOffset":30,"vOffset":0},"mobile":{"show":false,"scale":0.05},"react":{"opacityDefault":1,"opacityOnHover":0.2},"log":false,"tagMode":false});</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config("");
 </script>
@@ -1480,5 +1472,13 @@
 <script type="text/javascript" src="">
 </script>
 <!-- End: Injected MathJax -->
-<!-- hexo-inject:end --></body>
+<!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/shizuku.model.json"},"display":{"superSample":2,"width":125,"height":125,"position":"right","hOffset":30,"vOffset":0},"mobile":{"show":false,"scale":0.05},"react":{"opacityDefault":1,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
 </html>

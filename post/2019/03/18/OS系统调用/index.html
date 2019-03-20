@@ -90,7 +90,7 @@
 <meta property="og:description" content="&amp;emsp;&amp;emsp;Linux内核中设置了一组用于实现各种系统功能的子程序，称为系统调用（system call）。同时它还提供些C语言函数库，这些库对系统调用进行包装和扩展。由于这些库函数与系统调用的关系非常紧密，习惯上把这些函数也称为系统调用。&amp;emsp;&amp;emsp;一般的，进程不能访问内核所占内存也不能调用内核函数，而系统调用显然是个例外。原理是进程先用适当的值填充寄存器，然后调用一个特">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.loli.net/2019/03/18/5c8fa09144527.jpg">
-<meta property="og:updated_time" content="2019-03-19T07:48:52.494Z">
+<meta property="og:updated_time" content="2019-03-20T03:24:01.266Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="OS系统调用">
 <meta name="twitter:description" content="&amp;emsp;&amp;emsp;Linux内核中设置了一组用于实现各种系统功能的子程序，称为系统调用（system call）。同时它还提供些C语言函数库，这些库对系统调用进行包装和扩展。由于这些库函数与系统调用的关系非常紧密，习惯上把这些函数也称为系统调用。&amp;emsp;&amp;emsp;一般的，进程不能访问内核所占内存也不能调用内核函数，而系统调用显然是个例外。原理是进程先用适当的值填充寄存器，然后调用一个特">
@@ -474,13 +474,7 @@
 <p><code>main(){</code><br><code>printf(&quot;output begin\n&quot;);</code><br><code>printf(&quot;content in buffer&quot;);</code><br><code>exit(0); # _exit(0);</code><br><code>}</code></p>
 </blockquote>
 <p><code>exit(0)</code>会完成两句printf,但<code>_exit(0)</code>可能完成第一句printf就终止了。这应该不难理解，系统先把前两个printf存入buff，然后一边I/O一边往后执行，如果是<code>_exit(0)</code>不管缓存死活，那就直接结束了啊。<br>但是exit后的进程并不是就灰飞烟灭了，它有个让人毛骨悚然的名字，<em>僵尸进程（Zombie）</em></p>
-<h2 id="进程状态"><a href="#进程状态" class="headerlink" title="进程状态"></a>进程状态</h2><p>下面就让我用一些形象的比喻，来对进程短暂的一生作一个小小的总结：</p>
-<p>随着一句fork，一个新进程呱呱落地，但它这时只是老进程的一个克隆。</p>
-<p>然后随着exec，新进程脱胎换骨，离家独立，开始了为人民服务的职业生涯。</p>
-<p>人有生老病死，进程也一样，它可以是自然死亡，即运行到main函数的最后一个”}”，从容地离我们而去；也可以是自杀，自杀有2种方式，一种是调用exit函数，一种是在main函数内使用return，无论哪一种方式，它都可以留下遗书，放在返回值里保留下来；它还甚至能可被谋杀，被其它进程通过另外一些方式结束他的生命。</p>
-<p>进程死掉以后，会留下一具僵尸，wait和waitpid充当了殓尸工，把僵尸推去火化，使其最终归于无形。</p>
-<p>这就是进程完整的一生。下面简单介绍下进程的状态：分linux内核代码定义的状态和常用状态。</p>
-<p>由Linux内核代码宏定义出的“TASK_REPORT”：</p>
+<h2 id="进程状态"><a href="#进程状态" class="headerlink" title="进程状态"></a>进程状态</h2><p>下面简单介绍下进程的状态：分linux内核代码定义的状态和常用状态。<br>由Linux内核代码宏定义出的“TASK_REPORT”：</p>
 <blockquote>
 <p><code>/* get_task_state() */</code><br><code>#define TASK_REPORT    (TASK_RUNNING | TASK_INTERRUPTIBLE |</code><br><code>TASK_UNINTERRUPTIBLE | __TASK_STOPPED |&gt;</code><br><code>__TASK_TRACED | EXIT_ZOMBIE | EXIT_DEAD)</code></p>
 </blockquote>
@@ -565,6 +559,9 @@
 <li>数组argv和envp忘记用NULL结束，此时errno被设置为EFAULT；</li>
 <li>没有对要执行文件的运行权限，此时errno被设置为EACCES。</li>
 </ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>下面就让我用一些形象的比喻，来对进程短暂的一生作一个小小的总结：</p>
+<p>随着一句fork，一个新进程呱呱落地，但它这时只是老进程的一个克隆。<br>然后随着exec，新进程脱胎换骨，离家独立，开始了为人民服务的职业生涯。<br>人有生老病死，进程也一样，它可以是自然死亡，即运行到main函数的最后一个”}”，从容地离我们而去；也可以是自杀，自杀有2种方式，一种是调用exit函数，一种是在main函数内使用return，无论哪一种方式，它都可以留下遗书，放在返回值里保留下来；它还甚至能可被谋杀，被其它进程通过另外一些方式结束他的生命。<br>进程死掉以后，会留下一具僵尸，wait和waitpid充当了殓尸工，把僵尸推去火化，使其最终归于无形。</p>
+<p>这就是进程完整的一生。</p>
 
       
     </div>
@@ -764,7 +761,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#getpid"><span class="nav-number">1.</span> <span class="nav-text">getpid</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fork"><span class="nav-number">2.</span> <span class="nav-text">fork</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#exit"><span class="nav-number">3.</span> <span class="nav-text">exit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#exit-1"><span class="nav-number">4.</span> <span class="nav-text">_exit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程状态"><span class="nav-number">5.</span> <span class="nav-text">进程状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wait"><span class="nav-number">6.</span> <span class="nav-text">wait</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#waitpid"><span class="nav-number">7.</span> <span class="nav-text">waitpid</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#exec"><span class="nav-number">8.</span> <span class="nav-text">exec</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#getpid"><span class="nav-number">1.</span> <span class="nav-text">getpid</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fork"><span class="nav-number">2.</span> <span class="nav-text">fork</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#exit"><span class="nav-number">3.</span> <span class="nav-text">exit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#exit-1"><span class="nav-number">4.</span> <span class="nav-text">_exit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程状态"><span class="nav-number">5.</span> <span class="nav-text">进程状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wait"><span class="nav-number">6.</span> <span class="nav-text">wait</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#waitpid"><span class="nav-number">7.</span> <span class="nav-text">waitpid</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#exec"><span class="nav-number">8.</span> <span class="nav-text">exec</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">9.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>
@@ -1360,7 +1357,15 @@
         }
       });
     </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/shizuku.model.json"},"display":{"superSample":2,"width":125,"height":125,"position":"right","hOffset":30,"vOffset":0},"mobile":{"show":false,"scale":0.05},"react":{"opacityDefault":1,"opacityOnHover":0.2},"log":false,"tagMode":false});</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config("");
 </script>
@@ -1377,13 +1382,5 @@
 <script type="text/javascript" src="">
 </script>
 <!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
-  
-
-
-  
-
-  
-
-<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/shizuku.model.json"},"display":{"superSample":2,"width":125,"height":125,"position":"right","hOffset":30,"vOffset":0},"mobile":{"show":false,"scale":0.05},"react":{"opacityDefault":1,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+<!-- hexo-inject:end --></body>
 </html>

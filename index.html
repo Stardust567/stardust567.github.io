@@ -292,6 +292,234 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://stardust567.github.io/post/811e.html">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Stardust567">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Star Trail">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/post/811e.html" itemprop="url">软件安全设计</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">写于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-03T09:42:45+08:00">
+                2019-06-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">收藏于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/软件工程/" itemprop="url" rel="index">
+                    <span itemprop="name">软件工程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/post/811e.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/post/811e.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/post/811e.html" class="leancloud_visitors" data-flag-title="软件安全设计">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">翻阅&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                  <span class="post-meta-divider">|</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数&#58;</span>
+                
+                <span title="字数">
+                  1.3k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">时长 &asymp;</span>
+                
+                <span title="时长">
+                  4min
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>课程目标：</p>
+<ul>
+<li>掌握：<ol>
+<li>软件安全的概念和研究内容</li>
+<li>软件安全工程的基本概念</li>
+<li>基本的软件安全设计原则</li>
+<li>软件安全测试的方法</li>
+</ol>
+</li>
+<li>理解：<ol>
+<li>软件安全的研究前沿</li>
+<li>软件安全对信息环境安全的影响</li>
+</ol>
+</li>
+</ul>
+<h1 id="软件与软件安全"><a href="#软件与软件安全" class="headerlink" title="软件与软件安全"></a>软件与软件安全</h1><h2 id="计算机环境与安全"><a href="#计算机环境与安全" class="headerlink" title="计算机环境与安全"></a>计算机环境与安全</h2><h3 id="位运算"><a href="#位运算" class="headerlink" title="位运算"></a>位运算</h3><p>位运算：进行二进制位的运算。在系统软件中，常要处理二进位的问题<br>如果两个数据长度不同进行位运算时(如a &amp; b,而a为long型,b为int型),系统会将二者按右端对齐。如果b为正数,则左侧16位补满0。若b为负数,左端应补满1。如果b为无符号整数型,则左侧添满0。</p>
+<h3 id="指令系统"><a href="#指令系统" class="headerlink" title="指令系统"></a>指令系统</h3><p>计算机的指令系统就是指该计算机能够执行的全部指令的集合，又称指令集。指令由操作码和操作数两部分组成<del>就是计组嘛</del>。</p>
+<h3 id="软件"><a href="#软件" class="headerlink" title="软件"></a>软件</h3><p>计算机程序：根据一定的需要事先编写的一系列控制计算机工作的命令<br>用户通过使用软件来达到控制计算机硬件的目的。<br>软件分系统软件和应用软件，<label style="color:red">应用软件以系统软件为基础</label>。</p>
+<h2 id="信息安全与软件安全"><a href="#信息安全与软件安全" class="headerlink" title="信息安全与软件安全"></a>信息安全与软件安全</h2><h3 id="信息安全基本属性"><a href="#信息安全基本属性" class="headerlink" title="信息安全基本属性"></a>信息安全基本属性</h3><p> <strong>安全性、可用性、保密性、可控性、可靠性</strong></p>
+<h3 id="软件安全"><a href="#软件安全" class="headerlink" title="软件安全"></a>软件安全</h3><p>软件安全：软件在恶意攻击下能够正确地完成其功能。<br>软件安全性：软件不被恶意使用或者攻击进而造成用户信息资产损失的属性。包括：<br>（1） 可信性：保护敏感信息不被未授权用户访问<br>（2） 完整性：保护数据不被更改或破坏<br>（3） 可用性：确保资源被授权用户的使用<br>软件安全保护：<br>（1） 自身安全：防止软件丢失、被破坏、被篡改、被伪造<br>（2） 存储安全：可靠存储，保密存储，压缩存储，备份存储<br>（3） 通信安全：安全传输、加密传输、网络安全下载、完整下载<br>（4） 使用安全：防止非法用户授权访问，软件滥用，软件窃取，非法复制<br>（5） 运行安全：确保软件正常运行，功能正常<br>软件安全研究：<br>如何设计、构造、验证和维护软件以保证其是安全的。<br>——改进和实现软件安全的架构、工具、方法</p>
+<h3 id="开放系统互连安全的体系架构ISO7498-2"><a href="#开放系统互连安全的体系架构ISO7498-2" class="headerlink" title="开放系统互连安全的体系架构ISO7498-2"></a>开放系统互连安全的体系架构ISO7498-2</h3><p>5种安全服务：<br>鉴别服务、访问控制、数据完整性、数据保密性、抗抵赖<br>8种安全机制：<br>加密、数字签名、访问控制、数据完整性、数据交换、业务流填充、路由控制、公证<br>5种普遍性安全管理机制：<br>可信功能度、安全标记、事件检测、安全审计跟踪、安全恢复</p>
+<h2 id="软件安全重要概念"><a href="#软件安全重要概念" class="headerlink" title="软件安全重要概念"></a>软件安全重要概念</h2><h3 id="漏洞"><a href="#漏洞" class="headerlink" title="漏洞"></a>漏洞</h3><p>安全漏洞：可能被入侵者恶意利用的属性，也称脆弱性。<br>漏洞本质：通过已授权的手段获取对资源的未经授权访问，或对系统造成损害。<br>安全事件：当系统的某个漏洞被入侵者渗透而造成泄密时，其结果称一次安全事件。<br><strong>漏洞是软件的属性。</strong><br>脆弱状态：从已授权的状态变换到未授权状态。<br>攻击：以授权状态或脆弱状态开始，以受损状态为目标的状态变换。</p>
+<h3 id="ISO9126质量特性"><a href="#ISO9126质量特性" class="headerlink" title="ISO9126质量特性"></a>ISO9126质量特性</h3><p><strong>1.功能性</strong><br> 准确性：功能精确度<br> 互操作性：与其它系统交互<br> 保密安全性：主要是权限和密码<br><strong>2.可靠性</strong><br> 成熟性：对内错误的隔离<br> 容错性：对外错误的隔离<br> 易恢复性：系统失效后的重新恢复<br><strong>3.易用性</strong><br> 易理解性；易学性；易操作性<br><strong>4.效率</strong><br> 时间特性：响应时间；资源利用性：所耗系统资源<br><strong>5.维护性</strong><br> 易分析性<br> 易改变性：降低修复问题的成本<br> 稳定性：避免由于软件修改而造成意外结果<br> 易测试性<br><strong>6.可移植性</strong><br> 适应性：无需变动就能适应不同环境<br> 易安装性<br> 共存性：公共环境中与其它软件分享公共资源<br> 易替换性：同样环境下，替代相同用途的产品<br><strong>缺陷</strong>：安全性是软件功能性的子属性-&gt;对安全的忽视。</p>
+<p>安全的代码：能够抵抗恶意攻击的代码；安全的代码同时也是健壮的代码<br>安全性代码：实现安全功能的代码。<br>“安全的”程序：安全隐含某种程度的信任，实现了期望的机密性、完整性、可用性及其功能。</p>
+<h1 id="典型软件安全问题"><a href="#典型软件安全问题" class="headerlink" title="典型软件安全问题"></a>典型软件安全问题</h1><h2 id="安全问题来源"><a href="#安全问题来源" class="headerlink" title="安全问题来源"></a>安全问题来源</h2><ol>
+<li><p>漏洞<br>（1） 软件或协议<strong>设计</strong>时的瑕疵<br>（2） 软件或协议<strong>实现</strong>中的弱点<br>（3） 软件本身的瑕疵——良好的、编写安全程序的的编程习惯。<br>（4） 系统和网络的<strong>错误配置</strong></p>
+</li>
+<li><p>攻击者</p>
+</li>
+<li>软件存在的攻击路径－攻击面问题</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+	
+	
+	
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://stardust567.github.io/post/22713.html">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -2097,208 +2325,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://stardust567.github.io/post/42854.html">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Stardust567">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Star Trail">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/post/42854.html" itemprop="url">图的遍历</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">写于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-25T00:12:11+08:00">
-                2018-06-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">收藏于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/数据结构/" itemprop="url" rel="index">
-                    <span itemprop="name">数据结构</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/post/42854.html#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/post/42854.html" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/post/42854.html" class="leancloud_visitors" data-flag-title="图的遍历">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">翻阅&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                  <span class="post-meta-divider">|</span>
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数&#58;</span>
-                
-                <span title="字数">
-                  404
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">时长 &asymp;</span>
-                
-                <span title="时长">
-                  2min
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>这是一个以邻接表为基础的遍历……<br>包括DFS的递归非递归实现以及BFS队列实现<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/post/42854.html" rel="contents">
-              朕已阅 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </p></div>
-    
-    
-    
-
-	
-	
-	
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2349,7 +2375,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-count">18</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2360,7 +2386,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -2371,7 +2397,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">17</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -3067,7 +3093,15 @@
         }
       });
     </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/shizuku.model.json"},"display":{"superSample":2,"width":125,"height":125,"position":"right","hOffset":30,"vOffset":0},"mobile":{"show":false,"scale":0.05},"react":{"opacityDefault":1,"opacityOnHover":0.2},"log":false,"tagMode":false});</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config("");
 </script>
@@ -3084,13 +3118,5 @@
 <script type="text/javascript" src="">
 </script>
 <!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
-  
-
-
-  
-
-  
-
-<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/shizuku.model.json"},"display":{"superSample":2,"width":125,"height":125,"position":"right","hOffset":30,"vOffset":0},"mobile":{"show":false,"scale":0.05},"react":{"opacityDefault":1,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+<!-- hexo-inject:end --></body>
 </html>

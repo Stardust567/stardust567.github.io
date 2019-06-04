@@ -1877,7 +1877,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #4a3bf2;
+  background: #bb7c05;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -3088,11 +3088,11 @@ pre {
 }
 .site-meta {
   box-shadow: 0 2px 6px #dbdbdb;
-  background: url("/images/head.jpg");
+  background: url("https://i.loli.net/2019/06/03/5cf4d52a4da2f15211.jpg");
   background-size: 100% auto;
 }
 .header-inner {
   box-shadow: 0 2px 6px #dbdbdb;
-  background: url("/images/head.jpg");
+  background: url("https://i.loli.net/2019/06/03/5cf4d52a4da2f15211.jpg");
   background-size: 100% auto;
 }

@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="Star Trail">
 <meta property="og:description" content="掌握： 软件安全的概念和研究内容 软件安全工程的基本概念 基本的软件安全设计原则 软件安全测试的方法   理解： 软件安全的研究前沿 软件安全对信息环境安全的影响">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-06-04T05:32:30.775Z">
+<meta property="og:updated_time" content="2019-06-06T14:32:26.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="软件安全设计">
 <meta name="twitter:description" content="掌握： 软件安全的概念和研究内容 软件安全工程的基本概念 基本的软件安全设计原则 软件安全测试的方法   理解： 软件安全的研究前沿 软件安全对信息环境安全的影响">
@@ -402,7 +402,7 @@
                   <span class="post-meta-item-text">字数&#58;</span>
                 
                 <span title="字数">
-                  4.8k
+                  7.3k
                 </span>
               
 
@@ -418,7 +418,7 @@
                   <span class="post-meta-item-text">时长 &asymp;</span>
                 
                 <span title="时长">
-                  16min
+                  24min
                 </span>
               
             </div>
@@ -520,7 +520,56 @@
 <li>黑盒测试是白盒测试的补充。<br>以局外人身份攻击系统，使用工具检查系统的攻击面，并探查系统的内部信息。<br>方向工程团队利用黑盒测试验证隐蔽式安全方法的强度。</li>
 <li>组合使用白盒测和黑盒测试。<br>白盒测试用于发现在设计和开发中详细说明的功能的缺陷；<br>黑盒测试在无法了解程序内部信息的时候找出缺陷。<br><strong>程序开发中的调试运行是典型的灰盒测试方法。</strong></li>
 </ol>
-
+<h1 id="编写安全的代码"><a href="#编写安全的代码" class="headerlink" title="编写安全的代码"></a>编写安全的代码</h1><h2 id="SD3"><a href="#SD3" class="headerlink" title="SD3"></a>SD3</h2><p>Secure by Design, Default, Deployment</p>
+<h3 id="安全设计"><a href="#安全设计" class="headerlink" title="安全设计"></a>安全设计</h3><p>（1）安排具体的安全设计人员；进行安全教育；<br>（2）确保威胁分析已经完成；符合安全设计和编码的指导原则；<br>（3）尽可能修补安全编程指南上BUG；确保安全指南是逐步改进的；<br>（4）回归测试已修复缺陷；简化代码和安全模型；打包前完成穿透测试。</p>
+<h3 id="缺省安全"><a href="#缺省安全" class="headerlink" title="缺省安全"></a>缺省安全</h3><p>（1）缺省状态下，不要设置所有的特点和功能；<br>（2）允许最小权限；恰当的资源保护。</p>
+<h3 id="安全提交"><a href="#安全提交" class="headerlink" title="安全提交"></a>安全提交</h3><p>（1）确认程序给管理员提供了安全功能；尽可能提供高质量补丁；<br>（2）提供足够信息使用户安全的使用软件。</p>
+<h2 id="安全规则"><a href="#安全规则" class="headerlink" title="安全规则"></a>安全规则</h2><p>（1）学习错误；最小化攻击面；<br>（2）使用深度防御；应用缺省安全；<br>（3）使用最小权限；基于错误计划；<br>（4）记住兼容性的倒退是痛苦的；<br>（5）假定外部系统是不安全的；<br>（6）<label style="color:red">切记安全的特性不等于安全特性；</label><br>（7）不要混合编码和数据；正确修复安全问题。</p>
+<h3 id="学习错误"><a href="#学习错误" class="headerlink" title="学习错误"></a>学习错误</h3><p>学习错误从填写一个文档开始，文档内容：<br>产品名称；产品版本；联系人；BUG数据库编号；<br>脆弱性描述；脆弱性的隐含意义；<br>在产品的缺省安装中，这个问题是否存在？<br>设计，开发和测试人员能够做什么来防止这个缺陷？<br>修复的细节，包括代码的区别，如果可以填写。</p>
+<h3 id="最小化攻击面"><a href="#最小化攻击面" class="headerlink" title="最小化攻击面"></a>最小化攻击面</h3><p>需要计算下面的内容：<br>（1）打开socket、命名管道、RPC端点的数量；<br>（2）服务的数量；缺省运行服务的数量；服务以提高权限运行的数量；<br>（3）ISAPI过滤器和应用的数量；动态WEB页面数量；加入管理员组帐号的数量；<br>（4）文件，目录和注册键值的数量，带有弱访问控制列表。</p>
+<h1 id="一个信息系统的安全模型分析"><a href="#一个信息系统的安全模型分析" class="headerlink" title="一个信息系统的安全模型分析"></a>一个信息系统的安全模型分析</h1><h2 id="信息系统MIS及其特征"><a href="#信息系统MIS及其特征" class="headerlink" title="信息系统MIS及其特征"></a>信息系统MIS及其特征</h2><p>借助自动化数据处理手段进行管理的系统<br>由计算机硬件、软件<font size="2">（系统软件、应用软件、管理学软件包）</font>、数据库规程和人共同组成。</p>
+<p>由人、计算机等组成的能进行管理信息的收集、传递、加工的信息系统。<br><strong>主要特征：</strong><br>（1）一定是依赖于计算机的；<br>（2）涉及了计算机的软件和硬件；<br>（3）实现数据的采集、传递、加工、处理功能。<br><strong>主要特性：</strong><br>（1）整体性：系统各部分一定以整体目标为目标，追求全局最优；<br>（2）目的性：一个系统一定具有明确目的标，并完成一定的功能；<br>（3）层次性：一个系统可分为若干层次和子系统；<br>（4）边界性：每个系统明显区别于其他系统，系统间有明确界限；<br>（5）关联性：系统包括若干元素，元素间存在一定关联性；<br>（6）环境性：系统处于一定的环境之中并受环境影响。<br><strong>主要类型：</strong><br>宏观的国家经济信息系统；面向基层的企事业管理信息系统；<br>事务型管理信息系统；办公型管理信息系统；专业型管理信息系统等；<br><strong>运行环境要素：</strong><br>（1）物理世界；<br>（2）管理者实体：拥有授权管理、变更、修复和使用系统的人或其他系统<br>其中一些被授权人可能缺乏有效管理系统的能力或具有恶意的目的；<br>（3）使用者：在使用界面接受系统服务的实体；<br>（4）提供者：在系统使用界面提供服务的实体；<br>（5）基础组织：对系统提供信息源、通信链接、能源、冷气等特定服务的实体；<br>（6）入侵者：企图超越其权限来变更或阻止服务，变更系统功能、性能或存取秘密信息的实体。</p>
+<h2 id="信息系统的安全问题"><a href="#信息系统的安全问题" class="headerlink" title="信息系统的安全问题"></a>信息系统的安全问题</h2><p>ISO7498-2五种安全服务类型：<br>（1）身份鉴别；<br>（2）访问控制；<br>（3）数据保密；<br>（4）数据完整性；<br>（5）抗抵赖。</p>
+<h2 id="安全模型"><a href="#安全模型" class="headerlink" title="安全模型"></a>安全模型</h2><p>系统的使用者划分为：用户、系统管理员、信息主管（或企业主管）<br>系统划分为：用户界面逻辑、业务逻辑、异常检测机<br>系统安全功能：访问控制；抗抵赖；数据保密；身份鉴别；授权机制；日志审计；系统异常探测。</p>
+<h3 id="用户界面逻辑"><a href="#用户界面逻辑" class="headerlink" title="用户界面逻辑"></a>用户界面逻辑</h3><p>用户界面逻辑部分：数据访问、登录控制。<br>系统启动时，用户首先登录系统，通过验证后才能数据访问。<br>登录控制主要功能：口令验证；口令修改；口令数据的加密；登录时间记录。<br>登录控制设计考虑：<br>（1）用户ID：从权限数据中提取相应用户名，回避重名，简化输入<br>用户号本身也可以增加一定的安全性。<br>（2）用户修改口令，<label style="color:red">而非系统管理员</label>：管理员授权，但口令由用户输入加密存到后端<br>避免系统管理员获取用户口令造成泄密。<br>（3）初始口令的安全：系统初次运行关键——初始口令的赋予，由信息主管（或其他高层）完成用户身份确认<br>要求用户初次登录时必须更改初始口令。<br>（4）口令安全：口令长度限制、字符集限制、有效期限制。<br>（5）用户封锁：用户多次登录失败后系统锁定用户操作，解锁必须由系统管理员完成。</p>
+<h3 id="业务逻辑"><a href="#业务逻辑" class="headerlink" title="业务逻辑"></a>业务逻辑</h3><p>业务逻辑部分：<br>（1）数据服务：完成特定数据的加密、解密，日志数据的存储，权限及用户信息的存储<br>（2）权限管理：完成用户的授权，包括两个部分：系统管理员和信息主管。<br>系统管理员负责日常权限管理、日志审计、系统状态监控、异常监测、用户锁定处理。<br>信息主管负责系统启动和初始授权。<br>（3）日志审计：对用户的操作行为进行跟踪，提供根据时间、用户、系统的检索手段。<label style="color:red">日志不能人工清除</label>，怕被管理员在后台清掉。log周期性自动清旧信息，保留最新信息。<br><strong>信息系统提高安全可信性的重要手段</strong>：合理并具有一定强度的日志设计。</p>
+<h3 id="异常探测机"><a href="#异常探测机" class="headerlink" title="异常探测机"></a>异常探测机</h3><p>主要功能：分析日志、网络状态的安全监测、提供一定的日志文件保护机制<br>异常检测独立于业务逻辑的目的：<br>（1）独立程序便于进一步发展，有较大发展空间；<br>（2）位于业务和用户进程之外，能对其进行监控；<br>（3）不对信息系统运行发生干扰；<br>（4）作为系统的可选件而非强制。</p>
+<h2 id="异常行为探测"><a href="#异常行为探测" class="headerlink" title="异常行为探测"></a>异常行为探测</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">区别内容</th>
+<th style="text-align:center">异常探测机</th>
+<th style="text-align:center">IDS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">检测范围</td>
+<td style="text-align:center">网络内部行为</td>
+<td style="text-align:center">网络外部行为</td>
+</tr>
+<tr>
+<td style="text-align:center">实现方式</td>
+<td style="text-align:center">软件</td>
+<td style="text-align:center">硬件</td>
+</tr>
+<tr>
+<td style="text-align:center">与系统关系</td>
+<td style="text-align:center">可以存取系统数据</td>
+<td style="text-align:center">不能存取系统数据</td>
+</tr>
+<tr>
+<td style="text-align:center">保护目标</td>
+<td style="text-align:center">信息系统</td>
+<td style="text-align:center">网路</td>
+</tr>
+</tbody>
+</table>
+<h3 id="异常行为"><a href="#异常行为" class="headerlink" title="异常行为"></a>异常行为</h3><p>用户身份的攻击：针对用户的ID猜测用户身份。采用ID登录原因：方便输入&amp;安全性。猜测三次后用户被封锁。<br>口令攻击：已知用户身份来猜测口令。在系统设计中，当猜测三次后则封锁用户。<br>服务器异常访问：Sever PC和Web Sever等专用服务程序。类似局域网内DOS攻击。<br>数据库异常连接：主要通过特定端口访问DB，威胁来自<label style="color:red">合法或非法</label>的客户端程序。</p>
+<h3 id="日志分析"><a href="#日志分析" class="headerlink" title="日志分析"></a>日志分析</h3><h4 id="针对日志文件自身的攻击"><a href="#针对日志文件自身的攻击" class="headerlink" title="针对日志文件自身的攻击"></a>针对日志文件自身的攻击</h4><p>（1）日志数据的删除：系统不向用户提供日志修改功能。<br>合法用户不具有删除log的能力，只有超过log过期时间的日志数据才可删除。<br>非法用户受到异常探测机、操作系统、数据库系统的安全机制约束。<br>针对非法用户的攻击——<br>如果是单独的log，当系统启动后，该文件置于异常探测机的保护之下；<br>如果是数据库数据，则依赖于操作系统和数据库本身的保护机制。<br>（2）日志数据的修改：系统不向用户提供日志修改功能。<br>日志浏览需要授权，当系统管理员身份浏览日志时，该操作本身也将被写入日志。<br>由于单独的日志文件置于异常探测机的保护之下，所以可以避免合法用户的修改。<br>非法用户试图修改数据库中日志数据时，会受到操作系统和数据库系统的约束。</p>
+<h4 id="日志数据审计和异常模式"><a href="#日志数据审计和异常模式" class="headerlink" title="日志数据审计和异常模式"></a>日志数据审计和异常模式</h4><p>（1）手动审计：提供必要的数据检索和查询的手段<br>可根据用户、授权人、时间段、功能等进行检索，以进行必要的分析和事件跟踪。<br>（2）自动审计和报警：根据日志数据，系统可自动完成的审计和报警功能<br>用户锁定；口令超期；异常时间访问；异常功能访问；异常授权</p>
+<h3 id="网络异常探测机"><a href="#网络异常探测机" class="headerlink" title="网络异常探测机"></a>网络异常探测机</h3><p>网络异常探测机：针对来自网络的信息进行分析，提供对信息系统的保护报警。<br>探测器并不是通用的系统异常探测器。<br>（1）数据流量检测；<br>（1）服务器连接异常：连接数量异常、连接主机异常、连接端口异常。<br>（1）文件访问限制；<br>（1）日志文件保护。</p>
+<h1 id="WEB应用安全"><a href="#WEB应用安全" class="headerlink" title="WEB应用安全"></a>WEB应用安全</h1>
       
     </div>
     
@@ -697,7 +746,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#软件与软件安全"><span class="nav-number">1.</span> <span class="nav-text">软件与软件安全</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#计算机环境与安全"><span class="nav-number">1.1.</span> <span class="nav-text">计算机环境与安全</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#位运算"><span class="nav-number">1.1.1.</span> <span class="nav-text">位运算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#指令系统"><span class="nav-number">1.1.2.</span> <span class="nav-text">指令系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#软件"><span class="nav-number">1.1.3.</span> <span class="nav-text">软件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#信息安全与软件安全"><span class="nav-number">1.2.</span> <span class="nav-text">信息安全与软件安全</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#信息安全基本属性"><span class="nav-number">1.2.1.</span> <span class="nav-text">信息安全基本属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#软件安全"><span class="nav-number">1.2.2.</span> <span class="nav-text">软件安全</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开放系统互连安全的体系架构ISO7498-2"><span class="nav-number">1.2.3.</span> <span class="nav-text">开放系统互连安全的体系架构ISO7498-2</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#软件安全重要概念"><span class="nav-number">1.3.</span> <span class="nav-text">软件安全重要概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#漏洞"><span class="nav-number">1.3.1.</span> <span class="nav-text">漏洞</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ISO9126质量特性"><span class="nav-number">1.3.2.</span> <span class="nav-text">ISO9126质量特性</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#典型软件安全问题"><span class="nav-number">2.</span> <span class="nav-text">典型软件安全问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安全问题来源"><span class="nav-number">2.1.</span> <span class="nav-text">安全问题来源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安全设计问题"><span class="nav-number">2.2.</span> <span class="nav-text">安全设计问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-C-安全问题"><span class="nav-number">2.3.</span> <span class="nav-text">C/C++安全问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#平台实现安全问题"><span class="nav-number">2.4.</span> <span class="nav-text">平台实现安全问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用程序安全问题"><span class="nav-number">2.5.</span> <span class="nav-text">应用程序安全问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开发过程问题"><span class="nav-number">2.6.</span> <span class="nav-text">开发过程问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OWASP"><span class="nav-number">2.7.</span> <span class="nav-text">OWASP</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安全软件工程"><span class="nav-number">3.</span> <span class="nav-text">安全软件工程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#SSE-CMM"><span class="nav-number">3.1.</span> <span class="nav-text">SSE-CMM</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#开发目的"><span class="nav-number">3.1.1.</span> <span class="nav-text">开发目的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主要内容"><span class="nav-number">3.1.2.</span> <span class="nav-text">主要内容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于安全工程与评估"><span class="nav-number">3.1.3.</span> <span class="nav-text">关于安全工程与评估</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SDL安全开发生命周期模型"><span class="nav-number">3.2.</span> <span class="nav-text">SDL安全开发生命周期模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SDL概览"><span class="nav-number">3.2.1.</span> <span class="nav-text">SDL概览</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SDL过程"><span class="nav-number">3.2.2.</span> <span class="nav-text">SDL过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SDL缺陷"><span class="nav-number">3.2.3.</span> <span class="nav-text">SDL缺陷</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安全软件测试"><span class="nav-number">4.</span> <span class="nav-text">安全软件测试</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安全漏洞分级"><span class="nav-number">4.1.</span> <span class="nav-text">安全漏洞分级</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安全的常规测试方法"><span class="nav-number">4.2.</span> <span class="nav-text">安全的常规测试方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基于风险的安全测试"><span class="nav-number">4.2.1.</span> <span class="nav-text">基于风险的安全测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#白盒、黑盒和灰盒测试"><span class="nav-number">4.2.2.</span> <span class="nav-text">白盒、黑盒和灰盒测试</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#软件与软件安全"><span class="nav-number">1.</span> <span class="nav-text">软件与软件安全</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#计算机环境与安全"><span class="nav-number">1.1.</span> <span class="nav-text">计算机环境与安全</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#位运算"><span class="nav-number">1.1.1.</span> <span class="nav-text">位运算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#指令系统"><span class="nav-number">1.1.2.</span> <span class="nav-text">指令系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#软件"><span class="nav-number">1.1.3.</span> <span class="nav-text">软件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#信息安全与软件安全"><span class="nav-number">1.2.</span> <span class="nav-text">信息安全与软件安全</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#信息安全基本属性"><span class="nav-number">1.2.1.</span> <span class="nav-text">信息安全基本属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#软件安全"><span class="nav-number">1.2.2.</span> <span class="nav-text">软件安全</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开放系统互连安全的体系架构ISO7498-2"><span class="nav-number">1.2.3.</span> <span class="nav-text">开放系统互连安全的体系架构ISO7498-2</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#软件安全重要概念"><span class="nav-number">1.3.</span> <span class="nav-text">软件安全重要概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#漏洞"><span class="nav-number">1.3.1.</span> <span class="nav-text">漏洞</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ISO9126质量特性"><span class="nav-number">1.3.2.</span> <span class="nav-text">ISO9126质量特性</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#典型软件安全问题"><span class="nav-number">2.</span> <span class="nav-text">典型软件安全问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安全问题来源"><span class="nav-number">2.1.</span> <span class="nav-text">安全问题来源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安全设计问题"><span class="nav-number">2.2.</span> <span class="nav-text">安全设计问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-C-安全问题"><span class="nav-number">2.3.</span> <span class="nav-text">C/C++安全问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#平台实现安全问题"><span class="nav-number">2.4.</span> <span class="nav-text">平台实现安全问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用程序安全问题"><span class="nav-number">2.5.</span> <span class="nav-text">应用程序安全问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开发过程问题"><span class="nav-number">2.6.</span> <span class="nav-text">开发过程问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OWASP"><span class="nav-number">2.7.</span> <span class="nav-text">OWASP</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安全软件工程"><span class="nav-number">3.</span> <span class="nav-text">安全软件工程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#SSE-CMM"><span class="nav-number">3.1.</span> <span class="nav-text">SSE-CMM</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#开发目的"><span class="nav-number">3.1.1.</span> <span class="nav-text">开发目的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主要内容"><span class="nav-number">3.1.2.</span> <span class="nav-text">主要内容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于安全工程与评估"><span class="nav-number">3.1.3.</span> <span class="nav-text">关于安全工程与评估</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SDL安全开发生命周期模型"><span class="nav-number">3.2.</span> <span class="nav-text">SDL安全开发生命周期模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SDL概览"><span class="nav-number">3.2.1.</span> <span class="nav-text">SDL概览</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SDL过程"><span class="nav-number">3.2.2.</span> <span class="nav-text">SDL过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SDL缺陷"><span class="nav-number">3.2.3.</span> <span class="nav-text">SDL缺陷</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安全软件测试"><span class="nav-number">4.</span> <span class="nav-text">安全软件测试</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安全漏洞分级"><span class="nav-number">4.1.</span> <span class="nav-text">安全漏洞分级</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安全的常规测试方法"><span class="nav-number">4.2.</span> <span class="nav-text">安全的常规测试方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基于风险的安全测试"><span class="nav-number">4.2.1.</span> <span class="nav-text">基于风险的安全测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#白盒、黑盒和灰盒测试"><span class="nav-number">4.2.2.</span> <span class="nav-text">白盒、黑盒和灰盒测试</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#编写安全的代码"><span class="nav-number">5.</span> <span class="nav-text">编写安全的代码</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#SD3"><span class="nav-number">5.1.</span> <span class="nav-text">SD3</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安全设计"><span class="nav-number">5.1.1.</span> <span class="nav-text">安全设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缺省安全"><span class="nav-number">5.1.2.</span> <span class="nav-text">缺省安全</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安全提交"><span class="nav-number">5.1.3.</span> <span class="nav-text">安全提交</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安全规则"><span class="nav-number">5.2.</span> <span class="nav-text">安全规则</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#学习错误"><span class="nav-number">5.2.1.</span> <span class="nav-text">学习错误</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最小化攻击面"><span class="nav-number">5.2.2.</span> <span class="nav-text">最小化攻击面</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#一个信息系统的安全模型分析"><span class="nav-number">6.</span> <span class="nav-text">一个信息系统的安全模型分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#信息系统MIS及其特征"><span class="nav-number">6.1.</span> <span class="nav-text">信息系统MIS及其特征</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#信息系统的安全问题"><span class="nav-number">6.2.</span> <span class="nav-text">信息系统的安全问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安全模型"><span class="nav-number">6.3.</span> <span class="nav-text">安全模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#用户界面逻辑"><span class="nav-number">6.3.1.</span> <span class="nav-text">用户界面逻辑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#业务逻辑"><span class="nav-number">6.3.2.</span> <span class="nav-text">业务逻辑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#异常探测机"><span class="nav-number">6.3.3.</span> <span class="nav-text">异常探测机</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#异常行为探测"><span class="nav-number">6.4.</span> <span class="nav-text">异常行为探测</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#异常行为"><span class="nav-number">6.4.1.</span> <span class="nav-text">异常行为</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#日志分析"><span class="nav-number">6.4.2.</span> <span class="nav-text">日志分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#针对日志文件自身的攻击"><span class="nav-number">6.4.2.1.</span> <span class="nav-text">针对日志文件自身的攻击</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#日志数据审计和异常模式"><span class="nav-number">6.4.2.2.</span> <span class="nav-text">日志数据审计和异常模式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网络异常探测机"><span class="nav-number">6.4.3.</span> <span class="nav-text">网络异常探测机</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#WEB应用安全"><span class="nav-number">7.</span> <span class="nav-text">WEB应用安全</span></a></li></ol></div>
             
 
           </div>
@@ -1380,15 +1429,7 @@
         }
       });
     </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
-
-
-  
-
-  
-
-<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/shizuku.model.json"},"display":{"superSample":2,"width":125,"height":125,"position":"right","hOffset":30,"vOffset":0},"mobile":{"show":false,"scale":0.05},"react":{"opacityDefault":1,"opacityOnHover":0.2},"log":false,"tagMode":false});</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config("");
 </script>
@@ -1405,5 +1446,13 @@
 <script type="text/javascript" src="">
 </script>
 <!-- End: Injected MathJax -->
-<!-- hexo-inject:end --></body>
+<!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/shizuku.model.json"},"display":{"superSample":2,"width":125,"height":125,"position":"right","hOffset":30,"vOffset":0},"mobile":{"show":false,"scale":0.05},"react":{"opacityDefault":1,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
 </html>

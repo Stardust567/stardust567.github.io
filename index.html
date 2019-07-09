@@ -292,6 +292,208 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://stardust567.github.io/post/b2a.html">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Stardust567">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Star Trail">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/post/b2a.html" itemprop="url">Scrapy爬虫框架</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">写于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-07T11:44:36+08:00">
+                2019-07-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/post/b2a.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/post/b2a.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/post/b2a.html" class="leancloud_visitors" data-flag-title="Scrapy爬虫框架">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">翻阅&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                  <span class="post-meta-divider">|</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数&#58;</span>
+                
+                <span title="字数">
+                  1.2k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">时长 &asymp;</span>
+                
+                <span title="时长">
+                  6min
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Scrapy是一个为了爬取网站数据，提取结构性数据而编写的应用框架。</p>
+<p>以下整理自自己业余写的简单爬虫 <a href="https://github.com/Stardust567/theGuardianNews" target="_blank" rel="noopener">theGuardianNews</a>有兴趣的朋友可以看看</p>
+<h2 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h2><p>创建新Scrapy项目，在存储代码的目录下git bash<br><code>scrapy startproject news</code></p>
+<p>这将创建一个名为<em>news</em>的目录，文件tree如下：</p>
+<p>news<br>│  scrapy.cfg&emsp; &emsp; &emsp; # deploy configuration file<br>└─news&emsp; &emsp; &emsp; &emsp; &emsp; # project Python module, import your code from here<br>&emsp; │  items.py&emsp; &emsp; &emsp; # project items definition file<br>&emsp; │  middlewares.py&emsp; # project middlewares file<br>&emsp; │  pipelines.py&emsp; &emsp; # project pipelines file<br>&emsp; │  settings.py&emsp; &emsp; # project settings file<br>&emsp; │  __init__.py<br>&emsp; └─spiders&emsp; &emsp; &emsp; # a directory where you will later put your spiders<br>&emsp; &emsp; │  __init__.py</p>
+<h2 id="编写Spiders"><a href="#编写Spiders" class="headerlink" title="编写Spiders"></a>编写Spiders</h2><p>定义Spider类用来从网站中提取信息。</p>
+<ol>
+<li>必须子类化 <code>scrapy.Spider</code>并定义要生成的初始请求</li>
+<li>可选地如何跟踪页面中的链接</li>
+<li>解析下载的页面内容以提取数据</li>
+</ol>
+<p>在news目录下cmd输入<code>scrapy genspider QuotesSpider theguardian.com</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> scrapy</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">QuotesSpider</span><span class="params">(scrapy.Spider)</span>:</span></span><br><span class="line">    name = <span class="string">"quotes"</span></span><br><span class="line">    start_urls = [</span><br><span class="line">        <span class="string">'http://quotes.toscrape.com/page/1/'</span>,</span><br><span class="line">        <span class="string">'http://quotes.toscrape.com/page/2/'</span>,</span><br><span class="line">    ]</span><br><span class="line">    <span class="string">'''start_urls将默认执行yield scrapy.Request故可省略以下：</span></span><br><span class="line"><span class="string">    for url in urls:</span></span><br><span class="line"><span class="string">        yield scrapy.Request(url=url, callback=self.parse)</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse</span><span class="params">(self, response)</span>:</span></span><br><span class="line">        page = response.url.split(<span class="string">"/"</span>)[<span class="number">-2</span>]</span><br><span class="line">        filename = <span class="string">'quotes-%s.html'</span> % page</span><br><span class="line">        <span class="keyword">with</span> open(filename, <span class="string">'wb'</span>) <span class="keyword">as</span> f:</span><br><span class="line">            f.write(response.body)</span><br></pre></td></tr></table></figure>
+<p><code>parse()</code>方法通常解析响应，将抽取的数据提取为dicts，并查找要遵循的新URL并<code>Request</code>从中创建新的request()</p>
+<h2 id="提取数据"><a href="#提取数据" class="headerlink" title="提取数据"></a>提取数据</h2><p><code>::text</code>表示抽取标签内字符串；</p>
+<p><code>extract()</code>为一个包含数据串的list，<code>extract_first()</code>为list的第一个值</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">urls = response.css(<span class="string">'a[class="fc-item__link"]'</span>).css(<span class="string">'a[data-link-name="article"]'</span>).xpath(<span class="string">'@href'</span>).extract()</span><br><span class="line">title = response.css(<span class="string">'h1[class ="content__headline "]'</span>).css(<span class="string">'h1[itemprop="headline"]::text'</span>).extract()</span><br><span class="line">time = response.css(<span class="string">'time[itemprop = "datePublished"]::text'</span>).extract_first()</span><br><span class="line">category = response.css(<span class="string">'a[class ="subnav-link subnav-link--current-section"]::text'</span>).extract_first()</span><br><span class="line">tags = response.css(<span class="string">'a[class = "submeta__link"]::text'</span>).extract()</span><br><span class="line">content = response.css(<span class="string">'div[itemprop = "articleBody"]'</span>).css(<span class="string">'p::text'</span>).extract()</span><br></pre></td></tr></table></figure>
+<h2 id="创建Item"><a href="#创建Item" class="headerlink" title="创建Item"></a>创建Item</h2><p>打开news文件夹下的items.py创建类NewsItem</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NewsItem</span><span class="params">(scrapy.Item)</span>:</span></span><br><span class="line">    title = scrapy.Field()</span><br><span class="line">    time = scrapy.Field()</span><br><span class="line">    category = scrapy.Field()</span><br><span class="line">    tags = scrapy.Field()</span><br><span class="line">    content = scrapy.Field()</span><br></pre></td></tr></table></figure>
+<h2 id="设置Pipeline"><a href="#设置Pipeline" class="headerlink" title="设置Pipeline"></a>设置Pipeline</h2><p>Item pipeline组件有两个典型作用：1. 查重丢弃 ；2. 保存数据到文件或数据库中。</p>
+<p>假设我们采用MongoDB，打开news文件夹下的pipelines.py创建类NewsPipline</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pymongo</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NewsPipeline</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        client = pymongo.MongoClient(<span class="string">'127.0.0.1'</span>, <span class="number">27017</span>)<span class="comment"># 建立MongoDB数据库连接</span></span><br><span class="line">        db = client[<span class="string">'ScrapyChina'</span>]<span class="comment"># 连接所需数据库,ScrapyChina为数据库名</span></span><br><span class="line">        self.post = db[<span class="string">'mingyan'</span>]<span class="comment"># 连接所用集合，即通常所说的表，mingyan为表名</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">process_item</span><span class="params">(self, item, spider)</span>:</span></span><br><span class="line">        title = item[<span class="string">'title'</span>]</span><br><span class="line">        <span class="keyword">if</span> title:</span><br><span class="line">            title_str = <span class="string">''</span>.join(title)</span><br><span class="line">            item[<span class="string">'title'</span>] = title_str.replace(<span class="string">'\n'</span>, <span class="string">''</span>)</span><br><span class="line">        time = item[<span class="string">'time'</span>]</span><br><span class="line">        <span class="keyword">if</span> time:</span><br><span class="line">            item[<span class="string">'time'</span>] = time.replace(<span class="string">'\n'</span>, <span class="string">''</span>)</span><br><span class="line">        category = item[<span class="string">'category'</span>]</span><br><span class="line">        <span class="keyword">if</span> category:</span><br><span class="line">            item[<span class="string">'category'</span>] = category.replace(<span class="string">'\n'</span>, <span class="string">''</span>)</span><br><span class="line">        tags = item[<span class="string">'tags'</span>]</span><br><span class="line">        <span class="keyword">if</span> tags:</span><br><span class="line">            tags_str = <span class="string">','</span>.join(tags)</span><br><span class="line">            item[<span class="string">'tags'</span>] = tags_str.replace(<span class="string">'\n'</span>, <span class="string">''</span>)</span><br><span class="line">        content = item[<span class="string">'content'</span>]</span><br><span class="line">        <span class="keyword">if</span> content:</span><br><span class="line">            content_str = <span class="string">''</span>.join(content)</span><br><span class="line">            item[<span class="string">'content'</span>] = content_str.replace(<span class="string">'\n'</span>, <span class="string">''</span>)</span><br><span class="line">        postItem = dict(item)  <span class="comment"># 把item转化成字典形式</span></span><br><span class="line">        self.post.insert(postItem)  <span class="comment"># 向数据库插入一条记录</span></span><br><span class="line">        <span class="keyword">return</span> item  <span class="comment"># 会在控制台输出原item数据，可以选择不写</span></span><br></pre></td></tr></table></figure>
+<h2 id="修改Spider"><a href="#修改Spider" class="headerlink" title="修改Spider"></a>修改Spider</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> news.items <span class="keyword">import</span> NewsItem</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_news</span><span class="params">(self, response)</span>:</span></span><br><span class="line">        item = NewsItem()</span><br><span class="line">        ......<span class="comment"># 提取数据的过程</span></span><br><span class="line">        item[<span class="string">'title'</span>] = title</span><br><span class="line">        item[<span class="string">'time'</span>] = time</span><br><span class="line">        item[<span class="string">'category'</span>] = category</span><br><span class="line">        item[<span class="string">'tags'</span>] = tags</span><br><span class="line">        item[<span class="string">'content'</span>] = content</span><br><span class="line">        <span class="keyword">yield</span> item</span><br></pre></td></tr></table></figure>
+<p>修改完的spider如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> scrapy</span><br><span class="line"><span class="keyword">from</span> scrapy.http <span class="keyword">import</span> Request</span><br><span class="line"><span class="keyword">from</span> news.items <span class="keyword">import</span> NewsItem</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HeadSpider</span><span class="params">(scrapy.Spider)</span>:</span></span><br><span class="line">    name = <span class="string">'news'</span></span><br><span class="line">    allowed_domains = [<span class="string">'theguardian.com'</span>]</span><br><span class="line">    base_url = <span class="string">'https://www.theguardian.com/'</span></span><br><span class="line">    start_urls = []</span><br><span class="line">    topics = [<span class="string">'world'</span>, <span class="string">'science'</span>, <span class="string">'cities'</span>, <span class="string">'global-development'</span>,</span><br><span class="line">              <span class="string">'uk/sport'</span>, <span class="string">'uk/technology'</span>, <span class="string">'uk/business'</span>, <span class="string">'uk/environment'</span>, <span class="string">'uk/culture'</span>]</span><br><span class="line">    years = [<span class="number">2019</span>]</span><br><span class="line">    months = [<span class="string">'jan'</span>, <span class="string">'feb'</span>, <span class="string">'mar'</span>, <span class="string">'apr'</span>, <span class="string">'may'</span>, <span class="string">'jun'</span>,</span><br><span class="line">              <span class="string">'jul'</span>, <span class="string">'aug'</span>, <span class="string">'sep'</span>, <span class="string">'oct'</span>, <span class="string">'nov'</span>, <span class="string">'dec'</span>]</span><br><span class="line">    dates = range(<span class="number">1</span>, <span class="number">31</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> topic <span class="keyword">in</span> topics:</span><br><span class="line">        <span class="keyword">for</span> y <span class="keyword">in</span> years:</span><br><span class="line">            <span class="keyword">for</span> m <span class="keyword">in</span> months:</span><br><span class="line">                <span class="keyword">for</span> d <span class="keyword">in</span> dates:</span><br><span class="line">                    url = base_url + topic + <span class="string">'/'</span> + str(y) + <span class="string">'/'</span> + m + <span class="string">'/'</span> + <span class="string">'%02d'</span> % d + <span class="string">'/'</span> + <span class="string">'all'</span></span><br><span class="line">                    start_urls.append(url) </span><br><span class="line">                    <span class="comment"># 类似于 https://www.theguardian.com/uk/sport/2019/apr/01/all</span></span><br><span class="line">                    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse</span><span class="params">(self, response)</span>:</span></span><br><span class="line">        urls = response.css(<span class="string">'a[class="fc-item__link"]'</span>).css(<span class="string">'a[data-link-name="article"]'</span>).xpath(<span class="string">'@href'</span>).extract()</span><br><span class="line">        <span class="keyword">for</span> url <span class="keyword">in</span> urls: </span><br><span class="line">            <span class="comment"># 每个https://www.theguardian.com/uk/sport/2019/apr/01/all页面上的news连接</span></span><br><span class="line">            <span class="keyword">yield</span> Request(url, self.get_news)</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_news</span><span class="params">(self, response)</span>:</span></span><br><span class="line">        item = NewsItem()</span><br><span class="line">        title = response.css(<span class="string">'h1[class ="content__headline "]'</span>).css(<span class="string">'h1[itemprop="headline"]::text'</span>).extract()</span><br><span class="line">        <span class="keyword">if</span>(len(title)==<span class="number">0</span>): </span><br><span class="line">            <span class="comment"># 卫报的news页面有两种形式，如果第一种没抓到，就用模式二</span></span><br><span class="line">            title = response.css(<span class="string">'meta[itemprop="description"]'</span>).xpath(<span class="string">'@content'</span>).extract()</span><br><span class="line">        time = response.css(<span class="string">'time[itemprop = "datePublished"]::text'</span>).extract_first()</span><br><span class="line">        category = response.css(<span class="string">'a[class ="subnav-link subnav-link--current-section"]::text'</span>).extract_first()</span><br><span class="line">        tags = response.css(<span class="string">'a[class = "submeta__link"]::text'</span>).extract()</span><br><span class="line">        content = response.css(<span class="string">'div[itemprop = "articleBody"]'</span>).css(<span class="string">'p::text'</span>).extract()</span><br><span class="line">        <span class="keyword">if</span> (len(content) == <span class="number">0</span>):</span><br><span class="line">        content = title <span class="comment"># 有些news内容可能时视频或者其它非文本模式，这时我们用title作为content</span></span><br><span class="line">    </span><br><span class="line">        item[<span class="string">'title'</span>] = title</span><br><span class="line">        item[<span class="string">'time'</span>] = time</span><br><span class="line">        item[<span class="string">'category'</span>] = category</span><br><span class="line">        item[<span class="string">'tags'</span>] = tags</span><br><span class="line">        item[<span class="string">'content'</span>] = content</span><br><span class="line">    </span><br><span class="line">        <span class="keyword">yield</span> item</span><br></pre></td></tr></table></figure>
+<h2 id="修改设置"><a href="#修改设置" class="headerlink" title="修改设置"></a>修改设置</h2><p>打开news文件夹下的settings.py可以修改一些小细节便于我们爬取数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">FEED_EXPORT_ENCODING = &apos;utf-8&apos; # 修改编码为utf-8</span><br><span class="line">DOWNLOAD_TIMEOUT = 10 # 下载超时设定，超过10秒没响应则放弃当前URL</span><br><span class="line">ITEM_PIPELINES = &#123;</span><br><span class="line">   &apos;news.pipelines.NewsPipeline&apos;: 300,</span><br><span class="line">&#125;</span><br><span class="line">CONCURRENT_REQUESTS = 32 # 最大并发请求数（默认16</span><br><span class="line">DOWNLOAD_DELAY = 0.01 # 增加爬取延迟，降低被爬网站服务器压力</span><br><span class="line">DEFAULT_REQUEST_HEADERS = &#123;</span><br><span class="line">    &apos;Accept&apos;: &apos;text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8&apos;,</span><br><span class="line">    &apos;Accept-Encoding&apos;: &apos;gzip, deflate&apos;,</span><br><span class="line">    &apos;Accept-Language&apos;: &apos;zh-CN,zh;q=0.8&apos;,</span><br><span class="line">    &apos;User-Agent&apos;: &apos;Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.109 Safari/537.36&apos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+	
+	
+	
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://stardust567.github.io/post/811e.html">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -400,7 +602,7 @@
                   <span class="post-meta-item-text">字数&#58;</span>
                 
                 <span title="字数">
-                  9.4k
+                  9.3k
                 </span>
               
 
@@ -438,16 +640,7 @@
 
       
         
-          <ol>
-<li>软件安全的概念和研究内容</li>
-<li>软件安全工程的基本概念</li>
-<li>基本的软件安全设计原则</li>
-<li>软件安全测试的方法</li>
-<li><p>威胁分析报告（脆弱性、攻击面、攻击路径、典型威胁）</p>
-</li>
-<li><p>软件安全对信息环境安全的影响</p>
-</li>
-</ol>
+          <p>软件安全设计，一门针对安全过程模型、基于风险测试、威胁分析报告等谈漏洞讲威胁的学科。</p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/post/811e.html" rel="contents">
@@ -2106,208 +2299,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://stardust567.github.io/post/11574.html">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Stardust567">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Star Trail">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/post/11574.html" itemprop="url">图的最短路径</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">写于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-26T23:40:14+08:00">
-                2018-06-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">收藏于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/数据结构/" itemprop="url" rel="index">
-                    <span itemprop="name">数据结构</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/post/11574.html#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/post/11574.html" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/post/11574.html" class="leancloud_visitors" data-flag-title="图的最短路径">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">翻阅&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                  <span class="post-meta-divider">|</span>
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数&#58;</span>
-                
-                <span title="字数">
-                  549
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">时长 &asymp;</span>
-                
-                <span title="时长">
-                  2min
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p><strong>Dijkstra</strong> : 从点v0开始，不断把距V0距离最小的点拉进超点<font color="#E74C3C">（权重值一定要是正的）</font><br><strong>Floyd</strong> : 如果i-&gt;k-&gt;j的距离比直接i-&gt;j要短的话，更新一下dist的距离和path的路径<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/post/11574.html" rel="contents">
-              朕已阅 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </p></div>
-    
-    
-    
-
-	
-	
-	
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2358,7 +2349,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

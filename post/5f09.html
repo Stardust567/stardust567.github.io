@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="Star Trail">
 <meta property="og:description" content="学习路上总会遇到各种小坑和奇妙操作，之前一直搞完就算了总觉得很可惜，就有了记录踩的各种坑的想法……未完待续…">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-12-22T08:09:37.917Z">
+<meta property="og:updated_time" content="2019-12-22T11:09:18.370Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Tips">
 <meta name="twitter:description" content="学习路上总会遇到各种小坑和奇妙操作，之前一直搞完就算了总觉得很可惜，就有了记录踩的各种坑的想法……未完待续…">
@@ -402,7 +402,7 @@
                   <span class="post-meta-item-text">字数&#58;</span>
                 
                 <span title="字数">
-                  140
+                  221
                 </span>
               
 
@@ -452,8 +452,26 @@
 </blockquote>
 </li>
 </ol>
+<h2 id="Python"><a href="#Python" class="headerlink" title="Python"></a>Python</h2><ol>
+<li><p>打开项目所在文件目录导出python库依赖requirements.txt</p>
+<blockquote>
+<p>pipreqs ./ –encoding=utf-8</p>
+</blockquote>
+<p>这样之后有人需要用这个项目的时候直接打开命令行输入以下即可：</p>
+<blockquote>
+<p>pip install -r requirements.txt</p>
+</blockquote>
+</li>
+</ol>
 <h2 id="PostgreSQL"><a href="#PostgreSQL" class="headerlink" title="PostgreSQL"></a>PostgreSQL</h2><ol>
 <li>打开<em>pgAdmin</em>如果出现无法连接并要求输入<code>postgres</code>密码的情况，请打开任务管理器&gt;服务，找到并启动<code>postgresql-x64-10</code>即可。</li>
+</ol>
+<h2 id="命令行"><a href="#命令行" class="headerlink" title="命令行"></a>命令行</h2><ol>
+<li><p>用tree直接导出当前目录下的目录结构：</p>
+<blockquote>
+<p>tree -L 2 &gt; test.txt</p>
+</blockquote>
+</li>
 </ol>
 
       
@@ -632,7 +650,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Git"><span class="nav-number">1.</span> <span class="nav-text">Git</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PostgreSQL"><span class="nav-number">2.</span> <span class="nav-text">PostgreSQL</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Git"><span class="nav-number">1.</span> <span class="nav-text">Git</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python"><span class="nav-number">2.</span> <span class="nav-text">Python</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PostgreSQL"><span class="nav-number">3.</span> <span class="nav-text">PostgreSQL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#命令行"><span class="nav-number">4.</span> <span class="nav-text">命令行</span></a></li></ol></div>
             
 
           </div>

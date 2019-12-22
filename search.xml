@@ -3,7 +3,7 @@
   <entry>
     <title><![CDATA[Tips]]></title>
     <url>%2Fpost%2F5f09.html</url>
-    <content type="text"><![CDATA[学习路上总会遇到各种小坑和奇妙操作，之前一直搞完就算了总觉得很可惜，就有了记录踩的各种坑的想法……未完待续… Git 如果你add &amp; commit过完看命令行发现自己智障了还好没push上去。 git reset –mixed HEAD^ 如果commit&amp;push后error: src refspec matser does not match any. git push –set-upstream origin master PostgreSQL 打开pgAdmin如果出现无法连接并要求输入postgres密码的情况，请打开任务管理器&gt;服务，找到并启动postgresql-x64-10即可。]]></content>
+    <content type="text"><![CDATA[学习路上总会遇到各种小坑和奇妙操作，之前一直搞完就算了总觉得很可惜，就有了记录踩的各种坑的想法……未完待续… Git 如果你add &amp; commit过完看命令行发现自己智障了还好没push上去。 git reset –mixed HEAD^ 如果commit&amp;push后error: src refspec matser does not match any. git push –set-upstream origin master Python 打开项目所在文件目录导出python库依赖requirements.txt pipreqs ./ –encoding=utf-8 这样之后有人需要用这个项目的时候直接打开命令行输入以下即可： pip install -r requirements.txt PostgreSQL 打开pgAdmin如果出现无法连接并要求输入postgres密码的情况，请打开任务管理器&gt;服务，找到并启动postgresql-x64-10即可。 命令行 用tree直接导出当前目录下的目录结构： tree -L 2 &gt; test.txt]]></content>
       <categories>
         <category>tips</category>
       </categories>

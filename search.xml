@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title><![CDATA[各种小坑]]></title>
+    <title><![CDATA[Tips]]></title>
     <url>%2Fpost%2F5f09.html</url>
-    <content type="text"><![CDATA[记录一下学习路上踩的各种小坑……未完待续 Git 如果你add &amp; commit过完看命令行发现自己智障了还好没push 12&gt; git reset --mixed HEAD^&gt; 如果commit&amp;push后error: src refspec matser does not match any. 12&gt; git push --set-upstream origin master&gt; PostgreSQL 打开pgAdmin如果出现无法连接并要求输入postgres密码的情况，请打开任务管理器&gt;服务，找到并启动postgresql-x64-10即可。]]></content>
+    <content type="text"><![CDATA[学习路上总会遇到各种小坑和奇妙操作，之前一直搞完就算了总觉得很可惜，就有了记录踩的各种坑的想法……未完待续… Git 如果你add &amp; commit过完看命令行发现自己智障了还好没push上去。 git reset –mixed HEAD^ 如果commit&amp;push后error: src refspec matser does not match any. git push –set-upstream origin master PostgreSQL 打开pgAdmin如果出现无法连接并要求输入postgres密码的情况，请打开任务管理器&gt;服务，找到并启动postgresql-x64-10即可。]]></content>
       <categories>
         <category>tips</category>
       </categories>

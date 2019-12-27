@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="Star Trail">
 <meta property="og:description" content="学习路上总会遇到各种小坑和奇妙操作，之前一直搞完就算了总觉得很可惜，就有了记录踩的各种坑的想法……未完待续…">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-12-23T11:54:36.211Z">
+<meta property="og:updated_time" content="2019-12-27T14:25:54.588Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Tips">
 <meta name="twitter:description" content="学习路上总会遇到各种小坑和奇妙操作，之前一直搞完就算了总觉得很可惜，就有了记录踩的各种坑的想法……未完待续…">
@@ -402,7 +402,7 @@
                   <span class="post-meta-item-text">字数&#58;</span>
                 
                 <span title="字数">
-                  511
+                  594
                 </span>
               
 
@@ -464,7 +464,11 @@
 </li>
 </ol>
 <h2 id="Go"><a href="#Go" class="headerlink" title="Go"></a>Go</h2><ol>
-<li>添加 Go Modules Replace的时候，replace配置项的路径只能是<code>~</code>根目录开头，<code>.</code>当前目录开头，<code>..</code>上级目录开头，这点在WSL上就还是安利后两者，毕竟在根目录下VScode估计找不到文件夹orz</li>
+<li><p>添加 Go Modules Replace的时候，replace配置项的路径只能是<code>~</code>根目录开头，<code>.</code>当前目录开头，<code>..</code>上级目录开头，这点在WSL上就还是安利后两者，毕竟在根目录下VScode估计找不到文件夹orz</p>
+</li>
+<li><p>为变量给予附属属性<code>json</code>，这样子在<code>c.JSON</code>(c *gin.Context)的时候就会自动转换格式，非常的便利。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Name <span class="keyword">string</span> <span class="string">`json:"name"`</span></span><br></pre></td></tr></table></figure>
+</li>
 </ol>
 <h2 id="MySQL"><a href="#MySQL" class="headerlink" title="MySQL"></a>MySQL</h2><ol>
 <li><p>如果是WSL的话，MySQL被设计为可以使用大写字母跨平台正常工作，其中数据库名称/表名和/或列为小写字母可能会给操作系统带来麻烦，并且可能会生成相同的二进制表文件。简单点，会出bug不建议WSL建议直接windows上MySQL，如果真的想WSL的话（比如我），当Cannot stat file /proc/1/fd/5: Operation not permitted时，不要慌，重启下bash然后输入：</p>
@@ -491,6 +495,9 @@
 </ol>
 <h2 id="PostgreSQL"><a href="#PostgreSQL" class="headerlink" title="PostgreSQL"></a>PostgreSQL</h2><ol>
 <li>打开<em>pgAdmin</em>如果出现无法连接并要求输入<code>postgres</code>密码的情况，请打开任务管理器&gt;服务，找到并启动<code>postgresql-x64-10</code>即可。</li>
+</ol>
+<h2 id="Vue-js"><a href="#Vue-js" class="headerlink" title="Vue.js"></a>Vue.js</h2><ol>
+<li>刚开始我在修改代码中途发现自己没下<code>vue-router</code>强停后npm install结果errno -4048 npm ERR! syscall rename，解决方法<code>npm cache clean --force</code>后npm install即可。</li>
 </ol>
 <h2 id="命令行"><a href="#命令行" class="headerlink" title="命令行"></a>命令行</h2><ol>
 <li><p>用tree直接导出当前目录下的目录结构：</p>
@@ -676,7 +683,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Git"><span class="nav-number">1.</span> <span class="nav-text">Git</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python"><span class="nav-number">2.</span> <span class="nav-text">Python</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Go"><span class="nav-number">3.</span> <span class="nav-text">Go</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL"><span class="nav-number">4.</span> <span class="nav-text">MySQL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PostgreSQL"><span class="nav-number">5.</span> <span class="nav-text">PostgreSQL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#命令行"><span class="nav-number">6.</span> <span class="nav-text">命令行</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Git"><span class="nav-number">1.</span> <span class="nav-text">Git</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python"><span class="nav-number">2.</span> <span class="nav-text">Python</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Go"><span class="nav-number">3.</span> <span class="nav-text">Go</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL"><span class="nav-number">4.</span> <span class="nav-text">MySQL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PostgreSQL"><span class="nav-number">5.</span> <span class="nav-text">PostgreSQL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Vue-js"><span class="nav-number">6.</span> <span class="nav-text">Vue.js</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#命令行"><span class="nav-number">7.</span> <span class="nav-text">命令行</span></a></li></ol></div>
             
 
           </div>

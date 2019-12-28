@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="Star Trail">
 <meta property="og:description" content="学习路上总会遇到各种小坑和奇妙操作，之前一直搞完就算了总觉得很可惜，就有了记录踩的各种坑的想法……未完待续…">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-12-28T02:54:13.433Z">
+<meta property="og:updated_time" content="2019-12-28T10:04:07.555Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Tips">
 <meta name="twitter:description" content="学习路上总会遇到各种小坑和奇妙操作，之前一直搞完就算了总觉得很可惜，就有了记录踩的各种坑的想法……未完待续…">
@@ -402,7 +402,7 @@
                   <span class="post-meta-item-text">字数&#58;</span>
                 
                 <span title="字数">
-                  629
+                  691
                 </span>
               
 
@@ -492,12 +492,15 @@
 <p>mysql &gt;FLUSH PRIVILEGES;</p>
 </blockquote>
 </li>
+<li><p>如果发现ERROR 2002 (HY000): Can’t connect to local MySQL server through socket ‘/var/run/mysqld/mysqld.sock’ (2)那是因为没开服务，打开服务<code>sudo service mysql start</code>即可。</p>
+</li>
 </ol>
 <h2 id="PostgreSQL"><a href="#PostgreSQL" class="headerlink" title="PostgreSQL"></a>PostgreSQL</h2><ol>
 <li>打开<em>pgAdmin</em>如果出现无法连接并要求输入<code>postgres</code>密码的情况，请打开任务管理器&gt;服务，找到并启动<code>postgresql-x64-10</code>即可。</li>
 </ol>
 <h2 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h2><ol>
 <li>WSL下安装Redis的话，要记得修改/etc/redis/redis.conf这个文件，将<code>supervised no</code>修改为<code>supervised systemd</code>即可，ubuntu用<code>systemd</code>初始系统。</li>
+<li>如果连不上，第一件事就是启动服务试试，<code>sudo service redis-server start</code></li>
 </ol>
 <h2 id="Vue-js"><a href="#Vue-js" class="headerlink" title="Vue.js"></a>Vue.js</h2><ol>
 <li>刚开始我在修改代码中途发现自己没下<code>vue-router</code>强停后npm install结果errno -4048 npm ERR! syscall rename，解决方法<code>npm cache clean --force</code>后npm install即可。</li>

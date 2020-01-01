@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="学习路上总会遇到各种坑，之前一直搞完就算了总觉得很可惜，就有了记录踩的各种坑的想法…… 未完待续（不断填坑）中……">
+<meta name="description" content="学习路上总会遇到各种坑，之前一直搞完就算了，总觉得很可惜，就有了记录踩的各种坑的想法…… 未完待续（不断填坑）中……">
 <meta name="keywords" content="GAP,Tips">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Tips">
 <meta property="og:url" content="https://stardust567.github.io/post/5f09.html">
 <meta property="og:site_name" content="Star Trail">
-<meta property="og:description" content="学习路上总会遇到各种坑，之前一直搞完就算了总觉得很可惜，就有了记录踩的各种坑的想法…… 未完待续（不断填坑）中……">
+<meta property="og:description" content="学习路上总会遇到各种坑，之前一直搞完就算了，总觉得很可惜，就有了记录踩的各种坑的想法…… 未完待续（不断填坑）中……">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-01-01T01:01:30.982Z">
+<meta property="og:updated_time" content="2020-01-01T10:37:07.777Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Tips">
-<meta name="twitter:description" content="学习路上总会遇到各种坑，之前一直搞完就算了总觉得很可惜，就有了记录踩的各种坑的想法…… 未完待续（不断填坑）中……">
+<meta name="twitter:description" content="学习路上总会遇到各种坑，之前一直搞完就算了，总觉得很可惜，就有了记录踩的各种坑的想法…… 未完待续（不断填坑）中……">
 
 
 
@@ -402,7 +402,7 @@
                   <span class="post-meta-item-text">字数&#58;</span>
                 
                 <span title="字数">
-                  727
+                  763
                 </span>
               
 
@@ -439,7 +439,7 @@
       
 
       
-        <p>学习路上总会遇到各种坑，之前一直搞完就算了总觉得很可惜，就有了记录<del>踩的各种坑</del>的想法……</p>
+        <p>学习路上总会遇到各种坑，之前一直搞完就算了，总觉得很可惜，就有了记录<del>踩的各种坑</del>的想法……</p>
 <p>未完待续（不断填坑）中……<a id="more"></a></p>
 <h2 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h2><ol>
 <li><p>如果你add &amp; commit过完看命令行发现自己智障了还好没push上去。</p>
@@ -498,6 +498,11 @@
 <li><p>用pymysql时候(pymysql.err.InternalError) (1366, “Incorrect string value: ‘\xE6\xAD\xA3\xE5\xB8\xB8’中文编码问题，修改即可。 </p>
 <blockquote>
 <p>mysql&gt; alter table recruit convert to character set utf8mb4; </p>
+</blockquote>
+</li>
+<li><p>用pymysql时候，想借MySQL函数<code>STR_TO_DATE</code>传DATE类型数据，记得年月日用%%而不是%：</p>
+<blockquote>
+<p>sql = ‘insert into recruit_info(title,time) VALUES (%s,STR_TO_DATE(%s, “%%Y-%%m-%%d”))’</p>
 </blockquote>
 </li>
 </ol>

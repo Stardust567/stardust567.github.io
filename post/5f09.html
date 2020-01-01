@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="学习路上总会遇到各种小坑和奇妙操作，之前一直搞完就算了总觉得很可惜，就有了记录踩的各种坑的想法……未完待续…">
+<meta name="description" content="学习路上总会遇到各种坑，之前一直搞完就算了总觉得很可惜，就有了记录踩的各种坑的想法…… 未完待续（不断填坑）中……">
 <meta name="keywords" content="GAP,Tips">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Tips">
 <meta property="og:url" content="https://stardust567.github.io/post/5f09.html">
 <meta property="og:site_name" content="Star Trail">
-<meta property="og:description" content="学习路上总会遇到各种小坑和奇妙操作，之前一直搞完就算了总觉得很可惜，就有了记录踩的各种坑的想法……未完待续…">
+<meta property="og:description" content="学习路上总会遇到各种坑，之前一直搞完就算了总觉得很可惜，就有了记录踩的各种坑的想法…… 未完待续（不断填坑）中……">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-12-28T10:04:07.555Z">
+<meta property="og:updated_time" content="2020-01-01T01:01:30.982Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Tips">
-<meta name="twitter:description" content="学习路上总会遇到各种小坑和奇妙操作，之前一直搞完就算了总觉得很可惜，就有了记录踩的各种坑的想法……未完待续…">
+<meta name="twitter:description" content="学习路上总会遇到各种坑，之前一直搞完就算了总觉得很可惜，就有了记录踩的各种坑的想法…… 未完待续（不断填坑）中……">
 
 
 
@@ -402,7 +402,7 @@
                   <span class="post-meta-item-text">字数&#58;</span>
                 
                 <span title="字数">
-                  691
+                  727
                 </span>
               
 
@@ -418,7 +418,7 @@
                   <span class="post-meta-item-text">时长 &asymp;</span>
                 
                 <span title="时长">
-                  2min
+                  3min
                 </span>
               
             </div>
@@ -439,7 +439,8 @@
       
 
       
-        <p>学习路上总会遇到各种小坑和奇妙操作，之前一直搞完就算了总觉得很可惜，就有了记录<del>踩的各种坑</del>的想法……未完待续…<a id="more"></a></p>
+        <p>学习路上总会遇到各种坑，之前一直搞完就算了总觉得很可惜，就有了记录<del>踩的各种坑</del>的想法……</p>
+<p>未完待续（不断填坑）中……<a id="more"></a></p>
 <h2 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h2><ol>
 <li><p>如果你add &amp; commit过完看命令行发现自己智障了还好没push上去。</p>
 <blockquote>
@@ -493,6 +494,11 @@
 </blockquote>
 </li>
 <li><p>如果发现ERROR 2002 (HY000): Can’t connect to local MySQL server through socket ‘/var/run/mysqld/mysqld.sock’ (2)那是因为没开服务，打开服务<code>sudo service mysql start</code>即可。</p>
+</li>
+<li><p>用pymysql时候(pymysql.err.InternalError) (1366, “Incorrect string value: ‘\xE6\xAD\xA3\xE5\xB8\xB8’中文编码问题，修改即可。 </p>
+<blockquote>
+<p>mysql&gt; alter table recruit convert to character set utf8mb4; </p>
+</blockquote>
 </li>
 </ol>
 <h2 id="PostgreSQL"><a href="#PostgreSQL" class="headerlink" title="PostgreSQL"></a>PostgreSQL</h2><ol>
@@ -709,7 +715,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

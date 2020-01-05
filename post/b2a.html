@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="Star Trail">
 <meta property="og:description" content="Scrapy是一个为了爬取网站数据，提取结构性数据而编写的应用框架。 以下整理于自己业余写的简单爬虫 theGuardianNews路过朋友有兴趣可以看看。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-12-17T13:21:52.766Z">
+<meta property="og:updated_time" content="2020-01-05T13:55:29.389Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Scrapy爬虫框架">
 <meta name="twitter:description" content="Scrapy是一个为了爬取网站数据，提取结构性数据而编写的应用框架。 以下整理于自己业余写的简单爬虫 theGuardianNews路过朋友有兴趣可以看看。">
@@ -418,7 +418,7 @@
                   <span class="post-meta-item-text">时长 &asymp;</span>
                 
                 <span title="时长">
-                  9min
+                  10min
                 </span>
               
             </div>
@@ -453,7 +453,8 @@
 <p>在news目录下cmd输入<code>scrapy genspider news theguardian.com</code></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> scrapy</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">news</span><span class="params">(scrapy.Spider)</span>:</span></span><br><span class="line">    name = <span class="string">"news"</span></span><br><span class="line">    start_urls = [</span><br><span class="line">        <span class="string">'https://www.theguardian.com/'</span>,</span><br><span class="line">    ]</span><br><span class="line">    <span class="string">'''start_urls将默认执行yield scrapy.Request故可省略以下：</span></span><br><span class="line"><span class="string">    for url in urls:</span></span><br><span class="line"><span class="string">        yield scrapy.Request(url=url, callback=self.parse)</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse</span><span class="params">(self, response)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
 <p><code>parse()</code>方法通常解析响应，将抽取的数据提取为dicts，并查找要遵循的新URL并<code>Request</code>从中创建新的request()</p>
-<h2 id="提取数据"><a href="#提取数据" class="headerlink" title="提取数据"></a>提取数据</h2><p><code>::text</code>表示抽取标签内字符串；</p>
+<h2 id="提取数据"><a href="#提取数据" class="headerlink" title="提取数据"></a>提取数据</h2><p>强烈安利用<code>scrapy shell url</code>的方式先在shell里试试，这样不会运行几次就被反爬。</p>
+<p><code>::text</code>表示抽取标签内字符串，<code>::attr(title)</code>表示抽取title属性内容</p>
 <p><code>extract()</code>为一个包含数据串的list，<code>extract_first()</code>为list的第一个值</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">urls = response.css(<span class="string">'a[class="fc-item__link"]'</span>).css(<span class="string">'a[data-link-name="article"]'</span>).xpath(<span class="string">'@href'</span>).extract()</span><br><span class="line">title = response.css(<span class="string">'h1[class ="content__headline "]'</span>).css(<span class="string">'h1[itemprop="headline"]::text'</span>).extract()</span><br><span class="line">time = response.css(<span class="string">'time[itemprop = "datePublished"]::text'</span>).extract_first()</span><br><span class="line">category = response.css(<span class="string">'a[class ="subnav-link subnav-link--current-section"]::text'</span>).extract_first()</span><br><span class="line">tags = response.css(<span class="string">'a[class = "submeta__link"]::text'</span>).extract()</span><br><span class="line">content = response.css(<span class="string">'div[itemprop = "articleBody"]'</span>).css(<span class="string">'p::text'</span>).extract()</span><br></pre></td></tr></table></figure>
 <h2 id="创建Item"><a href="#创建Item" class="headerlink" title="创建Item"></a>创建Item</h2><p>打开news文件夹下的items.py创建类NewsItem</p>

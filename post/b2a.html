@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="Star Trail">
 <meta property="og:description" content="Scrapy是一个为了爬取网站数据，提取结构性数据而编写的应用框架。 以下整理于自己业余写的简单爬虫 theGuardianNews路过朋友有兴趣可以看看。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-01-05T13:55:29.389Z">
+<meta property="og:updated_time" content="2020-01-05T14:01:24.923Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Scrapy爬虫框架">
 <meta name="twitter:description" content="Scrapy是一个为了爬取网站数据，提取结构性数据而编写的应用框架。 以下整理于自己业余写的简单爬虫 theGuardianNews路过朋友有兴趣可以看看。">
@@ -481,7 +481,7 @@
 <li>设置下载延迟(2或更高)。参考 <a href="https://scrapy-chs.readthedocs.io/zh_CN/0.24/topics/settings.html#std:setting-DOWNLOAD_DELAY" target="_blank" rel="noopener"><code>DOWNLOAD_DELAY</code></a> 设置。</li>
 <li>如果可行，使用 <a href="http://www.googleguide.com/cached_pages.html" target="_blank" rel="noopener">Google cache</a> 来爬取数据，而不是直接访问站点。</li>
 <li>使用IP池。例如免费的 <a href="https://www.torproject.org/" target="_blank" rel="noopener">Tor项目</a> 或付费服务(<a href="http://proxymesh.com/" target="_blank" rel="noopener">ProxyMesh</a>)。</li>
-<li>使用高度分布式的下载器(downloader)来绕过禁止(ban)，您就只需要专注分析处理页面。这样的例子有: <a href="http://crawlera.com/" target="_blank" rel="noopener">Crawlera</a></li>
+<li>使用分布式下载器(downloader)来绕过禁止(ban)，就只需要专注分析处理页面。eg: <a href="http://crawlera.com/" target="_blank" rel="noopener">Crawlera</a></li>
 </ul>
 <h2 id="Mongodb"><a href="#Mongodb" class="headerlink" title="Mongodb"></a>Mongodb</h2><p>创建userAdminAnyDatabase角色，用来管理用户，可以通过这个角色来创建、删除用户。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span> use admin</span><br><span class="line">switched to db admin</span><br><span class="line"><span class="meta">&gt;</span> db.createUser(</span><br><span class="line">...   &#123;</span><br><span class="line">...     user: "userAdmin",//用户名</span><br><span class="line">...     pwd: "123",//密码</span><br><span class="line">...     roles: [ &#123; role: "userAdminAnyDatabase", db: "admin" &#125; ]</span><br><span class="line">...   &#125;</span><br><span class="line">... )</span><br><span class="line">Successfully added user: &#123;</span><br><span class="line">    "user" : "dba",</span><br><span class="line">    "roles" : [</span><br><span class="line">        &#123;</span><br><span class="line">            "role" : "userAdminAnyDatabase",</span><br><span class="line">            "db" : "admin"</span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>

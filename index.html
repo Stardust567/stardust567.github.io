@@ -400,7 +400,7 @@
                   <span class="post-meta-item-text">字数&#58;</span>
                 
                 <span title="字数">
-                  836
+                  908
                 </span>
               
 
@@ -438,69 +438,17 @@
 
       
         
-          
-            <h2 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h2><p>一般来说，先写Dockerfile文件并用此来创建image文件：</p>
-<blockquote>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; $ docker image build -t demo:0.0.1</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
-</blockquote>
-<p>然后生成容器：</p>
-<blockquote>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; $ docker container run -p 8000:3000 -it demo:0.0.1 /bin/bash</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
-</blockquote>
-<ul>
-<li><code>-p</code>参数：容器的 3000 端口映射到本机的 8000 端口。</li>
-<li><code>-it</code>参数：容器的 Shell 映射到当前的 Shell，然后你在本机窗口输入的命令，就会传入容器。</li>
-<li><code>demo:0.0.1</code>：image 文件的名字（如果有标签，还需要提供标签，默认是 latest 标签）。</li>
-<li><code>/bin/bash</code>：容器启动以后，内部第一个执行的命令。这里是启动 Bash，保证用户可以使用 Shell。</li>
-</ul>
-<p>不过Node 进程运行在 Docker 容器的虚拟环境里面，进程接触到的文件系统和网络接口都是虚拟的，与本机的文件系统和网络接口是隔离的，因此需要定义容器与物理机的端口映射（map）才能在本机localhost访问到。</p>
-<blockquote>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="comment"># 在本机的另一个终端窗口，查出容器的 ID</span></span><br><span class="line">&gt; $ docker container ls</span><br><span class="line">&gt; <span class="comment"># 停止指定的容器运行</span></span><br><span class="line">&gt; $ docker container <span class="built_in">kill</span> [containerID]</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
-</blockquote>
-<p>容器停止运行之后，并不会消失，用下面的命令删除容器文件。</p>
-<blockquote>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="comment"># 查出容器的 ID</span></span><br><span class="line">&gt; $ docker container ls --all</span><br><span class="line">&gt; <span class="comment"># 删除指定的容器文件</span></span><br><span class="line">&gt; $ docker container rm [containerID]</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
-</blockquote>
-<p>也可以使用<code>docker container run</code>命令的<code>--rm</code>参数，在容器终止运行后自动删除容器文件。</p>
-<blockquote>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; $ docker container run --rm -p 8000:3000 -it demo:0.0.1 /bin/bash</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
-</blockquote>
-<h2 id="Vue"><a href="#Vue" class="headerlink" title="Vue"></a>Vue</h2><p>对于Vue前端，Dockerfile位于项目的docker文件夹下，同时有nginx.conf配置文件。</p>
-<h3 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a>Dockerfile</h3><p><code>FROM nginx:alpine</code></p>
-<p><code>COPY ./nginx.conf /etc/nginx/conf.d/default.conf</code><br><code>COPY ./dist /usr/share/nginx/html</code></p>
-<p>Docker 需要依赖于一个基础镜像进行构建运行容器，我们指定nginx的alpine版本作为基础镜像。使用<code>COPY</code> 指令从Docker主机复制内容和配置文件。不过记住，需要复制的目录一定要放在 Dockerfile 文件的同级目录下。</p>
-<h4 id="nginx-conf"><a href="#nginx-conf" class="headerlink" title="nginx.conf"></a>nginx.conf</h4><blockquote>
-<p>server {</p>
-<p>  listen 80;</p>
-<p>  location / {</p>
-<p>   root /usr/share/nginx/html;</p>
-<p>   index index.html;</p>
-<p>  }</p>
-<p>}</p>
-</blockquote>
-<p>在80端口监听，访问<code>/</code>相当于访问容器的<code>/usr/share/nginx/html</code></p>
-<h3 id="shell"><a href="#shell" class="headerlink" title="shell"></a>shell</h3><p><code>cd ..</code><br><code>yarn build</code><br><code>cd docker</code><br><code>mv ../dist ./dist</code><br><code>sudo docker login --username=stardust567 registry.cn-shanghai.aliyuncs.com</code><br><code>sudo docker build -t registry.cn-shanghai.aliyuncs.com/stardust567/infoweb:$1 ./</code><br><code>sudo docker push registry.cn-shanghai.aliyuncs.com/stardust567/infoweb:$1</code></p>
-<p>在根目录编译vue项目于默认的dist文件夹下并将dist文件夹移入docker文件夹下，创建镜像并push上阿里云（$1为标签名）</p>
-<h2 id="Go"><a href="#Go" class="headerlink" title="Go"></a>Go</h2><p>对于go后端，Dockerfile文件直接位于项目根目录下。</p>
-<h3 id="Dockerfile-1"><a href="#Dockerfile-1" class="headerlink" title="Dockerfile"></a>Dockerfile</h3><p><code>FROM golang as build</code></p>
-<p><code>ENV GOPROXY=https://goproxy.cn</code></p>
-<p><code>ADD . /infoweb</code></p>
-<p><code>WORKDIR /infoweb</code></p>
-<p><code>RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o api_server</code></p>
-<p><code>FROM alpine:3.7</code></p>
-<p><code>ENV REDIS_ADDR=&quot;&quot;</code><br><code>ENV REDIS_PW=&quot;&quot;</code><br><code>ENV REDIS_DB=&quot;&quot;</code><br><code>ENV MysqlDSN=&quot;&quot;</code><br><code>ENV GIN_MODE=&quot;release&quot;</code><br><code>ENV PORT=3000</code></p>
-<p><code>RUN echo &quot;http://mirrors.aliyun.com/alpine/v3.7/main/&quot; &gt; /etc/apk/repositories &amp;&amp; \</code><br>  <code>apk update &amp;&amp; \</code><br>  <code>apk add ca-certificates &amp;&amp; \</code><br>  <code>echo &quot;hosts: files dns&quot; &gt; /etc/nsswitch.conf &amp;&amp; \</code><br>  <code>mkdir -p /www/conf</code></p>
-<p><code>WORKDIR /www</code></p>
-<p><code>COPY --from=build /infoweb/api_server /usr/bin/api_server</code><br><code>ADD ./conf /www/conf</code></p>
-<p><code>RUN chmod +x /usr/bin/api_server</code></p>
-<p><code>ENTRYPOINT [&quot;api_server&quot;]</code></p>
-<p>将当前目录下文件拷入docker并作为工作目录，在linux环境下编译go文件生成api_server文件。</p>
-<p>再生成一个基础镜像并初始化一下并创建拷贝conf文件夹，将上个镜像的api_server拷贝并赋予权限，最后在启动容器时执行api_server文件。</p>
-
-          
+          <h2 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h2><p>Docker 属于 Linux 容器的一种封装，提供简单易用的容器使用接口。它将应用程序与该程序的依赖，打包在一个文件里面。运行这个文件，就会生成一个虚拟容器。程序在这个虚拟容器里运行，就好像在真实的物理机上运行一样。
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/post/c018.html" rel="contents">
+              朕已阅 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
-    </div>
+    </p></div>
     
     
     

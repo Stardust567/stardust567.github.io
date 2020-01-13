@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="DockerDocker 属于 Linux 容器的一种封装，提供简单易用的容器使用接口。它将应用程序与该程序的依赖，打包在一个文件里面。运行这个文件，就会生成一个虚拟容器。程序在这个虚拟容器里运行，就好像在真实的物理机上运行一样。">
+<meta name="description" content="Docker 属于 Linux 容器的一种封装，提供简单易用的容器使用接口。它将应用程序与该程序的依赖，打包在一个文件里面。运行这个文件，就会生成一个虚拟容器。程序在这个虚拟容器里运行，就好像在真实的物理机上运行一样。">
 <meta name="keywords" content="GAP,Docker">
 <meta property="og:type" content="article">
 <meta property="og:title" content="docker">
 <meta property="og:url" content="https://stardust567.github.io/post/c018.html">
 <meta property="og:site_name" content="Star Trail">
-<meta property="og:description" content="DockerDocker 属于 Linux 容器的一种封装，提供简单易用的容器使用接口。它将应用程序与该程序的依赖，打包在一个文件里面。运行这个文件，就会生成一个虚拟容器。程序在这个虚拟容器里运行，就好像在真实的物理机上运行一样。">
+<meta property="og:description" content="Docker 属于 Linux 容器的一种封装，提供简单易用的容器使用接口。它将应用程序与该程序的依赖，打包在一个文件里面。运行这个文件，就会生成一个虚拟容器。程序在这个虚拟容器里运行，就好像在真实的物理机上运行一样。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-01-13T03:47:44.211Z">
+<meta property="og:updated_time" content="2020-01-13T03:50:15.207Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="docker">
-<meta name="twitter:description" content="DockerDocker 属于 Linux 容器的一种封装，提供简单易用的容器使用接口。它将应用程序与该程序的依赖，打包在一个文件里面。运行这个文件，就会生成一个虚拟容器。程序在这个虚拟容器里运行，就好像在真实的物理机上运行一样。">
+<meta name="twitter:description" content="Docker 属于 Linux 容器的一种封装，提供简单易用的容器使用接口。它将应用程序与该程序的依赖，打包在一个文件里面。运行这个文件，就会生成一个虚拟容器。程序在这个虚拟容器里运行，就好像在真实的物理机上运行一样。">
 
 
 
@@ -402,7 +402,7 @@
                   <span class="post-meta-item-text">字数&#58;</span>
                 
                 <span title="字数">
-                  908
+                  909
                 </span>
               
 
@@ -439,8 +439,8 @@
       
 
       
-        <h2 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h2><p>Docker 属于 Linux 容器的一种封装，提供简单易用的容器使用接口。它将应用程序与该程序的依赖，打包在一个文件里面。运行这个文件，就会生成一个虚拟容器。程序在这个虚拟容器里运行，就好像在真实的物理机上运行一样。<a id="more"></a></p>
-<p>一般来说，先写Dockerfile文件并用此来创建image文件：</p>
+        <p>Docker 属于 Linux 容器的一种封装，提供简单易用的容器使用接口。它将应用程序与该程序的依赖，打包在一个文件里面。运行这个文件，就会生成一个虚拟容器。程序在这个虚拟容器里运行，就好像在真实的物理机上运行一样。<a id="more"></a></p>
+<h2 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h2><p>一般来说，先写Dockerfile文件并用此来创建image文件：</p>
  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker image build -t demo:0.0.1</span><br></pre></td></tr></table></figure>
 <p>然后生成容器：</p>
  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker container run -p 8000:3000 -it demo:0.0.1 /bin/bash</span><br></pre></td></tr></table></figure>

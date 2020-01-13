@@ -484,13 +484,13 @@
 <li>使用分布式下载器(downloader)来绕过禁止(ban)，就只需要专注分析处理页面。eg: <a href="http://crawlera.com/" target="_blank" rel="noopener">Crawlera</a></li>
 </ul>
 <h2 id="Mongodb"><a href="#Mongodb" class="headerlink" title="Mongodb"></a>Mongodb</h2><p>创建userAdminAnyDatabase角色，用来管理用户，可以通过这个角色来创建、删除用户。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span> use admin</span><br><span class="line">switched to db admin</span><br><span class="line"><span class="meta">&gt;</span> db.createUser(</span><br><span class="line">...   &#123;</span><br><span class="line">...     user: "userAdmin",//用户名</span><br><span class="line">...     pwd: "123",//密码</span><br><span class="line">...     roles: [ &#123; role: "userAdminAnyDatabase", db: "admin" &#125; ]</span><br><span class="line">...   &#125;</span><br><span class="line">... )</span><br><span class="line">Successfully added user: &#123;</span><br><span class="line">    "user" : "dba",</span><br><span class="line">    "roles" : [</span><br><span class="line">        &#123;</span><br><span class="line">            "role" : "userAdminAnyDatabase",</span><br><span class="line">            "db" : "admin"</span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> use admin</span></span><br><span class="line">switched to db admin</span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> db.createUser(</span></span><br><span class="line">...   &#123;</span><br><span class="line">...     user: "userAdmin",//用户名</span><br><span class="line">...     pwd: "123",//密码</span><br><span class="line">...     roles: [ &#123; role: "userAdminAnyDatabase", db: "admin" &#125; ]</span><br><span class="line">...   &#125;</span><br><span class="line">... )</span><br><span class="line">Successfully added user: &#123;</span><br><span class="line">    "user" : "dba",</span><br><span class="line">    "roles" : [</span><br><span class="line">        &#123;</span><br><span class="line">            "role" : "userAdminAnyDatabase",</span><br><span class="line">            "db" : "admin"</span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>以上是我怕忘了自己设置过的user和pwd各位游客可以不用在意（小声）</p>
 <p>打开安装mongoDB环境的命令行，比如我之前是在Windows下安装的，故打开cmd输入<code>mongo</code>会有如下输出：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">MongoDB shell version v3.4.10-58-g9847179</span><br><span class="line">connecting to: mongodb://127.0.0.1:27017</span><br><span class="line">MongoDB server version: 3.4.10-58-g9847179</span><br></pre></td></tr></table></figure>
 <p>然后我个人安利下可视化工具adminMongo下载轻松简单（主要是界面好看清爽）</p>
 <p>打开adminMongo目录，<code>npm start</code>会有如下输入，根据提示打开<a href="http://localhost:1234即可" target="_blank" rel="noopener">http://localhost:1234即可</a></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span> admin-mongo@0.0.23 start D:\adminMongo</span><br><span class="line"><span class="meta">&gt;</span> node app.js</span><br><span class="line"></span><br><span class="line">adminMongo listening on host: http://localhost:1234</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> admin-mongo@0.0.23 start D:\adminMongo</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> node app.js</span></span><br><span class="line"></span><br><span class="line">adminMongo listening on host: http://localhost:1234</span><br></pre></td></tr></table></figure>
 <p>打开页面后，connection名字仅供参考（随便设）MongoDB连接字符串的格式可以是：<code>mongodb://&lt;user&gt;:&lt;password&gt;@127.0.0.1:&lt;port&gt;/&lt;db&gt;</code>指定<db>级别是可选的，一般<code>mongodb://:@127.0.0.1:27017</code>即可。<br>有关MongoDB连接字符串的更多信息，请参阅<a href="http://docs.mongodb.org/manual/reference/connection-string/" target="_blank" rel="noopener">正式的MongoDB文档</a>。</db></p>
 <h2 id="写入依赖"><a href="#写入依赖" class="headerlink" title="写入依赖"></a>写入依赖</h2><p>打开项目所在文件目录，然后打开命令行输入即可得到requirements.txt</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pipreqs ./ --encoding=utf-8</span><br></pre></td></tr></table></figure>
@@ -624,7 +624,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -635,7 +635,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -646,7 +646,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">27</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

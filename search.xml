@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[docker]]></title>
+    <url>%2Fpost%2Fc018.html</url>
+    <content type="text"><![CDATA[Docker一般来说，先写Dockerfile文件并用此来创建image文件： 12&gt; $ docker image build -t demo:0.0.1&gt; 然后生成容器： 12&gt; $ docker container run -p 8000:3000 -it demo:0.0.1 /bin/bash&gt; -p参数：容器的 3000 端口映射到本机的 8000 端口。 -it参数：容器的 Shell 映射到当前的 Shell，然后你在本机窗口输入的命令，就会传入容器。 demo:0.0.1：image 文件的名字（如果有标签，还需要提供标签，默认是 latest 标签）。 /bin/bash：容器启动以后，内部第一个执行的命令。这里是启动 Bash，保证用户可以使用 Shell。 不过Node 进程运行在 Docker 容器的虚拟环境里面，进程接触到的文件系统和网络接口都是虚拟的，与本机的文件系统和网络接口是隔离的，因此需要定义容器与物理机的端口映射（map）才能在本机localhost访问到。 12345&gt; # 在本机的另一个终端窗口，查出容器的 ID&gt; $ docker container ls&gt; # 停止指定的容器运行&gt; $ docker container kill [containerID]&gt; 容器停止运行之后，并不会消失，用下面的命令删除容器文件。 12345&gt; # 查出容器的 ID&gt; $ docker container ls --all&gt; # 删除指定的容器文件&gt; $ docker container rm [containerID]&gt; 也可以使用docker container run命令的--rm参数，在容器终止运行后自动删除容器文件。 12&gt; $ docker container run --rm -p 8000:3000 -it demo:0.0.1 /bin/bash&gt; Vue对于Vue前端，Dockerfile位于项目的docker文件夹下，同时有nginx.conf配置文件。 DockerfileFROM nginx:alpine COPY ./nginx.conf /etc/nginx/conf.d/default.confCOPY ./dist /usr/share/nginx/html Docker 需要依赖于一个基础镜像进行构建运行容器，我们指定nginx的alpine版本作为基础镜像。使用COPY 指令从Docker主机复制内容和配置文件。不过记住，需要复制的目录一定要放在 Dockerfile 文件的同级目录下。 nginx.conf server { listen 80; location / { root /usr/share/nginx/html; index index.html; } } 在80端口监听，访问/相当于访问容器的/usr/share/nginx/html shellcd ..yarn buildcd dockermv ../dist ./distsudo docker login --username=stardust567 registry.cn-shanghai.aliyuncs.comsudo docker build -t registry.cn-shanghai.aliyuncs.com/stardust567/infoweb:$1 ./sudo docker push registry.cn-shanghai.aliyuncs.com/stardust567/infoweb:$1 在根目录编译vue项目于默认的dist文件夹下并将dist文件夹移入docker文件夹下，创建镜像并push上阿里云（$1为标签名） Go对于go后端，Dockerfile文件直接位于项目根目录下。 DockerfileFROM golang as build ENV GOPROXY=https://goproxy.cn ADD . /infoweb WORKDIR /infoweb RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o api_server FROM alpine:3.7 ENV REDIS_ADDR=&quot;&quot;ENV REDIS_PW=&quot;&quot;ENV REDIS_DB=&quot;&quot;ENV MysqlDSN=&quot;&quot;ENV GIN_MODE=&quot;release&quot;ENV PORT=3000 RUN echo &quot;http://mirrors.aliyun.com/alpine/v3.7/main/&quot; &gt; /etc/apk/repositories &amp;&amp; \ apk update &amp;&amp; \ apk add ca-certificates &amp;&amp; \ echo &quot;hosts: files dns&quot; &gt; /etc/nsswitch.conf &amp;&amp; \ mkdir -p /www/conf WORKDIR /www COPY --from=build /infoweb/api_server /usr/bin/api_serverADD ./conf /www/conf RUN chmod +x /usr/bin/api_server ENTRYPOINT [&quot;api_server&quot;] 将当前目录下文件拷入docker并作为工作目录，在linux环境下编译go文件生成api_server文件。 再生成一个基础镜像并初始化一下并创建拷贝conf文件夹，将上个镜像的api_server拷贝并赋予权限，最后在启动容器时执行api_server文件。]]></content>
+      <categories>
+        <category>Docker</category>
+      </categories>
+      <tags>
+        <tag>GAP</tag>
+        <tag>Docker</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[Tips]]></title>
     <url>%2Fpost%2F5f09.html</url>
     <content type="text"><![CDATA[学习路上总会遇到各种坑，之前一直搞完就算了，总觉得很可惜，就有了记录踩的各种坑的想法…… 未完待续（不断填坑）中…… Git 如果你add &amp; commit过完看命令行发现自己智障了还好没push上去。 git reset –mixed HEAD^ 如果commit&amp;push后error: src refspec matser does not match any. git push –set-upstream origin master Python 打开项目所在文件目录导出python库依赖requirements.txt pipreqs ./ –encoding=utf-8 这样之后有人需要用这个项目的时候直接打开命令行输入以下即可： pip install -r requirements.txt Go 添加 Go Modules Replace的时候，replace配置项的路径只能是~根目录开头，.当前目录开头，..上级目录开头，这点在WSL上就还是安利后两者，毕竟在根目录下VScode估计找不到文件夹orz 为变量给予附属属性json，这样子在c.JSON(c *gin.Context)的时候就会自动转换格式，非常的便利。 1Name string `json:"name"` Docker Windows下用docker端口进行映射，但打开localhost:port无法访问对应的服务。 因为docker是运行在Linux上的，在Windows中运行实际上还是在Windows下Linux环境中运行的docker。即服务中使用的localhost指的是这个Linux环境的地址，而非宿主环境Windows。我们可以通过命令docker-machine ip defaul找到这个Linux环境的IP地址，一般是192.168.99.100（比如我） MySQL 如果是WSL的话，MySQL被设计为可以使用大写字母跨平台正常工作，其中数据库名称/表名和/或列为小写字母可能会给操作系统带来麻烦，并且可能会生成相同的二进制表文件。简单点，会出bug不建议WSL建议直接windows上MySQL，如果真的想WSL的话（比如我），当Cannot stat file /proc/1/fd/5: Operation not permitted时，不要慌，重启下bash然后输入： sudo service mysql start sudo dpkg –configure -a 然后你可能会像我一样发现Error: Access denied for user ‘root‘@’localhost’莫慌： sudo mysql ALTER USER ‘root‘@’localhost’ IDENTIFIED WITH mysql_native_password BY ‘root’; 这样再进入的时候usr:root, psd:root 就ok了 mysql -u root -p 接下来就可以愉快地创建新用户，然后赋予并刷新权限了： mysql &gt;CREATE USER ‘newuser‘@’localhost’ IDENTIFIED BY ‘password’; mysql&gt; GRANT ALL PRIVILEGES ON . TO ‘newuser‘@’localhost’; mysql &gt;FLUSH PRIVILEGES; 如果发现ERROR 2002 (HY000): Can’t connect to local MySQL server through socket ‘/var/run/mysqld/mysqld.sock’ (2)那是因为没开服务，打开服务sudo service mysql start即可。 用pymysql时候(pymysql.err.InternalError) (1366, “Incorrect string value: ‘\xE6\xAD\xA3\xE5\xB8\xB8’中文编码问题，修改即可。 mysql&gt; alter table recruit convert to character set utf8mb4; 用pymysql时候，想借MySQL函数STR_TO_DATE传DATE类型数据，记得年月日用%%而不是%： sql = ‘insert into recruit_info(title,time) VALUES (%s,STR_TO_DATE(%s, “%%Y-%%m-%%d”))’ PostgreSQL 打开pgAdmin如果出现无法连接并要求输入postgres密码的情况，请打开任务管理器&gt;服务，找到并启动postgresql-x64-10即可。 Redis WSL下安装Redis的话，要记得修改/etc/redis/redis.conf这个文件，将supervised no修改为supervised systemd即可，ubuntu用systemd初始系统。 如果连不上，第一件事就是启动服务试试，sudo service redis-server start Vue.js 刚开始我在修改代码中途发现自己没下vue-router强停后npm install结果errno -4048 npm ERR! syscall rename，解决方法npm cache clean --force后npm install即可。 Terminal 用tree直接导出当前目录下的目录结构： tree -L 2 &gt; test.txt 不想每次都输服务器密码（懒）怎么办： ssh-copy-id USER_NAME@IP_ADDRESS]]></content>
@@ -112,9 +124,9 @@
         <category>恋爱物语</category>
       </categories>
       <tags>
+        <tag>大二</tag>
         <tag>恋爱物语</tag>
         <tag>随记</tag>
-        <tag>大二</tag>
       </tags>
   </entry>
   <entry>
@@ -125,9 +137,9 @@
         <category>恋爱物语</category>
       </categories>
       <tags>
+        <tag>大二</tag>
         <tag>恋爱物语</tag>
         <tag>随记</tag>
-        <tag>大二</tag>
       </tags>
   </entry>
   <entry>

@@ -70,7 +70,7 @@
 
 
 
-  <meta name="keywords" content="大一,茶美学,">
+  <meta name="keywords" content="GAP,Go,6.824,">
 
 
 
@@ -81,18 +81,20 @@
 
 
 
-<meta name="description" content="喜欢，从来都是简单随性的，它可能是雨天里脚踏在水坑上清脆的回响和扬起奇妙弧度的水花；也可能是夏日里偶然撞见的白色衬衫和“刺啦”一声打开的汽水罐……这些，是生活在这青葱岁月的我们所定义的喜欢，而在唐宋元明清，一扇又一扇翩跹舞开的帘幕下藏着的，是那个时代的人们心底最敏感、最柔软却又最热烈的喜欢——诗词。">
-<meta name="keywords" content="大一,茶美学">
+<meta name="description" content="结合MIT6.824-2018的各个lab来简单写下学习分布式系统的学习心得。">
+<meta name="keywords" content="GAP,Go,6.824">
 <meta property="og:type" content="article">
-<meta property="og:title" content="方寸间的茶，骨子里的美">
-<meta property="og:url" content="https://stardust567.github.io/post/62922.html">
+<meta property="og:title" content="Go与分布式">
+<meta property="og:url" content="https://stardust567.github.io/post/c51c.html">
 <meta property="og:site_name" content="Star Trail">
-<meta property="og:description" content="喜欢，从来都是简单随性的，它可能是雨天里脚踏在水坑上清脆的回响和扬起奇妙弧度的水花；也可能是夏日里偶然撞见的白色衬衫和“刺啦”一声打开的汽水罐……这些，是生活在这青葱岁月的我们所定义的喜欢，而在唐宋元明清，一扇又一扇翩跹舞开的帘幕下藏着的，是那个时代的人们心底最敏感、最柔软却又最热烈的喜欢——诗词。">
+<meta property="og:description" content="结合MIT6.824-2018的各个lab来简单写下学习分布式系统的学习心得。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-20T03:28:08.237Z">
+<meta property="og:image" content="https://i.loli.net/2020/02/16/QYdfgVnj4aubP6s.png">
+<meta property="og:updated_time" content="2020-02-16T15:06:37.683Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="方寸间的茶，骨子里的美">
-<meta name="twitter:description" content="喜欢，从来都是简单随性的，它可能是雨天里脚踏在水坑上清脆的回响和扬起奇妙弧度的水花；也可能是夏日里偶然撞见的白色衬衫和“刺啦”一声打开的汽水罐……这些，是生活在这青葱岁月的我们所定义的喜欢，而在唐宋元明清，一扇又一扇翩跹舞开的帘幕下藏着的，是那个时代的人们心底最敏感、最柔软却又最热烈的喜欢——诗词。">
+<meta name="twitter:title" content="Go与分布式">
+<meta name="twitter:description" content="结合MIT6.824-2018的各个lab来简单写下学习分布式系统的学习心得。">
+<meta name="twitter:image" content="https://i.loli.net/2020/02/16/QYdfgVnj4aubP6s.png">
 
 
 
@@ -122,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="https://stardust567.github.io/post/62922.html">
+  <link rel="canonical" href="https://stardust567.github.io/post/c51c.html">
 
 
 
 
 
-  <title>方寸间的茶，骨子里的美 | Star Trail</title>
+  <title>Go与分布式 | Star Trail</title>
   
 
 
@@ -296,7 +298,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://stardust567.github.io/post/62922.html">
+    <link itemprop="mainEntityOfPage" href="https://stardust567.github.io/post/c51c.html">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Stardust567">
@@ -313,7 +315,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">方寸间的茶，骨子里的美</h1>
+          <h1 class="post-title" itemprop="name headline">Go与分布式</h1>
         
 
         <div class="post-meta">
@@ -325,8 +327,8 @@
               
                 <span class="post-meta-item-text">写于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-24T14:08:16+08:00">
-                2018-04-24
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-16T13:59:44+08:00">
+                2020-02-16
               </time>
             
 
@@ -348,8 +350,8 @@
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/随记/" itemprop="url" rel="index">
-                    <span itemprop="name">随记</span>
+                  <a href="/categories/Go/" itemprop="url" rel="index">
+                    <span itemprop="name">Go</span>
                   </a>
                 </span>
 
@@ -366,8 +368,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/post/62922.html#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/post/62922.html" itemprop="commentCount"></span>
+                <a href="/post/c51c.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/post/c51c.html" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -375,7 +377,7 @@
 
           
           
-             <span id="/post/62922.html" class="leancloud_visitors" data-flag-title="方寸间的茶，骨子里的美">
+             <span id="/post/c51c.html" class="leancloud_visitors" data-flag-title="Go与分布式">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -402,7 +404,7 @@
                   <span class="post-meta-item-text">字数&#58;</span>
                 
                 <span title="字数">
-                  4.6k
+                  2.1k
                 </span>
               
 
@@ -418,7 +420,7 @@
                   <span class="post-meta-item-text">时长 &asymp;</span>
                 
                 <span title="时长">
-                  15min
+                  9min
                 </span>
               
             </div>
@@ -439,36 +441,33 @@
       
 
       
-        <p>喜欢，从来都是简单随性的，它可能是雨天里脚踏在水坑上清脆的回响和扬起奇妙弧度的水花；也可能是夏日里偶然撞见的白色衬衫和“刺啦”一声打开的汽水罐……这些，是生活在这青葱岁月的我们所定义的喜欢，而在唐宋元明清，一扇又一扇翩跹舞开的帘幕下藏着的，是那个时代的人们心底最敏感、最柔软却又最热烈的喜欢——诗词。<a id="more"></a>便如茶，元稹的“铫煎黄蕊色，婉转曲尘花”是喜欢；高鹗的“瓦铫煮春雪，淡香生古瓷”是喜欢；刘禹锡的“骤雨松声入鼎来，白云满碗花徘徊”是喜欢。每个人的喜欢都是不同的，一千种茶，在品茶者眼里是一千种人生、一千种欢喜。这接下来，我就借用朱海燕老师在《中国茶美学研究》里的一篇文章——《唐宋诗词中茶之“美”的刻画》，浅述一下我个人对于“茶”与“美”的认知与看法，以及流淌在诗词中的那一份微醉的喜欢。</p>
-<h2 id="茶形色之美"><a href="#茶形色之美" class="headerlink" title="茶形色之美"></a>茶形色之美</h2><ol>
-<li>细如粟粒柔如蕊,肥如云腴壮似笋——茶芽之美</li>
-<li>枪旗鸟爪劲姿爽,鹰嘴雀舌展芽叶——芽梢之美</li>
-<li>圆如皓月润似玉,方比珪璧芳胜兰——团饼茶之美</li>
+        <p>结合MIT6.824-2018的各个lab来简单写下学习分布式系统的学习心得。<a id="more"></a></p>
+<h1 id="MapReduce"><a href="#MapReduce" class="headerlink" title="MapReduce"></a>MapReduce</h1><h2 id="MapReduce-Paper"><a href="#MapReduce-Paper" class="headerlink" title="MapReduce Paper"></a>MapReduce Paper</h2><h3 id="MapReduce-Execution"><a href="#MapReduce-Execution" class="headerlink" title="MapReduce Execution"></a>MapReduce Execution</h3><p><img src="https://i.loli.net/2020/02/16/QYdfgVnj4aubP6s.png" alt="Execution Overview"></p>
+<ol>
+<li>用户程序调用 MapReduce 库将 Input files 切成 M 个数据片度，然后用户程序在机群中 fork 大量程序副本。</li>
+<li>Fork 的副本中有一个特殊的程序 master，其它都是 worker 程序，由 master 分配任务。有 M 个 Map Task 和 R 个 Reduce Task 将被分配，master 将一个 Map/Reduce Task 分配给一个空闲的 worker。</li>
+<li>被分配 map task 的 worker 读取相关的输入数据片段并解析出 key/value pair，然后把 key/value pair 传递给用户自定义的 Map 函数，由 Map 函数生成并输出中间 key/value pair，并缓存在内存中。 </li>
+<li>缓存中的 key/value pair 通过分区函数分成 R 个区域，之后周期性的写入本地磁盘。缓存的 key/value pair 在本地磁盘上的存储位置将被回传给 master，由 master 负责把这些存储位置再传送给 Reduce worker。</li>
+<li>当 Reduce worker 接收到 master 发来的数据存储位置信息后，使用 RPC 从 Map worker 所在主机的磁盘上读取这些缓存数据。当 Reduce worker 读取了所有的中间数据后，对 key 排序后使具有相同 key 值的数据聚合在一起。由于许多不同的 key 值会映射到相同的 Reduce 任务上，因此必须进行排序。</li>
+<li>Reduce worker 遍历排序后的中间数据，对于每一个唯一的中间 key 值，Reduce worker 将这 个 key 值和它相关的中间 value 值的集合传递给用户自定义的 Reduce 函数。Reduce 函数的输出被追加到所属分区的输出文件。</li>
+<li>当所有的 Map 和 Reduce 任务都完成之后，master 唤醒用户程序。此时在用户程序里对 MapReduce 的调用才返回。 在成功完成任务之后，MapReduce 的输出存放在 R 个输出文件中（对应每个 Reduce 任务产生一个输出文件，文件名由用户指定）</li>
 </ol>
-<p>茶芽，刚吐露的嫩芽无处不炫耀着她娇嫩诱人的初生姿态，这理当是茶这一植株在其生长的一生中最欢愉最激情向上的阶段，这个阶段表现最突出的便是生命力——那种绿的逼人的翠色，让人生怕它会在你转身的那一刹那“噗啦”一声滴下来，令你不得不着迷似的定在那里，移不开视线。而作为人类文明演变发展的长河中，思绪最为敏感的那一圈人中，在我国唐宋时期，体现的最为明显的便是或风花雪月，或忧国忧民的诗人。他们用他们传世的诗、词、曲勾画着他们当时心底那份敏感纯粹被挑拨得激动不已的时刻。这是个感性的区域，从来就没有个方程中唯一解这样让人觉着安稳，却不禁扫兴的说法。每个人在那一瞬所呈现的感觉是不一样的，同时也是最能展示和区分他们波澜壮阔的内心世界的东西，那就是——想象。想象，这是自人类出生开始就赐予人一生的珍贵的天赋：它是天生的，孩子的想象往往最为干净纯粹，包含了最初始最接近“0”的美好烂漫，而随着世俗的沾染，想象这种东西渐渐被束缚，被怀疑，被丢弃……我个人，或者说，在我这个时期，刚感受着离家两千公里的大一生活的我，愈发地觉得，失去了想象的人，是最为可悲的，因为这应是一个不可逆的过程。但是在这个社会转型的大过渡时期，一个大弯甩过来，荡平了多少人纯真，不切实际却美好异常的想象；甩掉多少人那心底小小的仅存的遵守和天真；一个弯所圈出来的怀疑与自我否定，与其说是辩证性地思考，倒不如说是失去自信地辩解。当桌上的茶叶全部被速溶咖啡取代的时候，不敢说这种前进我能有多讨厌，但我敢说我绝不会喜欢。我更希望的是另一种前进，一种精神上或者说人性上的前进，给我的不再是昂不起的头颅和直不起的脊梁的感觉，不再是没有自信没有底气却还要不断争辩的无力与腻歪，而是一种像茶芽一般喷涌着惊人生命力的饱满姿态，那种骨子里的自信、自知与谦和，真正做到心细如粟，心柔如蕊；神壮似笋，肥如云腴。同时，想象也是后天所培育发展的，一个人所能想象出的事物，起源于这个人从他出生至今所经历的事情，所感悟的美好，所体会的失落，所思考的问题，所接触的人群，所读过的书籍……这一切的一切所综合起来构成了他想象的基石。所以在那个信息不流通的年代，他们游山玩水，他们体验人生；他们“不羡朝入省”，他们“不羡慕登台”；他们感悟不同的风土人情，他们把玩不同的文物古籍；这样的他们用他们一生的所见所闻，所思所感筑成了这座瑰丽的想象宫殿，供我们观赏感叹，找寻在快节奏下的闹市里心灵的一片净土，甚至说是归宿。</p>
-<p>接下来，就是两种不同方向的意象美，芽梢和团饼茶。芽梢较尖，一般所代表的是一种灵动的个性；而饼茶较为圆润，讲究的是一种温润的淳善。</p>
-<p>枪旗、鸟爪、鹰嘴、雀舌，古人对芽梢的形容无一不将浓郁的生命力赋给了这小巧的尖角，擦亮了一抹惊艳的生命色彩。明明只有两字，却极鲜明地将芽梢的那种“尖”劲儿脆生生地呈现在我们的眼中，茶叶本身的形状只是种客观存在的形态，并不包含融在这两个字里的“灵魂”，无疑，这迸发出强烈生机与共鸣的感受源于诗人自身的灵魂，在诗人的一字一句中，融入了他对于这个世界自然而又感性的认识，每一种感性的认知都单纯而又坦诚地给读者打开了一扇了解作者根源的门，他幼年的纯真或残酷，他少年的幻想或青涩，他成年的欢愉或失落，构成了他对这个自然世界的认知，一字一句中我们都能看见掠过的只属于他的浮窗剪影。由此，在我个人看来，感性的或者说个性的创作是会流传不朽，待人发现的。这样的创作会勾起读者的情绪与回忆，人只有对自己共鸣的作品才会真正的爱不释手，产生一种微妙的专有感与占有欲，先不论对错与后续的影响，但是这个作品无疑会因为这样微妙的感情而传递下去。而这之中传承的不仅是茶叶神态中的神韵，更有一种流淌在华夏血脉里，刻进骨子里的精神，如茶一般，千姿百态，各有各的个性与傲骨。</p>
-<p>“圆如皓月润似玉,方比珪璧芳胜兰”，说来这和前两种有着本质上的区别。前两种是茶自然的、原生态的情况，如果说这前两种是原汁原味的生命力的展现，那么，团饼茶就是体现我们中华先辈劳动智慧与蕙质兰心的引喻了。若是按我的想象来看，这团饼茶所代表的，就是古人对“君子”的美好向往与期待了：“圆如皓月润似玉”，象征着君子的温润如玉，包容沉稳；而“方比珪璧芳胜兰”，则象征着君子的清远宁人，秀智兰香。在朱海燕女士的原文中有提到：“形色产生美感其根源是人类在社会实践时对自然形状(包括运动、结构)的把握和运用的过程中，使形色与主体知觉结构的相互适应，从而引起审美愉悦。品读茶诗时，可以感受诗人们对茶形色的审美情趣，而形象的刻画更能激发人们无尽的遐想：麦粒的纤小，枪旗的英姿，雀舌的灵巧，琼蕊的秀丽，圭璧的圆润，紫的高贵、绿的生机、白的纯洁、黄的温馨、黑的凝重，每个意象仿佛就是一幅精妙绝伦的工笔画。”可以说，在茶的形色之美上，古人的诗词将自己的美好祝愿与自身情感全部寓情于“茶”，在品茶的形色中感受诗词的妙韵，在品读诗词中欣赏着茶的形色，将声色与想象融于美之中，清幽的茶与沉香的诗，相互交织构成了现在我们所品味研究的“茶美学”。</p>
-<h2 id="茶香之美"><a href="#茶香之美" class="headerlink" title="茶香之美"></a>茶香之美</h2><ol>
-<li>香飘九畹清若兰,幽薄芳草得天真——茶香之清幽美</li>
-<li>疏香皓齿有余味,更觉鹤心通杳冥——茶香之悠远美</li>
-<li>风流气味未染尘,不是人间香味色——茶香之脱俗美</li>
-</ol>
-<p>“茶的香气,分为真香和混和香两种,真香是茶自身所具有的香味,混和香是加入香味物与茶的真香混合而形成。不同的茶香各有区别,或甜润馥郁,或清幽淡雅,或高爽持久,或鲜灵沁心,因茶之别而变化无穷。”</p>
-<p>著名茶叶专家施兆鹏在其主编的《茶叶审评与检验》一书中，将成品茶香气归纳为九种香气类型：毫香型、嫩香型、花香型、果香型、清香型、甜香型、火香型、陈醇香型、松烟香型。正是因为这些纷繁的香气，些微的不同往往会带给品茶者全然不同的崭新感受，这也是茶香的无穷魅力所在，引起文人墨客的争相赞颂。而除此之外，诗人当时所处的环境和心境对茶香的品味也有很大的影响，想来，吵杂市井里的茶香和幽静庭院里的茶香，给人的感受是绝对不同的。“花笺茗碗香千载，云影波光活一楼”茶香是一个很玄妙的东西，用嗅觉触发想象，便比“形色”来得更为飘忽。</p>
-<p>唐代诗人李德裕描写茶香为：“松花飘鼎泛，兰气入瓯轻”。“轻”字形象地表达如兰花般极为清雅的茶香随着茶的烹煮而逐渐散发出来的过程。“香于九畹芳兰气”，茶香清幽如兰，不浓烈，不艳俗，香虽清淡却能随风飘送至数里之外，如此清风傲骨的象征，又有哪一个文人雅士能不受她的诱惑?在我家乡有种被称作“汀溪兰香”的茶叶，因为在生长过程中长期与空谷幽兰相伴随生长，便渐渐浸染上了兰花的那一股幽香，颇受一些文人雅士所推崇，当然也因此这种茶叶的珍品售价极高。先不论其他，就单单这一点便不难看出品茗者们对于兰香是何等的推崇，大概都是向往着《离骚》中“余既滋兰之九畹兮，又树蕙之百亩”生活的吧。</p>
-<p>朱海燕老师在原文中所引用的这句“疏香皓齿有余味，更觉鹤心通杳冥”，取自于温庭筠的《西陵道士茶歌》，原诗这样写道：</p>
-<p>乳窦溅溅通石脉，绿尘愁草春江色。 涧花入井水味香，山月当人松影直。<br>仙翁白扇霜鸟翎，拂坛夜读黄庭经。 疏香皓齿有余味，更觉鹤心通杳冥。</p>
-<p>茶香悠远，这份悠远如烟般萦绕在诗人温庭筠的皓齿舌尖，逐渐在精神上更加地贴近一种通明的无为而治的感觉，在诗人主观上与心中所念的“道”相为贴近。按照我个人的理解，“道法自然”，道修的是自身与自然的连接，并不主张用世间的条条框框来束缚自己。他们的随性而为，他们的无为而治，不是说随意、无节制地放出自身的欲望破坏人常纲理，他们的心不是随意散乱的，而更偏向于一种浑圆透彻的状态，在我个人的想象中，便是种“太极”的姿态，周而往返、浑圆剔透。他们所修的是一种智慧的自然，他们去探寻自然而不改变自然，故因此，与自然更加亲近。这或许也是为什么道家和儒家一样推崇着茶道，甚至有着“以茶入道”的说法与故事。也不知道是茶本身就如此玄妙，还是在人为赋予自身的幻想与寄托之后，才那么地令人着迷。但不管怎样，茶，早已成为我国传统文化一面无可或缺的明镜，映照着华夏五千年的历史变迁与文化发展。</p>
-<h2 id="茶味之美"><a href="#茶味之美" class="headerlink" title="茶味之美"></a>茶味之美</h2><ol>
-<li>流华无尘净肌骨,疏瀹清味涤心源——茶味之清美</li>
-<li>琼蕊甘露贵流霞,灵芽云液胜醍醐——茶味之甘美</li>
-<li>茗饮醇滑齿颊香,消尽酲醲爽气来——茶味之爽美</li>
-<li>香茗一盏甘与苦,人生百味寓其中——“味外之味”</li>
-</ol>
-<p>“清”，这个在中国古代美学上留下浓墨重彩的一笔的字。“清”字，《说文解字》之中将其释为“澄水之貌”，意指水澄澈明净的样子。茶味之清，体现于淡。这种淡不是苍白的寡淡，而是“清淡”与“轻淡”。借用朱海燕老师在《中国茶美学研究》中所说，“其味觉是丰富的，味感是微妙的”。我们为了感受清美不妨设想一下，说到清，想到了什么？清雨？这个词最先映入我的脑海，接着便是随之而来的意想。清雨？为什么不是微雨？“落花人独立，微雨燕双飞”第一眼见到小山的词，便觉惊艳，不是李商隐那般华美的惊艳，而是扑面而来的清爽与干净利索。但微雨成丝，连绵不绝，与心中所期待的清美相比，总觉着是差了些味道。不知为何，说到“清雨”，总会有花浮现，大概是那句“清明时节雨纷纷”在脑中洗脑般的刻印所致。“清明时节雨纷纷”的清雨，是带着踏青的美好与春日的生机的。或者说，是带着我对于春雨踏青的印象。在玉珠连丝的春日，伴着雨线划过脸颊的清凉，看着雨水洗过的绿色，陷在其中的我大概分不出到底是“青”还是“清”，但这里的一切和我脑海中浮现的一切，一定都是“美”的概念作为我内心里的某种具象化。</p>
-<p>“甘”这一点自不必说，想来在大家心中甜美都是很幸福很美好的存在。而对于茶叶而言，茶味之甘美却又与我们正常情况下所提及的甘美不同，我们在日常生活中喜爱甜食，用化学的眼光来看待是因为甜食中的糖分在于人体接触后发生化学变化造成大量的多巴胺，通过不断的吸收与溶解，多巴胺通过血管流至全身，最后刺激神经致使人体产生亢奋状态，这可能也是我对巧克力那么痴迷的原因之一吧。而茶味的甘美是在于它的回味，先苦后甜，而这种苦后回甘之味才是受古代文人雅士所推崇的，这倒也符合我们中国传统的文化思想观念与美德。“爽”，这里的爽同样和我们现在常说的有些区别，这里所表示的更多是“神清气爽”，现在我们也常听到长辈们说关于醒酒茶的功效，虽然现代科学证明了用茶醒酒是错误的做法，但这也是古代人将茶作为提神醒脑的良药的佐证。按文中所说便是“好茶往往滋味醇爽，入口润滑而不紧涩，饮过之后齿颊留香，提神醒脑，畅意不已，唐宋时任将这种让人通体舒泰的美感谓之‘爽’”。而所谓“味外之味”，简单来说就是借品茶来品味人生。比如苏轼一生坎坷，在“乌台诗案”之后，在儒、道、佛思想的共同影响之下，有着复杂的处事观念，既有儒家忧国忧民的入世之心，又有佛家放空自我的出世之心，同时又在道家的影响下向往自然，寻求与自然的超脱。这三种思想集中在一个人身上，不由显得矛盾而又分裂。为了调和改善这种情况，他把品茶作为沟通自然、内省自性、品味人生、超越自我的载体，将不同的思想通过“茶”这一纽带相互串连。也因如此，茶渐渐成为了他生命中寄思不可缺少的物品。这便是茶之“味”，茶之美的某种体现吧。</p>
-<p>茶叶，在唐宋词人的眼中，是寓于自身丰沛情感的寄托，是自己内心世界的写照。茶如明镜，一滴茶水滴落下去，“叮”地激起一圈水纹，荡起一层清绿，随之平静无褶。诗人走到茶水边，先看上那么几眼，看看茶水中荡漾的自己的“形色”，然后不用动上鼻尖，便会闻到自心里溢出来的“茶香”，接着便一头栽进这茶水里，让茶水洗涤着自己的身子和心，去体会最回归与最纯粹的“茶味”，纯粹到令人艳羡。这些，便构成了唐宋诗词中对于“茶”之美的刻画。而这些美，是需要寻着诗词品赏茶、感受茶，将茶带进自己的人生与思考才能真正体会到的美学。希望看到这篇文章的人，都能尝试着去体会中国的茶文化，去感悟这之中蕴藏着的茶美学。</p>
+<h3 id="MapReduce-Refinements"><a href="#MapReduce-Refinements" class="headerlink" title="MapReduce Refinements"></a>MapReduce Refinements</h3><h4 id="Partitioning-Function"><a href="#Partitioning-Function" class="headerlink" title="Partitioning Function"></a>Partitioning Function</h4><p>使用 MapReduce 时通常会指定 Reduce 任务和 Reduce 任务输出文件的数量（R）。我们在中间 key 上使用分区函数来对数据进行分区，再输入到后续任务执行进程。缺省的分区函数是使用 hash 方法，比如 <code>hash(key) mod R</code> 进行分区。</p>
+<h4 id="Ordering-Guarantees"><a href="#Ordering-Guarantees" class="headerlink" title="Ordering Guarantees"></a>Ordering Guarantees</h4><p>确保在给定的分区中，中间 key/value pair 数据的处理顺序是按照 key 值增量顺序处理的。这样的顺序保证对每个分成生成一个有序的输出文件，这对于需要对输出文件按 key 值随机存取的应用非常有意义， 对在排序输出的数据集也很有帮助。</p>
+<h4 id="Combiner-Function"><a href="#Combiner-Function" class="headerlink" title="Combiner Function"></a>Combiner Function</h4><p>在某些情况下，Map 函数产生的中间 key 值的重复数据会占很大的比重，并且，用户自定义的 Reduce 函数满足结合律和交换律。MapReduce 允许用户指定一个可选的 combiner 函数，combiner 函数首先在本地将这些记录进行一次合并，然后将合并的结果再通过网络发送出 去。 Combiner 函数在每台执行 Map 任务的机器上都会被执行一次。一般情况下，Combiner 和 Reduce 函数是 一样的，唯一区别是 Reduce 函数的输出被保存在最终的输出文件里，而 Combiner 函数的输出被写到中间文件里，然后被发送给 Reduce 任务。 部分的合并中间结果可以显著的提高一些 MapReduce 操作的速度。</p>
+<h4 id="Input-and-Output-Types"><a href="#Input-and-Output-Types" class="headerlink" title="Input and Output Types"></a>Input and Output Types</h4><p>MapReduce 库支持几种不同的格式的输入数据。比如，文本模式的输入数据的每一行被视为是一个 key/value pair。key 是文件的偏移量，value 是那一行的内容。另外一种常见的格式是以 key 进行排序来存储的 key/value pair 的序列。每种输入类型的实现都必须能够把输入数据分割成数据片段，该数据片段能够由单独的 Map 任务来进行后续处理。同时也可以通过提供一个简单的 Reader 接口实现就能够支持一个新的输入类型。</p>
+<h2 id="MapReduce-Lab"><a href="#MapReduce-Lab" class="headerlink" title="MapReduce Lab"></a>MapReduce Lab</h2><h3 id="Part-I-Map-Reduce-input-and-output"><a href="#Part-I-Map-Reduce-input-and-output" class="headerlink" title="Part I: Map/Reduce input and output"></a>Part I: Map/Reduce input and output</h3><h4 id="doMap"><a href="#doMap" class="headerlink" title="doMap()"></a>doMap()</h4><p><em>doMap manages one map task</em>：读取一个输入文件inFile，并为改文件内容调用用户自定义的mapF()，最后将mapF()的输出拆分到nReduce个中间文件中。同时要保证reduce的输出为json格式以方便后续操作。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">doMap</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">	jobName <span class="keyword">string</span>, // the name of the MapReduce job</span></span></span><br><span class="line"><span class="function"><span class="params">	mapTask <span class="keyword">int</span>, // which <span class="keyword">map</span> task this is</span></span></span><br><span class="line"><span class="function"><span class="params">	inFile <span class="keyword">string</span>,</span></span></span><br><span class="line">	nReduce int, // the number of reduce task that will be run ("R" in the paper)</span><br><span class="line">	mapF <span class="function"><span class="keyword">func</span><span class="params">(filename <span class="keyword">string</span>, contents <span class="keyword">string</span>)</span> []<span class="title">KeyValue</span>,</span></span><br><span class="line"><span class="function">)</span> &#123;</span><br><span class="line">	data, err := ioutil.ReadFile(inFile)</span><br><span class="line">	<span class="keyword">if</span> <span class="literal">nil</span> != err &#123; log.Fatal(err) &#125;</span><br><span class="line">	<span class="comment">// mapF() returns a slice containing the key/value pairs for reduce</span></span><br><span class="line">	kvs := mapF(inFile, <span class="keyword">string</span>(data))</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> outFiles []*os.File</span><br><span class="line">	<span class="keyword">defer</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		<span class="keyword">for</span> _, file := <span class="keyword">range</span> outFiles &#123; file.Close() &#125;</span><br><span class="line">	&#125;()</span><br><span class="line">	<span class="keyword">for</span> i:=<span class="number">0</span>; i&lt;nReduce; i++ &#123;</span><br><span class="line">		<span class="comment">//the filename as the intermediate file for reduce task r.</span></span><br><span class="line">		name := reduceName(jobName, mapTask, i)</span><br><span class="line">		file, err := os.Create(name)</span><br><span class="line">		<span class="keyword">if</span> <span class="literal">nil</span> != err &#123; log.Fatal(err) &#125;</span><br><span class="line">		outFiles = <span class="built_in">append</span>(outFiles, file)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> _, kv := <span class="keyword">range</span> kvs &#123;</span><br><span class="line">		index := ihash(kv.Key) % nReduce</span><br><span class="line">		<span class="comment">//enc opens IO stream of outFiles[index]</span></span><br><span class="line">		enc := json.NewEncoder(outFiles[index])</span><br><span class="line">		<span class="comment">//writes kv in stream</span></span><br><span class="line">		enc.Encode(kv)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="doReduce"><a href="#doReduce" class="headerlink" title="doReduce()"></a>doReduce()</h4><p><em>doReduce manages one reduce task</em>：读取map tasks产生的中间文件，将其根据键值对的key排序后，为每个key调用用户自定义的reduceF()函数，最后将reduceF()的结果写到磁盘outFile文件上。因为doMap()产生的是json格式，要注意解码。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">doReduce</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">	jobName <span class="keyword">string</span>, // the name of the whole MapReduce job</span></span></span><br><span class="line"><span class="function"><span class="params">	reduceTask <span class="keyword">int</span>, // which reduce task this is</span></span></span><br><span class="line"><span class="function"><span class="params">	outFile <span class="keyword">string</span>, // write the output here</span></span></span><br><span class="line">	nMap int, // the number of map tasks that were run ("M" in the paper)</span><br><span class="line">	reduceF <span class="function"><span class="keyword">func</span><span class="params">(key <span class="keyword">string</span>, values []<span class="keyword">string</span>)</span> <span class="title">string</span>,</span></span><br><span class="line"><span class="function">)</span> &#123;</span><br><span class="line">	<span class="comment">//set of having the same key</span></span><br><span class="line">	kvsMap := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>]([]<span class="keyword">string</span>))</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; nMap; i++ &#123;</span><br><span class="line">		<span class="comment">//yield the filename from map task m</span></span><br><span class="line">		name := reduceName(jobName, i, reduceTask)</span><br><span class="line">		file, err := os.Open(name)</span><br><span class="line">		<span class="keyword">if</span> <span class="literal">nil</span> != err &#123; log.Fatal(err) &#125;</span><br><span class="line">		dec := json.NewDecoder(file)</span><br><span class="line">		<span class="keyword">for</span> &#123;</span><br><span class="line">			<span class="keyword">var</span> kv KeyValue</span><br><span class="line">			err := dec.Decode(&amp;kv)</span><br><span class="line">			<span class="keyword">if</span> err != <span class="literal">nil</span> &#123; <span class="keyword">break</span> &#125;</span><br><span class="line">			kvsMap[kv.Key] = <span class="built_in">append</span>(kvsMap[kv.Key], kv.Value)</span><br><span class="line">		&#125;</span><br><span class="line">		file.Close()</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	reduceFile, err := os.Create(outFile)</span><br><span class="line">	<span class="keyword">if</span> <span class="literal">nil</span> != err &#123; log.Fatal(err) &#125;</span><br><span class="line">	enc := json.NewEncoder(reduceFile)</span><br><span class="line">	<span class="keyword">for</span> key, value := <span class="keyword">range</span> kvsMap &#123;</span><br><span class="line">		<span class="comment">//reduceF() returns the reduced value for that key</span></span><br><span class="line">		data := reduceF(key, value)</span><br><span class="line">		kv := KeyValue&#123;key, data&#125;</span><br><span class="line">		enc.Encode(kv)</span><br><span class="line">	&#125;</span><br><span class="line">	reduceFile.Close()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Part-II-Single-worker-word-count"><a href="#Part-II-Single-worker-word-count" class="headerlink" title="Part II: Single-worker word count"></a>Part II: Single-worker word count</h3><h4 id="mapF"><a href="#mapF" class="headerlink" title="mapF()"></a>mapF()</h4><p>向mapF()传递一个文件名以及该文件的内容，mapF()将文件内容拆分为单词（毕竟对于字数统计，仅将单词用作键才有意义），并返回KeyValue类型的Go切片。</p>
+<p><em>Tips: strings.FieldsFunc()可以用来拆分string，strconv.Itoa()可以将int转换成string类型。</em></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">mapF</span><span class="params">(filename <span class="keyword">string</span>, contents <span class="keyword">string</span>)</span> []<span class="title">mapreduce</span>.<span class="title">KeyValue</span></span> &#123;</span><br><span class="line">	<span class="comment">//单词频率结果</span></span><br><span class="line">	wordsKv := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">int</span>)</span><br><span class="line">	<span class="comment">//分词并遍历</span></span><br><span class="line">	f := <span class="function"><span class="keyword">func</span><span class="params">(r <span class="keyword">rune</span>)</span> <span class="title">bool</span></span> &#123; <span class="keyword">return</span> !unicode.IsLetter(r) &#125;</span><br><span class="line">	<span class="comment">//splits contents at each run of Unicode code points c satisfying f(c)</span></span><br><span class="line">	words := strings.FieldsFunc(contents, f)</span><br><span class="line">	<span class="keyword">for</span> _, word := <span class="keyword">range</span> words &#123;</span><br><span class="line">		<span class="comment">//统计单词</span></span><br><span class="line">		_, ok := wordsKv[word]</span><br><span class="line">		<span class="keyword">if</span> ok &#123; </span><br><span class="line">			wordsKv[word]++ </span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;  </span><br><span class="line">			wordsKv[word] = <span class="number">1</span> </span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//转换为输出格式</span></span><br><span class="line">	<span class="keyword">var</span> rst []mapreduce.KeyValue</span><br><span class="line">	<span class="keyword">for</span> key, value := <span class="keyword">range</span> wordsKv &#123;</span><br><span class="line">		kv := mapreduce.KeyValue&#123; key, strconv.Itoa(value) &#125;</span><br><span class="line">		rst = <span class="built_in">append</span>(rst, kv)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> rst</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="reduceF"><a href="#reduceF" class="headerlink" title="reduceF()"></a>reduceF()</h4><p>每个key都会调用一次reduceF()计算这个key的出现总数，并以string类型return。</p>
+<p><em>Tips: strconv.Atoi()可以将string类型转换成int类型。</em></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">reduceF</span><span class="params">(key <span class="keyword">string</span>, values []<span class="keyword">string</span>)</span> <span class="title">string</span></span> &#123;</span><br><span class="line">	cnt := <span class="number">0</span></span><br><span class="line">    <span class="comment">//合并统计结果</span></span><br><span class="line">	<span class="keyword">for</span> _, value := <span class="keyword">range</span> values &#123;</span><br><span class="line">		num, err := strconv.Atoi(value)</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123; <span class="keyword">break</span> &#125;</span><br><span class="line">		cnt += num</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> strconv.Itoa(cnt)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Part-III-Distributing-MapReduce-tasks"><a href="#Part-III-Distributing-MapReduce-tasks" class="headerlink" title="Part III: Distributing MapReduce tasks"></a>Part III: Distributing MapReduce tasks</h3><h4 id="schedule"><a href="#schedule" class="headerlink" title="schedule()"></a>schedule()</h4><p>在一次mapReduce中会调用两次schedule()，分别在map阶段和reduce阶段。schedule()将任务分发给可用的worker并等待所有任务完成后返回。<code>registerChan</code>参数channel为每个worker程序生成一个字符串，其中包含工作程序的RPC地址。schedule()通过<code>call(worker, &quot;Worker.DoTask&quot;, args, nil)</code>（worker := &lt;-registerChan）将<code>Worker.DoTask</code> RPC 发送给worker程序来通知其执行任务。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">schedule</span><span class="params">(jobName <span class="keyword">string</span>, mapFiles []<span class="keyword">string</span>, nReduce <span class="keyword">int</span>, phase jobPhase, registerChan <span class="keyword">chan</span> <span class="keyword">string</span>)</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> ntasks <span class="keyword">int</span></span><br><span class="line">	<span class="keyword">var</span> n_other <span class="keyword">int</span> <span class="comment">// number of inputs (for reduce) or outputs (for map)</span></span><br><span class="line">	<span class="keyword">switch</span> phase &#123;</span><br><span class="line">	<span class="keyword">case</span> mapPhase:</span><br><span class="line">		ntasks = <span class="built_in">len</span>(mapFiles)</span><br><span class="line">		n_other = nReduce</span><br><span class="line">	<span class="keyword">case</span> reducePhase:</span><br><span class="line">		ntasks = nReduce</span><br><span class="line">		n_other = <span class="built_in">len</span>(mapFiles)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	fmt.Printf(<span class="string">"Schedule: %v %v tasks (%d I/Os)\n"</span>, ntasks, phase, n_other)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// All ntasks tasks have to be scheduled on workers. </span></span><br><span class="line">	<span class="comment">// Once all tasks have completed successfully, </span></span><br><span class="line">    <span class="comment">// schedule() should return.</span></span><br><span class="line">	<span class="keyword">var</span> wg sync.WaitGroup</span><br><span class="line">	wg.Add(ntasks)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; ntasks; i++ &#123;</span><br><span class="line">		<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">(index <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">			<span class="comment">//rpc call args</span></span><br><span class="line">			<span class="keyword">var</span> args DoTaskArgs</span><br><span class="line">			args.Phase = phase</span><br><span class="line">			args.JobName = jobName</span><br><span class="line">			args.NumOtherPhase = n_other</span><br><span class="line">			args.TaskNumber = index</span><br><span class="line">			<span class="keyword">if</span> phase == mapPhase &#123;</span><br><span class="line">				args.File = mapFiles[index]</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			done := <span class="literal">false</span></span><br><span class="line">			<span class="keyword">for</span> !done &#123;</span><br><span class="line">				<span class="comment">// registerChan yields a stream of registered workers</span></span><br><span class="line">				worker := &lt;-registerChan</span><br><span class="line">				done = call(worker, <span class="string">"Worker.DoTask"</span>, args, <span class="literal">nil</span>)</span><br><span class="line">				<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span>&#123; registerChan &lt;- worker &#125;()</span><br><span class="line">			&#125;</span><br><span class="line">			wg.Done()</span><br><span class="line">		&#125;(i)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	wg.Wait()</span><br><span class="line">	fmt.Printf(<span class="string">"Schedule: %v done\n"</span>, phase)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -488,9 +487,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/大一/" rel="tag"># 大一</a>
+            <a href="/tags/GAP/" rel="tag"># GAP</a>
           
-            <a href="/tags/茶美学/" rel="tag"># 茶美学</a>
+            <a href="/tags/Go/" rel="tag"># Go</a>
+          
+            <a href="/tags/6-824/" rel="tag"># 6.824</a>
           
         </div>
       
@@ -503,8 +504,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/post/32430.html" rel="next" title="深夜">
-                <i class="fa fa-chevron-left"></i> 深夜
+              <a href="/post/28fa.html" rel="next" title="Go与并发">
+                <i class="fa fa-chevron-left"></i> Go与并发
               </a>
             
           </div>
@@ -512,10 +513,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/post/31301.html" rel="prev" title="KMP">
-                KMP <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -650,7 +647,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#茶形色之美"><span class="nav-number">1.</span> <span class="nav-text">茶形色之美</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#茶香之美"><span class="nav-number">2.</span> <span class="nav-text">茶香之美</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#茶味之美"><span class="nav-number">3.</span> <span class="nav-text">茶味之美</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#MapReduce"><span class="nav-number">1.</span> <span class="nav-text">MapReduce</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#MapReduce-Paper"><span class="nav-number">1.1.</span> <span class="nav-text">MapReduce Paper</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MapReduce-Execution"><span class="nav-number">1.1.1.</span> <span class="nav-text">MapReduce Execution</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MapReduce-Refinements"><span class="nav-number">1.1.2.</span> <span class="nav-text">MapReduce Refinements</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Partitioning-Function"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">Partitioning Function</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Ordering-Guarantees"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">Ordering Guarantees</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Combiner-Function"><span class="nav-number">1.1.2.3.</span> <span class="nav-text">Combiner Function</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Input-and-Output-Types"><span class="nav-number">1.1.2.4.</span> <span class="nav-text">Input and Output Types</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MapReduce-Lab"><span class="nav-number">1.2.</span> <span class="nav-text">MapReduce Lab</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Part-I-Map-Reduce-input-and-output"><span class="nav-number">1.2.1.</span> <span class="nav-text">Part I: Map/Reduce input and output</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#doMap"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">doMap()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#doReduce"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">doReduce()</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Part-II-Single-worker-word-count"><span class="nav-number">1.2.2.</span> <span class="nav-text">Part II: Single-worker word count</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#mapF"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">mapF()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#reduceF"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">reduceF()</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Part-III-Distributing-MapReduce-tasks"><span class="nav-number">1.2.3.</span> <span class="nav-text">Part III: Distributing MapReduce tasks</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#schedule"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">schedule()</span></a></li></ol></li></ol></li></ol></li></ol></div>
             
 
           </div>

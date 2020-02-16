@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="并发goroutinegoroutine是Go并行设计的核心。goroutine算是协程，它比线程更小，十几个goroutine可能体现在底层就是五六个线程，Go语言内部实现了这些goroutine之间的内存共享。执行goroutine只需极少的栈内存(大概是4~5KB)。goroutine比thread更易用、更高效、更轻便。">
+<meta name="description" content="goroutinegoroutine是Go并行设计的核心。goroutine算是协程，它比线程更小，十几个goroutine可能体现在底层就是五六个线程，Go语言内部实现了这些goroutine之间的内存共享。执行goroutine只需极少的栈内存(大概是4~5KB)。goroutine比thread更易用、更高效、更轻便。">
 <meta name="keywords" content="GAP,Tips,Go">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Go与并发">
 <meta property="og:url" content="https://stardust567.github.io/post/28fa.html">
 <meta property="og:site_name" content="Star Trail">
-<meta property="og:description" content="并发goroutinegoroutine是Go并行设计的核心。goroutine算是协程，它比线程更小，十几个goroutine可能体现在底层就是五六个线程，Go语言内部实现了这些goroutine之间的内存共享。执行goroutine只需极少的栈内存(大概是4~5KB)。goroutine比thread更易用、更高效、更轻便。">
+<meta property="og:description" content="goroutinegoroutine是Go并行设计的核心。goroutine算是协程，它比线程更小，十几个goroutine可能体现在底层就是五六个线程，Go语言内部实现了这些goroutine之间的内存共享。执行goroutine只需极少的栈内存(大概是4~5KB)。goroutine比thread更易用、更高效、更轻便。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-02-07T08:02:29.197Z">
+<meta property="og:updated_time" content="2020-02-07T08:58:06.641Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Go与并发">
-<meta name="twitter:description" content="并发goroutinegoroutine是Go并行设计的核心。goroutine算是协程，它比线程更小，十几个goroutine可能体现在底层就是五六个线程，Go语言内部实现了这些goroutine之间的内存共享。执行goroutine只需极少的栈内存(大概是4~5KB)。goroutine比thread更易用、更高效、更轻便。">
+<meta name="twitter:description" content="goroutinegoroutine是Go并行设计的核心。goroutine算是协程，它比线程更小，十几个goroutine可能体现在底层就是五六个线程，Go语言内部实现了这些goroutine之间的内存共享。执行goroutine只需极少的栈内存(大概是4~5KB)。goroutine比thread更易用、更高效、更轻便。">
 
 
 
@@ -439,7 +439,7 @@
       
 
       
-        <h1 id="并发"><a href="#并发" class="headerlink" title="并发"></a>并发</h1><h2 id="goroutine"><a href="#goroutine" class="headerlink" title="goroutine"></a>goroutine</h2><p>goroutine是Go并行设计的核心。goroutine算是协程，它比线程更小，十几个goroutine可能体现在底层就是五六个线程，Go语言内部实现了这些goroutine之间的内存共享。执行goroutine只需极少的栈内存(大概是4~5KB)。goroutine比thread更易用、更高效、更轻便。<a id="more"></a></p>
+        <h2 id="goroutine"><a href="#goroutine" class="headerlink" title="goroutine"></a>goroutine</h2><p>goroutine是Go并行设计的核心。goroutine算是协程，它比线程更小，十几个goroutine可能体现在底层就是五六个线程，Go语言内部实现了这些goroutine之间的内存共享。执行goroutine只需极少的栈内存(大概是4~5KB)。goroutine比thread更易用、更高效、更轻便。<a id="more"></a></p>
 <p>goroutine是通过Go的runtime管理的一个线程管理器。goroutine通过<code>go</code>关键字实现，类似个普通函数。</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">    <span class="string">"runtime"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">say</span><span class="params">(s <span class="keyword">string</span>)</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">5</span>; i++ &#123;</span><br><span class="line">        runtime.Gosched() <span class="comment">//让CPU把时间片让给别人,下次某个时候继续恢复执行该goroutine</span></span><br><span class="line">        fmt.Println(s)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">go</span> say(<span class="string">"world"</span>) <span class="comment">//开一个新的Goroutines执行</span></span><br><span class="line">    say(<span class="string">"hello"</span>) <span class="comment">//当前Goroutines执行</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <table>
@@ -585,6 +585,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/post/c51c.html" rel="prev" title="Go与分布式">
+                Go与分布式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -663,7 +667,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -685,7 +689,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-count">28</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -718,7 +722,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#并发"><span class="nav-number">1.</span> <span class="nav-text">并发</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#goroutine"><span class="nav-number">1.1.</span> <span class="nav-text">goroutine</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#竞争"><span class="nav-number">1.2.</span> <span class="nav-text">竞争</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#mutex"><span class="nav-number">1.2.1.</span> <span class="nav-text">mutex</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#channels"><span class="nav-number">1.2.2.</span> <span class="nav-text">channels</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Buffered-Channels"><span class="nav-number">1.2.3.</span> <span class="nav-text">Buffered Channels</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Range"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">Range</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Close"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">Close</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Select"><span class="nav-number">1.2.3.3.</span> <span class="nav-text">Select</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#超时"><span class="nav-number">1.2.3.4.</span> <span class="nav-text">超时</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#runtime-goroutine"><span class="nav-number">1.2.4.</span> <span class="nav-text">runtime goroutine</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#并发控制"><span class="nav-number">1.3.</span> <span class="nav-text">并发控制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#WaitGroup"><span class="nav-number">1.3.1.</span> <span class="nav-text">WaitGroup</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Context"><span class="nav-number">1.3.2.</span> <span class="nav-text">Context</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Context接口"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">Context接口</span></a></li></ol></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#goroutine"><span class="nav-number">1.</span> <span class="nav-text">goroutine</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#竞争"><span class="nav-number">2.</span> <span class="nav-text">竞争</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#mutex"><span class="nav-number">2.1.</span> <span class="nav-text">mutex</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#channels"><span class="nav-number">2.2.</span> <span class="nav-text">channels</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Buffered-Channels"><span class="nav-number">2.3.</span> <span class="nav-text">Buffered Channels</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Range"><span class="nav-number">2.3.1.</span> <span class="nav-text">Range</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Close"><span class="nav-number">2.3.2.</span> <span class="nav-text">Close</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Select"><span class="nav-number">2.3.3.</span> <span class="nav-text">Select</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#超时"><span class="nav-number">2.3.4.</span> <span class="nav-text">超时</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#runtime-goroutine"><span class="nav-number">2.4.</span> <span class="nav-text">runtime goroutine</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#并发控制"><span class="nav-number">3.</span> <span class="nav-text">并发控制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#WaitGroup"><span class="nav-number">3.1.</span> <span class="nav-text">WaitGroup</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Context"><span class="nav-number">3.2.</span> <span class="nav-text">Context</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Context接口"><span class="nav-number">3.2.1.</span> <span class="nav-text">Context接口</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>

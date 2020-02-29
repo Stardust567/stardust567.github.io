@@ -81,20 +81,24 @@
 
 
 
-<meta name="description" content="结合MIT6.824-2018的各个lab来简单写下学习分布式系统的学习心得。">
+<meta name="description" content="结合 MIT-6.824-2018 的各个lab来简单写下学习分布式系统的学习心得。">
 <meta name="keywords" content="GAP,Go,6.824">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Go与分布式">
 <meta property="og:url" content="https://stardust567.github.io/post/c51c.html">
 <meta property="og:site_name" content="Star Trail">
-<meta property="og:description" content="结合MIT6.824-2018的各个lab来简单写下学习分布式系统的学习心得。">
+<meta property="og:description" content="结合 MIT-6.824-2018 的各个lab来简单写下学习分布式系统的学习心得。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.loli.net/2020/02/18/hQyazOdRUK4YJHF.png">
 <meta property="og:image" content="https://i.loli.net/2020/02/16/QYdfgVnj4aubP6s.png">
-<meta property="og:updated_time" content="2020-02-18T05:04:09.889Z">
+<meta property="og:image" content="https://i.loli.net/2020/02/20/NzSX6Eq8yjUhPem.png">
+<meta property="og:image" content="https://i.loli.net/2020/02/21/ANVsJ8aCyM5KifD.jpg">
+<meta property="og:image" content="https://i.loli.net/2020/02/28/n4uPxsZJC8eYlgA.jpg">
+<meta property="og:image" content="https://i.loli.net/2020/02/29/7HLPm9AKQG54wvR.jpg">
+<meta property="og:updated_time" content="2020-02-29T14:34:53.972Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Go与分布式">
-<meta name="twitter:description" content="结合MIT6.824-2018的各个lab来简单写下学习分布式系统的学习心得。">
+<meta name="twitter:description" content="结合 MIT-6.824-2018 的各个lab来简单写下学习分布式系统的学习心得。">
 <meta name="twitter:image" content="https://i.loli.net/2020/02/18/hQyazOdRUK4YJHF.png">
 
 
@@ -405,7 +409,7 @@
                   <span class="post-meta-item-text">字数&#58;</span>
                 
                 <span title="字数">
-                  2.2k
+                  6.4k
                 </span>
               
 
@@ -421,7 +425,7 @@
                   <span class="post-meta-item-text">时长 &asymp;</span>
                 
                 <span title="时长">
-                  9min
+                  25min
                 </span>
               
             </div>
@@ -442,7 +446,7 @@
       
 
       
-        <p>结合MIT6.824-2018的各个lab来简单写下学习分布式系统的学习心得。<a id="more"></a></p>
+        <p>结合 MIT-6.824-2018 的各个lab来简单写下学习分布式系统的学习心得。<a id="more"></a></p>
 <h1 id="MapReduce"><a href="#MapReduce" class="headerlink" title="MapReduce"></a>MapReduce</h1><h2 id="MapReduce-Paper"><a href="#MapReduce-Paper" class="headerlink" title="MapReduce Paper"></a>MapReduce Paper</h2><h3 id="MapReduce-Example"><a href="#MapReduce-Example" class="headerlink" title="MapReduce Example"></a>MapReduce Example</h3><p>我们用最经典的words count来举例介绍MapReduce模型：</p>
 <p>对于一个三行的input file来说，我们按行进行splitting操作。每行分给不同的线程/节点，各节点单独进行mapping任务（单词分割）。各节点在shuffing阶段会进行相互通信，完成“洗牌”工作。然后各节点单独完成reducing任务并将结果输出在各节点本地文件上。最后将这些文件进行归并得到final result。</p>
 <p><img src="https://i.loli.net/2020/02/18/hQyazOdRUK4YJHF.png" alt="Example"></p>
@@ -471,7 +475,143 @@
 <p><em>Tips: strconv.Atoi()可以将string类型转换成int类型。</em></p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">reduceF</span><span class="params">(key <span class="keyword">string</span>, values []<span class="keyword">string</span>)</span> <span class="title">string</span></span> &#123;</span><br><span class="line">	cnt := <span class="number">0</span></span><br><span class="line">    <span class="comment">//合并统计结果</span></span><br><span class="line">	<span class="keyword">for</span> _, value := <span class="keyword">range</span> values &#123;</span><br><span class="line">		num, err := strconv.Atoi(value)</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123; <span class="keyword">break</span> &#125;</span><br><span class="line">		cnt += num</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> strconv.Itoa(cnt)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="Part-III-Distributing-MapReduce-tasks"><a href="#Part-III-Distributing-MapReduce-tasks" class="headerlink" title="Part III: Distributing MapReduce tasks"></a>Part III: Distributing MapReduce tasks</h3><h4 id="schedule"><a href="#schedule" class="headerlink" title="schedule()"></a>schedule()</h4><p>在一次mapReduce中会调用两次schedule()，分别在map阶段和reduce阶段。schedule()将任务分发给可用的worker并等待所有任务完成后返回。<code>registerChan</code>参数channel为每个worker程序生成一个字符串，其中包含工作程序的RPC地址。schedule()通过<code>call(worker, &quot;Worker.DoTask&quot;, args, nil)</code>（worker := &lt;-registerChan）将<code>Worker.DoTask</code> RPC 发送给worker程序来通知其执行任务。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">schedule</span><span class="params">(jobName <span class="keyword">string</span>, mapFiles []<span class="keyword">string</span>, nReduce <span class="keyword">int</span>, phase jobPhase, registerChan <span class="keyword">chan</span> <span class="keyword">string</span>)</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> ntasks <span class="keyword">int</span></span><br><span class="line">	<span class="keyword">var</span> n_other <span class="keyword">int</span> <span class="comment">// number of inputs (for reduce) or outputs (for map)</span></span><br><span class="line">	<span class="keyword">switch</span> phase &#123;</span><br><span class="line">	<span class="keyword">case</span> mapPhase:</span><br><span class="line">		ntasks = <span class="built_in">len</span>(mapFiles)</span><br><span class="line">		n_other = nReduce</span><br><span class="line">	<span class="keyword">case</span> reducePhase:</span><br><span class="line">		ntasks = nReduce</span><br><span class="line">		n_other = <span class="built_in">len</span>(mapFiles)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	fmt.Printf(<span class="string">"Schedule: %v %v tasks (%d I/Os)\n"</span>, ntasks, phase, n_other)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// All ntasks tasks have to be scheduled on workers. </span></span><br><span class="line">	<span class="comment">// Once all tasks have completed successfully, </span></span><br><span class="line">    <span class="comment">// schedule() should return.</span></span><br><span class="line">	<span class="keyword">var</span> wg sync.WaitGroup</span><br><span class="line">	wg.Add(ntasks)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; ntasks; i++ &#123;</span><br><span class="line">		<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">(index <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">			<span class="comment">//rpc call args</span></span><br><span class="line">			<span class="keyword">var</span> args DoTaskArgs</span><br><span class="line">			args.Phase = phase</span><br><span class="line">			args.JobName = jobName</span><br><span class="line">			args.NumOtherPhase = n_other</span><br><span class="line">			args.TaskNumber = index</span><br><span class="line">			<span class="keyword">if</span> phase == mapPhase &#123;</span><br><span class="line">				args.File = mapFiles[index]</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			done := <span class="literal">false</span></span><br><span class="line">			<span class="keyword">for</span> !done &#123;</span><br><span class="line">				<span class="comment">// registerChan yields a stream of registered workers</span></span><br><span class="line">				worker := &lt;-registerChan</span><br><span class="line">				done = call(worker, <span class="string">"Worker.DoTask"</span>, args, <span class="literal">nil</span>)</span><br><span class="line">				<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span>&#123; registerChan &lt;- worker &#125;()</span><br><span class="line">			&#125;</span><br><span class="line">			wg.Done()</span><br><span class="line">		&#125;(i)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	wg.Wait()</span><br><span class="line">	fmt.Printf(<span class="string">"Schedule: %v done\n"</span>, phase)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">schedule</span><span class="params">(jobName <span class="keyword">string</span>, mapFiles []<span class="keyword">string</span>, nReduce <span class="keyword">int</span>, phase jobPhase, </span></span></span><br><span class="line"><span class="function"><span class="params">              registerChan <span class="keyword">chan</span> <span class="keyword">string</span>)</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> ntasks <span class="keyword">int</span></span><br><span class="line">	<span class="keyword">var</span> n_other <span class="keyword">int</span> <span class="comment">// number of inputs (for reduce) or outputs (for map)</span></span><br><span class="line">	<span class="keyword">switch</span> phase &#123;</span><br><span class="line">	<span class="keyword">case</span> mapPhase:</span><br><span class="line">		ntasks = <span class="built_in">len</span>(mapFiles)</span><br><span class="line">		n_other = nReduce</span><br><span class="line">	<span class="keyword">case</span> reducePhase:</span><br><span class="line">		ntasks = nReduce</span><br><span class="line">		n_other = <span class="built_in">len</span>(mapFiles)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	fmt.Printf(<span class="string">"Schedule: %v %v tasks (%d I/Os)\n"</span>, ntasks, phase, n_other)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// All ntasks tasks have to be scheduled on workers. </span></span><br><span class="line">	<span class="comment">// Once all tasks have completed successfully, </span></span><br><span class="line">    <span class="comment">// schedule() should return.</span></span><br><span class="line">	<span class="keyword">var</span> wg sync.WaitGroup</span><br><span class="line">	wg.Add(ntasks)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; ntasks; i++ &#123;</span><br><span class="line">		<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">(index <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">			<span class="comment">//rpc call args</span></span><br><span class="line">			<span class="keyword">var</span> args DoTaskArgs</span><br><span class="line">			args.Phase = phase</span><br><span class="line">			args.JobName = jobName</span><br><span class="line">			args.NumOtherPhase = n_other</span><br><span class="line">			args.TaskNumber = index</span><br><span class="line">			<span class="keyword">if</span> phase == mapPhase &#123;</span><br><span class="line">				args.File = mapFiles[index]</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			done := <span class="literal">false</span></span><br><span class="line">			<span class="keyword">for</span> !done &#123;</span><br><span class="line">				<span class="comment">// registerChan yields a stream of registered workers</span></span><br><span class="line">				worker := &lt;-registerChan</span><br><span class="line">				done = call(worker, <span class="string">"Worker.DoTask"</span>, args, <span class="literal">nil</span>)</span><br><span class="line">				<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span>&#123; registerChan &lt;- worker &#125;()</span><br><span class="line">			&#125;</span><br><span class="line">			wg.Done()</span><br><span class="line">		&#125;(i)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	wg.Wait()</span><br><span class="line">	fmt.Printf(<span class="string">"Schedule: %v done\n"</span>, phase)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="Raft"><a href="#Raft" class="headerlink" title="Raft"></a>Raft</h1><p>Raft是一种共识算法，它在容错和性能上与Paxos等效，但更容易理解学习。可以通过 <a href="http://thesecretlivesofdata.com/raft/" target="_blank" rel="noopener">http://thesecretlivesofdata.com/raft/</a> 简单认知下Raft共识算法。</p>
+<p>共识是容错分布式系统中的一个基本问题，共识涉及多个服务器就价值达成一致。共识通常出现在复制状态机的背景下，每个服务器都有一个状态机和一个日志，每个状态机都从其日志中获取输入命令。以哈希表为例，日志将包含诸如 set x=3 之类的命令，而共识算法要确保所有状态机都 x=3 作为第n个命令应用。即每个状态机处理相同系列的命令，从而产生相同系列的结果并到达相同系列的状态。</p>
+<h2 id="Raft-Paper"><a href="#Raft-Paper" class="headerlink" title="Raft Paper"></a>Raft Paper</h2><p>Raft 选举出一个leader来管理复制日志：leader从客户端接收日志条目，将其复制到其他服务器上，并在保证安全的时候应用日志条目到他们的状态机中。由此，Raft 将一致性问题分解成三个子问题：</p>
+<ul>
+<li><strong>Leader Election</strong>：A new leader must be chosen when an existing leader fails</li>
+<li><strong>Log Replication</strong>：The leader must accept log entries from clients and replicate them across the cluster, forcing the other logs to agree with its own</li>
+<li><strong>Safety</strong>：If any server has applied a particular log entry to its state machine, then no other server may apply a different command for the same log index. </li>
+</ul>
+<h3 id="Condenced-Summary"><a href="#Condenced-Summary" class="headerlink" title="Condenced Summary"></a>Condenced Summary</h3><p><img src="https://i.loli.net/2020/02/20/NzSX6Eq8yjUhPem.png" alt="Go与分布式_Raft_summary.png"></p>
+<h4 id="AppendEntries-RPC"><a href="#AppendEntries-RPC" class="headerlink" title="AppendEntries RPC"></a>AppendEntries RPC</h4><p>由leader负责调用来复制日志指令；也会用作heartbeat，receiver实现：</p>
+<ol>
+<li>如果 <code>term &lt; currentTerm</code> 就返回 false </li>
+<li>如果日志在 prevLogIndex 位置处的 entry 和 prevLogTerm 不匹配，则返回 false </li>
+<li>如果已经存在的日志条目和新的产生冲突（index相同但term不同），删除这一条和之后所有的 entries</li>
+<li>附加日志中尚未存在的任何新条目</li>
+<li>如果 <code>leaderCommit &gt; commitIndex</code>，令 commitIndex = MIN(leaderCommit, 新日志条目索引值)</li>
+</ol>
+<h4 id="RequestVote-RPC"><a href="#RequestVote-RPC" class="headerlink" title="RequestVote RPC"></a>RequestVote RPC</h4><p>由candidates负责调用来征集选票，receiver实现：</p>
+<ol>
+<li>如果<code>term &lt; currentTerm</code>返回 false </li>
+<li>如果 votedFor 为 null / candidateId，且candidate的日志至少和receiver一样新，那就投票给他</li>
+</ol>
+<h4 id="Rules-for-Servers"><a href="#Rules-for-Servers" class="headerlink" title="Rules for Servers"></a>Rules for Servers</h4><h5 id="All-Servers"><a href="#All-Servers" class="headerlink" title="All Servers"></a>All Servers</h5><ul>
+<li>如果<code>commitIndex &gt; lastApplied</code>，那就 lastApplied ++，并把<code>log[lastApplied]</code>应用到状态机中</li>
+<li>如果接收到的 RPC 请求或响应中，term<code>T &gt; currentTerm</code>，那就令 currentTerm = T，并切换状态为followers</li>
+</ul>
+<h5 id="Followers"><a href="#Followers" class="headerlink" title="Followers"></a>Followers</h5><ul>
+<li>响应来自候选人和领导者的RPCs</li>
+<li>如果在选举超时前一直没有收到leader的AppendEntries RPC，或candidates请求投票的，就自己变成候选人</li>
+</ul>
+<h5 id="Candidates"><a href="#Candidates" class="headerlink" title="Candidates"></a>Candidates</h5><ul>
+<li>在转变成candidates后就立即开始选举过程<ul>
+<li>自增当前的任期号（currentTerm）</li>
+<li>给自己投票</li>
+<li>重置选举计时器</li>
+<li>发送请求投票的 RPC 给其他所有服务器</li>
+</ul>
+</li>
+<li>如果接收到大多数服务器的选票，那么就变成领导人</li>
+<li>如果接收到来自新的领导人的 AppendEntries RPC，转变成跟随者</li>
+<li>如果选举过程超时，再次发起一轮选举</li>
+</ul>
+<h5 id="Leader"><a href="#Leader" class="headerlink" title="Leader"></a>Leader</h5><ul>
+<li>一旦成为领导人：发送空的AppendEntries RPC (heartbeat) 给其他所有的服务器；在一定的空余时间之后不停的重复发送，以阻止followers超时</li>
+<li>如果接收到来自客户端的请求：附加条目到本地日志中，在条目被应用到状态机后响应客户端</li>
+<li>如果对于一个跟随者，最后日志条目的index &gt;= nextIndex，则发送从 nextIndex 开始的所有日志条目：<ul>
+<li>如果成功：更新相应 followers 的 nextIndex 和 matchIndex</li>
+<li>如果因为日志不一致而失败，减少 nextIndex 重试</li>
+</ul>
+</li>
+<li>如果存在一个满足<code>N &gt; commitIndex</code>的 N，且大多数的<code>matchIndex[i] ≥ N</code>成立，并且<code>log[N].term == currentTerm</code>成立，则令 commitIndex = N </li>
+</ul>
+<h3 id="Raft-Properties"><a href="#Raft-Properties" class="headerlink" title="Raft Properties"></a>Raft Properties</h3><p>Raft 在任何时候都保证以下的各个特性。</p>
+<table>
+<thead>
+<tr>
+<th>Properties</th>
+<th>Explain</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Election Safety</td>
+<td>At most one leader can be elected in a given term.</td>
+</tr>
+<tr>
+<td>Leader Append-Only</td>
+<td>A leader never overwrites or deletes entries in its log; it only appends new entries.</td>
+</tr>
+<tr>
+<td>Log Matching</td>
+<td>If two logs contain an entry with the same index and term, then the logs are identical in all entries up through the given index.</td>
+</tr>
+<tr>
+<td>Leader Completeness</td>
+<td>If a log entry is committed in a given term, then that entry will be present in the logs of the leaders for all higher-numbered terms.</td>
+</tr>
+<tr>
+<td>State Machine Safety</td>
+<td>If a server has applied a log entry at a given index to its state machine, no other server will ever apply a different log entry for the same index.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Raft-Basics"><a href="#Raft-Basics" class="headerlink" title="Raft Basics"></a>Raft Basics</h3><p>一个 Raft 集群包含若干个服务器节点：通常是 5 个，这样整个系统可以容忍 2 个节点的失效。<br>在任何时刻，每一个服务器节点都处于这三个状态之一：leader、followers、candidates。<br>在通常情况下，系统中只有一个leader并且其他的节点全部都是followers，且在一个任期内，leader一直都会是leader直到自己宕机了。Followers都是被动的：他们不会发送任何请求，只是简单的响应来自leader / candidates的请求。Leader则处理所有的客户端请求（如果一个客户端和followers联系，那么followers会把请求重定向给leader）。第三种状态，candidates，是用来选举新的leader时使用的。下图展示了这些状态和他们之间的转换关系。<br><img src="https://i.loli.net/2020/02/21/ANVsJ8aCyM5KifD.jpg" alt="Go与分布式_Raft_states.png"></p>
+<p>Raft 把时间分割成任意长度的<strong>任期terms</strong>。任期用连续的整数标记。每一段任期从一次<strong>选举</strong>开始，，一个或者多个候选人尝试成为领导者。如果一个候选人赢得选举，然后他就在接下来的任期内充当领导人的职责。在某些情况下，一次选举过程会造成选票的瓜分。在这种情况下，这一任期会以没有领导人结束；一个新的任期（和一次新的选举）会很快重新开始。Raft 保证了在一个给定的任期内，最多只有一个领导者。</p>
+<p>不同的服务器节点可能多次观察到任期之间的转换，但在某些情况下，一个节点也可能观察不到任何一次选举或者整个任期全程。任期在 Raft 算法中充当逻辑时钟的作用，这会允许服务器节点查明一些过期的信息比如陈旧的领导者。每一个节点存储一个当前任期号current term，这一编号在整个时期内单调的增长。当服务器之间通信的时候会交换current term；如果一个服务器的current term比其他人小，那么他会更新到较大的编号值。如果一个候选人或者领导者发现自己的任期号过期了，那么他会立即恢复成跟随者状态。如果一个节点接收到一个包含过期的任期号的请求，那么他会直接拒绝这个请求。</p>
+<p>Raft 算法中服务器节点之间通信使用远程过程调用（RPCs），并且基本的一致性算法只需要两种类型的 RPCs。请求投票（RequestVote） RPCs 由候选人在选举期间发起，然后附加条目（AppendEntries）RPCs 由领导人发起，用来复制日志和提供一种心跳机制。当服务器没有及时的收到 RPC 的响应时，会进行重试， 并且他们能够并行的发起 RPCs 来获得最佳的性能。</p>
+<h4 id="Leader-election"><a href="#Leader-election" class="headerlink" title="Leader election"></a>Leader election</h4><p>Raft 使用一种heartbeat机制来触发领导人选举。当服务器程序启动时，各自都是followers。Leader会周期性的向所有followers发送心跳包 (AppendEntries RPCs that carry no log entries) 来维持自己的权威。Followers只要收到了来自 leader / candidates 的有效RPCs就会一直保持followers。但如果一个follower在一段时间（random，一般在150ms-300ms）里没有接收到任何消息，即<strong>选举超时</strong>，那他会认为系统中无可用leader，并发起选举以选出新的leader。</p>
+<p>要开始一次选举过程，followers先要current term++且转换到candidates，然后并行的向集群中的其他服务器节点发送RequestVote的 RPCs 来给自己投票。Candidates会继续保持当前状态直到以下三件事情之一发生：</p>
+<ul>
+<li><p><em>(a) it wins the election：</em>candidate从整个集群的大多数服务器节点获得了针对同一term的选票。每个服务器按先来先服务原则在每个term最多投一张选票。一旦candidate赢得选举，则立即成为leader并向其他的服务器发送heartbeat来建立自己的权威并且阻止产生别的leader。</p>
+</li>
+<li><p><em>(b) another server establishes itself as leader：</em>等待投票时candidate收到别的服务器leader声明的AppendEntries RPC，如果该RPC中leader的term &gt;= candidate的term，则candidate承认该leader并回到follower；否则candidate会拒绝该RPC并保持candidate 。</p>
+</li>
+<li><p><em>(c) a period of time goes by with no winner：</em>多个followers同时成为candidates来瓜分选票，导致无人能赢得大多数人的支持。为了避免瓜分次数过多，每个candidate在发RequestVote RPCs时都会设置一个<strong>随机的</strong>等待时间，若超时则重新发送RequestVote RPCs 。这样每次瓜分后，所有candidates都会超时，current term++开启新一轮选举。</p>
+</li>
+</ul>
+<h4 id="Log-replication"><a href="#Log-replication" class="headerlink" title="Log replication"></a>Log replication</h4><p>客户端只和leader交互，leader把客户端指令作为一条log entry附加到自己log中，然后并行的发起 AppendEntries RPCs 给 followers，让他们复制这条entry。当这其被<strong>安全的</strong>复制，leader会将这条entry内容应用在自身状态机上并将其commit，同时return result给客户端。接下来leader会通知followers该entry已经committed，followers将其应用到各自状态机，完成各自log上该entry的commit。leader会不断的重复尝试 AppendEntries RPCs （尽管已经回复了客户端）直到所有的followers都最终存储了所有的日志条目。</p>
+<p><img src="https://i.loli.net/2020/02/28/n4uPxsZJC8eYlgA.jpg" alt="Go与分布式_Raft_log.png"></p>
+<blockquote>
+<p>日志由有序序号标记的条目组成。每个条目都包含创建时的任期号（图中框中的数字）和一个状态机需要执行的指令。一个条目当可以安全的被应用到状态机中去的时候，就认为是可以提交了。</p>
+</blockquote>
+<p>在leader将创建的日志条目复制到大多数的服务器上的时候，此时可以认为该 log entry 应用到状态机中是安全的，即该 log entry is <strong>committed</strong>（如图中条目 7）。同时，leader的日志中之前的所有日志条目也都会被提交，包括之前所有terms里的条目。Leader跟踪 committed entries 的 highest index（例如图中为7），并将其写进未来所有的 AppendEntries RPCs 好让 followers 清楚。Followers会将 committed entries 按 log 顺序应用到本地的状态机中。</p>
+<p>Raft 的日志机制维护了不同服务器的日志之间的高层次的一致性，同时也组成了上文中的日志匹配特性：</p>
+<ul>
+<li>不同log中的两个entry拥有相同index&amp;term -&gt; 他们存了相同的指令且之前的所有entries也全部相同。</li>
+</ul>
+<p><em>理由：leader会把前一个entry的index和term写进当前AppendEntries RPC中，如果followers发现在自己的log中找不到符合的entry，就会拒收这个新entry以保证其log和leader的log顺序一致。</em></p>
+<p>正常操作中，logs肯定会保持一致性。但存在这种情况，leader在自己log中写入了一堆entries但在这些entries还没全部committed时leader就先自己崩溃了，下一term它作为follower，就会出现和当前leader的log不一致情况。Raft的解决办法是直接把followers冲突的那部分entries覆盖成leader的对应entries。</p>
+<p>Leader针对每一个follower维护了一个 <strong>nextIndex</strong>（即将要发给followers的entry的index）当一个leader刚获得权力的时候，初始化所有的 nextIndex  = leader log highest index + 1。如果出现AppendEntries RPC被followers拒绝的情况，leader会让 nextIndex– 并重试。最终 nextIndex 会停在两者log一致的点，此时的AppendEntries RPC将不再被拒绝，即可followers冲突的entries全部删除并逐个追加leader的entries。通过这种机制，leader在获得权力的时候就不需要任何特殊的操作来恢复一致性。</p>
+<h4 id="Safety"><a href="#Safety" class="headerlink" title="Safety"></a>Safety</h4><p>我们需要保证每个状态机都会按照相同的顺序执行相同的指令。但如果出现，一些entries被大部分followers接受并commit，但存在一个follower处于unavailable没有接受这些entries，但偏偏该follower在下一term成为了leader，这就会导致那些committed entries明明执行了却被强制删除，即不同状态机执行不同的指令序列。</p>
+<p>Raft通过在leader election中增加一些限制来保证：任何leader对于给定的term，都拥有之前terms里所有的committed entries (即上文提到的 the Leader Completeness Property)</p>
+<p>在raft的投票环节，每个candidates发出的RequestVote RPC都会包含其last log entry的term和index，followers会根据这些信息拒绝掉没有自己新（term越大越新，term相同index越大约新）的投票请求。这样选出来的leader至少和大部分followers一样新，而entries是在大部分followers都复制后才会commit，即committed entries存在于大部分followers上，如果能和大部分followers一样新，就能保证存储了所有的committed entries。</p>
+<p><img src="https://i.loli.net/2020/02/29/7HLPm9AKQG54wvR.jpg" alt="Go与分布式_Raft_crash.png"></p>
+<p>Leader不能断定之前term中保存到大部分服务器的entry是否已经commit，如图，S1作leader，开始复制entry_2，复制了小部分followers后换leader了。S5作leader，没有entry_2且刚接受到客户端的entry_3，继续换leader。S1作leader，继续复制那条entry_2并成功复制到大部分followers上，但在entry_2即将commit前，又被换leader。若S5作leader（因为entry_3的term&gt;entry_2的term，所以能收到S2,S3,S4的选票），此时entry_3会覆盖所有的entry_2；若S1继续作leader，则S1的entries都会被提交。</p>
+<blockquote>
+<p>leader复制之前term的entries时，这些entries的term不变（图c复制entry_2时，其term依旧为2 ）</p>
+</blockquote>
+<p>由此，对于之前term中的entries，leader不会通过计算其副本数目的方式去commit，事实上leader只会对当前term的entries用计算副本数目的方式来commit。而当前term的entries被commit，由于日志匹配特性，之前的entries都会被间接commit。</p>
+<h3 id="Cluster-membership-changes"><a href="#Cluster-membership-changes" class="headerlink" title="Cluster membership changes"></a>Cluster membership changes</h3><p>实际操作中偶尔会改变集群的配置，但服务器直接从旧配置转换到新配置很容易出现分歧。为避免存在新旧配置在同一时间下出现各自leader，即同一时刻新旧配置同时生效的情况，配置更改必须使用两阶段方法。在 Raft 中，集群先切换到一个过渡的配置，称之为共同一致；一旦共同一致被commit，那系统就切换到新配置上。共同一致是老配置和新配置的结合：</p>
+<ul>
+<li>日志条目会被复制给集群中新、老配置的所有服务器。</li>
+<li>新、旧配置的服务器都可以成为leader。</li>
+<li>达成一致（针对选举和提交）需要分别在两种配置上获得大多数的支持。</li>
+</ul>
+<p>当leader接收到一个改变配置从 C-old 到 C-new 的请求，他会创建configuration entry: C-old,new来存储配置，并复制给followers。各个服务器总是用latest configuration entry作为自己的配置，无论他是否committed。</p>
+<p>一旦 C-old,new 被提交（C-old，C-new双方大部分都复制成功），那么无论是 C-old 还是 C-new，在没有经过对方批准的情况下都不可能做出决定，并且领导人完全特性保证了只有拥有 C-old,new 日志条目的服务器才有可能被选举为领导人。这个时候，领导人创建一条关于 C-new 配置的日志条目并复制给集群就是安全的了。</p>
+<p>在关于重新配置还有三个问题需要提出：</p>
+<ul>
+<li><p>新的服务器可能初始化没有存储任何的日志条目。此时他们需要时间来更新追赶，而没法提交新的条目。Raft 在配置更新之前使用了一种额外的阶段：该阶段里，新的服务器加入，接收leader的entries但无投票权，直到追赶上了集群中的其他机器。</p>
+</li>
+<li><p>当前leader不在C-new中，即当前leader节点即将下线。在C-new被commit之后Leader实际已经从集群中脱离，会退位到follower状态，此时可以对Leader节点进行下线操作，而新集群则会在C-new的配置下重新选举出一个Leader。</p>
+</li>
+<li><p>移除不在 C-new 中的服务器可能会扰乱集群。这些服务器因为不在C-new里，所以leader根本不会给他们发心跳，之后这些节点就会选举超时，发送term++的请求投票 RPCs，这样会导致当前leader回退成follower。为了避免这种情况，除非leader超时，不然各节点拒收投票请求RPCs。同时在每次选举前等待一个选举超时时间，这样每次旧节点在发起选举前需要等待一段时间，那这段时间新Leader可以发送心跳，减少影响。 </p>
+</li>
+</ul>
 
       
     </div>
@@ -651,7 +791,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#MapReduce"><span class="nav-number">1.</span> <span class="nav-text">MapReduce</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#MapReduce-Paper"><span class="nav-number">1.1.</span> <span class="nav-text">MapReduce Paper</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MapReduce-Example"><span class="nav-number">1.1.1.</span> <span class="nav-text">MapReduce Example</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MapReduce-Execution"><span class="nav-number">1.1.2.</span> <span class="nav-text">MapReduce Execution</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MapReduce-Refinements"><span class="nav-number">1.1.3.</span> <span class="nav-text">MapReduce Refinements</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Partitioning-Function"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">Partitioning Function</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Ordering-Guarantees"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">Ordering Guarantees</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Combiner-Function"><span class="nav-number">1.1.3.3.</span> <span class="nav-text">Combiner Function</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Input-and-Output-Types"><span class="nav-number">1.1.3.4.</span> <span class="nav-text">Input and Output Types</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MapReduce-Lab"><span class="nav-number">1.2.</span> <span class="nav-text">MapReduce Lab</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Part-I-Map-Reduce-input-and-output"><span class="nav-number">1.2.1.</span> <span class="nav-text">Part I: Map/Reduce input and output</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#doMap"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">doMap()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#doReduce"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">doReduce()</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Part-II-Single-worker-word-count"><span class="nav-number">1.2.2.</span> <span class="nav-text">Part II: Single-worker word count</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#mapF"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">mapF()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#reduceF"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">reduceF()</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Part-III-Distributing-MapReduce-tasks"><span class="nav-number">1.2.3.</span> <span class="nav-text">Part III: Distributing MapReduce tasks</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#schedule"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">schedule()</span></a></li></ol></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#MapReduce"><span class="nav-number">1.</span> <span class="nav-text">MapReduce</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#MapReduce-Paper"><span class="nav-number">1.1.</span> <span class="nav-text">MapReduce Paper</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MapReduce-Example"><span class="nav-number">1.1.1.</span> <span class="nav-text">MapReduce Example</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MapReduce-Execution"><span class="nav-number">1.1.2.</span> <span class="nav-text">MapReduce Execution</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MapReduce-Refinements"><span class="nav-number">1.1.3.</span> <span class="nav-text">MapReduce Refinements</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Partitioning-Function"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">Partitioning Function</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Ordering-Guarantees"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">Ordering Guarantees</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Combiner-Function"><span class="nav-number">1.1.3.3.</span> <span class="nav-text">Combiner Function</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Input-and-Output-Types"><span class="nav-number">1.1.3.4.</span> <span class="nav-text">Input and Output Types</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MapReduce-Lab"><span class="nav-number">1.2.</span> <span class="nav-text">MapReduce Lab</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Part-I-Map-Reduce-input-and-output"><span class="nav-number">1.2.1.</span> <span class="nav-text">Part I: Map/Reduce input and output</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#doMap"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">doMap()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#doReduce"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">doReduce()</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Part-II-Single-worker-word-count"><span class="nav-number">1.2.2.</span> <span class="nav-text">Part II: Single-worker word count</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#mapF"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">mapF()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#reduceF"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">reduceF()</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Part-III-Distributing-MapReduce-tasks"><span class="nav-number">1.2.3.</span> <span class="nav-text">Part III: Distributing MapReduce tasks</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#schedule"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">schedule()</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Raft"><span class="nav-number">2.</span> <span class="nav-text">Raft</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Raft-Paper"><span class="nav-number">2.1.</span> <span class="nav-text">Raft Paper</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Condenced-Summary"><span class="nav-number">2.1.1.</span> <span class="nav-text">Condenced Summary</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#AppendEntries-RPC"><span class="nav-number">2.1.1.1.</span> <span class="nav-text">AppendEntries RPC</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RequestVote-RPC"><span class="nav-number">2.1.1.2.</span> <span class="nav-text">RequestVote RPC</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Rules-for-Servers"><span class="nav-number">2.1.1.3.</span> <span class="nav-text">Rules for Servers</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#All-Servers"><span class="nav-number">2.1.1.3.1.</span> <span class="nav-text">All Servers</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Followers"><span class="nav-number">2.1.1.3.2.</span> <span class="nav-text">Followers</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Candidates"><span class="nav-number">2.1.1.3.3.</span> <span class="nav-text">Candidates</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Leader"><span class="nav-number">2.1.1.3.4.</span> <span class="nav-text">Leader</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Raft-Properties"><span class="nav-number">2.1.2.</span> <span class="nav-text">Raft Properties</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Raft-Basics"><span class="nav-number">2.1.3.</span> <span class="nav-text">Raft Basics</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Leader-election"><span class="nav-number">2.1.3.1.</span> <span class="nav-text">Leader election</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Log-replication"><span class="nav-number">2.1.3.2.</span> <span class="nav-text">Log replication</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Safety"><span class="nav-number">2.1.3.3.</span> <span class="nav-text">Safety</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cluster-membership-changes"><span class="nav-number">2.1.4.</span> <span class="nav-text">Cluster membership changes</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>

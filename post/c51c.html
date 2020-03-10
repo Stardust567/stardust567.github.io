@@ -81,13 +81,13 @@
 
 
 
-<meta name="description" content="结合 MIT-6.824-2018 的各个 lab 来简单写下学习分布式系统的学习心得。 目前主要是：MapReduce, Raft（后续期待更新中）">
+<meta name="description" content="结合 MIT-6.824-2018 的各个 lab 来简单写下学习分布式系统的学习心得。 目前主要有：MapReduce, Raft（期待后续更新中）">
 <meta name="keywords" content="GAP,Go,6.824">
 <meta property="og:type" content="article">
 <meta property="og:title" content="分布式系统">
 <meta property="og:url" content="https://stardust567.github.io/post/c51c.html">
 <meta property="og:site_name" content="Star Trail">
-<meta property="og:description" content="结合 MIT-6.824-2018 的各个 lab 来简单写下学习分布式系统的学习心得。 目前主要是：MapReduce, Raft（后续期待更新中）">
+<meta property="og:description" content="结合 MIT-6.824-2018 的各个 lab 来简单写下学习分布式系统的学习心得。 目前主要有：MapReduce, Raft（期待后续更新中）">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.loli.net/2020/02/18/hQyazOdRUK4YJHF.png">
 <meta property="og:image" content="https://i.loli.net/2020/02/16/QYdfgVnj4aubP6s.png">
@@ -97,10 +97,10 @@
 <meta property="og:image" content="https://i.loli.net/2020/02/20/NzSX6Eq8yjUhPem.png">
 <meta property="og:image" content="https://i.loli.net/2020/03/01/xXltDZv8yfmi1n6.jpg">
 <meta property="og:image" content="https://i.loli.net/2020/03/01/gbPEGHk894xwdID.png">
-<meta property="og:updated_time" content="2020-03-04T13:41:39.872Z">
+<meta property="og:updated_time" content="2020-03-09T13:37:38.486Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="分布式系统">
-<meta name="twitter:description" content="结合 MIT-6.824-2018 的各个 lab 来简单写下学习分布式系统的学习心得。 目前主要是：MapReduce, Raft（后续期待更新中）">
+<meta name="twitter:description" content="结合 MIT-6.824-2018 的各个 lab 来简单写下学习分布式系统的学习心得。 目前主要有：MapReduce, Raft（期待后续更新中）">
 <meta name="twitter:image" content="https://i.loli.net/2020/02/18/hQyazOdRUK4YJHF.png">
 
 
@@ -449,7 +449,7 @@
 
       
         <p>结合 MIT-6.824-2018 的各个 lab 来简单写下学习分布式系统的学习心得。</p>
-<p>目前主要是：MapReduce, Raft（后续期待更新中）<a id="more"></a></p>
+<p>目前主要有：MapReduce, Raft（期待后续更新中）<a id="more"></a></p>
 <h1 id="MapReduce"><a href="#MapReduce" class="headerlink" title="MapReduce"></a>MapReduce</h1><h2 id="MapReduce-Paper"><a href="#MapReduce-Paper" class="headerlink" title="MapReduce Paper"></a>MapReduce Paper</h2><h3 id="MapReduce-Example"><a href="#MapReduce-Example" class="headerlink" title="MapReduce Example"></a>MapReduce Example</h3><p>我们用最经典的words count来举例介绍MapReduce模型：</p>
 <p>对于一个三行的input file来说，我们按行进行splitting操作。每行分给不同的线程/节点，各节点单独进行mapping任务（单词分割）。各节点在shuffing阶段会进行相互通信，完成“洗牌”工作。然后各节点单独完成reducing任务并将结果输出在各节点本地文件上。最后将这些文件进行归并得到final result。</p>
 <p><img src="https://i.loli.net/2020/02/18/hQyazOdRUK4YJHF.png" alt="Example"></p>
@@ -641,6 +641,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/post/3d2c.html" rel="prev" title="FSCQ文件系统">
+                FSCQ文件系统 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -719,7 +723,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">27</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -741,7 +745,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-count">30</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

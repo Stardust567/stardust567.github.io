@@ -70,7 +70,7 @@
 
 
 
-  <meta name="keywords" content="GAP,CHL,Coq,">
+  <meta name="keywords" content="GAP,CHL,OS,">
 
 
 
@@ -82,14 +82,14 @@
 
 
 <meta name="description" content="FSCQ：可以应对crash的文件系统，with a machine-checkable proof (using the Coq proof assistant)">
-<meta name="keywords" content="GAP,CHL,Coq">
+<meta name="keywords" content="GAP,CHL,OS">
 <meta property="og:type" content="article">
 <meta property="og:title" content="FSCQ文件系统">
 <meta property="og:url" content="https://stardust567.github.io/post/3d2c.html">
 <meta property="og:site_name" content="Star Trail">
 <meta property="og:description" content="FSCQ：可以应对crash的文件系统，with a machine-checkable proof (using the Coq proof assistant)">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-03-09T13:37:47.928Z">
+<meta property="og:updated_time" content="2020-03-20T15:18:39.036Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="FSCQ文件系统">
 <meta name="twitter:description" content="FSCQ：可以应对crash的文件系统，with a machine-checkable proof (using the Coq proof assistant)">
@@ -402,7 +402,7 @@
                   <span class="post-meta-item-text">字数&#58;</span>
                 
                 <span title="字数">
-                  21
+                  2k
                 </span>
               
 
@@ -418,7 +418,7 @@
                   <span class="post-meta-item-text">时长 &asymp;</span>
                 
                 <span title="时长">
-                  1min
+                  6min
                 </span>
               
             </div>
@@ -440,6 +440,22 @@
 
       
         <p>FSCQ：可以应对crash的文件系统，with a machine-checkable proof (using the Coq proof assistant) <a id="more"></a></p>
+<h1 id="FSCQ论文"><a href="#FSCQ论文" class="headerlink" title="FSCQ论文"></a>FSCQ论文</h1><h2 id="基础背景"><a href="#基础背景" class="headerlink" title="基础背景"></a>基础背景</h2><h3 id="文件系统"><a href="#文件系统" class="headerlink" title="文件系统"></a>文件系统</h3><p><code>cp /path/src /path/dst</code>，文件系统首先需要从目录树中定位源文件的位置，为 此，它在根目录条目中找到“path”（通常已经缓存在数据缓存区里），拿到 path 的索引值 ipath，将path的目录条目加载到数据缓存区中，定位和名称“src”相对应的索引值isrc， 然后文件系统通过读取 isrc 索引节点的文件内容。要创建目标文件，文件系统将分配一个新的索引节点 idst，并在 inode 的分配位图中标记为已经使用，然后根据 src 文件的大小来给 dst 文件分配新的磁盘块，在 idst 中记录分配的块号，并且在块的的数据位图中将其标记为已使用，再将 src 的内容写入到新分配的块中。最后，文件系统将一个新的目录条目 （“dst”，idst）添加到 path 的目录条目中，并将目录的新内容写回到磁盘里。注意， 此处的顺序并不能保证崩溃安全性。</p>
+<h3 id="崩溃安全性"><a href="#崩溃安全性" class="headerlink" title="崩溃安全性"></a>崩溃安全性</h3><p>应用完成某个操作可能涉及到多次写磁盘，该过程中系统可能随时崩溃，有可能一个写操作只完成一部分，崩溃后磁盘会处于一个中间状态，这个状态下数据可能不一致，因此再重启之后通常需要运行一个恢复程序，检查磁盘的状态，将其恢复到一个数据一致的状态，以便将来能继续正确执行程序，文件系统的这种属性称为崩溃安全性。 </p>
+<h3 id="磁盘屏障操作（磁盘同步）"><a href="#磁盘屏障操作（磁盘同步）" class="headerlink" title="磁盘屏障操作（磁盘同步）"></a>磁盘屏障操作（磁盘同步）</h3><p>现代硬盘驱动通常会增加一层缓存来优化 I/O 实际写入磁盘的顺序，通过写操作的重排序来优化写的性能，文件系统的开发人员必须在适当的位置植入屏障，这个屏障会保证之前代码里面所有的写操作持久化到磁盘，以此来保证顺序性，但屏障是非常耗时的操作，需要尽量的避免，这种异步的 I/O 使得论证崩溃安全性变得更加复杂。 </p>
+<p>现在比较通用的实现崩溃安全性的方法是使用预写式日志。这时写操作不会直接修改文件系统相应部分的数据结构，而是会先将修改记录在磁盘上的日志区域，当所有操作记录完成后，会进行标志，然后再将数据从日志区域写到实际的磁盘区域，再 把日志区域的记录擦 除。假如系统在中间发生了崩溃，恢复程序会检查标志是否存在，假如存在，恢复程序会先把所有数据重新写一遍到磁盘上，这样就可以解决之前数据可能只写了一部分的问题。假如 不存在，说明之前的数据并没有往磁盘上写，因此可以直接将日志区域的数据擦除，仿佛这个操作完全没有发生一样，写标志这个时间点成为了操作是否发生的时间点，即使在运行恢复程序的过程中系统再次发生崩溃，重启之后再次运行恢复程序依然能正确的恢复磁盘状态。 虽然概念上很简单，但预写式日志会增加许多额外的磁盘写入和磁盘屏障操作，因此实 际的文件系统会实现很多优化来尽量增加磁盘吞吐量，这些优化包括将多个事务合并成一 个事务以及延迟将缓存中的数据写入磁盘。</p>
+<h3 id="日志协议"><a href="#日志协议" class="headerlink" title="日志协议"></a>日志协议</h3><p>文件系统一般会实现预写日志来解决这个问题，以确保系统崩溃重新启动的时候，磁盘 上的数据结构处于一致的状态。磁盘通常会分配一块固定的区域给日志，日志通常由两部分构成，一部分是连续的日志条目，每个日志条目记录希望对磁盘进行的写操作，另一部分是一个单一的提交快，记录着日志条目的数量。 </p>
+<p>一个基本的日志协议工作如下：（1）日志记录系统为文件系统的一个操作开启一个事 务。（2）对于该操作引发的每一个磁盘写入的地址和值，日志记录系统向日志条目附加一个新的地址/值对。（3）当日志记录系统提交事务时，它会发出一个磁盘同步来保存磁盘上的 日志条目，然后更新提交块以反映日志的长度，然后再次同步磁盘以完成这个事务。（4）日志系统将日志中的修改应用到实际的磁盘位置，并发出磁盘同步将更改持久化到磁盘上。 （5）最后，将零写入提交块来截断日志，并同步到磁盘上。（6）无论何时系统崩溃并重新启动，都会运行恢复过程。它根据提交块的长度读取日志；如果日志不为空，则跳到步骤（4） 重新执行。 </p>
+<p>上述协议的正确性依赖于一个重要的假设：更新提交块是原子的同步的操作。原子性确保了提交块上要么是原长度，要么是新长度，同步则保证了磁盘控制器不会对磁盘的写操作进行重新排序，将提交块的写和其他的写调换顺序，这是通过在更新提交块之前和之后发出 两个屏障（磁盘同步操作）来强制执行。在这个协议下，在事务中途，还没有更新提交块之前系统崩溃的话，提交块的长度为零，此时磁盘的数据没有被写，这个事务就像没有执行一 样，数据处于一致的状态；提交之后但在应用完成之前的系统崩溃将导致提交块长度非零， 并且日志中包含相同数目的有效条目，这时就只需要重新执行提交操作，会达到事务执行完的状态。 这个基本的日志协议会增加磁盘写操作以及耗时的磁盘同步操作。例如，写入单个磁盘块的操作将需要完成四次磁盘写入（两次为提交块，两次为块的内容）和四个磁盘同步（在两次提交块更新之前和之后）。</p>
+<h3 id="日志优化"><a href="#日志优化" class="headerlink" title="日志优化"></a>日志优化</h3><p>延迟应用日志：日志系统提交事务后，并不立即应用日志，而是等日志填满后，再一次性将日志内容应用。可以将每个事务的磁盘同步由四个 降为两个，同时将写磁盘的次数也由四次降为两次。</p>
+<p>组提交：在内存中累积多个系统调用的写入，并将其合并到单个事物当中。</p>
+<h2 id="CHL框架"><a href="#CHL框架" class="headerlink" title="CHL框架"></a>CHL框架</h2><p>CHL 框架是用 Coq 实现的一个用来书写规范的框架，它允许文件系统开发人员编写包含 崩溃条件和恢复过程的规范，并且提供了较好的证明自动化的支持。这涉及到了形式化验证的知识，我也只是刚有个模糊的认识。FSCQ 是从 Coq 提取出 Haskell 代码，再进一步获得可执行的文件系统，因此具有较高的 CPU 开销。</p>
+<blockquote>
+<p>Haskell是一门纯粹的函数式编程语言.</p>
+</blockquote>
+<blockquote>
+<p>Coq 是一种基于构造演算的证明助手，被用于形式化各种领域的证明，包括数学和编程语言。如果对其感兴趣想了解更多，可以参照此网站进一步学习 -&gt; <a href="https://github.com/coq/coq/wiki#coq-tutorials" target="_blank" rel="noopener">https://github.com/coq/coq/wiki#coq-tutorials</a></p>
+</blockquote>
 
       
     </div>
@@ -463,7 +479,7 @@
           
             <a href="/tags/CHL/" rel="tag"># CHL</a>
           
-            <a href="/tags/Coq/" rel="tag"># Coq</a>
+            <a href="/tags/OS/" rel="tag"># OS</a>
           
         </div>
       
@@ -539,8 +555,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -600,6 +625,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#FSCQ论文"><span class="nav-number">1.</span> <span class="nav-text">FSCQ论文</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基础背景"><span class="nav-number">1.1.</span> <span class="nav-text">基础背景</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#文件系统"><span class="nav-number">1.1.1.</span> <span class="nav-text">文件系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#崩溃安全性"><span class="nav-number">1.1.2.</span> <span class="nav-text">崩溃安全性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#磁盘屏障操作（磁盘同步）"><span class="nav-number">1.1.3.</span> <span class="nav-text">磁盘屏障操作（磁盘同步）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#日志协议"><span class="nav-number">1.1.4.</span> <span class="nav-text">日志协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#日志优化"><span class="nav-number">1.1.5.</span> <span class="nav-text">日志优化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CHL框架"><span class="nav-number">1.2.</span> <span class="nav-text">CHL框架</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

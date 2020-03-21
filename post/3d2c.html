@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="Star Trail">
 <meta property="og:description" content="FSCQ：可以应对crash的文件系统，with a machine-checkable proof (using the Coq proof assistant)">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-03-20T15:18:39.036Z">
+<meta property="og:updated_time" content="2020-03-21T15:53:10.807Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="FSCQ文件系统">
 <meta name="twitter:description" content="FSCQ：可以应对crash的文件系统，with a machine-checkable proof (using the Coq proof assistant)">
@@ -402,7 +402,7 @@
                   <span class="post-meta-item-text">字数&#58;</span>
                 
                 <span title="字数">
-                  2k
+                  6.1k
                 </span>
               
 
@@ -418,7 +418,7 @@
                   <span class="post-meta-item-text">时长 &asymp;</span>
                 
                 <span title="时长">
-                  6min
+                  21min
                 </span>
               
             </div>
@@ -440,22 +440,74 @@
 
       
         <p>FSCQ：可以应对crash的文件系统，with a machine-checkable proof (using the Coq proof assistant) <a id="more"></a></p>
-<h1 id="FSCQ论文"><a href="#FSCQ论文" class="headerlink" title="FSCQ论文"></a>FSCQ论文</h1><h2 id="基础背景"><a href="#基础背景" class="headerlink" title="基础背景"></a>基础背景</h2><h3 id="文件系统"><a href="#文件系统" class="headerlink" title="文件系统"></a>文件系统</h3><p><code>cp /path/src /path/dst</code>，文件系统首先需要从目录树中定位源文件的位置，为 此，它在根目录条目中找到“path”（通常已经缓存在数据缓存区里），拿到 path 的索引值 ipath，将path的目录条目加载到数据缓存区中，定位和名称“src”相对应的索引值isrc， 然后文件系统通过读取 isrc 索引节点的文件内容。要创建目标文件，文件系统将分配一个新的索引节点 idst，并在 inode 的分配位图中标记为已经使用，然后根据 src 文件的大小来给 dst 文件分配新的磁盘块，在 idst 中记录分配的块号，并且在块的的数据位图中将其标记为已使用，再将 src 的内容写入到新分配的块中。最后，文件系统将一个新的目录条目 （“dst”，idst）添加到 path 的目录条目中，并将目录的新内容写回到磁盘里。注意， 此处的顺序并不能保证崩溃安全性。</p>
+<h1 id="FSCQ论文"><a href="#FSCQ论文" class="headerlink" title="FSCQ论文"></a>FSCQ论文</h1><h2 id="基础背景"><a href="#基础背景" class="headerlink" title="基础背景"></a>基础背景</h2><h3 id="文件系统"><a href="#文件系统" class="headerlink" title="文件系统"></a>文件系统</h3><p><code>cp /path/src /path/dst</code>，文件系统首先需要从目录树中定位源文件的位置，为 此，它在根目录条目中找到“path”（通常已经缓存在数据缓存区里），拿到 path 的索引值 ipath，将path的目录条目加载到数据缓存区中，定位和名称“src”相对应的索引值isrc， 然后文件系统通过读取 isrc 索引节点的文件内容。要创建目标文件，文件系统将分配一个新的索引节点 idst，并在 inode 的分配位图中标记为已经使用，然后根据 src 文件的大小来给 dst 文件分配新的磁盘块，在 idst 中记录分配的块号，并且在块的的数据位图中将其标记为已使用，再将 src 的内容写入到新分配的块中。最后，文件系统将一个新的目录条目 （“dst”，idst）添加到 path 的目录条目中，并将目录的新内容写回到磁盘里。注意：此处的顺序并不能保证崩溃安全性。</p>
 <h3 id="崩溃安全性"><a href="#崩溃安全性" class="headerlink" title="崩溃安全性"></a>崩溃安全性</h3><p>应用完成某个操作可能涉及到多次写磁盘，该过程中系统可能随时崩溃，有可能一个写操作只完成一部分，崩溃后磁盘会处于一个中间状态，这个状态下数据可能不一致，因此再重启之后通常需要运行一个恢复程序，检查磁盘的状态，将其恢复到一个数据一致的状态，以便将来能继续正确执行程序，文件系统的这种属性称为崩溃安全性。 </p>
-<h3 id="磁盘屏障操作（磁盘同步）"><a href="#磁盘屏障操作（磁盘同步）" class="headerlink" title="磁盘屏障操作（磁盘同步）"></a>磁盘屏障操作（磁盘同步）</h3><p>现代硬盘驱动通常会增加一层缓存来优化 I/O 实际写入磁盘的顺序，通过写操作的重排序来优化写的性能，文件系统的开发人员必须在适当的位置植入屏障，这个屏障会保证之前代码里面所有的写操作持久化到磁盘，以此来保证顺序性，但屏障是非常耗时的操作，需要尽量的避免，这种异步的 I/O 使得论证崩溃安全性变得更加复杂。 </p>
-<p>现在比较通用的实现崩溃安全性的方法是使用预写式日志。这时写操作不会直接修改文件系统相应部分的数据结构，而是会先将修改记录在磁盘上的日志区域，当所有操作记录完成后，会进行标志，然后再将数据从日志区域写到实际的磁盘区域，再 把日志区域的记录擦 除。假如系统在中间发生了崩溃，恢复程序会检查标志是否存在，假如存在，恢复程序会先把所有数据重新写一遍到磁盘上，这样就可以解决之前数据可能只写了一部分的问题。假如 不存在，说明之前的数据并没有往磁盘上写，因此可以直接将日志区域的数据擦除，仿佛这个操作完全没有发生一样，写标志这个时间点成为了操作是否发生的时间点，即使在运行恢复程序的过程中系统再次发生崩溃，重启之后再次运行恢复程序依然能正确的恢复磁盘状态。 虽然概念上很简单，但预写式日志会增加许多额外的磁盘写入和磁盘屏障操作，因此实 际的文件系统会实现很多优化来尽量增加磁盘吞吐量，这些优化包括将多个事务合并成一 个事务以及延迟将缓存中的数据写入磁盘。</p>
+<h3 id="写屏障（磁盘同步）"><a href="#写屏障（磁盘同步）" class="headerlink" title="写屏障（磁盘同步）"></a>写屏障（磁盘同步）</h3><p>现代硬盘驱动通常会增加一层缓存来优化 I/O 实际写入磁盘的顺序，即发给磁盘的写入不会立即持久化，最近的写往往会被缓存在内部缓存中，并由硬盘驱动器决定什么时候会将这些未完成的写刷到磁盘。同时，硬盘驱动器可以对这些写重新排序进行写入以提高磁盘吞吐量。假如系统没有崩溃，一个读总是能够读到最新写得值，但假如系统崩溃并重启，可能会发现崩溃之前稍后发出的写持久到了磁盘，但是之前的写却没有。</p>
+<p>硬盘驱动器提供了写屏障操作，称为磁盘同步，这会强制将写的缓存全部刷到磁盘上，磁盘同步操作可以用来保证不会有未完成的写操作，之前所有的写都会保留在磁盘上。但是磁盘同步非常的耗时，应当尽可能的避免，而这种异步的 I/O 使得论证崩溃安全性变得更加复杂。 </p>
+<h3 id="预写式日志"><a href="#预写式日志" class="headerlink" title="预写式日志"></a>预写式日志</h3><p>通过写操作的重排序来优化写的性能，文件系统的开发人员必须在适当的位置植入屏障，这个屏障会保证之前代码里面所有的写操作持久化到磁盘，以此来保证顺序性，但屏障是非常耗时的操作，需要尽量的避免，</p>
+<p>现在比较通用的实现崩溃安全性的方法是使用预写式日志。这时写操作不会直接修改文件系统相应部分的数据结构，而是会先将修改记录在磁盘上的日志区域，当所有操作记录完成后，会进行标志，然后再将数据从日志区域写到实际的磁盘区域，再把日志区域的记录擦 除。假如系统在中间发生了崩溃，恢复程序会检查标志是否存在，假如存在，恢复程序会先把所有数据重新写一遍到磁盘上，这样就可以解决之前数据可能只写了一部分的问题。假如 不存在，说明之前的数据并没有往磁盘上写，因此可以直接将日志区域的数据擦除，仿佛这个操作完全没有发生一样，写标志这个时间点成为了操作是否发生的时间点，即使在运行恢复程序的过程中系统再次发生崩溃，重启之后再次运行恢复程序依然能正确的恢复磁盘状态。 虽然概念上很简单，但预写式日志会增加许多额外的磁盘写入和磁盘屏障操作，因此实 际的文件系统会实现很多优化来尽量增加磁盘吞吐量，这些优化包括将多个事务合并成一 个事务以及延迟将缓存中的数据写入磁盘。</p>
 <h3 id="日志协议"><a href="#日志协议" class="headerlink" title="日志协议"></a>日志协议</h3><p>文件系统一般会实现预写日志来解决这个问题，以确保系统崩溃重新启动的时候，磁盘 上的数据结构处于一致的状态。磁盘通常会分配一块固定的区域给日志，日志通常由两部分构成，一部分是连续的日志条目，每个日志条目记录希望对磁盘进行的写操作，另一部分是一个单一的提交快，记录着日志条目的数量。 </p>
-<p>一个基本的日志协议工作如下：（1）日志记录系统为文件系统的一个操作开启一个事 务。（2）对于该操作引发的每一个磁盘写入的地址和值，日志记录系统向日志条目附加一个新的地址/值对。（3）当日志记录系统提交事务时，它会发出一个磁盘同步来保存磁盘上的 日志条目，然后更新提交块以反映日志的长度，然后再次同步磁盘以完成这个事务。（4）日志系统将日志中的修改应用到实际的磁盘位置，并发出磁盘同步将更改持久化到磁盘上。 （5）最后，将零写入提交块来截断日志，并同步到磁盘上。（6）无论何时系统崩溃并重新启动，都会运行恢复过程。它根据提交块的长度读取日志；如果日志不为空，则跳到步骤（4） 重新执行。 </p>
-<p>上述协议的正确性依赖于一个重要的假设：更新提交块是原子的同步的操作。原子性确保了提交块上要么是原长度，要么是新长度，同步则保证了磁盘控制器不会对磁盘的写操作进行重新排序，将提交块的写和其他的写调换顺序，这是通过在更新提交块之前和之后发出 两个屏障（磁盘同步操作）来强制执行。在这个协议下，在事务中途，还没有更新提交块之前系统崩溃的话，提交块的长度为零，此时磁盘的数据没有被写，这个事务就像没有执行一 样，数据处于一致的状态；提交之后但在应用完成之前的系统崩溃将导致提交块长度非零， 并且日志中包含相同数目的有效条目，这时就只需要重新执行提交操作，会达到事务执行完的状态。 这个基本的日志协议会增加磁盘写操作以及耗时的磁盘同步操作。例如，写入单个磁盘块的操作将需要完成四次磁盘写入（两次为提交块，两次为块的内容）和四个磁盘同步（在两次提交块更新之前和之后）。</p>
-<h3 id="日志优化"><a href="#日志优化" class="headerlink" title="日志优化"></a>日志优化</h3><p>延迟应用日志：日志系统提交事务后，并不立即应用日志，而是等日志填满后，再一次性将日志内容应用。可以将每个事务的磁盘同步由四个 降为两个，同时将写磁盘的次数也由四次降为两次。</p>
-<p>组提交：在内存中累积多个系统调用的写入，并将其合并到单个事物当中。</p>
-<h2 id="CHL框架"><a href="#CHL框架" class="headerlink" title="CHL框架"></a>CHL框架</h2><p>CHL 框架是用 Coq 实现的一个用来书写规范的框架，它允许文件系统开发人员编写包含 崩溃条件和恢复过程的规范，并且提供了较好的证明自动化的支持。这涉及到了形式化验证的知识，我也只是刚有个模糊的认识。FSCQ 是从 Coq 提取出 Haskell 代码，再进一步获得可执行的文件系统，因此具有较高的 CPU 开销。</p>
+<p>一个基本的日志协议工作如下：（1）日志记录系统为文件系统的一个操作开启一个事务（2）对于该操作引发的每一个磁盘写入的地址和值，日志记录系统向日志条目附加一个新的地址/值对（3）当日志记录系统提交事务时，它会发出一个磁盘<strong>同步</strong>来保存磁盘上的日志条目，然后更新提交块以反映日志的长度，然后再次<strong>同步</strong>磁盘以完成这个事务（4）日志系统将日志中的修改应用到实际的磁盘位置，并发出磁盘<strong>同步</strong>将更改持久化到磁盘上（5）最后，将零写入提交块来截断日志，并<strong>同步</strong>到磁盘上（6）无论何时系统崩溃并重新启动，都会运行恢复过程。它根据提交块的长度读取日志；如果日志不为空，则跳到步骤（4）重新执行。 </p>
+<p>上述协议的正确性依赖于一个重要的假设：更新提交块是原子的同步的操作。原子性确保了提交块上要么是原长度，要么是新长度，同步则保证了磁盘控制器不会对磁盘的写操作进行重新排序，将提交块的写和其他的写调换顺序，这是通过在更新提交块之前和之后发出 两个屏障（磁盘同步操作）来强制执行。在这个协议下，在事务中途，还没有更新提交块之前系统崩溃的话，提交块的长度为零，此时磁盘的数据没有被写，这个事务就像没有执行一 样，数据处于一致的状态；提交之后但在应用完成之前的系统崩溃将导致提交块长度非零， 并且日志中包含相同数目的有效条目，这时就只需要重新执行提交操作，会达到事务执行完的状态。 这个基本的日志协议会增加磁盘写操作以及耗时的磁盘同步操作。例如，写入单个磁盘块的操作将需要完成四次磁盘写入（两次为提交块，两次为块的内容）和四个磁盘同步（上文加粗处）。</p>
+<h3 id="日志优化"><a href="#日志优化" class="headerlink" title="日志优化"></a>日志优化</h3><ol>
+<li><p>延迟应用日志：日志系统提交事务后，并不立即应用日志，而是等日志填满后，再一次性将日志内容应用。可以将每个事务的磁盘同步由四个 降为两个，同时将写磁盘的次数也由四次降为两次。</p>
+</li>
+<li><p>组提交：在内存中累积多个系统调用的写入，并将其合并到单个事物当中。</p>
+</li>
+<li><p>……</p>
+</li>
+</ol>
+<h2 id="CHL框架"><a href="#CHL框架" class="headerlink" title="CHL框架"></a>CHL框架</h2><p>CHL (Crash Hoare Logic) 框架是用 Coq 实现的用来书写规范的框架，它允许文件系统开发人员编写包含崩溃条件和恢复过程的规范，并提供了较好的证明自动化的支持。这涉及到了形式化验证的知识，我也只是刚有个模糊的认识。FSCQ 是从 Coq 提取出 Haskell 代码，再进一步获得可执行的文件系统，因此具有较高的 CPU 开销。</p>
 <blockquote>
-<p>Haskell是一门纯粹的函数式编程语言.</p>
+<p>Haskell是一门纯粹的函数式编程语言。</p>
 </blockquote>
 <blockquote>
 <p>Coq 是一种基于构造演算的证明助手，被用于形式化各种领域的证明，包括数学和编程语言。如果对其感兴趣想了解更多，可以参照此网站进一步学习 -&gt; <a href="https://github.com/coq/coq/wiki#coq-tutorials" target="_blank" rel="noopener">https://github.com/coq/coq/wiki#coq-tutorials</a></p>
 </blockquote>
+<h3 id="磁盘模型"><a href="#磁盘模型" class="headerlink" title="磁盘模型"></a>磁盘模型</h3><p>依照分离逻辑的假设，磁盘被定义成从整数块号a到内容v的偏函数a → v，其中超过磁盘范围的块号不会映射到任何东西。 </p>
+<p>而根据我们所知，I/O写入并不是同步的，中间会经过cash异步写入磁盘。为了捕获这种异步的性质，CHL 用一个值集（v,vs）来描述一个块的内容，而不是一个单一的值，其中 v 代表着这个地址最近写入的值， 而 vs 是一系列的之前写入的值，假如系统突然崩溃，v 和 vs 中的任何一个值都可能出现在磁盘上。而磁盘同步操作意味着对应的缓存已经全部应用到该地址上，先前写入的值已经全部处理，即 vs 为 ∅，最新的值会出现在崩溃之后，否则，这个磁盘块就是未同步的。 CHL 的磁盘模型假设块是原子写的，也就是说，在系统崩溃之后，块必须包含最后写入 的值或者是先前值中的一个，并且不允许部分块写入。 </p>
+<h3 id="崩溃条件"><a href="#崩溃条件" class="headerlink" title="崩溃条件"></a>崩溃条件</h3><p>给定了异步磁盘模型，我们还需要一种手段来描述可能崩溃的中间状态，CHL 将霍尔逻辑扩展成一个具有崩溃条件的四元组， 写为：{P}C{Q}{R} 其中 Q 依然是后置条件，描述 C 在没有崩溃情况下的执行结束时的状态，而 R 是描述 C 执行过程中可能发生的中间状态的崩溃条件。 下面我们以disk_write(a, v)举例：</p>
+<p>前置条件：<code>F * a -&gt; (v0, vs)</code><br>后置条件：<code>F * a -&gt; (v, {v0} U vs)</code><br>崩溃条件：<code>F * a -&gt; (v0, vs) ∨ F * a -&gt; (v, {v0} U vs)</code></p>
+<p>规范由四个部分组成，首先是我们推理的过程名称disk_write(a, v)，把值v写到地址a上。其前置条件声明的是磁盘上地址 a 的地方指向的值是一个集合，v0是最新写入的值，vs则表示之前写入的值的序列，除 a 以外的地址满足的谓词是 F；其后置条件说的是 a 以外的值依旧满足谓词 F，没有修改，而地址 a 指向的值的集合中，最新的元素是v0，旧的值则是由vs加上v0组成的序列；由于磁盘写是一个原子操作，因此它要么完成了值的写入，要么没有完成，因此可能发生系统崩溃时有两种状态，一是前置条件的状态，二是后置条件的状态，通过将前置条件和后置条件并起来则表示了系统崩溃时可能的所有状态，即系统崩溃时必须满足的谓词。</p>
+<p>磁盘写的规范说明还表明了真实磁盘的两个重要行为，保证了磁盘的性能：</p>
+<ul>
+<li>磁盘实际 I/O 可以异步发生 </li>
+<li>磁盘的写可以重新排序</li>
+</ul>
+<p>因为一个地址a会指向一组值而不是一个值，指向一组值表明系统崩溃恢复的时候，磁盘上的值可能是之前的某个值，而不同地址之间可能会呈现出不一致的状态，这也表明了磁盘对写进行了重新排序。</p>
+<p>CHL 的崩溃条件有一个微妙的地方，他们描述的是系统崩溃之前磁盘的状态，而不是系统崩溃之后。在崩溃后，CHL 的磁盘模型认为，每个块将从崩溃之前的值的集合中选择一个值，例如disk_write(a, v)的前置条件中表明，磁盘的 a 地址指向的可能是一系列值的集合，而不是一个值。这样的好处就是，崩溃条件会跟前置条件和后置条件类似，有利于证明自动化。 </p>
+<h3 id="逻辑地址空间"><a href="#逻辑地址空间" class="headerlink" title="逻辑地址空间"></a>逻辑地址空间</h3><p>文件系统的许多地方涉及到逻辑地址空间。例如，磁盘是从磁盘块号到磁盘块内容的地址空间；文件索引层是从文件索引号到文件索引的地址空间；每个文件里，是从该文件中的偏移量到数据的地址空间；目录是从文件名到索引节点号的地址空间。基于这个观察，CHL 扩展了关于磁盘推理的分离逻辑， 使其以同样的方式表达诸如文件，目录或逻辑文件内容的更高级的地址空间。 作为逻辑地址空间的实例，我们考虑 inc_two 的简单过程。inc_two 表达在一个操作中需要同时更新两个块的文件系统调用，我们先读取两个块的内容，然后将这两个块的内容加一，再写回。该过程使用日志系统提供的 log_begin，开始一个事务，用 log_read 来读取数据，然后用 log_write 来写数据，最后用 log_commit 来提交这个事 务。假如在执行 inc_two 的过程中发生了系统崩溃并且重新启动，首先系统会运行 log_recover 这个恢复程序，如果在恢复过程中依然发生系统崩溃，则重新启动后，恢复过程将再次运行。原则上来说恢复过程可能运行若干次。尽管如此，只要 log_recover 完成， 日志记录系统就能保证两个写入要么都发生，要么都没有发生，不管经历了多少次系统崩溃。</p>
+<p>为了简化说明，我们假设现在的日志系统只是采用前面所述的基础的日志协议:</p>
+<p>SPEC  <code>inc_two(a1, a2)</code></p>
+<p>PRE <code>disk: log_rep(NoTxn, start_state)</code><br><code>start_state: F ⋆ a1 → (v_x, vs_x) ⋆ a2 → (v_y, vs_y)</code></p>
+<p>POST <code>disk: log_rep(NoTxn, new_state)</code><br><code>new_state: F ⋆ a1 → (v_x+1, ∅) ⋆ a2 → (v_y+1, ∅)</code></p>
+<p>CRASH <code>disk: log_intact(start_state, new_state)</code></p>
+<p>前置条件中，a1 → (v_x, vs_x) 适用于日志系统提供的逻辑磁盘的地址空间，后置条件中，a1 → (v_x+1, ∅) 适用于逻辑磁盘的新的内容。就像物理磁盘一样，这个地址空间也是从地址到值的偏函数。与物理磁盘不同的是，通过日志系统写入逻辑磁盘的操作展现的是一个同步的接口，即整个操作完成之后，能保证要写入地址的值被刷到磁盘上，因此在后置条件中，我们看到的是单个同步的值，这层抽象做的具体的事情就是隐藏更下层的异步的接口，这也是引入地址空间的好处。 </p>
+<p>我们在 log_rep 将逻辑地址空间和实际的物理磁盘连接起来。例如，我们指定起始状态如何存储在磁盘上，以及如何逻辑的构造新的状态，比如将日志内容应用到起始状态。通过 log_rep 的这层转化，对逻辑地址空间的描述将会变成对物理磁盘的描述，并且隐藏了一 些琐碎的细节。log_rep 将会把逻辑地址空间作为参数，结合日志系统的状态和逻辑磁盘状态准确的反映出物理磁盘上的状态。日志系统中有好几个可能的状态：</p>
+<ol>
+<li>NoTxn ：表示当前磁盘没有事务活动，</li>
+<li>ActiveTxn ：表示活跃状态中的事务所有的修改只会发生在内存中</li>
+<li>FlushedUnsync ：表示此时开始进入提交事务的过程，首先把内存中的修改刷到数据缓冲区的日志记录的区域中，未同步表示还没有刷到磁盘上</li>
+<li>Flushed ：表示此时已经有了一次磁盘同步，我们将日志的数据区的内容刷到了磁盘上</li>
+<li>CommittedUnsync ：表示我们现在将提交块写到了数据缓冲区里，同时还没有同步到磁盘里</li>
+<li>Committed ：表示提交块被同步到了磁盘里，这个点之前和之后作为事务是否完成的分界点</li>
+<li>AppliedUnsync ：表示现在数据缓存区里将日志的内容实际应用到数据区</li>
+<li>AppliedSync ：表示日志应用的工作已经完全反映到了磁盘上，整个事务至此完成</li>
+</ol>
+<p>inc_two 的崩溃条件使用 log_would_recover 描述了所有可能的崩溃状态从这些崩溃状态要么恢复到 start_state，要么恢复到 cur_state，使用 log_would_recover，我们考虑的所有状态即前文所述的日志系统的八种状态，这些状态的产生源于这个操作深层次的调用中任何可能的崩溃点（比如，在 log_commit 过程里面的崩溃情况）。</p>
+<h3 id="恢复执行语义"><a href="#恢复执行语义" class="headerlink" title="恢复执行语义"></a>恢复执行语义</h3><p>计算机遇到崩溃并重新启动后，它会在恢复正常操作之前先运行恢复程序（如 log_recover），崩溃条件和地址空间允许我们指定计算机在执行过程中可能会崩溃的状态， 但我们还需要一种证明恢复过程正确性的方法，包括在恢复期间的系统崩溃。日志系统必须在每次崩溃之后运行 log_recover 来将已经提交的事务继续做完，包括在运行 log_recover 本身发生崩溃之后。 log_recover 指出，从与 log_would_recover(last_state, committed_state) 相匹配的任何状态开始，log_recover 会将事务回滚到 last_state 或将提交的事务继续执行到 committed_state。此外，log_recover 的规范是幂等的，因此它的崩溃条件意味着前置条件，这将允许 log_recover 在执行的过程中崩溃多次。</p>
+<p>SPEC <code>log_recover()</code><br>PRE <code>disk: log_intact(last_state, committed_state)</code><br>POST <code>disk: log_rep(NoTxn, last_state) ∨ log_rep(NoTxn, committed_state)</code><br>CRASH <code>disk: log_intact(last_state, committed_state)</code></p>
+<p>为了表达 log_recover 在遇到崩溃之后运行，CHL 提供了恢复执行语义，一般的执行语义下，一个程序的执行要么产生错误状态，崩溃状态或者正常完成状态，恢复执行语义则考虑的是两个程序执行，其中一个是正常程序，另一个是恢复程序，并且要么产生一个错误，一个完成状态（正常程序完成执行）或者一个恢复状态（恢复程序完成执行）。这种模型下，首先正常程序尝试完成，但如果系统崩溃，它将开始运行恢复程序，如果再回复过程中系统崩溃，有可能需要多次运行恢复程序，最终达到恢复状态的过程。</p>
+<p>扩展后{P}C≫R{Q}表示，假如 C 在满足前置条件 P 下执行，且每当系统在 C 崩溃或 R 自身崩溃时执行恢复过程 R，则当 C 或 R 终止时，条件 Q 将成 立。 我们可以由此扩展 inc_two 规范以包括恢复执行：</p>
+<p>SPEC  <code>inc_two(a1, a2) ≫ log_recover</code></p>
+<p>PRE <code>disk: log_rep(NoTxn, start_state)</code><br><code>start_state: F ⋆ a1 → (v_x, vs_x) ⋆ a2 → (v_y, vs_y)</code></p>
+<p>POST <code>disk: log_rep(NoTxn, new_state) ∨ (status = recovered ∧ log_rep(NoTxn, start_state))</code><br><code>new_state: F ⋆ a1 → (v_x+1, ∅) ⋆ a2 → (v_y+1, ∅)</code></p>
+<p>后置条件表示，如果 inc_two 在没有崩溃的情况下完成，则两个块都已经更新，或者两者都没有更新，这时一定是因为发生了崩溃，运行恢复程序之后达到了原状态。状态变量 status 指示系统当前状态。</p>
+<h2 id="文件系统构建"><a href="#文件系统构建" class="headerlink" title="文件系统构建"></a>文件系统构建</h2><p>FSCQ参照xv6文件系统设计，但不支持多处理器，同时采用单独的位图来分配索引节点。</p>
+<p>FscqLog提供了一个简单的预写日志，FSCQ使用它来原子地更新几个磁盘块。其他组件提供标准文件系统抽象的简单实现。缓存模块提供缓冲区缓存。 Balloc实现了一个位图分配器，用于块和inode分配。索引节点实现索引节点层；这里最有趣的逻辑是将直接块和间接块组合在一起，形成单个块地址列表。 Inode调用Balloc分配间接块。 BFile实现了一个块级文件接口，在更高级别上公开了一个接口，其中每个文件都是一个块列表。 BFile调用Balloc分配文件数据块。 Dir在块级文件的顶部实现目录。 ByteFile实现文件的字节级接口，其中每个文件都是字节数组。 DirTree将目录和字节级文件组合为分层目录树结构；在创建/删除文件或子目录时，它调用Balloc来分配/取消分配索引节点。最后，FS在事务中实现完整的系统调用。</p>
+<p>FSCQ建立在图3所示的disk_write规范的基础上，该规范允许FSCQ执行异步磁盘操作，并捕获以下事实：崩溃后，并非每次发出的写入都将反映在磁盘状态中。 CHL模型的另外两个磁盘操作是读取磁盘块（disk_read），并等待所有写操作到达非易失性内存（disk_sync）。<br>disk_sync将块地址作为附加参数，以指示必须同步的块。 disk_sync的按地址变体会丢弃该块的所有先前值，从而使最后写入的值成为崩溃后可能出现的唯一可能值。 所有其他块保持不变，这使您可以对同步操作进行基于分离逻辑的本地推理。 在执行时，每个地址disk_syncs的连续调用被折叠为单个全局disk_sync操作，以实现所需的性能。</p>
+<p>FSCQ在顶层提供类似于POSIX的接口。 与POSIX的主要区别是（i）FSCQ不支持硬链接，以及（ii）FSCQ不实现文件描述符，而是需要按索引节点编号命名打开的文件。 FSCQ依靠FUSE驱动程序来维护打开文件描述符和inode编号之间的映射。</p>
+<p>FscqLog一次仅允许一个事务，并假定内存足够大以容纳当前事务的内存日志。但即使对于这种简单的设计，日志记录协议也很复杂，因为disk_write是异步的。崩溃后，日志记录系统可以处于七个状态之一：NoTxn（无活动事务），ActiveTxn（事务已启动），LogFlushed（log_flush已经发生），CommittedUnsync（已写入提交块），CommittedSync（提交块）已同步），AppliedUnsync（已应用日志）和AppliedSync（已应用并同步日志）。<br>崩溃后，FSCQ的恢复过程fs_recover读取布局块以确定日志的位置，然后调用FscqLog的log_recover将磁盘置于一致状态。<br>FSCQ仅通过log_write更新磁盘，并将这些写入以系统调用的粒度包装到事务中，以实现崩溃安全。此外，尽管FscqLog必须处理异步写入的复杂性，但它为上级软件提供了一个更简单的同步接口，因为事务通过提供全有或全无的原子性来隐藏异步。我们之所以能够这样做是因为事务API公开了一个逻辑地址空间，该逻辑地址空间将每个块映射到唯一的块内容，即使物理磁盘将每个块映射到最后写入值和一组先前值的元组。因此，在FscqLog之上编写的软件不必担心异步写入。</p>
 
       
     </div>
@@ -635,7 +687,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#FSCQ论文"><span class="nav-number">1.</span> <span class="nav-text">FSCQ论文</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基础背景"><span class="nav-number">1.1.</span> <span class="nav-text">基础背景</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#文件系统"><span class="nav-number">1.1.1.</span> <span class="nav-text">文件系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#崩溃安全性"><span class="nav-number">1.1.2.</span> <span class="nav-text">崩溃安全性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#磁盘屏障操作（磁盘同步）"><span class="nav-number">1.1.3.</span> <span class="nav-text">磁盘屏障操作（磁盘同步）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#日志协议"><span class="nav-number">1.1.4.</span> <span class="nav-text">日志协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#日志优化"><span class="nav-number">1.1.5.</span> <span class="nav-text">日志优化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CHL框架"><span class="nav-number">1.2.</span> <span class="nav-text">CHL框架</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#FSCQ论文"><span class="nav-number">1.</span> <span class="nav-text">FSCQ论文</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基础背景"><span class="nav-number">1.1.</span> <span class="nav-text">基础背景</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#文件系统"><span class="nav-number">1.1.1.</span> <span class="nav-text">文件系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#崩溃安全性"><span class="nav-number">1.1.2.</span> <span class="nav-text">崩溃安全性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#写屏障（磁盘同步）"><span class="nav-number">1.1.3.</span> <span class="nav-text">写屏障（磁盘同步）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#预写式日志"><span class="nav-number">1.1.4.</span> <span class="nav-text">预写式日志</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#日志协议"><span class="nav-number">1.1.5.</span> <span class="nav-text">日志协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#日志优化"><span class="nav-number">1.1.6.</span> <span class="nav-text">日志优化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CHL框架"><span class="nav-number">1.2.</span> <span class="nav-text">CHL框架</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#磁盘模型"><span class="nav-number">1.2.1.</span> <span class="nav-text">磁盘模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#崩溃条件"><span class="nav-number">1.2.2.</span> <span class="nav-text">崩溃条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#逻辑地址空间"><span class="nav-number">1.2.3.</span> <span class="nav-text">逻辑地址空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#恢复执行语义"><span class="nav-number">1.2.4.</span> <span class="nav-text">恢复执行语义</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文件系统构建"><span class="nav-number">1.3.</span> <span class="nav-text">文件系统构建</span></a></li></ol></li></ol></div>
             
 
           </div>

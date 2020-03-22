@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="Star Trail">
 <meta property="og:description" content="学习路上总会遇到各种坑，之前一直搞完就算了，总觉得很可惜，就有了记录踩的各种坑的想法…… 未完待续（不断填坑）中……">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-01-02T05:35:43.288Z">
+<meta property="og:updated_time" content="2020-03-22T13:58:02.607Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Tips">
 <meta name="twitter:description" content="学习路上总会遇到各种坑，之前一直搞完就算了，总觉得很可惜，就有了记录踩的各种坑的想法…… 未完待续（不断填坑）中……">
@@ -402,7 +402,7 @@
                   <span class="post-meta-item-text">字数&#58;</span>
                 
                 <span title="字数">
-                  888
+                  903
                 </span>
               
 
@@ -463,12 +463,8 @@
 <p>pip install -r requirements.txt</p>
 </blockquote>
 </li>
-</ol>
-<h2 id="Go"><a href="#Go" class="headerlink" title="Go"></a>Go</h2><ol>
-<li><p>添加 Go Modules Replace的时候，replace配置项的路径只能是<code>~</code>根目录开头，<code>.</code>当前目录开头，<code>..</code>上级目录开头，这点在WSL上就还是安利后两者，毕竟在根目录下VScode估计找不到文件夹orz</p>
-</li>
-<li><p>为变量给予附属属性<code>json</code>，这样子在<code>c.JSON</code>(c *gin.Context)的时候就会自动转换格式，非常的便利。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Name <span class="keyword">string</span> <span class="string">`json:"name"`</span></span><br></pre></td></tr></table></figure>
+<li><p>解决matplotlib中文图例乱码问题</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">## Go</span><br><span class="line"></span><br><span class="line">1. 添加 Go Modules Replace的时候，replace配置项的路径只能是`~`根目录开头，`.`当前目录开头，`..`上级目录开头，这点在WSL上就还是安利后两者，毕竟在根目录下VScode估计找不到文件夹orz</span><br><span class="line"></span><br><span class="line">2. 为变量给予附属属性`json`，这样子在`c.JSON`(c *gin.Context)的时候就会自动转换格式，非常的便利。</span><br><span class="line">   ```go</span><br><span class="line">   Name string `json:&quot;name&quot;`</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
 <h2 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h2><ol>
@@ -659,7 +655,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-count">29</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -670,7 +666,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -714,7 +710,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Git"><span class="nav-number">1.</span> <span class="nav-text">Git</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python"><span class="nav-number">2.</span> <span class="nav-text">Python</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Go"><span class="nav-number">3.</span> <span class="nav-text">Go</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker"><span class="nav-number">4.</span> <span class="nav-text">Docker</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL"><span class="nav-number">5.</span> <span class="nav-text">MySQL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PostgreSQL"><span class="nav-number">6.</span> <span class="nav-text">PostgreSQL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis"><span class="nav-number">7.</span> <span class="nav-text">Redis</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Vue-js"><span class="nav-number">8.</span> <span class="nav-text">Vue.js</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Terminal"><span class="nav-number">9.</span> <span class="nav-text">Terminal</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Git"><span class="nav-number">1.</span> <span class="nav-text">Git</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python"><span class="nav-number">2.</span> <span class="nav-text">Python</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker"><span class="nav-number">3.</span> <span class="nav-text">Docker</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL"><span class="nav-number">4.</span> <span class="nav-text">MySQL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PostgreSQL"><span class="nav-number">5.</span> <span class="nav-text">PostgreSQL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis"><span class="nav-number">6.</span> <span class="nav-text">Redis</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Vue-js"><span class="nav-number">7.</span> <span class="nav-text">Vue.js</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Terminal"><span class="nav-number">8.</span> <span class="nav-text">Terminal</span></a></li></ol></div>
             
 
           </div>

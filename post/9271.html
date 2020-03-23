@@ -70,7 +70,7 @@
 
 
 
-  <meta name="keywords" content="GAP,CHL,OS,">
+  <meta name="keywords" content="GAP,OS,rwlock,">
 
 
 
@@ -82,14 +82,14 @@
 
 
 <meta name="description" content="Scalable Read-mostly Synchronization Using Passive Reader-Writer Locks">
-<meta name="keywords" content="GAP,CHL,OS">
+<meta name="keywords" content="GAP,OS,rwlock">
 <meta property="og:type" content="article">
 <meta property="og:title" content="被动读写锁">
 <meta property="og:url" content="https://stardust567.github.io/post/9271.html">
 <meta property="og:site_name" content="Star Trail">
 <meta property="og:description" content="Scalable Read-mostly Synchronization Using Passive Reader-Writer Locks">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-03-22T07:45:32.412Z">
+<meta property="og:updated_time" content="2020-03-23T15:10:13.842Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="被动读写锁">
 <meta name="twitter:description" content="Scalable Read-mostly Synchronization Using Passive Reader-Writer Locks">
@@ -402,7 +402,7 @@
                   <span class="post-meta-item-text">字数&#58;</span>
                 
                 <span title="字数">
-                  9
+                  3.6k
                 </span>
               
 
@@ -418,7 +418,7 @@
                   <span class="post-meta-item-text">时长 &asymp;</span>
                 
                 <span title="时长">
-                  1min
+                  13min
                 </span>
               
             </div>
@@ -439,7 +439,41 @@
       
 
       
-        <p>Scalable Read-mostly Synchronization Using Passive Reader-Writer Locks</p>
+        <p>Scalable Read-mostly Synchronization Using Passive Reader-Writer Locks <a id="more"></a></p>
+<p>被动读写锁 prwlock 为TSO架构提供了可扩展的读者侧性能以及较小的写入器延迟。 prwlock的关键是多个非通信读者和未决写者之间的基于版本的共识协议。 Prwlock 利用内存一致性的有限陈旧性来避免阅读器通用路径中的原子指令和内存障碍，并使用消息传递（例如IPI）来散布读者，以便可以限制写锁获取延迟。</p>
+<h2 id="背景知识"><a href="#背景知识" class="headerlink" title="背景知识"></a>背景知识</h2><h3 id="读写锁-rwlock"><a href="#读写锁-rwlock" class="headerlink" title="读写锁 rwlock"></a>读写锁 rwlock</h3><p>rwlock 把对共享资源的访问者划分成读者和写者，读者只对共享资源进行读访问，写者则需要对共享资源进行写操作。这种锁能提高并发性，因为在多处理器系统中，它允许同时有多个读者来访问共享资源，最大可能的读者数为实际的逻辑CPU数。写者是排他性的，一个读写锁同时只能有一个写者或多个读者，但不能同时既有读者又有写者。</p>
+<p>如果读写锁当前没有读者，也没有写者，那么写者可以立刻获得读写锁，否则它必须自旋在那里，直到没有任何写者或读者。如果读写锁没有写者，那么读者可以立即获得该读写锁，否则读者必须自旋在那里，直到写者释放该读写锁。</p>
+<h4 id="大读者锁-brlock"><a href="#大读者锁-brlock" class="headerlink" title="大读者锁 brlock"></a>大读者锁 brlock</h4><p>大读者锁是读写锁的高性能版，读者可以非常快地获得锁，但写者获得锁的开销比较大。这种锁适合于读多写少的情况，它在这种情况下远好于读写锁。大读者锁的实现机制有两种：</p>
+<ul>
+<li>brlock1：每个线程都有互斥锁，一个读者仅需要获取本线程锁，但写者需要获得所有锁</li>
+<li>brlock2：使用一个由读者和写者共享的读者flags数组</li>
+</ul>
+<p>当一个线程被抢占然后移到另一个core的时候，brlock容易发生死锁，所以brlock常用在禁止抢占的环境中。</p>
+<h2 id="设计框架"><a href="#设计框架" class="headerlink" title="设计框架"></a>设计框架</h2><h3 id="设计原理"><a href="#设计原理" class="headerlink" title="设计原理"></a>设计原理</h3><p>rwlock 的基本设计目标是，读者写者同时进行，因此不应共享任何内容。但典型的rwlock依赖于原子指令来协调读者和写者。在多处理器上，一条原子指令暗含了一次内存屏障，这样可以保证读者读到的是最后一位写者的最新数据。但是，当不存在任何写程序时，这样的内存屏障是不必要的，读程序之间没有内存顺序依赖性，此类不必要的内存屏障可能会导致大量开销。</p>
+<p>Message passing is not prohibitively expensive:</p>
+<p><strong>Bounded staleness without memory barriers：</strong><br>在rwlock中，一个写者需要与所有读者达成 consensus 才能获取该锁。因此，写者必须让所有读者看到其当前状态才能继续进行。典型的rwlock使用显式内存屏障或等待屏障以确保读者写者的版本更新按顺序对彼此可见。但这样要么需要昂贵的内存屏障来限制读者的可伸缩性，要么大幅延长写者的延迟时间（例如，等待宽限期）。一般处理器中如x86-64，通常在很短的时间内其他内核就可以看到多个内存更新。基于此采取微基准测试，重复写入一个内存位置，并在随机延迟后读取该位置on another core。然后收集看到过时值的读者的时间间隔，发现大多数读者可以在很短的时间内看到写者的更新。<br>这是因为处理器由于其有限的大小而将主动刷新其存储缓冲区。合理的做法是，仅等待一小段时间，直到读者看到常见情况的更新版本，同时使用重量稍大的机制来确保正确性。</p>
+<p><strong>Memory barrier not essential for mutual exclusion:</strong><br>现代处理器为了性能考虑不会按序执行指令，存在一个存储缓冲区，以使处理器在write cache未命中后继续执行，但这也导致了较弱的内存一致性。为了实现正确的互斥，通常使用性能开销较大的同步机制（例如内存屏障）来对管道进行序列化并刷新存储缓冲区。事实证明，在TSO机器上的所有执行中，都不可能构建一种满足互斥，无死锁且避免原子指令和内存屏障的算法。尽管prwlock读者不包含显式的内存屏障，因此似乎违反了该“顺序法则”，但prwlock使用 IPI 序列化了针对写者的读者执行，并且IPI处理具有与内存屏障相同的效果。</p>
+<blockquote>
+<p>IPI 处理器间中断（Inter-Processor Interrupt）是种特殊类型的中断，即在多核系统中，允许一个CPU向系统其他的CPU发送中断信号，可能要求采取的行动：刷新其它CPU的内存管理单元缓存、停机（当系统被一个处理器关闭时）</p>
+</blockquote>
+<h3 id="基本设计"><a href="#基本设计" class="headerlink" title="基本设计"></a>基本设计</h3><p><strong>Consensus using bounded staleness:</strong></p>
+<p>Prwlock 将 64-bit version variable（ver）引入锁结构。每个写者都会增加version，并等待所有读者看到该version，写者会等待所有读者都看到了新的version之后才继续写。 这样可以确保具有总存储顺序（TSO）一致性的计算机上正确的rwlock语义，因为只有在所有先前的内存操作可见后才能看到某个内存存储。<br>但是，这种方法仍然存在一些问题。 首先，如果假定的读者再也不会进入读取侧临界区，那么写者可能永远无法进入写入侧临界区。 其次，读者可能会从一个core迁移到另一个core，因此可能不会更新离开的core。 因此，这种方法可能导致写入侧任意长的等待时间甚至饥饿。</p>
+<p><strong>Handling straggling readers:</strong> </p>
+<p>为解决上述问题，prwlock引入了基于消息的共识协议，以使写者在必要时主动向读者发送共识请求。这种设计是受当代处理器中消息传递的相对较低成本的推动。因此，prwlock使用IPI来请求散乱的读者立即报告其状态。<br>但如果允许读者在读取侧临界区中睡眠的话，睡眠状态的读者可能会错过共识请求，因此可能会无限阻塞写者。支持睡眠阅读器：为了解决睡眠阅读器问题，prwlock通过将上述机制与传统的基于计数器的rwlocks结合使用了一种混合设计。</p>
+<p><strong>Supporting sleeping readers:</strong> </p>
+<p>为了解决读者睡眠问题，prwlock通过将上述机制与传统的基于计数器的rwlocks结合使用了一种混合设计。Prwlock跟踪两种类型的读者：被动读者和主动读者。读者开始时为passive并且不与其他同步，因此不需要任何存储障碍。读者在睡眠前会从passive转换为active。在此转换期间，共享的counter会自增。当active读者释放其锁定后，counter自减。像传统的rwlocks一样，写者使用该counter来确定是否有任何活动的读者。<br>由于在读取器侧临界区睡眠很少，因此prwlock在通常情况下具有良好的性能，且在有读者睡眠的罕见情况下仍保持正确性。</p>
+<h3 id="算法设计"><a href="#算法设计" class="headerlink" title="算法设计"></a>算法设计</h3><p>为了简化说明，我们假设这些功能中只有一个锁，并且禁止抢占，以便它们可以安全地使用每个CPU状态。</p>
+<h4 id="Read-side-algorithm"><a href="#Read-side-algorithm" class="headerlink" title="Read-side algorithm"></a>Read-side algorithm</h4><p>passive读者由每个内核读取器状态结构（st）进行分布式跟踪，该结构会记住最新查看的version以及每个内核上prwlock的被动状态。读者应在检查写者锁之前，将状态设置为PASSIVE，否则会存在一个时间窗口，读者明明观测到写者锁处于FREE，但并不能获得读者锁。如果在此时间窗口中传递了共识消息（例如IPI），则写者将成功获取锁并进入临界区，这将违反rwlock的语义。如果读者发现此锁已被写者锁定，则应将其状态重新设置为FREE，等待写者解锁并重试。根据预期的写者持续时间，prwlock可以选择旋转写者状态，也可以使当前线程进入睡眠态。在后一种情况下，阅读器性能很大程度上取决于唤醒机制。<br>如果读者在被调度时正在PASSIVE模式持有锁，则应通过增加主动计数器（ScheduleOut）将其转换为ACTIVE锁。要解锁读者锁，只需检查该锁是否处于PASSIVE并相应地将其解锁（ReadUnlock）。<br>因此，在TSO体系结构上的读者公共路径中，不需要原子指令/内存障碍。此外，只要读者保持PASSIVE，它们就不会相互通信，从而保证了读者的可伸缩性和较低的延迟。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Function ReadLock(lock)</span><br><span class="line">st ← PerCorePtr(lock.rstatus, CoreID); </span><br><span class="line">st.reader ← PASSIVE; </span><br><span class="line">while lock.writer != FREE do &#123;</span><br><span class="line">	st.reader ← FREE; </span><br><span class="line">	st.version ← lock.version; </span><br><span class="line"> 	WaitUntil(lock.writer == FREE); </span><br><span class="line"> 	st ← PerCorePtr(lock.rstatus, CoreID); </span><br><span class="line"> 	st.reader ← PASSIVE; </span><br><span class="line">&#125; /* Barrier needed here on non-TSO architecture */;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Function ReadUnlock(lock) </span><br><span class="line">st ← PerCorePtr(lock.rstatus, CoreID);</span><br><span class="line">if st.reader = PASSIVE then st.reader ← FREE;</span><br><span class="line">else AtomicDec(lock.active);</span><br><span class="line">/* Barrier needed here on non-TSO architecture */;</span><br><span class="line">st.version ← lock.version;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Function ScheduleOut(lock)</span><br><span class="line">st ← PerCorePtr(lock.rstatus, CoreID); </span><br><span class="line">if st.reader = PASSIVE then AtomicInc(lock.active);</span><br><span class="line">st.reader ← FREE;</span><br><span class="line">st.version ← lock.version;</span><br></pre></td></tr></table></figure>
+<h4 id="Write-side-algorithm"><a href="#Write-side-algorithm" class="headerlink" title="Write-side algorithm"></a>Write-side algorithm</h4><p>写者锁的获取可分为两个阶段。一个写者首先锁定writer mutex，然后增加version以进入阶段1（第6-20行）。然后，它将检查当前域中的所有联机cores，以检查cores是否已查看最新version。如果是这样，则意味着读者知道写者的意图，并且在写者释放锁之前不会获得读者锁。对于看不到最新version的内核，写者发送IPI并询问其状态。收到IPI后，未锁定的读者将通过更新其本地version（报告）向写者报告。锁定的读者在离开读取侧临界区或进入睡眠状态后将稍后报告。在报告了所有核心后，所有passive读者都达成了共识。然后，写者进入阶段2（第21-23行）。在此阶段，写者只需等待所有活动的读者退出即可。对于写者优先锁来说，写者可以将锁直接传递给未决的writer，而无需再次达成共识（WriteUnlock中的1-2行和WriteLock中的2-4行）。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Function WriteLock(lock)</span><br><span class="line">lastState ← Lock(lock.writer);</span><br><span class="line">if lastState = PASS then return;</span><br><span class="line">/* Lock passed from another writer */</span><br><span class="line">newVersion ← AtomicInc(lock.version);</span><br><span class="line">coresWait ← /0;</span><br><span class="line">for ID ∈ AllCores do</span><br><span class="line">	if Online(lock.domain, ID) ∧ ID != CoreID then</span><br><span class="line">		if PerCorePtr(lock.rstatus, CoreID).version != newVersion then</span><br><span class="line">			AskForReport(ID);</span><br><span class="line">			Add(ID, coresWait);</span><br><span class="line">for ID ∈ coresWait do</span><br><span class="line">while PerCorePtr(lock.rstatus, CoreID).version != newVersion do Relax();</span><br><span class="line">while lock.active != 0 do Schedule();</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Function WriteUnlock(lock)</span><br><span class="line">if SomeoneWaiting(lock.writer) then Unlock(lock.writer, PASS);</span><br><span class="line">else Unlock(lock.writer, FREE);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Function Report(lock)</span><br><span class="line">st ← PerCorePtr(lock.rstatus, CoreID);</span><br><span class="line">if st.reader != PASSIVE then st.version ← lock.version;</span><br></pre></td></tr></table></figure>
+<h4 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h4><p>如果阅读器进入睡眠状态，则处于被动模式的阅读器可能会切换到主动模式。 在读取器释放锁定之前，无法将其直接切换回被动模式。 以下获取的锁将再次处于被动模式</p>
+<p>在编写者开始获取锁之前，reader2已完成其读取关键部分，而reader3由于等待某个事件而处于其读取关键部分中。 Reader1和Reader4刚开始阅读关键部分，但尚未完成。<br>在阶段1中，有一个写程序试图以写模式获取该锁，这将增加该锁的版本并阻止所有即将到来的读者。它将IPI发送给尚未看到最新锁版本的当前活动读取器。<br>如果core2中的reader2完成了上下文切换，并且现在正在运行另一个线程，则core2不需要IPI。 core4中的Reader4可能会进入睡眠状态以等待某个事件，该事件将切换为活动的读取器。 core4不需要IPI，因为那时core4中没有读取器。在第一阶段结束时，所有被动阅读器都离开了关键部分。因此，在阶段2中，写程序等待所有活动的读程序完成执行，最后可以在写模式下授予锁定。对于写者偏好的prwlock，写者可以将锁直接传递给下一个写者，这可以避免连续写者的读者之间不必要的共识。</p>
+<h4 id="Correctness-on-TSO-architecture"><a href="#Correctness-on-TSO-architecture" class="headerlink" title="Correctness on TSO architecture"></a>Correctness on TSO architecture</h4><p>rwlocks与其他较弱的同步原语之间的主要区别在于，rwlocks在读写器之间具有强大的可见性保证。借助TSO一致性模型，可以在prwlock中确保这一点。<br>一旦读者看到了免费的prwlock，我们可以确定：1）该FREE由直接的前一个作者设置，因为作者将始终确保所有读者在继续之前都看到其LOCKED状态； 2）由于在TSO架构下按顺序可见内存写入，因此以前的写入器所做的更新也应对该读取器可见。早期的作家也是如此。 3）写作者必须等到所有读者都可以看到它，以便在该读者退出之前，没有其他写作者可以进入关键部分。因此，prwlock确保了共享状态的一致视图。<br>这三个属性共同确保读者始终可以看到受prwlock保护的共享数据的最新一致版本。此外，由于所有读取器在获取写入器锁期间都明确报告了最新版本，因此还可以保证写入器查看读取器对其他数据结构所做的所有更新（如果有）。<br>在非TSO架构上，读取器算法中需要两个额外的存储屏障，如图3所示。第一个确保读取器在快速路径中获得锁定后，可以看到共享数据的最新版本。第二个方法是在释放读取器锁之前使写入器可以看到读取器的内存更新。</p>
 
       
     </div>
@@ -461,9 +495,9 @@
           
             <a href="/tags/GAP/" rel="tag"># GAP</a>
           
-            <a href="/tags/CHL/" rel="tag"># CHL</a>
-          
             <a href="/tags/OS/" rel="tag"># OS</a>
+          
+            <a href="/tags/rwlock/" rel="tag"># rwlock</a>
           
         </div>
       
@@ -485,10 +519,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/post/9271.html" rel="prev" title="被动读写锁">
-                被动读写锁 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -543,8 +573,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -559,7 +598,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-count">30</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -604,6 +643,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景知识"><span class="nav-number">1.</span> <span class="nav-text">背景知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#读写锁-rwlock"><span class="nav-number">1.1.</span> <span class="nav-text">读写锁 rwlock</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#大读者锁-brlock"><span class="nav-number">1.1.1.</span> <span class="nav-text">大读者锁 brlock</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设计框架"><span class="nav-number">2.</span> <span class="nav-text">设计框架</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#设计原理"><span class="nav-number">2.1.</span> <span class="nav-text">设计原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基本设计"><span class="nav-number">2.2.</span> <span class="nav-text">基本设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#算法设计"><span class="nav-number">2.3.</span> <span class="nav-text">算法设计</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Read-side-algorithm"><span class="nav-number">2.3.1.</span> <span class="nav-text">Read-side algorithm</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Write-side-algorithm"><span class="nav-number">2.3.2.</span> <span class="nav-text">Write-side algorithm</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Example"><span class="nav-number">2.3.3.</span> <span class="nav-text">Example</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Correctness-on-TSO-architecture"><span class="nav-number">2.3.4.</span> <span class="nav-text">Correctness on TSO architecture</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

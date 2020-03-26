@@ -400,7 +400,7 @@
                   <span class="post-meta-item-text">字数&#58;</span>
                 
                 <span title="字数">
-                  5.5k
+                  6.9k
                 </span>
               
 
@@ -416,7 +416,7 @@
                   <span class="post-meta-item-text">时长 &asymp;</span>
                 
                 <span title="时长">
-                  20min
+                  24min
                 </span>
               
             </div>
@@ -438,7 +438,7 @@
 
       
         
-          <p>Prwlock provides scalable read-side performance as well as small writer latency for TSO architectures. The key of prwlock is a version-based consensus protocol between multiple non-communicating readers and a pending writer. Prwlock leverages bounded staleness of memory consistency to avoid atomic instructions and memory barriers in readers’ common paths, and uses message-passing (e.g., IPI) for straggling readers so that writer lock acquisition latency can be bounded.
+          <p>Prwlock 为TSO架构系统提供了可扩展读者侧性能和写者低延迟，其关键在于多个无交互读者和一个不确定写者间基于version的共识协议。Prwlock 利用内存一致性的有界旧一致性(bounded staleness)来避免读者侧的原子操作和内存屏障，同时用消息传递(IPI)落伍的读者来限定写锁获取延迟。
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/post/9271.html" rel="contents">

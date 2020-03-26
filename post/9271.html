@@ -81,19 +81,19 @@
 
 
 
-<meta name="description" content="Prwlock provides scalable read-side performance as well as small writer latency for TSO architectures. The key of prwlock is a version-based consensus protocol between multiple non-communicating reade">
+<meta name="description" content="Prwlock 为TSO架构系统提供了可扩展读者侧性能和写者低延迟，其关键在于多个无交互读者和一个不确定写者间基于version的共识协议。Prwlock 利用内存一致性的有界旧一致性(bounded staleness)来避免读者侧的原子操作和内存屏障，同时用消息传递(IPI)落伍的读者来限定写锁获取延迟。">
 <meta name="keywords" content="GAP,rwlock,OS">
 <meta property="og:type" content="article">
 <meta property="og:title" content="被动读写锁">
 <meta property="og:url" content="https://stardust567.github.io/post/9271.html">
 <meta property="og:site_name" content="Star Trail">
-<meta property="og:description" content="Prwlock provides scalable read-side performance as well as small writer latency for TSO architectures. The key of prwlock is a version-based consensus protocol between multiple non-communicating reade">
+<meta property="og:description" content="Prwlock 为TSO架构系统提供了可扩展读者侧性能和写者低延迟，其关键在于多个无交互读者和一个不确定写者间基于version的共识协议。Prwlock 利用内存一致性的有界旧一致性(bounded staleness)来避免读者侧的原子操作和内存屏障，同时用消息传递(IPI)落伍的读者来限定写锁获取延迟。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.loli.net/2020/03/25/ECLQfDs536FGhmk.png">
-<meta property="og:updated_time" content="2020-03-25T14:24:32.074Z">
+<meta property="og:updated_time" content="2020-03-26T05:51:38.940Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="被动读写锁">
-<meta name="twitter:description" content="Prwlock provides scalable read-side performance as well as small writer latency for TSO architectures. The key of prwlock is a version-based consensus protocol between multiple non-communicating reade">
+<meta name="twitter:description" content="Prwlock 为TSO架构系统提供了可扩展读者侧性能和写者低延迟，其关键在于多个无交互读者和一个不确定写者间基于version的共识协议。Prwlock 利用内存一致性的有界旧一致性(bounded staleness)来避免读者侧的原子操作和内存屏障，同时用消息传递(IPI)落伍的读者来限定写锁获取延迟。">
 <meta name="twitter:image" content="https://i.loli.net/2020/03/25/ECLQfDs536FGhmk.png">
 
 
@@ -404,7 +404,7 @@
                   <span class="post-meta-item-text">字数&#58;</span>
                 
                 <span title="字数">
-                  5.5k
+                  6.9k
                 </span>
               
 
@@ -420,7 +420,7 @@
                   <span class="post-meta-item-text">时长 &asymp;</span>
                 
                 <span title="时长">
-                  20min
+                  24min
                 </span>
               
             </div>
@@ -441,8 +441,36 @@
       
 
       
-        <p>Prwlock provides scalable read-side performance as well as small writer latency for TSO architectures. The key of prwlock is a version-based consensus protocol between multiple non-communicating readers and a pending writer. Prwlock leverages bounded staleness of memory consistency to avoid atomic instructions and memory barriers in readers’ common paths, and uses message-passing (e.g., IPI) for straggling readers so that writer lock acquisition latency can be bounded.<a id="more"></a></p>
-<h2 id="背景知识"><a href="#背景知识" class="headerlink" title="背景知识"></a>背景知识</h2><h3 id="读写锁-rwlock"><a href="#读写锁-rwlock" class="headerlink" title="读写锁 rwlock"></a>读写锁 rwlock</h3><p>rwlock 把对共享资源的访问者划分成读者和写者，读者只对共享资源进行读访问，写者则需要对共享资源进行写操作。这种锁能提高并发性，因为在多处理器系统中，它允许同时有多个读者来访问共享资源，最大可能的读者数为实际的逻辑CPU数。写者是排他性的，一个读写锁同时只能有一个写者或多个读者，但不能同时既有读者又有写者。</p>
+        <p>Prwlock 为TSO架构系统提供了可扩展读者侧性能和写者低延迟，其关键在于多个无交互读者和一个不确定写者间基于version的共识协议。Prwlock 利用内存一致性的有界旧一致性(bounded staleness)来避免读者侧的原子操作和内存屏障，同时用消息传递(IPI)落伍的读者来限定写锁获取延迟。<a id="more"></a></p>
+<h2 id="背景知识"><a href="#背景知识" class="headerlink" title="背景知识"></a>背景知识</h2><h3 id="内存一致性"><a href="#内存一致性" class="headerlink" title="内存一致性"></a>内存一致性</h3><p>并发编程主要有两种编程范式：消息传递及共享内存。前者主要用于分布式系统，通过网络，采用消息的发送及接收的方式完成对共享数据的访问；而后者主要用于单机，通过内部互联总线，采用读写共享内存的方式完成对共享数据的访问。一致性模型为后者服务。</p>
+<p>当一个处理器对共享变量（V）的本地副本进行了修改，而另一个处理器（PB）用于保存相应变量的缓存行因此而失效或被更新，则称 PB 看见了 PA 的内存更新（对变量 V 的修改）内存一致性模型规定了处理器能否在一个变量为指定处理器可见之前继续执行下去。</p>
+<p>一种系统在每个处理器内部都设置了一块写缓冲区，用以吸收写指令，并异步地将这些写指令分别提交到内存控制器中。本处理器在读取内存时，如果检测到写缓冲区里已经存在针对同一地址的写了，那么它就直接解析这个写指令要写入的值并返回。这样能够很好地增加访存指令吞吐量。但在多处理器系统上，处理器很可能会从内存中读到过期的数据，因为相关的写操作可能仍缓冲在另一个处理器的缓冲区里，从而遭遇一致性问题。</p>
+<h4 id="顺序一致性"><a href="#顺序一致性" class="headerlink" title="顺序一致性"></a>顺序一致性</h4><p>最严格的一致性，当然性能也最差。确保程序顺序和原子性。程序顺序，即各处理器的操作保持程序指定的顺序；原子性，即各处理器能够同时看到访存指令的结果。这种最易理解，一致性长度也最高，但那些基于重排序的编译器优化都不能用了，比如代码移动、寄存器染色、子表达式消除。</p>
+<blockquote>
+<p>本文中的访存（Memory Access）指令，指读存指令（Load）和写存指令（Store）</p>
+</blockquote>
+<h4 id="TSO-Total-Store-Order"><a href="#TSO-Total-Store-Order" class="headerlink" title="TSO(Total Store Order)"></a>TSO(Total Store Order)</h4><p>Intel x86采用TSO模型，各处理器看见所有写存指令的执行顺序都是一样的。</p>
+<p><strong>程序顺序</strong>上，先写后读(W-&gt;R)的顺序可以改变为先读后写(R-&gt;W)，但W-&gt;W(写操作)和R-&gt;RW(读取并赋值)的顺序不可改变。</p>
+<p><strong>原子性</strong>上，不能提前读取到别的处理器的写。即某个处理器修改了变量 x 后，别的处理器要么都看到这个修改，要么都没看到这个修改。但可以提前读取本处理器的写。即本处理器不必等待别的处理器看见本处理器的写操作，就可以继续运行下去。</p>
+<p>同时TSO提供了增强一致性的 safety net ：</p>
+<ol>
+<li><p><strong>RMW(read-modify-write)</strong>：在 intel 64 架构中，即为 locked 指令。</p>
+</li>
+<li><p><strong>Memory barrier</strong>：一种特别的屏障指令，其导致 CPU 或编译器强制约束内存指令，使之在屏障之前或之后发射。以 mfence 这个指令为例，其保证在程序顺序中，mfence 之前的所有访存指令，其结果都能为 mfence 之后的访存指令所见。</p>
+</li>
+</ol>
+<blockquote>
+<p>发射(issue)：在乱序处理器中指指令进入指令调度器；派发(dispatch)：指令进入执行单元。<br>一般将发射理解为已经开始执行了。</p>
+</blockquote>
+<h4 id="有界旧一致性-bounded-staleness"><a href="#有界旧一致性-bounded-staleness" class="headerlink" title="有界旧一致性 bounded staleness"></a>有界旧一致性 bounded staleness</h4><p>提交的写更新操作，不一定立即会被读操作读到，读写两者所冲突的区间形成了一个“不一致窗口”，我们允许该窗口存在，但window size应在一定限度范围内，而在窗口之外 bounded staleness 可以保证操作的全局按序。通常有两种size尺度，一种以版本个数K为限，此时window size指读操作读到的值和最新值的版本差max。一种以时间间隔T为限，此时window size指读操作可以读到最新值的时间差max。</p>
+<ul>
+<li>项的版本（<em>K</em>）的数目</li>
+<li>读操作可能滞后于写入的时间间隔（<em>T</em>）</li>
+</ul>
+<p>有限过期提供全局整体顺序，但在“过期窗口”中除外。 过期窗口内部和外部的区域中提供单调读取保证。 强一致性与受限过期所提供的语义相同。 过期窗口等于零。 有限过期也称为“延时可线性化”。 当客户端在接受写入的区域内执行读取操作时，有限过期一致性提供的保证与强一致性的保证相同。</p>
+<p>受限过期通常由需要较低写入延迟但需要全局订单总保证的全局分布式应用程序选择。 受限过期对于具有组协作和共享、股票行情、出版/排队等的应用程序非常有用。下图显示了与音符的有限失效一致性。 将数据写入 “美国东部” 区域后，”美国西部” 和 “澳大利亚东部” 区域会根据配置的最大延迟时间或最大操作读取写入值：</p>
+<p>提交的更新操作，不一定立即会被读操作读到，此种情况会存在一个不一致窗口，指的是读操作可以读到最新值的一段时间。</p>
+<h3 id="读写锁-rwlock"><a href="#读写锁-rwlock" class="headerlink" title="读写锁 rwlock"></a>读写锁 rwlock</h3><p>rwlock 把对共享资源的访问者划分成读者和写者，读者只对共享资源进行读访问，写者则需要对共享资源进行写操作。这种锁能提高并发性，因为在多处理器系统中，它允许同时有多个读者来访问共享资源，最大可能的读者数为实际的逻辑CPU数。写者是排他性的，一个读写锁同时只能有一个写者或多个读者，但不能同时既有读者又有写者。</p>
 <p>如果读写锁当前没有读者，也没有写者，那么写者可以立刻获得读写锁，否则它必须自旋在那里，直到没有任何写者或读者。如果读写锁没有写者，那么读者可以立即获得该读写锁，否则读者必须自旋在那里，直到写者释放该读写锁。</p>
 <h4 id="大读者锁-brlock"><a href="#大读者锁-brlock" class="headerlink" title="大读者锁 brlock"></a>大读者锁 brlock</h4><p>大读者锁是读写锁的高性能版，读者可以非常快地获得锁，但写者获得锁的开销比较大。这种锁适合于读多写少的情况，它在这种情况下远好于读写锁。大读者锁的实现机制有两种：</p>
 <ul>
@@ -695,7 +723,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景知识"><span class="nav-number">1.</span> <span class="nav-text">背景知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#读写锁-rwlock"><span class="nav-number">1.1.</span> <span class="nav-text">读写锁 rwlock</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#大读者锁-brlock"><span class="nav-number">1.1.1.</span> <span class="nav-text">大读者锁 brlock</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设计框架"><span class="nav-number">2.</span> <span class="nav-text">设计框架</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#设计背景"><span class="nav-number">2.1.</span> <span class="nav-text">设计背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基本设计"><span class="nav-number">2.2.</span> <span class="nav-text">基本设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#算法设计"><span class="nav-number">2.3.</span> <span class="nav-text">算法设计</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Read-side-algorithm"><span class="nav-number">2.3.1.</span> <span class="nav-text">Read-side algorithm</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Write-side-algorithm"><span class="nav-number">2.3.2.</span> <span class="nav-text">Write-side algorithm</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Correctness-on-TSO-architecture"><span class="nav-number">2.3.3.</span> <span class="nav-text">Correctness on TSO architecture</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OS内核集成"><span class="nav-number">2.4.</span> <span class="nav-text">OS内核集成</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Domain-Online-Offline"><span class="nav-number">2.4.1.</span> <span class="nav-text">Domain Online/Offline</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Task-Online-Offline"><span class="nav-number">2.4.2.</span> <span class="nav-text">Task Online/Offline</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#DownGrade-Upgrade"><span class="nav-number">2.4.3.</span> <span class="nav-text">DownGrade/Upgrade</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用户级支持"><span class="nav-number">2.5.</span> <span class="nav-text">用户级支持</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#性能分析"><span class="nav-number">2.6.</span> <span class="nav-text">性能分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分布式并行唤醒"><span class="nav-number">3.</span> <span class="nav-text">分布式并行唤醒</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#集中式顺序唤醒的问题"><span class="nav-number">3.1.</span> <span class="nav-text">集中式顺序唤醒的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分布式并行唤醒-1"><span class="nav-number">3.2.</span> <span class="nav-text">分布式并行唤醒</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景知识"><span class="nav-number">1.</span> <span class="nav-text">背景知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#内存一致性"><span class="nav-number">1.1.</span> <span class="nav-text">内存一致性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#顺序一致性"><span class="nav-number">1.1.1.</span> <span class="nav-text">顺序一致性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TSO-Total-Store-Order"><span class="nav-number">1.1.2.</span> <span class="nav-text">TSO(Total Store Order)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#有界旧一致性-bounded-staleness"><span class="nav-number">1.1.3.</span> <span class="nav-text">有界旧一致性 bounded staleness</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#读写锁-rwlock"><span class="nav-number">1.2.</span> <span class="nav-text">读写锁 rwlock</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#大读者锁-brlock"><span class="nav-number">1.2.1.</span> <span class="nav-text">大读者锁 brlock</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设计框架"><span class="nav-number">2.</span> <span class="nav-text">设计框架</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#设计背景"><span class="nav-number">2.1.</span> <span class="nav-text">设计背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基本设计"><span class="nav-number">2.2.</span> <span class="nav-text">基本设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#算法设计"><span class="nav-number">2.3.</span> <span class="nav-text">算法设计</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Read-side-algorithm"><span class="nav-number">2.3.1.</span> <span class="nav-text">Read-side algorithm</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Write-side-algorithm"><span class="nav-number">2.3.2.</span> <span class="nav-text">Write-side algorithm</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Correctness-on-TSO-architecture"><span class="nav-number">2.3.3.</span> <span class="nav-text">Correctness on TSO architecture</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OS内核集成"><span class="nav-number">2.4.</span> <span class="nav-text">OS内核集成</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Domain-Online-Offline"><span class="nav-number">2.4.1.</span> <span class="nav-text">Domain Online/Offline</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Task-Online-Offline"><span class="nav-number">2.4.2.</span> <span class="nav-text">Task Online/Offline</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#DownGrade-Upgrade"><span class="nav-number">2.4.3.</span> <span class="nav-text">DownGrade/Upgrade</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用户级支持"><span class="nav-number">2.5.</span> <span class="nav-text">用户级支持</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#性能分析"><span class="nav-number">2.6.</span> <span class="nav-text">性能分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分布式并行唤醒"><span class="nav-number">3.</span> <span class="nav-text">分布式并行唤醒</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#集中式顺序唤醒的问题"><span class="nav-number">3.1.</span> <span class="nav-text">集中式顺序唤醒的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分布式并行唤醒-1"><span class="nav-number">3.2.</span> <span class="nav-text">分布式并行唤醒</span></a></li></ol></li></ol></div>
             
 
           </div>

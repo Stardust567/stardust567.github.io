@@ -81,18 +81,20 @@
 
 
 
-<meta name="description" content="FSCQ：可以应对crash的文件系统，with a machine-checkable proof (using the Coq proof assistant)">
+<meta name="description" content="FSCQ：可以应对crash的文件系统，with a machine-checkable proof (using the Coq proof assistant) 为说明FSCQ的定理，本文介绍了Crash Hoare Logic（CHL），它扩展了传统的Hoare逻辑，包括崩溃条件，恢复过程和用于指定不同抽象级别磁盘状态的逻辑地址空间。">
 <meta name="keywords" content="GAP,OS,CHL">
 <meta property="og:type" content="article">
 <meta property="og:title" content="FSCQ文件系统">
 <meta property="og:url" content="https://stardust567.github.io/post/3d2c.html">
 <meta property="og:site_name" content="Star Trail">
-<meta property="og:description" content="FSCQ：可以应对crash的文件系统，with a machine-checkable proof (using the Coq proof assistant)">
+<meta property="og:description" content="FSCQ：可以应对crash的文件系统，with a machine-checkable proof (using the Coq proof assistant) 为说明FSCQ的定理，本文介绍了Crash Hoare Logic（CHL），它扩展了传统的Hoare逻辑，包括崩溃条件，恢复过程和用于指定不同抽象级别磁盘状态的逻辑地址空间。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-03-28T13:31:02.295Z">
+<meta property="og:image" content="https://i.loli.net/2020/03/30/RtJNuL6VY2dwOny.gif">
+<meta property="og:updated_time" content="2020-03-30T07:44:32.210Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="FSCQ文件系统">
-<meta name="twitter:description" content="FSCQ：可以应对crash的文件系统，with a machine-checkable proof (using the Coq proof assistant)">
+<meta name="twitter:description" content="FSCQ：可以应对crash的文件系统，with a machine-checkable proof (using the Coq proof assistant) 为说明FSCQ的定理，本文介绍了Crash Hoare Logic（CHL），它扩展了传统的Hoare逻辑，包括崩溃条件，恢复过程和用于指定不同抽象级别磁盘状态的逻辑地址空间。">
+<meta name="twitter:image" content="https://i.loli.net/2020/03/30/RtJNuL6VY2dwOny.gif">
 
 
 
@@ -402,7 +404,7 @@
                   <span class="post-meta-item-text">字数&#58;</span>
                 
                 <span title="字数">
-                  8.5k
+                  8.9k
                 </span>
               
 
@@ -418,7 +420,7 @@
                   <span class="post-meta-item-text">时长 &asymp;</span>
                 
                 <span title="时长">
-                  29min
+                  31min
                 </span>
               
             </div>
@@ -439,13 +441,12 @@
       
 
       
-        <p>FSCQ：可以应对crash的文件系统，with a machine-checkable proof (using the Coq proof assistant) <a id="more"></a></p>
-<h1 id="FSCQ论文"><a href="#FSCQ论文" class="headerlink" title="FSCQ论文"></a>FSCQ论文</h1><h2 id="基础背景"><a href="#基础背景" class="headerlink" title="基础背景"></a>基础背景</h2><h3 id="文件系统"><a href="#文件系统" class="headerlink" title="文件系统"></a>文件系统</h3><p>为了避免操作系统知识的遗忘而影响接下来的阅读体验，这里简单给出一点OS文件系统的基础知识。</p>
-<p>所谓文件系统，就是文件的储存方式。简单说，它就是一个门牌系统，为储存设备划分门牌号，每个文件分配一个门牌，然后就能按照门牌找到文件。</p>
-<p>没有文件系统的硬盘，就是一块荒地。如果有人住在那里，你只能说那里有人住，精确位置你说不出来。只有划分了路牌，你才能说出，这个人住在”人民路15号”，这样才能精确定位。文件系统就是路牌的划分方法。</p>
-<h4 id="索引节点-iNode"><a href="#索引节点-iNode" class="headerlink" title="索引节点 iNode"></a>索引节点 iNode</h4><p>文件储存在硬盘上，硬盘最小存储单位叫做<strong>扇区</strong>（Sector），每个扇区储存512字节（0.5KB）但OS读取硬盘时，不会一个个扇区地读取，这样效率太低，而是一次性连续读取多个扇区，即一次性读取一个<strong>块</strong>（block）。这种由多个扇区组成的块，是文件存取的最小单位。块的大小，最常见的是4KB，即连续八个 sector组成一个 block。</p>
-<p>文件数据都储存在块中，但我们还必须找到一个地方储存文件的元信息，比如文件的创建者、创建日期、文件大小等。这种储存文件元信息的区域就叫做<strong>索引节点</strong>（inode）。每一个文件都有对应的inode，里面包含了<em>除文件名外</em>与该文件有关的一些信息。Unix/系统内部不使用文件名，而使用inode号码来识别文件。对系统来说，文件名只是inode号码便于识别的别称或者绰号。表面上，用户通过文件名打开文件。实际上，系统内部这个过程分成三步：1. 系统找到这个文件名对应的inode号码；2. 通过inode号码，获取inode信息；3. 根据inode信息，找到文件数据所在的block，读出数据。</p>
-<h4 id="目录文件"><a href="#目录文件" class="headerlink" title="目录文件"></a>目录文件</h4><p>Unix系统中，目录（directory）也是一种文件。打开目录，实际上是在打开目录文件。目录文件的结构非常简单，就是一系列目录项（dirent）的列表。每个目录项，由两部分组成：所包含文件的文件名，以及该文件名对应的inode号码。</p>
+        <p>FSCQ：可以应对crash的文件系统，with a machine-checkable proof (using the Coq proof assistant) 为说明FSCQ的定理，本文介绍了Crash Hoare Logic（CHL），它扩展了传统的Hoare逻辑，包括崩溃条件，恢复过程和用于指定不同抽象级别磁盘状态的逻辑地址空间。<a id="more"></a></p>
+<h1 id="FSCQ论文"><a href="#FSCQ论文" class="headerlink" title="FSCQ论文"></a>FSCQ论文</h1><h2 id="基础背景"><a href="#基础背景" class="headerlink" title="基础背景"></a>基础背景</h2><h3 id="文件系统"><a href="#文件系统" class="headerlink" title="文件系统"></a>文件系统</h3><p>为避免操作系统知识的遗忘而影响接下来的阅读体验，这里简单给出一点OS文件系统的基础知识。</p>
+<p>所谓文件系统，就是文件的储存方式。简单说，它就是一个门牌系统，为储存设备划分门牌号，每个文件分配一个门牌，然后就能按照门牌找到文件。没有文件系统的硬盘，就是片原始丛林，你根本不知道那户文件住在哪，就更别谈去高效访问了。</p>
+<h4 id="文件存取单位"><a href="#文件存取单位" class="headerlink" title="文件存取单位"></a>文件存取单位</h4><p>文件储存在硬盘上，硬盘最小存储单位叫做<strong>扇区</strong>（Sector），每个扇区储存512字节（0.5KB）但OS读取硬盘时，不会一个个扇区地读取，而是一次性连续读取多个扇区以提高效率，即一次性读取一个<strong>块</strong>（block）。这种由多个扇区组成的块，是文件存取的最小单位。块的大小，最常见的是4KB，即连续八个 sector 组成一个 block。</p>
+<h4 id="索引节点-iNode"><a href="#索引节点-iNode" class="headerlink" title="索引节点 iNode"></a>索引节点 iNode</h4><p>文件数据都储存在块中，但还须找个地方来储存文件的元信息，比如文件的创建者、创建日期、文件大小等。这种储存文件元信息的区域就叫做<strong>索引节点</strong>（inode）。每一个文件都有对应的inode，里面包含了<em>除文件名外</em>与该文件有关的一些信息。Unix系统内部不使用文件名，而用inode号码来识别文件。对系统来说，文件名只是inode号码便于识别的别称或者绰号。表面上用户通过文件名打开文件，实际上系统内部这个过程分成三步：1. 系统找到该文件名对应的inode号码；2. 通过inode号码，获取inode信息；3. 根据inode信息，找到文件数据所在的block，读出数据。</p>
+<h4 id="目录文件"><a href="#目录文件" class="headerlink" title="目录文件"></a>目录文件</h4><p>Unix系统中目录（directory）也是一种文件。打开目录，实际是在打开目录文件。目录文件的结构非常简单，就是一系列目录项（dirent）的列表。每个目录项由两部分组成：文件名和该文件名对应的inode号码。</p>
 <p>以ls命令为例，ls命令只列出目录文件中的所有文件名；ls -i命令列出整个目录文件，即文件名和inode号码；ls -l查看文件的详细信息，即必须要根据inode号码，访问inode节点。</p>
 <p>目录文件的读权限（r）和写权限（w），都是针对目录文件本身。由于目录文件内只有文件名和inode号码，所以如果只有读权限，只能获取文件名，无法获取其他信息，因为其他信息都储存在inode节点中，而读取inode节点内的信息需要目录文件的执行权限（x）。</p>
 <h4 id="硬链接"><a href="#硬链接" class="headerlink" title="硬链接"></a>硬链接</h4><p>Unix系统允许多个文件名指向同一个inode号码。这意味着，可以用不同的文件名访问同样的内容；对文件内容进行修改，会影响到所有文件名；但是，删除一个文件名，不影响另一个文件名的访问。这种情况就被称为”硬链接”（hard link）。</p>
@@ -459,15 +460,25 @@
 <li>打开一个文件以后，系统就以inode号码来识别这个文件，不再考虑文件名。因此，通常来说，系统无法从inode号码得知文件名。</li>
 </ol>
 <p>第3点使得软件更新变得简单，可以在不关闭软件的情况下进行更新，不需要重启。因为系统通过inode号码，识别运行中的文件，不通过文件名。更新的时候，新版文件以同样的文件名，生成一个新的inode，不会影响到运行中的文件。等到下一次运行这个软件的时候，文件名就自动指向新版文件，旧版文件的inode则被回收。</p>
-<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><p><code>cp /path/src /path/dst</code>，文件系统首先需要从目录树中定位源文件的位置，为此，它在根目录条目中找到“path”（通常已经缓存在数据缓存区里），拿到 path 的索引值 ipath，将path的目录条目加载到数据缓存区中，定位和名称“src”相对应的索引值isrc， 然后文件系统读取 isrc 索引节点的文件内容。要创建目标文件，文件系统将分配一个新的索引节点 idst，并在 inode 分配位图中标记为已使用，然后根据 src 文件大小来给 dst 文件分配新的磁盘块，在 idst 中记录分配的块号，并且在块的的数据位图中将其标记为已使用，再将 src 的内容写入到新分配的块中。最后，文件系统将一个新的目录条目 （“dst”，idst）添加到 path 的目录条目中，并将目录的新内容写回到磁盘里。注意：此处的顺序并不能保证崩溃安全性。</p>
+<h4 id="数据缓存区"><a href="#数据缓存区" class="headerlink" title="数据缓存区"></a>数据缓存区</h4><p>访问磁盘比访问内存要慢几个数量级，因此需要在内存中维护一块磁盘的数据缓存区。 在读取磁盘时，先从缓冲区中查找想要读取的块是否已经缓存了，如果没有的话才会到磁盘去把数据块取回来，在写磁盘时，也会先把数据写到缓存区。如果缓存区已满，则通常会把最不常访问的数据驱逐出缓存区，为新的数据腾出空间。数据缓冲区在写时，可以选择直接将数据同步写到磁盘里（直写），或者将写延迟，直到数据块被驱逐的时候再写（写回）。</p>
+<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><p><code>$ who &gt; userlist</code> 在文件系统中增加了一个存放命令who输出内容的新文件。</p>
+<ol>
+<li>存储属性：也就是文件属性的存储，内核先找到一块空的inode节点（内核找到inode节点号47）内核把文件元信息记录其中，如文件的大小、文件所有者、和创建时间等。</li>
+<li>存储数据：即文件内容的存储，假设该文件需要3个数据块。因此内核从自由块的列表中找到3个自由块（中分别为627、200、992，内核缓冲区的第一块数据复制到块627，第二和第三分别复制到200和992）</li>
+<li>记录分配情况：数据保存到了627、200、992三个数据块中，分配情况记录在文件的inode节点中的磁盘序号列表里。这3个编号分别放在最开始的3个位置。</li>
+<li>添加文件名到目录：新文件的名字是userlist，  内核将文件的入口 <em>(47,userlist)</em>  添加到目录文件里。文件名和inode节点号之间的对应关系将文件名和文件及其内容属性连接起来，找到文件名就找到文件的inode节点号，通过inode节点号就能找到文件的属性和内容。</li>
+</ol>
+<p><img src="https://i.loli.net/2020/03/30/RtJNuL6VY2dwOny.gif" alt="FSCQ_createFile.png"></p>
+<p><code>cp /path/src /path/dst</code> 在path路径下新建dst文件，内容为同目录下的src文件内容。</p>
+<p>文件系统首先需要从目录树中定位src文件位置，为此，它在根目录条目中找到“path”（通常已经缓存在数据缓存区里），拿到 path 的索引值 ipath，将path的目录条目加载到数据缓存区中，定位和名称“src”相对应的索引值isrc， 然后文件系统读取 isrc 索引节点的文件内容。要创建目标文件，文件系统将分配一个新的索引节点 idst，并在 inode 分配位图中标记为已使用，然后根据 src 文件大小来给 dst 文件分配新的磁盘块，在 idst 中记录分配的块号，并且在块的的数据位图中将其标记为已使用，再将 src 的内容写入到新分配的块中。最后，文件系统将一个新的目录条目 （“dst”，idst）添加到 path 的目录条目中，并将目录的新内容写回到磁盘里。注意：此处的顺序并不能保证崩溃安全性。</p>
 <h3 id="崩溃安全性"><a href="#崩溃安全性" class="headerlink" title="崩溃安全性"></a>崩溃安全性</h3><p>应用完成某个操作可能涉及到多次写磁盘，该过程中系统可能随时崩溃，有可能一个写操作只完成一部分，崩溃后磁盘会处于一个中间状态，这个状态下数据可能不一致，因此再重启之后通常需要运行一个恢复程序，检查磁盘的状态，将其恢复到一个数据一致的状态，以便将来能继续正确执行程序，文件系统的这种属性称为崩溃安全性。 </p>
 <h3 id="写屏障（磁盘同步）"><a href="#写屏障（磁盘同步）" class="headerlink" title="写屏障（磁盘同步）"></a>写屏障（磁盘同步）</h3><p>现代硬盘驱动通常会增加一层缓存来优化 I/O 实际写入磁盘的顺序，即发给磁盘的写入不会立即持久化，最近的写往往会被缓存在内部缓存中，并由硬盘驱动器决定什么时候会将这些未完成的写刷到磁盘。同时，硬盘驱动器可以对这些写重新排序进行写入以提高磁盘吞吐量。假如系统没有崩溃，一个读总是能够读到最新写得值，但假如系统崩溃并重启，可能会发现崩溃之前稍后发出的写持久到了磁盘，但是之前的写却没有。</p>
 <p>硬盘驱动器提供了写屏障操作，称为磁盘同步，这会强制将写的缓存全部刷到磁盘上，磁盘同步操作可以用来保证不会有未完成的写操作，之前所有的写都会保留在磁盘上。但是磁盘同步非常的耗时，应当尽可能的避免，而这种异步的 I/O 使得论证崩溃安全性变得更加复杂。 </p>
-<h3 id="预写式日志"><a href="#预写式日志" class="headerlink" title="预写式日志"></a>预写式日志</h3><p>通过写操作的重排序来优化写的性能，文件系统的开发人员必须在适当的位置植入屏障，这个屏障会保证之前代码里面所有的写操作持久化到磁盘，以此来保证顺序性，但屏障是非常耗时的操作，需要尽量的避免，</p>
-<p>现在比较通用的实现崩溃安全性的方法是使用预写式日志。这时写操作不会直接修改文件系统相应部分的数据结构，而是会先将修改记录在磁盘上的日志区域，当所有操作记录完成后，会进行标志，然后再将数据从日志区域写到实际的磁盘区域，再把日志区域的记录擦 除。假如系统在中间发生了崩溃，恢复程序会检查标志是否存在，假如存在，恢复程序会先把所有数据重新写一遍到磁盘上，这样就可以解决之前数据可能只写了一部分的问题。假如 不存在，说明之前的数据并没有往磁盘上写，因此可以直接将日志区域的数据擦除，仿佛这个操作完全没有发生一样，写标志这个时间点成为了操作是否发生的时间点，即使在运行恢复程序的过程中系统再次发生崩溃，重启之后再次运行恢复程序依然能正确的恢复磁盘状态。 虽然概念上很简单，但预写式日志会增加许多额外的磁盘写入和磁盘屏障操作，因此实 际的文件系统会实现很多优化来尽量增加磁盘吞吐量，这些优化包括将多个事务合并成一 个事务以及延迟将缓存中的数据写入磁盘。</p>
-<h3 id="日志协议"><a href="#日志协议" class="headerlink" title="日志协议"></a>日志协议</h3><p>文件系统一般会实现预写日志来解决这个问题，以确保系统崩溃重新启动的时候，磁盘 上的数据结构处于一致的状态。磁盘通常会分配一块固定的区域给日志，日志通常由两部分构成，一部分是连续的日志条目，每个日志条目记录希望对磁盘进行的写操作，另一部分是一个单一的提交快，记录着日志条目的数量。 </p>
-<p>一个基本的日志协议工作如下：（1）日志记录系统为文件系统的一个操作开启一个事务（2）对于该操作引发的每一个磁盘写入的地址和值，日志记录系统向日志条目附加一个新的地址/值对（3）当日志记录系统提交事务时，它会发出一个磁盘<strong>同步</strong>来保存磁盘上的日志条目，然后更新提交块以反映日志的长度，然后再次<strong>同步</strong>磁盘以完成这个事务（4）日志系统将日志中的修改应用到实际的磁盘位置，并发出磁盘<strong>同步</strong>将更改持久化到磁盘上（5）最后，将零写入提交块来截断日志，并<strong>同步</strong>到磁盘上（6）无论何时系统崩溃并重新启动，都会运行恢复过程。它根据提交块的长度读取日志；如果日志不为空，则跳到步骤（4）重新执行。 </p>
-<p>上述协议的正确性依赖于一个重要的假设：更新提交块是原子的同步的操作。原子性确保了提交块上要么是原长度，要么是新长度，同步则保证了磁盘控制器不会对磁盘的写操作进行重新排序，将提交块的写和其他的写调换顺序，这是通过在更新提交块之前和之后发出 两个屏障（磁盘同步操作）来强制执行。在这个协议下，在事务中途，还没有更新提交块之前系统崩溃的话，提交块的长度为零，此时磁盘的数据没有被写，这个事务就像没有执行一 样，数据处于一致的状态；提交之后但在应用完成之前的系统崩溃将导致提交块长度非零， 并且日志中包含相同数目的有效条目，这时就只需要重新执行提交操作，会达到事务执行完的状态。 这个基本的日志协议会增加磁盘写操作以及耗时的磁盘同步操作。例如，写入单个磁盘块的操作将需要完成四次磁盘写入（两次为提交块，两次为块的内容）和四个磁盘同步（上文加粗处）。</p>
+<h3 id="预写式日志-WAL"><a href="#预写式日志-WAL" class="headerlink" title="预写式日志 WAL"></a>预写式日志 WAL</h3><p>许多文件系统操作涉及多个对磁盘的写。例如，创建文件至少涉及两个写操作，分配未使用的索引节点，并将索引节点添加到父目录中。如果系统在两次写之间崩溃，则索引节点在索引节点位图中可能被标记为已经使用，但却不属于任何一个目录。 文件系统一般会实现<strong>事务保证原子性+预写日志</strong>来解决这个问题，以确保系统崩溃重新启动的时候，磁盘上的数据结构处于一致的状态。磁盘通常会分配一块固定的区域给日志，日志通常由两部分构成，一部分是连续的日志条目，每个日志条目记录希望对磁盘进行的写操作，另一部分是 一个单一的提交块，记录日志条目的数量。</p>
+<h3 id="举例说明"><a href="#举例说明" class="headerlink" title="举例说明"></a>举例说明</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def atomic_two_write(a1, v1, a2, v2): </span><br><span class="line">	log_begin() </span><br><span class="line">	log_write(a1, v1) </span><br><span class="line">	log_write(a2, v2) </span><br><span class="line">	log_commit()</span><br></pre></td></tr></table></figure>
+<p>该过程使用预写日志在事务内部执行两次磁盘写操作，该日志提供log_begin，log_commit和log_write的API，log_write() 将块的内容追加到内存日志中，而不是直接更新磁盘块。log_commit() 将日志写入磁盘，写入提交记录，然后将块内容从日志复制到磁盘上的块位置。如果此过程崩溃且系统重新启动，则将运行事务系统的恢复过程。恢复过程将查找提交记录。如果存在提交记录，它将通过将日志中的块内容复制到正确的位置来完成事务，然后清除日志。如果没有提交记录，则恢复过程仅清除日志。<br>如果恢复期间发生崩溃，则重新启动后，恢复过程将再次运行。不管崩溃多少次，只要恢复完成，则两个块要么都已更新，要么都未更新。因此，atomic_two_write过程中，事务系统保证无论怎么崩溃，两次写入要么都发生，要么都不发生。</p>
+<h3 id="日志协议"><a href="#日志协议" class="headerlink" title="日志协议"></a>日志协议</h3><p>一个基本的日志协议工作如下：（1）日志记录系统为文件系统的一个操作开启一个事务（2）对于该操作引发的每一个磁盘写入的地址和值，日志记录系统向日志条目附加一个新的地址/值对（3）当日志记录系统提交事务时，它会发出一个磁盘<strong>同步</strong>来保存磁盘上的日志条目，然后更新提交块以反映日志的长度，然后再次<strong>同步</strong>磁盘以完成这个事务（4）日志系统将日志中的修改应用到实际的磁盘位置，并发出磁盘<strong>同步</strong>将更改持久化到磁盘上（5）最后，将零写入提交块来截断日志，并<strong>同步</strong>到磁盘上（6）无论何时系统崩溃并重新启动，都会运行恢复过程。它根据提交块的长度读取日志；如果日志不为空，则跳到步骤（4）重新执行。 </p>
+<p>上述协议的正确性依赖于一个重要的假设：更新提交块是原子的同步的操作。原子性确保了提交块上要么是原长度，要么是新长度，同步则保证了磁盘控制器不会对磁盘的写操作进行重新排序，将提交块的写和其他的写调换顺序，这是通过在更新提交块之前和之后发出两个屏障（磁盘同步操作）来强制执行。在这个协议下，在事务中途，还没有更新提交块之前系统崩溃的话，提交块的长度为零，此时磁盘的数据没有被写，这个事务就像没有执行一 样，数据处于一致的状态；提交之后但在应用完成之前的系统崩溃将导致提交块长度非零，并且日志中包含相同数目的有效条目，这时就只需要重新执行提交操作，会达到事务执行完的状态。 这个基本的日志协议会增加磁盘写操作以及耗时的磁盘同步操作。例如，写入单个磁盘块的操作将需要完成四次磁盘写入（两次为提交块，两次为块的内容）和四个磁盘同步（上文加粗处）。</p>
 <h3 id="日志优化"><a href="#日志优化" class="headerlink" title="日志优化"></a>日志优化</h3><ol>
 <li><p>延迟应用日志：日志系统提交事务后，并不立即应用日志，而是等日志填满后，再一次性将日志内容应用。可以将每个事务的磁盘同步由四个 降为两个，同时将写磁盘的次数也由四次降为两次。</p>
 </li>
@@ -483,11 +494,11 @@
 <blockquote>
 <p>Coq 是一种基于构造演算的证明助手，被用于形式化各种领域的证明，包括数学和编程语言。如果对其感兴趣想了解更多，可以参照此网站进一步学习 -&gt; <a href="https://github.com/coq/coq/wiki#coq-tutorials" target="_blank" rel="noopener">https://github.com/coq/coq/wiki#coq-tutorials</a></p>
 </blockquote>
-<h3 id="磁盘模型"><a href="#磁盘模型" class="headerlink" title="磁盘模型"></a>磁盘模型</h3><p>依照分离逻辑的假设，磁盘被定义成从整数块号a到内容v的偏函数a → v，其中超过磁盘范围的块号不会映射到任何东西。 </p>
-<p>而根据我们所知，I/O写入并不是同步的，中间会经过cash异步写入磁盘。为了捕获这种异步的性质，CHL 用一个值集（v,vs）来描述一个块的内容，而不是一个单一的值，其中 v 代表着这个地址最近写入的值， 而 vs 是一系列的之前写入的值，假如系统突然崩溃，v 和 vs 中的任何一个值都可能出现在磁盘上。而磁盘同步操作意味着对应的缓存已经全部应用到该地址上，先前写入的值已经全部处理，即 vs 为 ∅，最新的值会出现在崩溃之后，否则，这个磁盘块就是未同步的。 CHL 的磁盘模型假设块是原子写的，也就是说，在系统崩溃之后，块必须包含最后写入 的值或者是先前值中的一个，并且不允许部分块写入。 </p>
-<h3 id="崩溃条件"><a href="#崩溃条件" class="headerlink" title="崩溃条件"></a>崩溃条件</h3><p>给定了异步磁盘模型，我们还需要一种手段来描述可能崩溃的中间状态，CHL 将霍尔逻辑扩展成一个具有崩溃条件的四元组， 写为：{P}C{Q}{R} 其中 Q 依然是后置条件，描述 C 在没有崩溃情况下的执行结束时的状态，而 R 是描述 C 执行过程中可能发生的中间状态的崩溃条件。 下面我们以disk_write(a, v)举例：</p>
+<h3 id="磁盘模型"><a href="#磁盘模型" class="headerlink" title="磁盘模型"></a>磁盘模型</h3><p>磁盘被定义成从整数块号a到内容v的偏函数a → v，其中超过磁盘范围的块号不会映射到任何东西。 </p>
+<p>因为I/O写入并不是同步的，中间会经过buffer异步写入磁盘。为了捕获这种异步的性质，CHL 用一个值集（v,vs）来描述一个块的内容，而不是一个单一的值，其中 v 代表着这个地址最近写入的值， 而 vs 是一系列的之前写入的值，假如系统突然崩溃，v 和 vs 中的任何一个值都可能出现在磁盘上。而磁盘同步操作意味着对应的缓存已经全部应用到该地址上，先前写入的值已经全部处理，即 vs 为 ∅，最新的值会出现在崩溃之后，否则，这个磁盘块就是未同步的。 CHL 的磁盘模型假设块是原子写的，也就是说，在系统崩溃之后，块必须包含最后写入的值或者是先前值中的一个，并且不允许部分块写入。 </p>
+<h3 id="崩溃条件"><a href="#崩溃条件" class="headerlink" title="崩溃条件"></a>崩溃条件</h3><p>给定了异步磁盘模型，我们还需要一种手段来描述可能崩溃的中间状态，CHL 将霍尔逻辑扩展成一个具有崩溃条件的四元组， 写为：{P}C{Q}{R} 其中 P 是前置条件，描述C过程之前应满足的状态；Q 是后置条件，描述 C 在没有崩溃情况下执行结束时的状态，而 R 是描述 C 执行过程中可能发生的中间状态的崩溃条件。 我们以disk_write(a, v)举例：</p>
 <p>前置条件：<code>F * a -&gt; (v0, vs)</code><br>后置条件：<code>F * a -&gt; (v, {v0} U vs)</code><br>崩溃条件：<code>F * a -&gt; (v0, vs) ∨ F * a -&gt; (v, {v0} U vs)</code></p>
-<p>规范由四个部分组成，首先是我们推理的过程名称disk_write(a, v)，把值v写到地址a上。其前置条件声明的是磁盘上地址 a 的地方指向的值是一个集合，v0是最新写入的值，vs则表示之前写入的值的序列，除 a 以外的地址满足的谓词是 F；其后置条件说的是 a 以外的值依旧满足谓词 F，没有修改，而地址 a 指向的值的集合中，最新的元素是v0，旧的值则是由vs加上v0组成的序列；由于磁盘写是一个原子操作，因此它要么完成了值的写入，要么没有完成，因此可能发生系统崩溃时有两种状态，一是前置条件的状态，二是后置条件的状态，通过将前置条件和后置条件并起来则表示了系统崩溃时可能的所有状态，即系统崩溃时必须满足的谓词。</p>
+<p>推理过程disk_write(a, v)，即把值v写到地址a上。其前置条件声明的是磁盘上地址 a 的地方指向的值是一个集合，v0是最新写入的值，vs则表示之前写入的值的序列，除 a 以外的地址满足的谓词是 F；其后置条件说的是 a 以外的值依旧满足谓词 F，没有修改，而地址 a 指向的值的集合中，最新的元素是v0，旧的值则是由vs加上v0组成的序列；由于磁盘写是一个原子操作，因此它要么完成了值的写入，要么没有完成，因此可能发生系统崩溃时有两种状态，一是前置条件的状态，二是后置条件的状态，通过将前置条件和后置条件并起来则表示了系统崩溃时可能的所有状态，即系统崩溃时必须满足的谓词。</p>
 <p>磁盘写的规范说明还表明了真实磁盘的两个重要行为，保证了磁盘的性能：</p>
 <ul>
 <li>磁盘实际 I/O 可以异步发生 </li>
@@ -504,14 +515,14 @@
 <p>前置条件中，a1 → (v_x, vs_x) 适用于日志系统提供的逻辑磁盘的地址空间，后置条件中，a1 → (v_x+1, ∅) 适用于逻辑磁盘的新的内容。就像物理磁盘一样，这个地址空间也是从地址到值的偏函数。与物理磁盘不同的是，通过日志系统写入逻辑磁盘的操作展现的是一个同步的接口，即整个操作完成之后，能保证要写入地址的值被刷到磁盘上，因此在后置条件中，我们看到的是单个同步的值，这层抽象做的具体的事情就是隐藏更下层的异步的接口，这也是引入地址空间的好处。 </p>
 <p>我们在 log_rep 将逻辑地址空间和实际的物理磁盘连接起来。例如，我们指定起始状态如何存储在磁盘上，以及如何逻辑的构造新的状态，比如将日志内容应用到起始状态。通过 log_rep 的这层转化，对逻辑地址空间的描述将会变成对物理磁盘的描述，并且隐藏了一 些琐碎的细节。log_rep 将会把逻辑地址空间作为参数，结合日志系统的状态和逻辑磁盘状态准确的反映出物理磁盘上的状态。日志系统中有好几个可能的状态：</p>
 <ol>
-<li>NoTxn ：表示当前磁盘没有事务活动，</li>
-<li>ActiveTxn ：表示活跃状态中的事务所有的修改只会发生在内存中</li>
-<li>FlushedUnsync ：表示此时开始进入提交事务的过程，首先把内存中的修改刷到数据缓冲区的日志记录的区域中，未同步表示还没有刷到磁盘上</li>
-<li>Flushed ：表示此时已经有了一次磁盘同步，我们将日志的数据区的内容刷到了磁盘上</li>
-<li>CommittedUnsync ：表示我们现在将提交块写到了数据缓冲区里，同时还没有同步到磁盘里</li>
-<li>Committed ：表示提交块被同步到了磁盘里，这个点之前和之后作为事务是否完成的分界点</li>
-<li>AppliedUnsync ：表示现在数据缓存区里将日志的内容实际应用到数据区</li>
-<li>AppliedSync ：表示日志应用的工作已经完全反映到了磁盘上，整个事务至此完成</li>
+<li>NoTxn ：表示当前磁盘没有事务活动。</li>
+<li>ActiveTxn ：表示活跃状态中的事务所有的修改只会发生在内存中。</li>
+<li>FlushedUnsync ：表示此时开始进入提交事务的过程，首先把内存中的修改刷到数据缓冲区的日志记录的区域中，未同步表示还没有刷到磁盘上。</li>
+<li>Flushed ：表示此时已经有了一次磁盘同步，我们将日志的数据区的内容刷到了磁盘上。</li>
+<li>CommittedUnsync ：表示我们现在将提交块写到了数据缓冲区里，同时还没有同步到磁盘里。</li>
+<li>Committed ：表示提交块被同步到了磁盘里，这个点之前和之后作为事务是否完成的分界点。</li>
+<li>AppliedUnsync ：表示现在数据缓存区里将日志的内容实际应用到数据区。</li>
+<li>AppliedSync ：表示日志应用的工作已经完全反映到了磁盘上，整个事务至此完成。 </li>
 </ol>
 <p>inc_two 的崩溃条件使用 log_would_recover 描述了所有可能的崩溃状态从这些崩溃状态要么恢复到 start_state，要么恢复到 cur_state，使用 log_would_recover，我们考虑的所有状态即前文所述的日志系统的八种状态，这些状态的产生源于这个操作深层次的调用中任何可能的崩溃点（比如，在 log_commit 过程里面的崩溃情况）。</p>
 <h3 id="恢复执行语义"><a href="#恢复执行语义" class="headerlink" title="恢复执行语义"></a>恢复执行语义</h3><p>计算机遇到崩溃并重新启动后，它会在恢复正常操作之前先运行恢复程序（如 log_recover），崩溃条件和地址空间允许我们指定计算机在执行过程中可能会崩溃的状态， 但我们还需要一种证明恢复过程正确性的方法，包括在恢复期间的系统崩溃。日志系统必须在每次崩溃之后运行 log_recover 来将已经提交的事务继续做完，包括在运行 log_recover 本身发生崩溃之后。 log_recover 指出，从与 log_would_recover(last_state, committed_state) 相匹配的任何状态开始，log_recover 会将事务回滚到 last_state 或将提交的事务继续执行到 committed_state。此外，log_recover 的规范是幂等的，因此它的崩溃条件意味着前置条件，这将允许 log_recover 在执行的过程中崩溃多次。</p>
@@ -539,7 +550,7 @@
 <h3 id="磁盘模型-1"><a href="#磁盘模型-1" class="headerlink" title="磁盘模型"></a>磁盘模型</h3><p>FSCQ 崩溃后，并非每次发出的写入都将反映在磁盘状态中。 CHL模型的另外两个磁盘操作是读取磁盘块（disk_read），并等待所有写操作到达非易失性内存（disk_sync）disk_sync将块地址作为附加参数，以指示必须同步的块。 disk_sync的按地址变体会丢弃该块的所有先前值，从而使最后写入的值成为崩溃后可能出现的唯一可能值。在执行时，每个地址disk_syncs的连续调用被折叠为单个全局disk_sync操作，以实现所需的性能。</p>
 <h3 id="POSIX接口"><a href="#POSIX接口" class="headerlink" title="POSIX接口"></a>POSIX接口</h3><p>FSCQ在顶层提供类似于POSIX的接口。 与POSIX的主要区别是：FSCQ不支持硬链接，以及 FSCQ不实现文件描述符，而是需要按索引节点编号命名打开的文件。 FSCQ依靠FUSE驱动程序来维护打开文件描述符和inode编号之间的映射。</p>
 <h3 id="FscqLog"><a href="#FscqLog" class="headerlink" title="FscqLog"></a>FscqLog</h3><p>FscqLog一次仅允许一个事务，并假定内存足够大以容纳当前事务的内存日志。但即使对于这种简单的设计，日志记录协议也很复杂，因为disk_write是异步的。崩溃后，日志记录系统可以处于七个状态之一：NoTxn（无活动事务），ActiveTxn（事务已启动），LogFlushed（log_flush已经发生），CommittedUnsync（已写入提交块），CommittedSync（提交块）已同步），AppliedUnsync（已应用日志）和AppliedSync（已应用并同步日志）。<br>崩溃后，FSCQ的恢复过程fs_recover读取布局块以确定日志的位置，然后调用FscqLog的log_recover将磁盘置于一致状态。<br>FSCQ仅通过log_write更新磁盘，并将这些写入以系统调用的粒度包装到事务中，以实现崩溃安全。此外，它为上级软件提供了一个更简单的同步接口。因为事务API公开了一个逻辑地址空间，该逻辑地址空间将每个块映射到唯一的块内容，即使物理磁盘将每个块映射到最后写入值和一组先前值的元组。因此，在FscqLog之上编写的软件不必担心异步写入。</p>
-
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -722,7 +733,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#FSCQ论文"><span class="nav-number">1.</span> <span class="nav-text">FSCQ论文</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基础背景"><span class="nav-number">1.1.</span> <span class="nav-text">基础背景</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#文件系统"><span class="nav-number">1.1.1.</span> <span class="nav-text">文件系统</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#索引节点-iNode"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">索引节点 iNode</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#目录文件"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">目录文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#硬链接"><span class="nav-number">1.1.1.3.</span> <span class="nav-text">硬链接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#软链接"><span class="nav-number">1.1.1.4.</span> <span class="nav-text">软链接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#iNode特殊作用"><span class="nav-number">1.1.1.5.</span> <span class="nav-text">iNode特殊作用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例"><span class="nav-number">1.1.1.6.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#崩溃安全性"><span class="nav-number">1.1.2.</span> <span class="nav-text">崩溃安全性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#写屏障（磁盘同步）"><span class="nav-number">1.1.3.</span> <span class="nav-text">写屏障（磁盘同步）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#预写式日志"><span class="nav-number">1.1.4.</span> <span class="nav-text">预写式日志</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#日志协议"><span class="nav-number">1.1.5.</span> <span class="nav-text">日志协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#日志优化"><span class="nav-number">1.1.6.</span> <span class="nav-text">日志优化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CHL框架"><span class="nav-number">1.2.</span> <span class="nav-text">CHL框架</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#磁盘模型"><span class="nav-number">1.2.1.</span> <span class="nav-text">磁盘模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#崩溃条件"><span class="nav-number">1.2.2.</span> <span class="nav-text">崩溃条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#逻辑地址空间"><span class="nav-number">1.2.3.</span> <span class="nav-text">逻辑地址空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#恢复执行语义"><span class="nav-number">1.2.4.</span> <span class="nav-text">恢复执行语义</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#证明规范"><span class="nav-number">1.3.</span> <span class="nav-text">证明规范</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#证明自动化"><span class="nav-number">1.3.1.</span> <span class="nav-text">证明自动化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#证明崩溃条件规范"><span class="nav-number">1.3.2.</span> <span class="nav-text">证明崩溃条件规范</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#程序分解"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">程序分解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#谓词蕴涵"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">谓词蕴涵</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#证明恢复语义规范"><span class="nav-number">1.3.3.</span> <span class="nav-text">证明恢复语义规范</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文件系统构建"><span class="nav-number">1.4.</span> <span class="nav-text">文件系统构建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#系统结构"><span class="nav-number">1.4.1.</span> <span class="nav-text">系统结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#磁盘模型-1"><span class="nav-number">1.4.2.</span> <span class="nav-text">磁盘模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#POSIX接口"><span class="nav-number">1.4.3.</span> <span class="nav-text">POSIX接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FscqLog"><span class="nav-number">1.4.4.</span> <span class="nav-text">FscqLog</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#FSCQ论文"><span class="nav-number">1.</span> <span class="nav-text">FSCQ论文</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基础背景"><span class="nav-number">1.1.</span> <span class="nav-text">基础背景</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#文件系统"><span class="nav-number">1.1.1.</span> <span class="nav-text">文件系统</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#文件存取单位"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">文件存取单位</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#索引节点-iNode"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">索引节点 iNode</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#目录文件"><span class="nav-number">1.1.1.3.</span> <span class="nav-text">目录文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#硬链接"><span class="nav-number">1.1.1.4.</span> <span class="nav-text">硬链接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#软链接"><span class="nav-number">1.1.1.5.</span> <span class="nav-text">软链接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#iNode特殊作用"><span class="nav-number">1.1.1.6.</span> <span class="nav-text">iNode特殊作用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据缓存区"><span class="nav-number">1.1.1.7.</span> <span class="nav-text">数据缓存区</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例"><span class="nav-number">1.1.1.8.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#崩溃安全性"><span class="nav-number">1.1.2.</span> <span class="nav-text">崩溃安全性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#写屏障（磁盘同步）"><span class="nav-number">1.1.3.</span> <span class="nav-text">写屏障（磁盘同步）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#预写式日志-WAL"><span class="nav-number">1.1.4.</span> <span class="nav-text">预写式日志 WAL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#举例说明"><span class="nav-number">1.1.5.</span> <span class="nav-text">举例说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#日志协议"><span class="nav-number">1.1.6.</span> <span class="nav-text">日志协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#日志优化"><span class="nav-number">1.1.7.</span> <span class="nav-text">日志优化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CHL框架"><span class="nav-number">1.2.</span> <span class="nav-text">CHL框架</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#磁盘模型"><span class="nav-number">1.2.1.</span> <span class="nav-text">磁盘模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#崩溃条件"><span class="nav-number">1.2.2.</span> <span class="nav-text">崩溃条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#逻辑地址空间"><span class="nav-number">1.2.3.</span> <span class="nav-text">逻辑地址空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#恢复执行语义"><span class="nav-number">1.2.4.</span> <span class="nav-text">恢复执行语义</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#证明规范"><span class="nav-number">1.3.</span> <span class="nav-text">证明规范</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#证明自动化"><span class="nav-number">1.3.1.</span> <span class="nav-text">证明自动化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#证明崩溃条件规范"><span class="nav-number">1.3.2.</span> <span class="nav-text">证明崩溃条件规范</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#程序分解"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">程序分解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#谓词蕴涵"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">谓词蕴涵</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#证明恢复语义规范"><span class="nav-number">1.3.3.</span> <span class="nav-text">证明恢复语义规范</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文件系统构建"><span class="nav-number">1.4.</span> <span class="nav-text">文件系统构建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#系统结构"><span class="nav-number">1.4.1.</span> <span class="nav-text">系统结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#磁盘模型-1"><span class="nav-number">1.4.2.</span> <span class="nav-text">磁盘模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#POSIX接口"><span class="nav-number">1.4.3.</span> <span class="nav-text">POSIX接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FscqLog"><span class="nav-number">1.4.4.</span> <span class="nav-text">FscqLog</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>

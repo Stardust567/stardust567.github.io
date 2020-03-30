@@ -90,7 +90,7 @@
 <meta property="og:description" content="Prwlock 为TSO架构系统提供了可扩展读者侧性能和写者低延迟，其关键在于多个无交互读者和一个不确定写者间基于version的共识协议。Prwlock 利用内存一致性的有界旧一致性(bounded staleness)来避免读者侧的原子操作和内存屏障，同时用消息传递(IPI)落伍的读者来限定写锁获取延迟。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.loli.net/2020/03/25/ECLQfDs536FGhmk.png">
-<meta property="og:updated_time" content="2020-03-26T05:51:38.940Z">
+<meta property="og:updated_time" content="2020-03-30T14:26:55.568Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="被动读写锁">
 <meta name="twitter:description" content="Prwlock 为TSO架构系统提供了可扩展读者侧性能和写者低延迟，其关键在于多个无交互读者和一个不确定写者间基于version的共识协议。Prwlock 利用内存一致性的有界旧一致性(bounded staleness)来避免读者侧的原子操作和内存屏障，同时用消息传递(IPI)落伍的读者来限定写锁获取延迟。">
@@ -404,7 +404,7 @@
                   <span class="post-meta-item-text">字数&#58;</span>
                 
                 <span title="字数">
-                  6.9k
+                  6.6k
                 </span>
               
 
@@ -420,7 +420,7 @@
                   <span class="post-meta-item-text">时长 &asymp;</span>
                 
                 <span title="时长">
-                  24min
+                  23min
                 </span>
               
             </div>
@@ -463,15 +463,8 @@
 <p>发射(issue)：在乱序处理器中指指令进入指令调度器；派发(dispatch)：指令进入执行单元。<br>一般将发射理解为已经开始执行了。</p>
 </blockquote>
 <h4 id="有界旧一致性-bounded-staleness"><a href="#有界旧一致性-bounded-staleness" class="headerlink" title="有界旧一致性 bounded staleness"></a>有界旧一致性 bounded staleness</h4><p>提交的写更新操作，不一定立即会被读操作读到，读写两者所冲突的区间形成了一个“不一致窗口”，我们允许该窗口存在，但window size应在一定限度范围内，而在窗口之外 bounded staleness 可以保证操作的全局按序。通常有两种size尺度，一种以版本个数K为限，此时window size指读操作读到的值和最新值的版本差max。一种以时间间隔T为限，此时window size指读操作可以读到最新值的时间差max。</p>
-<ul>
-<li>项的版本（<em>K</em>）的数目</li>
-<li>读操作可能滞后于写入的时间间隔（<em>T</em>）</li>
-</ul>
-<p>有限过期提供全局整体顺序，但在“过期窗口”中除外。 过期窗口内部和外部的区域中提供单调读取保证。 强一致性与受限过期所提供的语义相同。 过期窗口等于零。 有限过期也称为“延时可线性化”。 当客户端在接受写入的区域内执行读取操作时，有限过期一致性提供的保证与强一致性的保证相同。</p>
-<p>受限过期通常由需要较低写入延迟但需要全局订单总保证的全局分布式应用程序选择。 受限过期对于具有组协作和共享、股票行情、出版/排队等的应用程序非常有用。下图显示了与音符的有限失效一致性。 将数据写入 “美国东部” 区域后，”美国西部” 和 “澳大利亚东部” 区域会根据配置的最大延迟时间或最大操作读取写入值：</p>
-<p>提交的更新操作，不一定立即会被读操作读到，此种情况会存在一个不一致窗口，指的是读操作可以读到最新值的一段时间。</p>
-<h3 id="读写锁-rwlock"><a href="#读写锁-rwlock" class="headerlink" title="读写锁 rwlock"></a>读写锁 rwlock</h3><p>rwlock 把对共享资源的访问者划分成读者和写者，读者只对共享资源进行读访问，写者则需要对共享资源进行写操作。这种锁能提高并发性，因为在多处理器系统中，它允许同时有多个读者来访问共享资源，最大可能的读者数为实际的逻辑CPU数。写者是排他性的，一个读写锁同时只能有一个写者或多个读者，但不能同时既有读者又有写者。</p>
-<p>如果读写锁当前没有读者，也没有写者，那么写者可以立刻获得读写锁，否则它必须自旋在那里，直到没有任何写者或读者。如果读写锁没有写者，那么读者可以立即获得该读写锁，否则读者必须自旋在那里，直到写者释放该读写锁。</p>
+<h3 id="读写锁-rwlock"><a href="#读写锁-rwlock" class="headerlink" title="读写锁 rwlock"></a>读写锁 rwlock</h3><p>rwlock 把对共享资源的访问者划分成读者和写者，读者只对共享资源进行读访问，写者则需对共享资源进行写操作。这种锁能提高并发性，在多处理器系统中它允许同时有多个读者来访问共享资源，最大可能的读者数为实际的逻辑CPU数。写者是排他性的，一个读写锁同时只能有一个写者或多个读者，但不能同时既有读者又有写者。</p>
+<p>如果读写锁当前没有读者，也没有其它写者，那么写者可以立刻获得读写锁，否则它必须自旋在那里，直到没有任何写者或读者。如果读写锁没有写者，那么读者可以立即获得该读写锁，否则读者必须自旋在那里，直到写者释放该读写锁。</p>
 <h4 id="大读者锁-brlock"><a href="#大读者锁-brlock" class="headerlink" title="大读者锁 brlock"></a>大读者锁 brlock</h4><p>大读者锁是读写锁的高性能版，读者可以非常快地获得锁，但写者获得锁的开销比较大。这种锁适合于读多写少的情况，它在这种情况下远好于读写锁。大读者锁的实现机制有两种：</p>
 <ul>
 <li>brlock1：每个线程都有互斥锁，一个读者仅需要获取本线程锁，但写者需要获得所有锁</li>
@@ -485,22 +478,19 @@
 </blockquote>
 <p><strong>Bounded staleness without memory barriers：</strong><br>在rwlock中，一个写者需要与所有读者达成 consensus 才能获取该锁。因此，写者必须让所有读者看到其当前状态才能继续进行。典型的rwlock使用内存屏障以确保读者写者的版本更新按顺序对彼此可见，但这样开销太大，那么能否不用内存屏障？事实上一般处理器如x86-64，通常在很短的时间内其他内核就可以看到多个内存更新。基于此采取微基准测试：重复写入一个内存位置，并在随机延迟后在另一个内核上读取该位置，然后收集看到过时值的读者的时间间隔，发现大多数读者其实可以在很短的时间内看到写者的更新（因为处理器由于其有限的大小而将主动刷新其存储缓冲区）</p>
 <p><strong>Memory barrier not essential for mutual exclusion:</strong><br>现代处理器为了性能考虑不会按序执行指令，存在一个存储缓冲区，以使处理器在write cache未命中后继续执行，但这也导致了较弱的内存一致性。为了实现正确的互斥，通常使用性能开销较大的同步机制（例如内存屏障）来对管道进行序列化并刷新存储缓冲区。事实证明，在TSO机器上的所有执行中，都不可能构建一种满足互斥，无死锁且避免原子指令和内存屏障的算法。尽管prwlock读者不包含显式的内存屏障，因此似乎违反了该“顺序法则”，但prwlock使用 IPI 序列化了针对写者的读者执行，并且IPI处理具有与内存屏障相同的效果。</p>
-<h3 id="基本设计"><a href="#基本设计" class="headerlink" title="基本设计"></a>基本设计</h3><p><strong>Consensus using bounded staleness:</strong></p>
-<p>Prwlock 将version变量引入锁结构。每个写者都会自增version，并等待所有读者看到新的version后才继续写。 </p>
+<h3 id="基本设计"><a href="#基本设计" class="headerlink" title="基本设计"></a>基本设计</h3><p><strong>Consensus using bounded staleness:</strong><br>Prwlock 将version变量引入锁结构。每个写者都会自增version，并等待所有读者看到新的version后才继续写。 </p>
 <p>写者：lock(writer) ; ver++;<br>读者：while(writer!=FREE) status[my_id] = ver;<br>写者：for_each (id) while(status[id] &lt; ver); </p>
 <p>但如果某个读者id再也不进入临界区，那status[id]会永远小于ver，写者会一直陷入等待，无法进入临界区。 其次，读者可能会从一个core迁移到另一个core，但可能并不会更新离开的core。 </p>
-<p><strong>Handling straggling readers:</strong> </p>
-<p>为解决上述问题，prwlock引入了基于消息的共识协议，以使写者在必要时用IPI主动向读者发送请求。</p>
+<p><strong>Handling straggling readers:</strong><br>为解决上述问题，prwlock引入了基于消息的共识协议，以使写者在必要时用IPI主动向读者发送请求。</p>
 <p>写者：lock(writer) ; ver++;<br>读者：while(writer!=FREE) status[my_id] = ver;<br>写者：for_each (id) while(status[id] &lt; ver) <strong>IPI_request_ to_reader(id)</strong>;</p>
 <p>但如果允许读者在读取侧临界区中睡眠的话，睡眠状态的读者可能会错过请求，因此可能会无限阻塞写者。</p>
-<p><strong>Supporting sleeping readers:</strong> </p>
-<p>为了解决读者睡眠问题，prwlock引入了传统的计数器，让写者确认此时有无睡眠读者。</p>
+<p><strong>Supporting sleeping readers:</strong><br>为了解决读者睡眠问题，prwlock引入了传统的计数器，让写者确认此时有无睡眠读者。</p>
 <p>Prwlock跟踪两种类型的读者：被动读者和主动读者。读者开始时都设为passive，但在睡眠前会从passive转换为active。在此转换期间，共享的counter会自增。当active读者释放其锁定后，counter自减。写者使用该counter来确定是否有任何活动的读者。由于读者在读取器侧临界区睡眠很少，因此prwlock总体具有良好的性能。</p>
 <h3 id="算法设计"><a href="#算法设计" class="headerlink" title="算法设计"></a>算法设计</h3><p>为了简化说明，我们假设这些功能中只有一个锁，并且禁止抢占，以便它们可以安全地使用每个CPU状态。</p>
-<h4 id="Read-side-algorithm"><a href="#Read-side-algorithm" class="headerlink" title="Read-side algorithm"></a>Read-side algorithm</h4><p>每个per-core reader status structure（st）分布式跟踪passive reader，st会记住最新查看的version以及每个内核上prwlock的被动状态。FREE, PASSIVE两种状态体现在st.reader上，ACTIVE状态体现在lock.active上。</p>
-<p>要锁读者锁，要先设置状态为PASSIVE，再检查写者锁（<em>否则会存在一个时间窗口：读者明明观测到写者锁处于FREE，但并不能获得读者锁。如果在此时间窗口中传递了共识消息（例如IPI），则写者将成功获取锁并进入临界区，这将违反rwlock的语义</em>）如果读者发现此锁已被写者锁定(lock.writer != FREE)，则应释放被动锁定，将状态设置为FREE，等待写者解锁并重试。</p>
+<h4 id="Read-side-algorithm"><a href="#Read-side-algorithm" class="headerlink" title="Read-side algorithm"></a>Read-side algorithm</h4><p>每个per-core reader status structure（st）分布式跟踪passive reader，st会记住最新查看的version以及每个内核上prwlock的被动状态。<strong>FREE, PASSIVE两种状态体现在st.reader上，ACTIVE状态体现在lock.active上。</strong></p>
+<p>要锁读者锁，要先设置状态为PASSIVE，再检查写者锁（<em>否则会存在一个时间窗口：读者明明观测到写者锁处于FREE，但并不能获得读者锁。如果在此时间窗口中传递了共识消息（例如IPI），则写者将成功获取锁并进入临界区，这违反了rwlock的语义</em>）如果读者发现此锁已被写者锁定(lock.writer != FREE)，则应释放被动锁定，将状态设置为FREE，等待写者解锁并重试。</p>
 <p>要解锁读者锁，只需检查该锁是否处于PASSIVE并相应地将其解锁（<em>ReadUnlock</em>）。因此，在TSO体系结构上的读者公共路径中，不需要原子指令/内存障碍。此外，PASSIVE读者不会相互通信，从而保证了读者的可伸缩性和较低的延迟。</p>
-<p>如果读者在被调度时正在PASSIVE模式持有锁，则应通过增加主动计数器（<em>ScheduleOut</em>）将其转换为ACTIVE锁。</p>
+<p>如果读者被调度时正在PASSIVE模式持有锁，则应通过增加主动计数器（<em>ScheduleOut</em>）转换为ACTIVE锁。</p>
 <p><strong>ReadLock(lock)</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">st ← PerCorePtr(lock.rstatus, CoreID); </span><br><span class="line">st.reader ← PASSIVE; </span><br><span class="line">while lock.writer != FREE do </span><br><span class="line">	st.reader ← FREE; //释放被动锁定</span><br><span class="line">	st.version ← lock.version; </span><br><span class="line"> 	WaitUntil(lock.writer == FREE); </span><br><span class="line"> 	st ← PerCorePtr(lock.rstatus, CoreID); </span><br><span class="line"> 	st.reader ← PASSIVE; </span><br><span class="line">/* Barrier needed here on non-TSO architecture */;</span><br></pre></td></tr></table></figure>
 <p><strong>ReadUnlock(lock)</strong> </p>
@@ -516,7 +506,7 @@
 <p><strong>Report(lock)</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">st ← PerCorePtr(lock.rstatus, CoreID);</span><br><span class="line">if st.reader != PASSIVE then st.version ← lock.version;</span><br></pre></td></tr></table></figure>
 <h4 id="Correctness-on-TSO-architecture"><a href="#Correctness-on-TSO-architecture" class="headerlink" title="Correctness on TSO architecture"></a>Correctness on TSO architecture</h4><p>rwlocks与其他较弱的同步原语之间的主要区别在于，rwlocks在读者写者间有强大的可见性保证。<br>一旦读者看到了FREE的prwlock，可以确定：1）该FREE由直接的前一个写者设置；2）由于在TSO架构下按顺序可见内存写入，因此以前的写者所做的更新也应对该读者可见；3）在该读者退出前，没有写者可以进入临界区。<br>这三个属性共同确保读者始终可以看到受prwlock保护的共享数据的最新一致版本。此外，由于所有读者在获取写者锁期间都明确报告了最新版本，因此还可以保证写者查看读者st的所有更新。<br>在非TSO架构上，读者算法中需要两个额外的存储屏障。第一个确保读者在快速路径中获得锁定后，可以看到共享数据的最新版本。第二个是在释放读者锁之前使写者可以看到读者的内存更新。</p>
-<h3 id="OS内核集成"><a href="#OS内核集成" class="headerlink" title="OS内核集成"></a>OS内核集成</h3><p>将prwlock集成到OS内核中存在几个问题。首先，prwlock的范围可以是全局范围的，也可以是进程范围的，并且每个范围中可能有多个prwlock。每个prwlock可以由多个任务共享。为了减少读者写者之间的消息，prwlock使用锁域抽象来将一组可以达成共识的相关prwlocks归为一组。域跟踪当前正在执行prwlock相关任务的CPU内核。</p>
+<h3 id="OS内核集成"><a href="#OS内核集成" class="headerlink" title="OS内核集成"></a>OS内核集成</h3><p>将prwlock集成到OS内核中存在几个问题。首先，prwlock的范围可以是全局范围的，也可以是进程范围的，并且每个范围中可能有多个prwlock。每个prwlock可以由多个任务共享。为了减少读者写者之间的消息，prwlock使用锁域抽象来将可以达成共识的相关prwlocks归为一组。域跟踪当前正在执行prwlock相关任务的CPU内核。</p>
 <h4 id="Domain-Online-Offline"><a href="#Domain-Online-Offline" class="headerlink" title="Domain Online/Offline"></a>Domain Online/Offline</h4><p>在操作系统执行期间，可能会关闭一组prwlocks的范围。例如，对于保护进程的地址空间结构的一组锁，可以在地址空间切换期间关闭该结构。在这种情况下，prwlock使用域抽象来避免不必要的共识消息。域维护从cores到其online/offline状态的映射。只有活动域中的CPU内核才需要发送消息。</p>
 <p>当域将在core上联机时<code>coreSt ← PerCorePtr(dom.cores, CoreID);</code>，它只需设置映射<code>coreSt.online = TRUE;</code>然后执行内存屏障<code>MemoryBarrier();</code>。由于写者总在检查域之前设置其状态，因此可以保证写者可以看到新联机的内核，或者该内核上新来的读者可以看到写者正在获取锁。在任何一种情况下，rwlock语义都会保留。为了正确地使域从core中offline，在更改域之前还需要一个内存屏障，以确保offline前所有操作都对其他cores可见。<br>对于与进程相对应的域，prwlock使域在上下文切换前后联机/脱机。在域外时，读者必须在较慢的ACTIVE状态中获取所有prwlock。我们选择保留锁定用户的选择，因为他们可能会对工作量有更多的了解。 </p>
 <h4 id="Task-Online-Offline"><a href="#Task-Online-Offline" class="headerlink" title="Task Online/Offline"></a>Task Online/Offline</h4><p>可以将task（例如线程）上下文切换到其他任务，也可以将任务从一个核迁移到另一核。 prwlock使用联机/脱机任务来处理此类操作。当持有PASSIVE模式下prwlock的task即将切出时，如果prwlock为passive reader，将改为ACTIVE并增加active reader counter。这样可以确保写者一直处于等待，直到再次调度此任务，离开临界区继续执行。任务被调度再次联机时，无需执行任何操作。</p>
@@ -534,11 +524,11 @@
 </li>
 <li><p><strong>空间开销：</strong>由于prwlock本质上是分布式rwlock，因此它需要O（n）空间用于锁实例。<br>当前实现需要每个锁每个内核12个字节（版本8个，读取器状态4个），以使性能最大化。也可以将7位version和1位status打包到一个字节中以节省空间。需要另外几个字节来存储写者状态，其确切大小取决于特定写者使用的同步机制。此外，每个内核需要额外的1个字节来存储域online状态以支持锁定域抽象。通过使用Linux内核的按CPU存储机制，锁的按CPU状态可以与其他按CPU状态字打包到同一缓存行中。与其他可扩展的rwlock算法相比，prwlock施加了相似或更低的空间开销。</p>
 </li>
-<li><p><strong>内存一致性模型要求：</strong>由于prwlock依赖于一系列的内存操作事前发生关系，因此它要求内存存储操作被执行并按发布顺序对其他用户可见（TSO一致性）。像x86-64，SPARC和zSeries这种常用处理器都是这个架构。</p>
+<li><p><strong>内存一致性模型要求：</strong>由于prwlock依赖于一系列的内存操作事前发生关系，因此它要求内存存储操作被执行并按发布顺序对其他用户可见（TSO一致性）。像x86-64，SPARC和zSeries等常用处理器都是这个架构。</p>
 </li>
 </ul>
 <h2 id="分布式并行唤醒"><a href="#分布式并行唤醒" class="headerlink" title="分布式并行唤醒"></a>分布式并行唤醒</h2><h3 id="集中式顺序唤醒的问题"><a href="#集中式顺序唤醒的问题" class="headerlink" title="集中式顺序唤醒的问题"></a>集中式顺序唤醒的问题</h3><p>睡眠/唤醒是一种常见的OS机制，该机制允许任务暂时睡眠以等待特定事件发生（例如I / O事件）。Linux操作系统使用共享队列来保存所有等待的任务。通常是signaling task负责唤醒所有等待的任务。为此，signaling task首先使任务从共享任务队列中出队，然后执行一些操作以准备唤醒任务。接下来，调度程序为任务选择一个core，然后将该任务插入cpu运行队列中。最后，调度程序将重新调度的IPI发送到目标内核，以便唤醒的任务可能有机会被调度。内核将重复发送IPI，直到重新安排了所有唤醒的任务。</p>
-<p>这种集中的顺序唤醒机制存在多个问题。一，共享等待队列可能会成为瓶颈，因为尝试进入睡眠的多个内核可能会争用该队列。因此，我们的第一步涉及使用无锁唤醒队列，以便可以减轻锁争用。但这只能稍微提高性能。<br>我们的进一步调查发现，主要的性能可伸缩性问题来自级联的唤醒现象。当写者离开其写侧临界区时，它需要唤醒所有等待它的读者。由于有多个读者在等待写者，写者会顺序唤醒所有读者。因此等待时间与读者数量成线性增长。</p>
+<p>这种集中的顺序唤醒机制存在多个问题。一，共享等待队列可能会成为瓶颈，因为尝试进入睡眠的多个内核可能会争用该队列。因此，我们的第一步涉及使用无锁唤醒队列，以便可以减轻锁争用。但这只能稍微提高性能。<br>进一步调查发现，主要的性能可伸缩性问题来自级联的唤醒现象。当写者离开其写侧临界区时，它需要唤醒所有等待它的读者。由于有多个读者在等待写者，写者会顺序唤醒所有读者。因此等待时间与读者数量成线性增长。</p>
 <h3 id="分布式并行唤醒-1"><a href="#分布式并行唤醒-1" class="headerlink" title="分布式并行唤醒"></a>分布式并行唤醒</h3><p>为了加快此过程，prwlock在内核之间分配了唤醒任务的职责。通常，这会带来优先级倒置的风险，但是所有读者始终具有相同优先级。</p>
 <p><img src="https://i.loli.net/2020/03/25/ECLQfDs536FGhmk.png" alt="被动读写锁_parallel_wakeup.png"> </p>
 <p>上图展示了分散并行唤醒中使用的关键数据结构。每个内核维护一个唤醒队列（PWake-queue），以保持在此类队列中休眠的任务，每个任务均在唤醒条件字下休眠。</p>

@@ -90,7 +90,7 @@
 <meta property="og:description" content="Prwlock 为TSO架构系统提供了可扩展读者侧性能和写者低延迟，其关键在于多个无交互读者和一个不确定写者间基于version的共识协议。Prwlock 利用内存一致性的有界旧一致性(bounded staleness)来避免读者侧的原子操作和内存屏障，同时用消息传递(IPI)落伍的读者来限定写锁获取延迟。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.loli.net/2020/03/25/ECLQfDs536FGhmk.png">
-<meta property="og:updated_time" content="2020-03-30T14:26:55.568Z">
+<meta property="og:updated_time" content="2020-04-01T06:59:23.671Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="被动读写锁">
 <meta name="twitter:description" content="Prwlock 为TSO架构系统提供了可扩展读者侧性能和写者低延迟，其关键在于多个无交互读者和一个不确定写者间基于version的共识协议。Prwlock 利用内存一致性的有界旧一致性(bounded staleness)来避免读者侧的原子操作和内存屏障，同时用消息传递(IPI)落伍的读者来限定写锁获取延迟。">
@@ -404,7 +404,7 @@
                   <span class="post-meta-item-text">字数&#58;</span>
                 
                 <span title="字数">
-                  6.6k
+                  6.5k
                 </span>
               
 
@@ -498,7 +498,7 @@
 <p><strong>ScheduleOut(lock)</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">st ← PerCorePtr(lock.rstatus, CoreID); </span><br><span class="line">if st.reader = PASSIVE then AtomicInc(lock.active);</span><br><span class="line">st.reader ← FREE;</span><br><span class="line">st.version ← lock.version;</span><br></pre></td></tr></table></figure>
 <h4 id="Write-side-algorithm"><a href="#Write-side-algorithm" class="headerlink" title="Write-side algorithm"></a>Write-side algorithm</h4><p>写者锁的获取可分为两个阶段。一个写者首先锁定writer mutex，然后增加version以进入阶段1。然后，它将检查当前域中的所有联机cores，以确认cores是否已查看最新version。如果ok，则说明读者都在线，即知道此锁已被写者锁定，并在写者释放锁前不会获得读者锁。对于看不到最新version的内核，写者发送IPI并询问其状态。收到IPI后，未锁定的读者将通过更新其本地version（<em>Function Report</em>）向写者报告。锁定的读者在离开读取侧临界区或进入睡眠状态后将稍后报告。在报告了所有核心后，所有passive读者都达成了共识。然后，写者进入阶段2。在此阶段，写者只需等待所有活动的读者退出即可。</p>
-<p>写者可以将锁直接传递给未决的writer，而无需再次达成共识（line2-4 in WriteLock and line1 in WriteUnlock）</p>
+<p>写者可以将锁直接传递给之后的writer，而无需再次达成共识（line2-4 in WriteLock and line1 in WriteUnlock）</p>
 <p><strong>WriteLock(lock)</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">lastState ← Lock(lock.writer);</span><br><span class="line">if lastState = PASS then return;</span><br><span class="line">/* Lock passed from another writer */</span><br><span class="line">newVersion ← AtomicInc(lock.version);</span><br><span class="line">coresWait ← /0;</span><br><span class="line">for ID ∈ AllCores do </span><br><span class="line">	if Online(lock.domain, ID) ∧ ID != CoreID then </span><br><span class="line">		if PerCorePtr(lock.rstatus, CoreID).version != newVersion then </span><br><span class="line">			AskForReport(ID);</span><br><span class="line">			Add(ID, coresWait);</span><br><span class="line">for ID ∈ coresWait do </span><br><span class="line">	while PerCorePtr(lock.rstatus, CoreID).version != newVersion do Relax();</span><br><span class="line">while lock.active != 0 do Schedule();</span><br></pre></td></tr></table></figure>
 <p><strong>WriteUnlock(lock)</strong></p>
@@ -529,11 +529,11 @@
 </ul>
 <h2 id="分布式并行唤醒"><a href="#分布式并行唤醒" class="headerlink" title="分布式并行唤醒"></a>分布式并行唤醒</h2><h3 id="集中式顺序唤醒的问题"><a href="#集中式顺序唤醒的问题" class="headerlink" title="集中式顺序唤醒的问题"></a>集中式顺序唤醒的问题</h3><p>睡眠/唤醒是一种常见的OS机制，该机制允许任务暂时睡眠以等待特定事件发生（例如I / O事件）。Linux操作系统使用共享队列来保存所有等待的任务。通常是signaling task负责唤醒所有等待的任务。为此，signaling task首先使任务从共享任务队列中出队，然后执行一些操作以准备唤醒任务。接下来，调度程序为任务选择一个core，然后将该任务插入cpu运行队列中。最后，调度程序将重新调度的IPI发送到目标内核，以便唤醒的任务可能有机会被调度。内核将重复发送IPI，直到重新安排了所有唤醒的任务。</p>
 <p>这种集中的顺序唤醒机制存在多个问题。一，共享等待队列可能会成为瓶颈，因为尝试进入睡眠的多个内核可能会争用该队列。因此，我们的第一步涉及使用无锁唤醒队列，以便可以减轻锁争用。但这只能稍微提高性能。<br>进一步调查发现，主要的性能可伸缩性问题来自级联的唤醒现象。当写者离开其写侧临界区时，它需要唤醒所有等待它的读者。由于有多个读者在等待写者，写者会顺序唤醒所有读者。因此等待时间与读者数量成线性增长。</p>
-<h3 id="分布式并行唤醒-1"><a href="#分布式并行唤醒-1" class="headerlink" title="分布式并行唤醒"></a>分布式并行唤醒</h3><p>为了加快此过程，prwlock在内核之间分配了唤醒任务的职责。通常，这会带来优先级倒置的风险，但是所有读者始终具有相同优先级。</p>
+<h3 id="分布式并行唤醒-1"><a href="#分布式并行唤醒-1" class="headerlink" title="分布式并行唤醒"></a>分布式并行唤醒</h3><p>为了加快此过程，prwlock在内核之间分配了唤醒任务的职责。一般来讲，这会带来优先级倒置的风险，但所有读者始终具有相同优先级，所以就不存在什么问题了。</p>
 <p><img src="https://i.loli.net/2020/03/25/ECLQfDs536FGhmk.png" alt="被动读写锁_parallel_wakeup.png"> </p>
 <p>上图展示了分散并行唤醒中使用的关键数据结构。每个内核维护一个唤醒队列（PWake-queue），以保持在此类队列中休眠的任务，每个任务均在唤醒条件字下休眠。</p>
-<p>当任务从运行态进入睡眠状（步骤1）时，该任务将从CPU运行队列Run-queue中删除，并插入到CPU唤醒队列PWake-queue中。在进入调度程序之前，如果内核指示存在待处理的请求（例如，通过检查唤醒计数器），则每个内核都先查看PWake-queue中是否存在tasks meet their conditions，如果存在，它将被插入Run-queue。在检查了PWake-queue之后，每个内核将执行其调度程序（步骤2）以选择要执行的任务（步骤3）由于新的唤醒机制可能需要内核轮询唤醒队列以在每个内核调度程序中重新调度唤醒任务，因此当处理器中没有可运行的任务时，这可能会造成浪费。为了解决这个问题，唤醒机制允许每个空闲core使用monitor &amp; mwait instructions to sleep on a global word（步骤4）当写者完成工作并发出信号以唤醒其等待的任务时，写者touch the word以唤醒空闲的内核，然后该内核将开始检查是否应唤醒唤醒队列中的任何任务。</p>
-<p>由于所有操作都在每个core的本地完成，所以不需要原子操作和内存屏障。</p>
+<p>当任务从运行态进入睡眠状（步骤1）时，该任务将从CPU运行队列Run-queue中删除，并插入到CPU唤醒队列PWake-queue中。在进入调度程序之前，如果内核指示存在待处理的请求（例如，通过检查唤醒计数器），则每个内核都先查看PWake-queue中是否存在tasks meet their conditions，如果存在，它将被插入Run-queue。由于所有操作都在每个core的本地完成，所以不需要原子操作和内存屏障。在检查了PWake-queue之后，每个内核将执行其调度程序（步骤2）以选择要执行的任务（步骤3）</p>
+<p>为了解决集中式顺序唤醒的问题，唤醒机制允许每个空闲core使用monitor &amp; mwait instructions to sleep on a global word（步骤4）当写者完成工作并发出信号以唤醒其等待的任务时，写者touch the word以唤醒空闲的内核，然后该内核将开始检查是否应唤醒唤醒队列中的任何任务。</p>
 
       
     </div>

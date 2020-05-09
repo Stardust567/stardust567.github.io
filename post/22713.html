@@ -91,7 +91,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.loli.net/2020/04/25/RN7MsZekKYIGiwr.png">
 <meta property="og:image" content="https://i.loli.net/2019/03/18/5c8fa09144527.jpg">
-<meta property="og:updated_time" content="2020-05-01T01:45:40.944Z">
+<meta property="og:updated_time" content="2020-05-02T09:00:56.133Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="System Call">
 <meta name="twitter:description" content="Linux内核中设置了一组用于实现各种系统功能的子程序，称为系统调用（system call）。同时它还提供些C语言函数库，这些库对系统调用进行包装和扩展。由于这些库函数与系统调用的关系非常紧密，习惯上把这些函数也称为系统调用。本文是作者在大二写OS作业时整理的，安利文章系统调用跟我学这篇写得真的很舒服，本文很多内容都源于此。">
@@ -405,7 +405,7 @@
                   <span class="post-meta-item-text">字数&#58;</span>
                 
                 <span title="字数">
-                  7.2k
+                  7.3k
                 </span>
               
 
@@ -467,8 +467,8 @@
 <p>线程的寄存器是不共享的，通常栈区是被相应线程独立访问的，但可能出现一个线程去访问另一个线程中的栈区的情况。这是因为这个线程获得了指向另一个线程栈区的指针，那么它就可以读写这个栈的任何部分。</p>
 <h4 id="线程崩溃"><a href="#线程崩溃" class="headerlink" title="线程崩溃"></a>线程崩溃</h4><p>线程有自己的 stack，但是没有单独的 heap 和 address space。只有进程有自己的 address space，而这个 space 中经过合法申请的部分叫做 process space。Process space 之外的地址都是非法地址。当一个线程向非法地址读取或者写入，无法确认这个操作是否会影响同一进程中的其它线程，所以只能是整个进程一起崩溃。</p>
 <h3 id="主线程"><a href="#主线程" class="headerlink" title="主线程"></a>主线程</h3><p>当一个程序启动时，就有一个进程被操作系统创建，与此同时一个线程也立刻运行，该线程为程序的<strong>主线程</strong>（Main Thread）。它是程序开始时就执行的，之后创建的线程都是这个主线程的子线程。每个进程至少都有一个主线程，如main函数。</p>
-<h4 id="父子线程"><a href="#父子线程" class="headerlink" title="父子线程"></a>父子线程</h4><p>1、父线程是主线程，则父线程退出后， 子线程一定会退出。</p>
-<p>2、父线程不是主线程，则父线程退出后， 子线程不受影响，继续运行。</p>
+<p>线程不像进程，一个进程中的线程之间没有父子之分，都是平级关系。理论上，某个线程的退出不会影响其他线程。但是当main执行完之后，return会使编译器调用进程退出的代码exit()，exit() 会让整个进程over终止，那所有线程自然都会退出。</p>
+<p>exit() 会让整个进程over终止，那所有线程自然都会退出。</p>
 <h2 id="协程"><a href="#协程" class="headerlink" title="协程"></a>协程</h2><p>协程Coroutine，作用是在执行函数A时，可以随时中断，去执行函数B，然后中断继续执行函数A。但这一过程并不是函数调用（没有调用语句），这一整个过程看似像多线程，然而协程只有一个线程执行。协程由于由程序主动控制切换，没有线程切换的开销，所以执行效率极高。</p>
 <p>一个线程可以拥有多个协程。协程不被操作系统内核所管理，而完全是由程序所控制（也就是在用户态执行）</p>
 <p>比如python中的<code>yield</code>就是个经典的使用协程的例子，执行到<code>yield</code>后将暂停在这里，直到下一次被启动。</p>
@@ -736,7 +736,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-count">29</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -758,7 +758,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -791,7 +791,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基础概念"><span class="nav-number">1.</span> <span class="nav-text">基础概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#进程"><span class="nav-number">1.1.</span> <span class="nav-text">进程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#内存空间"><span class="nav-number">1.1.1.</span> <span class="nav-text">内存空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#父子进程"><span class="nav-number">1.1.2.</span> <span class="nav-text">父子进程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程"><span class="nav-number">1.2.</span> <span class="nav-text">线程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#内存空间-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">内存空间</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#线程崩溃"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">线程崩溃</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主线程"><span class="nav-number">1.2.2.</span> <span class="nav-text">主线程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#父子线程"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">父子线程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#协程"><span class="nav-number">1.3.</span> <span class="nav-text">协程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#system-call"><span class="nav-number">2.</span> <span class="nav-text">system call</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#getpid"><span class="nav-number">2.1.</span> <span class="nav-text">getpid</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fork"><span class="nav-number">2.2.</span> <span class="nav-text">fork</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#exec"><span class="nav-number">2.3.</span> <span class="nav-text">exec</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#exit"><span class="nav-number">2.4.</span> <span class="nav-text">exit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#exit-1"><span class="nav-number">2.5.</span> <span class="nav-text">_exit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程状态"><span class="nav-number">2.6.</span> <span class="nav-text">进程状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wait"><span class="nav-number">2.7.</span> <span class="nav-text">wait</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#waitpid"><span class="nav-number">2.8.</span> <span class="nav-text">waitpid</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">2.9.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基础概念"><span class="nav-number">1.</span> <span class="nav-text">基础概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#进程"><span class="nav-number">1.1.</span> <span class="nav-text">进程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#内存空间"><span class="nav-number">1.1.1.</span> <span class="nav-text">内存空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#父子进程"><span class="nav-number">1.1.2.</span> <span class="nav-text">父子进程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程"><span class="nav-number">1.2.</span> <span class="nav-text">线程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#内存空间-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">内存空间</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#线程崩溃"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">线程崩溃</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主线程"><span class="nav-number">1.2.2.</span> <span class="nav-text">主线程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#协程"><span class="nav-number">1.3.</span> <span class="nav-text">协程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#system-call"><span class="nav-number">2.</span> <span class="nav-text">system call</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#getpid"><span class="nav-number">2.1.</span> <span class="nav-text">getpid</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fork"><span class="nav-number">2.2.</span> <span class="nav-text">fork</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#exec"><span class="nav-number">2.3.</span> <span class="nav-text">exec</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#exit"><span class="nav-number">2.4.</span> <span class="nav-text">exit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#exit-1"><span class="nav-number">2.5.</span> <span class="nav-text">_exit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程状态"><span class="nav-number">2.6.</span> <span class="nav-text">进程状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wait"><span class="nav-number">2.7.</span> <span class="nav-text">wait</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#waitpid"><span class="nav-number">2.8.</span> <span class="nav-text">waitpid</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">2.9.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
             
 
           </div>

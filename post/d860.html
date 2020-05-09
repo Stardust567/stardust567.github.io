@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="Star Trail">
 <meta property="og:description" content="相比于C这种需要你手动malloc和free的语言，Python实现了自动内存管理。一般而言，手动内存管理显然容易出问题，比如忘记free导致的内存泄漏，提前free导致的悬空指针。那么自动内存管理的垃圾回收是怎么一回事呢，简单来说：引用计数，标记-清除，分代回收。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-05-09T10:30:13.348Z">
+<meta property="og:updated_time" content="2020-05-09T10:39:52.567Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Garbage collection in Python">
 <meta name="twitter:description" content="相比于C这种需要你手动malloc和free的语言，Python实现了自动内存管理。一般而言，手动内存管理显然容易出问题，比如忘记free导致的内存泄漏，提前free导致的悬空指针。那么自动内存管理的垃圾回收是怎么一回事呢，简单来说：引用计数，标记-清除，分代回收。">
@@ -402,7 +402,7 @@
                   <span class="post-meta-item-text">字数&#58;</span>
                 
                 <span title="字数">
-                  2.6k
+                  2.3k
                 </span>
               
 
@@ -418,7 +418,7 @@
                   <span class="post-meta-item-text">时长 &asymp;</span>
                 
                 <span title="时长">
-                  9min
+                  8min
                 </span>
               
             </div>
@@ -440,28 +440,25 @@
 
       
         <p>相比于C这种需要你手动malloc和free的语言，Python实现了自动内存管理。一般而言，手动内存管理显然容易出问题，比如忘记free导致的内存泄漏，提前free导致的悬空指针。那么自动内存管理的垃圾回收是怎么一回事呢，简单来说：引用计数，标记-清除，分代回收。 <a id="more"></a></p>
-<h2 id="引用计数"><a href="#引用计数" class="headerlink" title="引用计数"></a>引用计数</h2><h3 id="引用拷贝"><a href="#引用拷贝" class="headerlink" title="引用拷贝"></a>引用拷贝</h3><p>在考虑引用计数之前，我们先要考虑什么叫<strong>引用</strong>。在python中赋值语句是在建立对象的引用值，而非复制对象。因此python变量更像是指针，而不是数据存储区域。当你写出<code>a = 1</code>的时候，实际上是变量a通过引用指向了一个int对象3。</p>
+<h2 id="引用计数"><a href="#引用计数" class="headerlink" title="引用计数"></a>引用计数</h2><h3 id="引用拷贝"><a href="#引用拷贝" class="headerlink" title="引用拷贝"></a>引用拷贝</h3><p>我们先要考虑什么叫<strong>引用</strong>。在python中赋值语句是在建立对象的引用值，而非复制对象。因此python变量更像是指针，而不是数据存储区域。当你写出<code>a = 1</code>的时候，实际上是变量a通过引用指向了一个int对象3。</p>
 <p>再举个经典例子，<code>nums = [1]</code>然后<code>nums.append(nums)</code>如果是直观上的赋值操作，那结果应该是<code>[1, [1]]</code>但实际运行下就会发现<code>[1, [...]]</code>这是因为一个object的自身引用造成的不断递归死循环。如果想完成原先想法的话，可以用<code>nums.append(nums[:])</code>或者<code>nums.append(nums.copy())</code>这样就完成了一次浅拷贝。不过浅拷贝只是当前层的拷贝，如果拷贝的对象中存在引用的话，只会拷贝相关引用，而不会拷贝深层的对象。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a = [<span class="number">1</span>, [<span class="number">1</span>]]</span><br><span class="line">b = a.copy()</span><br><span class="line">b[<span class="number">0</span>] = <span class="number">0</span></span><br><span class="line">b[<span class="number">1</span>][<span class="number">0</span>] = <span class="number">0</span></span><br><span class="line">print(b) <span class="comment"># [1, [0]]</span></span><br></pre></td></tr></table></figure>
-<p>如果想复制当前层以及所有子层对象的话，需要使用深拷贝<code>deepcopy</code>本质上算是种递归拷贝。</p>
-<p>不一定会将内存释放回操作系统。相反，它为小于512字节的对象提供了专用的对象分配器，从而保留了一些已分配的内存块，以备将来使用。Python拥有的内存量取决于使用模式。在某些情况下，只有在Python进程终止时才能释放所有分配的内存。</p>
-<h3 id="引用传参"><a href="#引用传参" class="headerlink" title="引用传参"></a>引用传参</h3><p>python的对象分为不可变对象（int float long str tuple等），可变对象（list set dict等）</p>
+<p>如果想复制当前层以及所有子层对象的话，需要使用深拷贝<code>deepcopy</code>（本质上算是种递归拷贝）</p>
+<h3 id="引用传参"><a href="#引用传参" class="headerlink" title="引用传参"></a>引用传参</h3><p>python的对象分为不可变对象 int float long str tuple等，可变对象 list set dict等。</p>
 <p> 这里说的不可变指的是值的不可变，而是说，对于不可变类型的变量，如果要更改变量，会创建一个新值，把变量绑定到新值上，而旧值如果没有被引用就等待垃圾回收。<em>（不可变的类型可以计算hash值，作字典的key）</em></p>
 <p>可变类型数据对对象操作的时候，不需要再在其他地方申请内存，只需要在此对象后面连续申请(+/-)即可，也就是它的内存地址会保持不变，但区域会变长或者变短。</p>
-<p>比如a = 1然后a = 2，意味着，从变量a引用int对象1变成变量a引用int对象2，如果此时int对象1的引用计数为0 则会被python自动垃圾回收。而a = [1]然后a[0] = [2]，并不会改变相关引用。</p>
-<p>内置函数id()可以查看python对象的内存地址。在python里， <code>is</code> 判断两个对象的id（即内存地址）是否一样， <code>==</code> 判断两个对象的值是否相等。<em>（None值也有内存地址）</em></p>
+<p>内置函数id()可以查看python对象的内存地址。<em>（None值也有内存地址）</em></p>
+<p>在python里， <code>is</code> 判断两个对象的id（即内存地址）是否一样， <code>==</code> 判断两个对象的值是否相等。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">1</span></span><br><span class="line">id(a) <span class="comment"># 1609788160</span></span><br><span class="line">a = <span class="number">2</span></span><br><span class="line">id(a) <span class="comment"># 1609788192</span></span><br><span class="line">b = <span class="number">1</span></span><br><span class="line">id(b) <span class="comment"># 1609788160</span></span><br><span class="line"></span><br><span class="line">a = [<span class="number">0</span>]</span><br><span class="line">id(a) <span class="comment"># 2031362701064</span></span><br><span class="line">a[<span class="number">0</span>] = <span class="number">1</span></span><br><span class="line">id(a) <span class="comment"># 2031362701064</span></span><br><span class="line">id(a[<span class="number">0</span>]) <span class="comment"># 1609788160</span></span><br><span class="line"></span><br><span class="line">a = <span class="keyword">None</span></span><br><span class="line">id(a) <span class="comment"># 1609344144</span></span><br><span class="line">b = <span class="keyword">None</span></span><br><span class="line">id(b) <span class="comment"># 1609344144</span></span><br></pre></td></tr></table></figure>
 <p>所以python函数的传参没有传值还是传引用一说，Python参数传递只有“<strong>传对象引用</strong>”的方式。实际上，这种方式相当于传值和传引用的一种综合。如果函数收到的是一个可变对象的引用，就能修改对象的原始值，相当于传引用来传递对象；如果函数收到的是一个不可变对象的引用，就不能直接修改原始对象，相当于传值来传递对象。</p>
 <h3 id="引用计数-1"><a href="#引用计数-1" class="headerlink" title="引用计数"></a>引用计数</h3><h4 id="对象的引用计数-1的情况"><a href="#对象的引用计数-1的情况" class="headerlink" title="对象的引用计数+1的情况"></a>对象的引用计数+1的情况</h4><ol>
-<li>对象被创建<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">a = <span class="number">23</span></span><br><span class="line">sys.getrefcount(a) <span class="comment"># 6</span></span><br></pre></td></tr></table></figure>
+<li>对象被创建<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">a = <span class="number">23</span></span><br><span class="line">sys.getrefcount(a) <span class="comment"># 6</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyName</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line">sys.getrefcount(MyName()) <span class="comment"># 1</span></span><br></pre></td></tr></table></figure>
 </li>
 </ol>
-<p>这里23这个对象并没有在内存中新建，因为在Python启动解释器的时候会创建一个小整数池，-5~256之间的这些对象会被自动创建加载到内存中等待调用；a = 23是为23这个整数对象增加了一个引用，所以减去a = 23和sys.getrefcount(a)两次，之前有4次引用了23。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyName</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line">sys.getrefcount(MyName()) <span class="comment"># 1</span></span><br></pre></td></tr></table></figure></p>
-<p>结果为1，因为sys.getrefcount(MyName())函数也算一个引用。</p>
+<p>这里23这个对象并没有在内存中新建，因为在Python启动解释器的时候会创建一个小整数池，-5~256之间的这些对象会被自动创建加载到内存中等待调用；MyName()结果为1，因为sys.getrefcount(MyName())函数也算一个引用。</p>
 <ol start="2">
 <li><p>对象被引用</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">3.1415926</span></span><br><span class="line">b = a</span><br><span class="line">c = b</span><br><span class="line">sys.getrefcount(a) <span class="comment"># 4</span></span><br><span class="line">sys.getrefcount(c) <span class="comment"># 4</span></span><br></pre></td></tr></table></figure>
-<p>每次赋值都会增加数据操作的引用次数，引用的是变量a,b,c指向的数据 3.1415926 ，而非变量本身。</p>
 </li>
 <li><p>对象被作为参数，传入到一个函数中</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(c)</span>:</span></span><br><span class="line">	print(sys.getrefcount(c))</span><br><span class="line">a = <span class="number">3.1415926</span>   </span><br><span class="line">sys.getrefcount(a) <span class="comment"># 2</span></span><br><span class="line">func(a) <span class="comment"># 4</span></span><br></pre></td></tr></table></figure>
@@ -469,25 +466,22 @@
 </ol>
 <p>多加一层函数包装感觉应该只加1才对，即func参数c对3.1415926的引用，为什么会加2呢？实际上在运行<code>func(a)</code>时，会先将函数func和变量a压栈，此时函数栈保存了入参对3.1415926的引用。</p>
 <ol start="4">
-<li>对象作为一个元素，存储在容器中</li>
-</ol>
+<li><p>对象作为一个元素，存储在容器中</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">3.1415926</span>   <span class="comment"># 增加一个引用  count = 1</span></span><br><span class="line">b = a   <span class="comment"># 增加一个引用  count = 2</span></span><br><span class="line">nums = [a, b]   <span class="comment"># 增加两个引用  count = 4</span></span><br></pre></td></tr></table></figure>
-<h4 id="对象的引用计数-1的情况-1"><a href="#对象的引用计数-1的情况-1" class="headerlink" title="对象的引用计数-1的情况"></a>对象的引用计数-1的情况</h4><ol>
-<li>对象的别名被赋予新的对象</li>
-</ol>
+<h4 id="对象的引用计数-1的情况-1"><a href="#对象的引用计数-1的情况-1" class="headerlink" title="对象的引用计数-1的情况"></a>对象的引用计数-1的情况</h4></li>
+<li><p>对象的别名被赋予新的对象</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">3.1415926</span>   <span class="comment"># 增加一个引用  count = 1</span></span><br><span class="line">b = a   <span class="comment"># 增加一个引用  count = 2</span></span><br><span class="line">b = <span class="number">-3.1415926</span>   <span class="comment"># 原对象减少一个引用  count = 1</span></span><br><span class="line">sys.getrefcount(a) <span class="comment"># 2</span></span><br></pre></td></tr></table></figure>
-<ol start="2">
-<li>对象的别名被显式销毁</li>
-</ol>
+</li>
+<li><p>对象的别名被显式销毁</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">3.1415926</span>   <span class="comment"># 增加一个引用  count = 1</span></span><br><span class="line">b = a   <span class="comment"># 增加一个引用  count = 2</span></span><br><span class="line"><span class="keyword">del</span> b   <span class="comment"># 减少一个引用  count = 1</span></span><br><span class="line">sys.getrefcount(a) <span class="comment">#  2</span></span><br></pre></td></tr></table></figure>
-<ol start="3">
-<li>一个对象离开它的作用域</li>
-</ol>
+</li>
+<li><p>一个对象离开它的作用域</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">3.1415926</span>   <span class="comment"># 增加一个引用  count = 1 </span></span><br><span class="line">sys.getrefcount(a)   <span class="comment"># 增加一个引用count=2 -&gt; 打印 2 -&gt; 减少一个引用count=1</span></span><br></pre></td></tr></table></figure>
-<ol start="4">
-<li>对象所在的容器被销毁，或从容器中删除对象</li>
-</ol>
+</li>
+<li><p>对象所在的容器被销毁，或从容器中删除对象</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">3.1415926</span> <span class="comment"># 增加一个引用  count = 1 </span></span><br><span class="line">list_ = [a,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>] <span class="comment"># 增加一个引用  count = 2</span></span><br><span class="line"><span class="keyword">del</span> list_ <span class="comment"># 减少一个引用  count = 1</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
 <p>当引用计数为0时，系统会收回这个对象，完成垃圾回收。但是存在一种问题，循环引用。</p>
 <h4 id="循环引用"><a href="#循环引用" class="headerlink" title="循环引用"></a>循环引用</h4><p>当出现引用链成环的时候，会导致引用计数永远不为0，造成内存泄漏。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> objgraph </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Animal</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line">print(objgraph.count(<span class="string">"Person"</span>)) <span class="comment"># 0</span></span><br><span class="line">print(objgraph.count(<span class="string">"Animal"</span>)) <span class="comment"># 0</span></span><br><span class="line"></span><br><span class="line">P = Person()</span><br><span class="line">A = Animal()</span><br><span class="line">print(objgraph.count(<span class="string">"Person"</span>)) <span class="comment"># 1</span></span><br><span class="line">print(objgraph.count(<span class="string">"Animal"</span>)) <span class="comment"># 1</span></span><br><span class="line"></span><br><span class="line">P.pet = A</span><br><span class="line">A.master = P</span><br><span class="line"><span class="keyword">del</span> P</span><br><span class="line"><span class="keyword">del</span> A</span><br><span class="line"><span class="comment"># 正常情况下，如果删除了P和A，应该为0，但由于循环引用，结果为1</span></span><br><span class="line">print(objgraph.count(<span class="string">"Person"</span>)) <span class="comment"># 1</span></span><br><span class="line">print(objgraph.count(<span class="string">"Animal"</span>)) <span class="comment"># 1</span></span><br></pre></td></tr></table></figure>
@@ -497,8 +491,8 @@
 <li>标记阶段，遍历所有的对象，如果可达（reachable），即还有对象引用它，则标记该对象为可达；</li>
 <li>清除阶段，再次遍历对象，如果发现某个对象未标记为可达，则就将其回收。</li>
 </ul>
-<p>为了追踪容器对象，每个容器对象维护两个额外的指针，将所有容器对象组成一个双端链表，指针分别指向前后两个容器对象，方便插入和删除操作。python维护了两个这样的双端链表，一个链表”Object to Scan”存放着需要被扫描的容器对象，另一个链表”Unreachable”存放着临时不可达对象。链表中每个节点除了有一个记录当前引用计数的变量ref_count还有一个gc_ref变量，这个gc_ref是ref_count的一个副本，所以初始值为ref_count的大小。</p>
-<p>gc启动的时候，会从根节点root逐个遍历”Object to Scan”链表中的容器对象，并使当前对象引用的所有对象的<code>gc_ref--</code>，像这样将”Objects to Scan”链表中的所有对象考察一遍，相当于解除了循环引用对引用计数的影响。</p>
+<p>为了追踪容器对象，每个容器对象维护两个额外的指针，将所有容器对象组成一个双端链表，指针分别指向前后两个容器对象，方便插入和删除操作。python维护了两个这样的双端链表，一个链表”Object to Scan”存放着需要被扫描的容器对象，另一个链表”Unreachable”存放着临时不可达对象。链表中每个节点除了有记录当前引用计数的变量ref_count还有一个gc_ref变量，gc_ref是ref_count的一个副本，所以初始值为ref_count的大小。</p>
+<p>gc启动的时候，会从根节点root逐个遍历”Object to Scan”链表中的容器对象，并使当前对象引用的所有对象的<code>gc_ref--</code>，将”Objects to Scan”链表中的所有对象遍历一遍，相当于解除了循环引用对引用计数的影响。</p>
 <p>接着，gc会再次扫描所有的容器对象，如果对象的gc_ref值为0，那么这个对象就被标记为UNREACHABLE，并移至”Unreachable”链表中。如果对象的gc_ref不为0，那么这个对象就会被标记为REACHABLE。同时当gc发现有一个节点是可达的，他会递归式的将从该节点出发可以到达的所有节点标记为REACHABLE。</p>
 <p>第二次遍历完成之后，存在于”Unreachable”链表中的对象就是真正需要被释放的对象，gc随即释放之。</p>
 <p><strong>上面描述的垃圾回收的阶段，会暂停整个应用程序，等待标记清除结束后才会恢复应用程序的运行。</strong></p>

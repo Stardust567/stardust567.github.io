@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="Star Trail">
 <meta property="og:description" content="学习路上总会遇到各种坑，之前一直搞完就算了，总觉得很可惜，就有了记录踩的各种坑的想法…… 未完待续（不断填坑）中……">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-05-10T09:00:19.434Z">
+<meta property="og:updated_time" content="2020-05-10T09:06:00.196Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Tips">
 <meta name="twitter:description" content="学习路上总会遇到各种坑，之前一直搞完就算了，总觉得很可惜，就有了记录踩的各种坑的想法…… 未完待续（不断填坑）中……">
@@ -464,7 +464,9 @@
 </blockquote>
 </li>
 <li><p>解决matplotlib中文图例乱码问题</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plt.rcParams[<span class="string">'font.sans-serif'</span>]=[<span class="string">'SimHei'</span>] <span class="comment"># 用来正常显示中文标签            plt.rcParams['axes.unicode_minus']=False # 用来正常显示负号</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>plt.rcParams[‘font.sans-serif’]=[‘SimHei’]     # 用来正常显示中文标签<br>plt.rcParams[‘axes.unicode_minus’]=False  # 用来正常显示负号</p>
+</blockquote>
 </li>
 <li><p>想判断x类型的时候，建议用<code>isinstance(x, 预判类型)</code>而不用<code>type(x)==预判类型</code>因为isinstance可以判断子类对象是否继承于父类，而type不可以。不过对于基本类型而言，type还是很好用的。</p>
 </li>

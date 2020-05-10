@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="Star Trail">
 <meta property="og:description" content="学习路上总会遇到各种坑，之前一直搞完就算了，总觉得很可惜，就有了记录踩的各种坑的想法…… 未完待续（不断填坑）中……">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-03-22T13:58:02.607Z">
+<meta property="og:updated_time" content="2020-05-10T03:21:56.306Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Tips">
 <meta name="twitter:description" content="学习路上总会遇到各种坑，之前一直搞完就算了，总觉得很可惜，就有了记录踩的各种坑的想法…… 未完待续（不断填坑）中……">
@@ -402,7 +402,7 @@
                   <span class="post-meta-item-text">字数&#58;</span>
                 
                 <span title="字数">
-                  903
+                  1k
                 </span>
               
 
@@ -418,7 +418,7 @@
                   <span class="post-meta-item-text">时长 &asymp;</span>
                 
                 <span title="时长">
-                  3min
+                  4min
                 </span>
               
             </div>
@@ -464,7 +464,7 @@
 </blockquote>
 </li>
 <li><p>解决matplotlib中文图例乱码问题</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">## Go</span><br><span class="line"></span><br><span class="line">1. 添加 Go Modules Replace的时候，replace配置项的路径只能是`~`根目录开头，`.`当前目录开头，`..`上级目录开头，这点在WSL上就还是安利后两者，毕竟在根目录下VScode估计找不到文件夹orz</span><br><span class="line"></span><br><span class="line">2. 为变量给予附属属性`json`，这样子在`c.JSON`(c *gin.Context)的时候就会自动转换格式，非常的便利。</span><br><span class="line">   ```go</span><br><span class="line">   Name string `json:&quot;name&quot;`</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">3. 想判断x类型的时候，建议用`isinstance(x, 预判类型)`而不用`type(x)==预判类型`因为isinstance可以判断子类对象是否继承于父类，而type不可以。不过对于基本类型而言，type还是很好用的。</span><br><span class="line">4. 做大量数据循环的时候建议使用xrange而非range，xrange本质是个生成器，而range是个list，当数据量很大的时候，range需要提前开辟一堆内存空间。</span><br><span class="line"></span><br><span class="line">## Go</span><br><span class="line"></span><br><span class="line">1. 添加 Go Modules Replace的时候，replace配置项的路径只能是`~`根目录开头，`.`当前目录开头，`..`上级目录开头，这点在WSL上就还是安利后两者，毕竟在根目录下VScode估计找不到文件夹orz</span><br><span class="line"></span><br><span class="line">2. 为变量给予附属属性`json`，这样子在`c.JSON`(c *gin.Context)的时候就会自动转换格式，非常的便利。</span><br><span class="line">   ```go</span><br><span class="line">   Name string `json:&quot;name&quot;`</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
 <h2 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h2><ol>

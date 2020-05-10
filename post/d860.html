@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="Star Trail">
 <meta property="og:description" content="相比于C这种需要你手动malloc和free的语言，Python实现了自动内存管理。一般而言，手动内存管理显然容易出问题，比如忘记free导致的内存泄漏，提前free导致的悬空指针。那么自动内存管理的垃圾回收是怎么一回事呢，简单来说：引用计数，标记-清除，分代回收。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-05-09T10:39:52.567Z">
+<meta property="og:updated_time" content="2020-05-09T10:46:33.904Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Garbage collection in Python">
 <meta name="twitter:description" content="相比于C这种需要你手动malloc和free的语言，Python实现了自动内存管理。一般而言，手动内存管理显然容易出问题，比如忘记free导致的内存泄漏，提前free导致的悬空指针。那么自动内存管理的垃圾回收是怎么一回事呢，简单来说：引用计数，标记-清除，分代回收。">
@@ -447,8 +447,7 @@
 <h3 id="引用传参"><a href="#引用传参" class="headerlink" title="引用传参"></a>引用传参</h3><p>python的对象分为不可变对象 int float long str tuple等，可变对象 list set dict等。</p>
 <p> 这里说的不可变指的是值的不可变，而是说，对于不可变类型的变量，如果要更改变量，会创建一个新值，把变量绑定到新值上，而旧值如果没有被引用就等待垃圾回收。<em>（不可变的类型可以计算hash值，作字典的key）</em></p>
 <p>可变类型数据对对象操作的时候，不需要再在其他地方申请内存，只需要在此对象后面连续申请(+/-)即可，也就是它的内存地址会保持不变，但区域会变长或者变短。</p>
-<p>内置函数id()可以查看python对象的内存地址。<em>（None值也有内存地址）</em></p>
-<p>在python里， <code>is</code> 判断两个对象的id（即内存地址）是否一样， <code>==</code> 判断两个对象的值是否相等。</p>
+<p>内置函数id()可以查看python对象的内存地址。<em>（None值也有内存地址）</em><br>在python里， <code>is</code> 判断两个对象的id（即内存地址）是否一样， <code>==</code> 判断两个对象的值是否相等。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">1</span></span><br><span class="line">id(a) <span class="comment"># 1609788160</span></span><br><span class="line">a = <span class="number">2</span></span><br><span class="line">id(a) <span class="comment"># 1609788192</span></span><br><span class="line">b = <span class="number">1</span></span><br><span class="line">id(b) <span class="comment"># 1609788160</span></span><br><span class="line"></span><br><span class="line">a = [<span class="number">0</span>]</span><br><span class="line">id(a) <span class="comment"># 2031362701064</span></span><br><span class="line">a[<span class="number">0</span>] = <span class="number">1</span></span><br><span class="line">id(a) <span class="comment"># 2031362701064</span></span><br><span class="line">id(a[<span class="number">0</span>]) <span class="comment"># 1609788160</span></span><br><span class="line"></span><br><span class="line">a = <span class="keyword">None</span></span><br><span class="line">id(a) <span class="comment"># 1609344144</span></span><br><span class="line">b = <span class="keyword">None</span></span><br><span class="line">id(b) <span class="comment"># 1609344144</span></span><br></pre></td></tr></table></figure>
 <p>所以python函数的传参没有传值还是传引用一说，Python参数传递只有“<strong>传对象引用</strong>”的方式。实际上，这种方式相当于传值和传引用的一种综合。如果函数收到的是一个可变对象的引用，就能修改对象的原始值，相当于传引用来传递对象；如果函数收到的是一个不可变对象的引用，就不能直接修改原始对象，相当于传值来传递对象。</p>
 <h3 id="引用计数-1"><a href="#引用计数-1" class="headerlink" title="引用计数"></a>引用计数</h3><h4 id="对象的引用计数-1的情况"><a href="#对象的引用计数-1的情况" class="headerlink" title="对象的引用计数+1的情况"></a>对象的引用计数+1的情况</h4><ol>

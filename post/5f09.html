@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="Star Trail">
 <meta property="og:description" content="学习路上总会遇到各种坑，之前一直搞完就算了，总觉得很可惜，就有了记录踩的各种坑的想法…… 未完待续（不断填坑）中……">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-05-10T09:06:00.196Z">
+<meta property="og:updated_time" content="2020-05-22T01:18:19.551Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Tips">
 <meta name="twitter:description" content="学习路上总会遇到各种坑，之前一直搞完就算了，总觉得很可惜，就有了记录踩的各种坑的想法…… 未完待续（不断填坑）中……">
@@ -402,7 +402,7 @@
                   <span class="post-meta-item-text">字数&#58;</span>
                 
                 <span title="字数">
-                  1k
+                  1.4k
                 </span>
               
 
@@ -418,7 +418,7 @@
                   <span class="post-meta-item-text">时长 &asymp;</span>
                 
                 <span title="时长">
-                  4min
+                  5min
                 </span>
               
             </div>
@@ -469,8 +469,16 @@
 </blockquote>
 </li>
 <li><p>想判断x类型的时候，建议用<code>isinstance(x, 预判类型)</code>而不用<code>type(x)==预判类型</code>因为isinstance可以判断子类对象是否继承于父类，而type不可以。不过对于基本类型而言，type还是很好用的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>student = Student(<span class="string">"Jone"</span>, <span class="string">"UESTC"</span>) <span class="comment"># class Student(Person)</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>type(Student)==type(Person) <span class="comment"># True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(Person, Student) <span class="comment"># False</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(student, Student) <span class="comment"># True</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>issubclass(Person, Student) <span class="comment"># False</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>issubclass(Student, Person) <span class="comment"># True</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>做大量数据循环的时候建议使用xrange而非range，xrange本质是个生成器，而range是个list，当数据量很大的时候，range需要提前开辟一堆内存空间。</p>
+</li>
+<li><p>Python无明确的公共、私有或受保护的关键字来定义成员函数或属性，而是使用“_”和”__”来标识。</p>
+<ol>
+<li>单下划线的函数或属性，在类中可以调用和访问，类的实例可以直接访问，子类中可以访问；</li>
+<li>双下划线的函数或属性，在类中可以调用和访问，类的实例不可以直接访问，子类不可访问。</li>
+</ol>
+<p>但是带<code>__</code>的还有内建方法，python中所有类默认继承object类，我们可以重写object类的原始属性和方法，比如在类中重写<code>def __str__(self):</code>后，再print这个类时会直接调用重写后的方法。</p>
 </li>
 </ol>
 <h2 id="Go"><a href="#Go" class="headerlink" title="Go"></a>Go</h2><ol>
@@ -531,15 +539,23 @@
 <li>刚开始我在修改代码中途发现自己没下<code>vue-router</code>强停后npm install结果errno -4048 npm ERR! syscall rename，解决方法<code>npm cache clean --force</code>后npm install即可。</li>
 </ol>
 <h2 id="Terminal"><a href="#Terminal" class="headerlink" title="Terminal"></a>Terminal</h2><ol>
-<li><p>用tree直接导出当前目录下的目录结构：</p>
-<blockquote>
-<p>tree -L 2 &gt; test.txt</p>
-</blockquote>
+<li>用tree直接导出当前目录下的目录结构：<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tree -L 2 &gt; test.txt</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>不想每次都输服务器密码（懒）怎么办：</p>
-<blockquote>
-<p>ssh-copy-id USER_NAME@IP_ADDRESS</p>
-</blockquote>
+</ol>
+<ol start="2">
+<li>不想每次都输服务器密码（懒）怎么办：<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-copy-id USER_NAME@IP_ADDRESS</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<ol start="3">
+<li>linux用密钥登录出现 <em>Permissions 0777 are too open.</em> 时可以加个<code>sudo</code><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ssh -i keyfile &lt;user&gt;@ip</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<ol start="4">
+<li><p>Ctrl+C 使当前命令Stopped并置于后台。<code>jobs</code>查看后台命令。<code>fg %1</code>使后台命令1在前台继续执行，<code>bg %1</code>使后台命令1在后台继续执行，相当于加上<code>&amp;</code>。</p>
+</li>
+<li><p><code>&amp;</code>和<code>nohup</code>都可以使命令后台执行，nohup即no hang up，在用户退出后依旧可以继续执行。</p>
+</li>
+<li><p>linux用vim忘记sudo后无法退出，强制退出用<code>q!</code></p>
 </li>
 </ol>
 
@@ -668,7 +684,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-count">30</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -679,7 +695,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

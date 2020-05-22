@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="19年底部署了个web应用，20年初发现404了。为了纪念成功踩雷，就有了这篇博客。">
+<meta name="description" content="19年底部署了个web应用，20年初发现404了（微笑）为了纪念成功踩雷，于是有了这篇博客。">
 <meta name="keywords" content="GAP,Tips">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Server Deployment">
 <meta property="og:url" content="https://stardust567.github.io/post/c4f7.html">
 <meta property="og:site_name" content="Star Trail">
-<meta property="og:description" content="19年底部署了个web应用，20年初发现404了。为了纪念成功踩雷，就有了这篇博客。">
+<meta property="og:description" content="19年底部署了个web应用，20年初发现404了（微笑）为了纪念成功踩雷，于是有了这篇博客。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-05-22T03:49:56.140Z">
+<meta property="og:updated_time" content="2020-05-22T04:05:41.735Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Server Deployment">
-<meta name="twitter:description" content="19年底部署了个web应用，20年初发现404了。为了纪念成功踩雷，就有了这篇博客。">
+<meta name="twitter:description" content="19年底部署了个web应用，20年初发现404了（微笑）为了纪念成功踩雷，于是有了这篇博客。">
 
 
 
@@ -402,7 +402,7 @@
                   <span class="post-meta-item-text">字数&#58;</span>
                 
                 <span title="字数">
-                  640
+                  636
                 </span>
               
 
@@ -439,39 +439,37 @@
       
 
       
-        <p>19年底部署了个web应用，20年初发现404了。为了纪念成功踩雷，就有了这篇博客。<a id="more"></a></p>
-<h2 id="SRE"><a href="#SRE" class="headerlink" title="SRE"></a>SRE</h2><h3 id="购买一个服务器-amp-域名"><a href="#购买一个服务器-amp-域名" class="headerlink" title="购买一个服务器&amp;域名"></a>购买一个服务器&amp;域名</h3><p>这显然是一句废话，目前买的比较多的是阿里云、腾讯云，笔者就是趁双11租了腾讯云最便宜的服务器<del>（虽说都有学生优惠活动，但优惠力度还没有双11大）</del>之后跨年夜晚上腾讯小哥还亲切就域名申请致电了我半小时: )</p>
+        <p>19年底部署了个web应用，20年初发现404了（微笑）为了纪念成功踩雷，于是有了这篇博客。<a id="more"></a></p>
+<h2 id="SRE"><a href="#SRE" class="headerlink" title="SRE"></a>SRE</h2><h3 id="购买个服务器-amp-域名"><a href="#购买个服务器-amp-域名" class="headerlink" title="购买个服务器&amp;域名"></a>购买个服务器&amp;域名</h3><p>这显然是一句废话，目前买的比较多的是阿里云、腾讯云，笔者就是趁双11租了腾讯云最便宜的服务器<del>（虽说都有学生优惠活动，但优惠力度还没有双11大）</del>之后跨年夜晚上腾讯小哥还亲切就域名申请致电了我半小时: )</p>
 <h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><ol>
 <li><p>远程登录ssh，可以选择密钥登录 <code>sudo ssh -i keyfile &lt;user&gt;@ip</code> 或者 密码登录 <code>ssh-copy-id USER_NAME@IP_ADDRESS</code> 进入远程服务器。</p>
 </li>
-<li><p>更新apt包，<code>sudo apt-get update</code>即可。</p>
+<li><p>安装最新版本的docker，对下列步骤如有疑惑，请详见<a href="https://docs.docker.com/engine/install/ubuntu/" target="_blank" rel="noopener">docker官网教程</a>。</p>
+<ul>
+<li><p>首先，更新现有的软件包列表并安装一些必备软件包：<br><code>sudo apt-get update</code><br><code>sudo apt install apt-transport-https ca-certificates \</code><br><code>curl software-properties-common</code></p>
 </li>
-<li><p>安装最新版本的docker，详见<a href="https://docs.docker.com/engine/install/ubuntu/" target="_blank" rel="noopener">docker官网教程</a>。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install docker-ce docker-ce-cli containerd.io</span><br></pre></td></tr></table></figure>
-<p>首先，更新现有的软件包列表并安装一些必备软件包：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt install apt-transport-https ca-certificates curl software-properties-common</span><br></pre></td></tr></table></figure>
-<p>然后将官方Docker存储库的GPG密钥添加到系统中：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -</span><br></pre></td></tr></table></figure>
-<p>将Docker存储库添加到APT源：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"</span><br></pre></td></tr></table></figure>
-<p>使用新添加的存储库中的Docker软件包更新软件包数据库：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br></pre></td></tr></table></figure>
-<p>确保要从Docker存储库而不是默认的Ubuntu存储库进行安装：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-cache policy docker-ce</span><br></pre></td></tr></table></figure>
-<p>最后，安装Docker：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install docker-ce</span><br></pre></td></tr></table></figure>
-<p>启动守护程序，并启用启动过程。检查它是否正在运行：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl status docker</span><br></pre></td></tr></table></figure>
+<li><p>然后将官方Docker存储库的GPG密钥添加到系统中：<br><code>curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -</code></p>
+</li>
+<li><p>将Docker存储库添加到APT源：<br><code>sudo add-apt-repository \</code><br><code>&quot;deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable&quot;</code></p>
+</li>
+<li><p>使用新添加的存储库中的Docker软件包更新软件包数据库：<br><code>sudo apt update</code></p>
+</li>
+<li><p>确保要从Docker存储库而不是默认的Ubuntu存储库进行安装：<br><code>apt-cache policy docker-ce</code></p>
+</li>
+<li><p>最后，终于到了安装Docker这一步：<br><code>sudo apt install docker-ce</code></p>
+</li>
+<li><p>启动守护程序，并启用启动过程。检查它是否正在运行：<br><code>sudo systemctl status docker</code></p>
+</li>
+</ul>
 <p><strong>注意此时使用docker需要加sudo关键字，例如 sudo docker ps</strong></p>
 </li>
 </ol>
-<h3 id="Portainer管理"><a href="#Portainer管理" class="headerlink" title="Portainer管理"></a>Portainer管理</h3><p>部署Portainer Server方便管理别的docker容器，详情见<a href="https://www.portainer.io/installation/" target="_blank" rel="noopener">官网</a>教程。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> docker volume create portainer_data </span><br><span class="line"><span class="meta">$</span> docker run -d -p 8000:8000 -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer</span><br></pre></td></tr></table></figure></p>
+<h3 id="Portainer管理"><a href="#Portainer管理" class="headerlink" title="Portainer管理"></a>Portainer管理</h3><p>部署Portainer Server方便管理别的docker容器，详情见<a href="https://www.portainer.io/installation/" target="_blank" rel="noopener">官网</a>教程。<br><code>$ docker volume create portainer_data</code><br><code>$ docker run -d -p 8000:8000 -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer</code></p>
 <p>部署完在浏览器中打开服务器的9000端口，注册完后选择<strong>local</strong>即可。</p>
 <h3 id="配置nginx"><a href="#配置nginx" class="headerlink" title="配置nginx"></a>配置nginx</h3><ol>
 <li><p>在服务器上安装nginx 用<code>sudo apt install nginx</code>即可。 </p>
 </li>
-<li><p>打开<code>/etc/nginx/sites-enabled/</code>新建一个conf配置文件，写入nginx配置。写完后执行生效并检查：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo service nginx restart</span><br><span class="line">sudo nginx -t</span><br></pre></td></tr></table></figure>
+<li><p>打开<code>/etc/nginx/sites-enabled/</code>新建一个conf配置文件，写入nginx配置。写完后执行生效并检查：<br><code>sudo service nginx restart</code><br><code>sudo nginx -t</code></p>
 </li>
 </ol>
 <h3 id="pull相关镜像"><a href="#pull相关镜像" class="headerlink" title="pull相关镜像"></a>pull相关镜像</h3><ol>
@@ -656,7 +654,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#SRE"><span class="nav-number">1.</span> <span class="nav-text">SRE</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#购买一个服务器-amp-域名"><span class="nav-number">1.1.</span> <span class="nav-text">购买一个服务器&amp;域名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化"><span class="nav-number">1.2.</span> <span class="nav-text">初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Portainer管理"><span class="nav-number">1.3.</span> <span class="nav-text">Portainer管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置nginx"><span class="nav-number">1.4.</span> <span class="nav-text">配置nginx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pull相关镜像"><span class="nav-number">1.5.</span> <span class="nav-text">pull相关镜像</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#SRE"><span class="nav-number">1.</span> <span class="nav-text">SRE</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#购买个服务器-amp-域名"><span class="nav-number">1.1.</span> <span class="nav-text">购买个服务器&amp;域名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化"><span class="nav-number">1.2.</span> <span class="nav-text">初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Portainer管理"><span class="nav-number">1.3.</span> <span class="nav-text">Portainer管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置nginx"><span class="nav-number">1.4.</span> <span class="nav-text">配置nginx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pull相关镜像"><span class="nav-number">1.5.</span> <span class="nav-text">pull相关镜像</span></a></li></ol></li></ol></div>
             
 
           </div>

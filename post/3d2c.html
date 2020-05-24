@@ -6,8 +6,6 @@
 
 
 <html class="theme-next pisces use-motion" lang="zh-Hans">
-
-
 <head><meta name="generator" content="Hexo 3.8.0">
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -18,6 +16,10 @@
 
 
 
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
 
 
 
@@ -55,7 +57,7 @@
 <link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
 
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=5.1.4">
 
 
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
@@ -106,7 +108,7 @@
     root: '/',
     scheme: 'Pisces',
     version: '5.1.4',
-    sidebar: {"position":"left","display":"post","offset":15,"b2t":false,"scrollpercent":false,"onmobile":false},
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
     tabs: true,
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
@@ -143,20 +145,10 @@
             (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
           m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-  ga('create', 'UA-130666690-1', 'auto');
+  ga('create', '130666690', 'auto');
   ga('send', 'pageview');
-</script>
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
-
-  <script type="text/javascript">
-    var _hmt = _hmt || [];
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "https://hm.baidu.com/hm.js?HqDOiGSjrA";
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(hm, s);
-    })();
-  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 
@@ -226,7 +218,7 @@
         </li>
       
         
-        <li class="menu-item menu-item-links">
+        <li class="menu-item menu-item-link">
           <a href="/links/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-link"></i> <br>
@@ -327,9 +319,9 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">写于</span>
+                <span class="post-meta-item-text">收藏于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-09T21:22:37+08:00">
+              <time title="写于" itemprop="dateCreated datePublished" datetime="2020-03-09T21:22:37+08:00">
                 2020-03-09
               </time>
             
@@ -338,7 +330,7 @@
 
             
           </span>
-
+			
           
             <span class="post-category">
             
@@ -348,7 +340,7 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">收藏于</span>
+                <span class="post-meta-item-text">分类于</span>
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
@@ -403,10 +395,10 @@
                   <i class="fa fa-file-word-o"></i>
                 </span>
                 
-                  <span class="post-meta-item-text">字数&#58;</span>
+                  <span class="post-meta-item-text">共&#58;</span>
                 
-                <span title="字数">
-                  8.8k
+                <span title="共">
+                  8.8k 字
                 </span>
               
 
@@ -422,7 +414,7 @@
                   <span class="post-meta-item-text">时长 &asymp;</span>
                 
                 <span title="时长">
-                  31min
+                  31 min
                 </span>
               
             </div>
@@ -437,7 +429,7 @@
     
     
     
-    <div class="post-body" itemprop="articleBody">
+    <div class="post-body han-init-context" itemprop="articleBody">
 
       
       
@@ -478,7 +470,7 @@
 <h3 id="预写式日志-WAL"><a href="#预写式日志-WAL" class="headerlink" title="预写式日志 WAL"></a>预写式日志 WAL</h3><p>许多文件系统操作涉及多个对磁盘的写。例如，创建文件至少涉及两个写操作，分配未使用的索引节点，并将索引节点添加到父目录中。如果系统在两次写之间崩溃，则索引节点在索引节点位图中可能被标记为已经使用，但却不属于任何一个目录。 文件系统一般会实现<strong>事务保证原子性+预写日志</strong>来解决这个问题，以确保系统崩溃重新启动的时候，磁盘上的数据结构处于一致的状态。磁盘通常会分配一块固定的区域给日志，日志通常由两部分构成，一部分是连续的日志条目，每个日志条目记录希望对磁盘进行的写操作，另一部分是 一个单一的提交块，记录日志条目的数量。</p>
 <h3 id="日志协议"><a href="#日志协议" class="headerlink" title="日志协议"></a>日志协议</h3><p>一个基本的日志协议工作如下：（1）日志记录系统为文件系统的一个操作开启一个事务log_begin() （2）对于该操作引发的每一个磁盘写入的地址和值，日志记录系统向日志条目附加一个新的地址/值对log_write() （3）当日志记录系统提交事务log_commit()时，它会发出一个磁盘<strong>同步</strong>来保存磁盘上的日志条目，然后更新提交块以反映日志的长度，然后再次<strong>同步</strong>磁盘以完成这个事务（4）日志系统将日志中的修改应用到实际的磁盘位置，并发出磁盘<strong>同步</strong>将更改持久化到磁盘上（5）最后，将零写入提交块来截断日志，并<strong>同步</strong>到磁盘上（6）无论何时系统崩溃并重新启动，都会运行恢复过程。它根据提交块的长度读取日志；如果日志不为空，则跳到步骤（4）重新执行。 </p>
 <p>上述协议的正确性依赖于一个重要的假设：更新提交块是原子的同步的操作。原子性确保了提交块上要么是原长度，要么是新长度，同步则保证了磁盘控制器不会对磁盘的写操作进行重新排序，将提交块的写和其他的写调换顺序，这是通过在更新提交块之前和之后发出两个屏障（磁盘同步操作）来强制执行。在这个协议下，在事务中途，还没有更新提交块之前系统崩溃的话，提交块的长度为零，此时磁盘的数据没有被写，这个事务就像没有执行一 样，数据处于一致的状态；提交之后但在应用完成之前的系统崩溃将导致提交块长度非零，并且日志中包含相同数目的有效条目，这时就只需要重新执行提交操作，会达到事务执行完的状态。 这个基本的日志协议会增加磁盘写操作以及耗时的磁盘同步操作。例如，写入单个磁盘块的操作将需要完成四次磁盘写入（两次为提交块，两次为块的内容）和四个磁盘同步（上文加粗处）。</p>
-<h3 id="举例说明"><a href="#举例说明" class="headerlink" title="举例说明"></a>举例说明</h3><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true" data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def atomic_two_write(a1, v1, a2, v2): </span><br><span class="line">	log_begin() </span><br><span class="line">	log_write(a1, v1) </span><br><span class="line">	log_write(a2, v2) </span><br><span class="line">	log_commit()</span><br></pre></td></tr></table></figure></div>
+<h3 id="举例说明"><a href="#举例说明" class="headerlink" title="举例说明"></a>举例说明</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def atomic_two_write(a1, v1, a2, v2): </span><br><span class="line">	log_begin() </span><br><span class="line">	log_write(a1, v1) </span><br><span class="line">	log_write(a2, v2) </span><br><span class="line">	log_commit()</span><br></pre></td></tr></table></figure>
 <p>该过程使用预写日志在事务内部执行两次磁盘写操作，该日志提供log_begin，log_commit和log_write的API，log_write() 将块的内容追加到内存日志中，而不是直接更新磁盘块。log_commit() 将日志写入磁盘，写入提交记录，然后将块内容从日志复制到磁盘上的块位置。如果此过程崩溃且系统重新启动，则将运行事务系统的恢复过程。恢复过程将查找提交记录。如果存在提交记录，它将通过将日志中的块内容复制到正确的位置来完成事务，然后清除日志。如果没有提交记录，则恢复过程仅清除日志。<br>如果恢复期间发生崩溃，则重新启动后，恢复过程将再次运行。不管崩溃多少次，只要恢复完成，则两个块要么都已更新，要么都未更新。因此，atomic_two_write过程中，事务系统保证无论怎么崩溃，两次写入要么都发生，要么都不发生。</p>
 <h3 id="日志优化"><a href="#日志优化" class="headerlink" title="日志优化"></a>日志优化</h3><ol>
 <li><p>延迟应用日志：日志系统提交事务后，并不立即应用日志，而是等日志填满后，再一次性将日志内容应用。可以将每个事务的磁盘同步由四个 降为两个，同时将写磁盘的次数也由四次降为两次。</p>
@@ -559,9 +551,7 @@
     
     
 
-	
-	
-	
+    
 
     
 
@@ -571,11 +561,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/GAP/" rel="tag"># GAP</a>
+            <a href="/tags/GAP/" rel="tag"><i class="fa fa-tag"></i> GAP</a>
           
-            <a href="/tags/OS/" rel="tag"># OS</a>
+            <a href="/tags/OS/" rel="tag"><i class="fa fa-tag"></i> OS</a>
           
-            <a href="/tags/CHL/" rel="tag"># CHL</a>
+            <a href="/tags/CHL/" rel="tag"><i class="fa fa-tag"></i> CHL</a>
           
         </div>
       
@@ -774,6 +764,13 @@
 
 
 
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
         
 
 
@@ -938,12 +935,12 @@
     });
     new Valine({
         el: '#comments' ,
-        verify: true,
+        verify: false,
         notify: false,
         appId: 'bABdvcserWST8hctdXncW0he-gzGzoHsz',
         appKey: 'Ng2B24N8TgiGzK8fKds99MLc',
-        placeholder: '谢谢你认真看到了最后，这里欢迎你的各种吐槽：',
-        avatar:'identicon',
+        placeholder: '谢谢你认真看到了最后，这里欢迎各种吐槽与交流：',
+        avatar:'monsterid',
         guest_info:guest,
         pageSize:'10' || 10,
     });
@@ -1386,21 +1383,6 @@
   
 
   
-<script>
-(function(){
-    var bp = document.createElement('script');
-    var curProtocol = window.location.protocol.split(':')[0];
-    if (curProtocol === 'https') {
-        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
-    }
-    else {
-        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
-    }
-    var s = document.getElementsByTagName("script")[0];
-    s.parentNode.insertBefore(bp, s);
-})();
-</script>
-
 
   
   

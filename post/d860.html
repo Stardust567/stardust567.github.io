@@ -6,8 +6,6 @@
 
 
 <html class="theme-next pisces use-motion" lang="zh-Hans">
-
-
 <head><meta name="generator" content="Hexo 3.8.0">
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -18,6 +16,10 @@
 
 
 
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
 
 
 
@@ -55,7 +57,7 @@
 <link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
 
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=5.1.4">
 
 
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
@@ -104,7 +106,7 @@
     root: '/',
     scheme: 'Pisces',
     version: '5.1.4',
-    sidebar: {"position":"left","display":"post","offset":15,"b2t":false,"scrollpercent":false,"onmobile":false},
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
     tabs: true,
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
@@ -141,20 +143,10 @@
             (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
           m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-  ga('create', 'UA-130666690-1', 'auto');
+  ga('create', '130666690', 'auto');
   ga('send', 'pageview');
-</script>
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
-
-  <script type="text/javascript">
-    var _hmt = _hmt || [];
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "https://hm.baidu.com/hm.js?HqDOiGSjrA";
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(hm, s);
-    })();
-  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 
@@ -224,7 +216,7 @@
         </li>
       
         
-        <li class="menu-item menu-item-links">
+        <li class="menu-item menu-item-link">
           <a href="/links/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-link"></i> <br>
@@ -325,9 +317,9 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">写于</span>
+                <span class="post-meta-item-text">收藏于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-09T11:35:46+08:00">
+              <time title="写于" itemprop="dateCreated datePublished" datetime="2020-05-09T11:35:46+08:00">
                 2020-05-09
               </time>
             
@@ -336,7 +328,7 @@
 
             
           </span>
-
+			
           
             <span class="post-category">
             
@@ -346,7 +338,7 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">收藏于</span>
+                <span class="post-meta-item-text">分类于</span>
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
@@ -401,10 +393,10 @@
                   <i class="fa fa-file-word-o"></i>
                 </span>
                 
-                  <span class="post-meta-item-text">字数&#58;</span>
+                  <span class="post-meta-item-text">共&#58;</span>
                 
-                <span title="字数">
-                  2.3k
+                <span title="共">
+                  2.3k 字
                 </span>
               
 
@@ -420,7 +412,7 @@
                   <span class="post-meta-item-text">时长 &asymp;</span>
                 
                 <span title="时长">
-                  8min
+                  8 min
                 </span>
               
             </div>
@@ -435,7 +427,7 @@
     
     
     
-    <div class="post-body" itemprop="articleBody">
+    <div class="post-body han-init-context" itemprop="articleBody">
 
       
       
@@ -444,48 +436,48 @@
         <p>相比于C这种需要你手动malloc和free的语言，Python实现了自动内存管理。一般而言，手动内存管理显然容易出问题，比如忘记free导致的内存泄漏，提前free导致的悬空指针。那么自动内存管理的垃圾回收是怎么一回事呢，简单来说：引用计数，标记-清除，分代回收。 <a id="more"></a></p>
 <h2 id="引用计数"><a href="#引用计数" class="headerlink" title="引用计数"></a>引用计数</h2><h3 id="引用拷贝"><a href="#引用拷贝" class="headerlink" title="引用拷贝"></a>引用拷贝</h3><p>我们先要考虑什么叫<strong>引用</strong>。在python中赋值语句是在建立对象的引用值，而非复制对象。因此python变量更像是指针，而不是数据存储区域。当你写出<code>a = 1</code>的时候，实际上是变量a通过引用指向了一个int对象3。</p>
 <p>再举个经典例子，<code>nums = [1]</code>然后<code>nums.append(nums)</code>如果是直观上的赋值操作，那结果应该是<code>[1, [1]]</code>但实际运行下就会发现<code>[1, [...]]</code>这是因为一个object的自身引用造成的不断递归死循环。如果想完成原先想法的话，可以用<code>nums.append(nums[:])</code>或者<code>nums.append(nums.copy())</code>这样就完成了一次浅拷贝。不过浅拷贝只是当前层的拷贝，如果拷贝的对象中存在引用的话，只会拷贝相关引用，而不会拷贝深层的对象。</p>
-<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true" data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a = [<span class="number">1</span>, [<span class="number">1</span>]]</span><br><span class="line">b = a.copy()</span><br><span class="line">b[<span class="number">0</span>] = <span class="number">0</span></span><br><span class="line">b[<span class="number">1</span>][<span class="number">0</span>] = <span class="number">0</span></span><br><span class="line">print(a) <span class="comment"># [1, [0]]</span></span><br></pre></td></tr></table></figure></div>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a = [<span class="number">1</span>, [<span class="number">1</span>]]</span><br><span class="line">b = a.copy()</span><br><span class="line">b[<span class="number">0</span>] = <span class="number">0</span></span><br><span class="line">b[<span class="number">1</span>][<span class="number">0</span>] = <span class="number">0</span></span><br><span class="line">print(a) <span class="comment"># [1, [0]]</span></span><br></pre></td></tr></table></figure>
 <p>如果想复制当前层以及所有子层对象的话，需要使用深拷贝<code>deepcopy</code>（本质上算是种递归拷贝）</p>
 <h3 id="引用传参"><a href="#引用传参" class="headerlink" title="引用传参"></a>引用传参</h3><p>python的对象分为不可变对象 int float long str tuple 等，可变对象 list set dict 等。</p>
 <p> 这里的不可变不是指值的不可变，而是说，对于不可变类型的变量，如果要更改变量，会创建一个新值，把变量绑定到新值上，而旧值如果没有被引用就等待垃圾回收。<em>（不可变的类型可以计算hash值，作字典的key）</em></p>
 <p>可变类型数据对对象操作的时候，不需要再在其他地方申请内存，只需要在此对象后面连续申请(+/-)即可，也就是它的内存地址会保持不变，但区域会变长或者变短。</p>
 <p>内置函数id()可以查看python对象的内存地址。<em>（None值也有内存地址）</em><br>在python里， <code>is</code> 判断两个对象的id（即内存地址）是否一样， <code>==</code> 判断两个对象的值是否相等。</p>
-<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true" data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">1</span></span><br><span class="line">id(a) <span class="comment"># 1609788160</span></span><br><span class="line">a = <span class="number">2</span></span><br><span class="line">id(a) <span class="comment"># 1609788192</span></span><br><span class="line">b = <span class="number">1</span></span><br><span class="line">id(b) <span class="comment"># 1609788160</span></span><br><span class="line"></span><br><span class="line">a = [<span class="number">0</span>]</span><br><span class="line">id(a) <span class="comment"># 2031362701064</span></span><br><span class="line">a[<span class="number">0</span>] = <span class="number">1</span></span><br><span class="line">id(a) <span class="comment"># 2031362701064</span></span><br><span class="line">id(a[<span class="number">0</span>]) <span class="comment"># 1609788160</span></span><br><span class="line"></span><br><span class="line">a = <span class="keyword">None</span></span><br><span class="line">id(a) <span class="comment"># 1609344144</span></span><br><span class="line">b = <span class="keyword">None</span></span><br><span class="line">id(b) <span class="comment"># 1609344144</span></span><br></pre></td></tr></table></figure></div>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">1</span></span><br><span class="line">id(a) <span class="comment"># 1609788160</span></span><br><span class="line">a = <span class="number">2</span></span><br><span class="line">id(a) <span class="comment"># 1609788192</span></span><br><span class="line">b = <span class="number">1</span></span><br><span class="line">id(b) <span class="comment"># 1609788160</span></span><br><span class="line"></span><br><span class="line">a = [<span class="number">0</span>]</span><br><span class="line">id(a) <span class="comment"># 2031362701064</span></span><br><span class="line">a[<span class="number">0</span>] = <span class="number">1</span></span><br><span class="line">id(a) <span class="comment"># 2031362701064</span></span><br><span class="line">id(a[<span class="number">0</span>]) <span class="comment"># 1609788160</span></span><br><span class="line"></span><br><span class="line">a = <span class="keyword">None</span></span><br><span class="line">id(a) <span class="comment"># 1609344144</span></span><br><span class="line">b = <span class="keyword">None</span></span><br><span class="line">id(b) <span class="comment"># 1609344144</span></span><br></pre></td></tr></table></figure>
 <p>所以python函数的传参没有传值还是传引用一说，Python参数传递只有“<strong>传对象引用</strong>”的方式。实际上，这种方式相当于传值和传引用的一种综合。如果函数收到的是一个可变对象的引用，就能修改对象的原始值，相当于传引用来传递对象；如果函数收到的是一个不可变对象的引用，就不能直接修改原始对象，相当于传值来传递对象。</p>
 <h3 id="引用计数-1"><a href="#引用计数-1" class="headerlink" title="引用计数"></a>引用计数</h3><h4 id="对象的引用计数-1的情况"><a href="#对象的引用计数-1的情况" class="headerlink" title="对象的引用计数+1的情况"></a>对象的引用计数+1的情况</h4><ol>
-<li>对象被创建<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true" data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">a = <span class="number">23</span></span><br><span class="line">sys.getrefcount(a) <span class="comment"># 6</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyName</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line">sys.getrefcount(MyName()) <span class="comment"># 1</span></span><br></pre></td></tr></table></figure></div>
+<li>对象被创建<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">a = <span class="number">23</span></span><br><span class="line">sys.getrefcount(a) <span class="comment"># 6</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyName</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line">sys.getrefcount(MyName()) <span class="comment"># 1</span></span><br></pre></td></tr></table></figure>
 </li>
 </ol>
 <p>这里int对象23其实并未被新建，在Python启动解释器时会将常用对象自动创建并加载到内存中等待调用；<br>MyName()结果为1，是因为sys.getrefcount(MyName())函数也算一个引用。</p>
 <ol start="2">
 <li><p>对象被引用</p>
-<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true" data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">3.1415926</span></span><br><span class="line">b = a</span><br><span class="line">c = b</span><br><span class="line">sys.getrefcount(a) <span class="comment"># 4</span></span><br><span class="line">sys.getrefcount(c) <span class="comment"># 4</span></span><br></pre></td></tr></table></figure></div>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">3.1415926</span></span><br><span class="line">b = a</span><br><span class="line">c = b</span><br><span class="line">sys.getrefcount(a) <span class="comment"># 4</span></span><br><span class="line">sys.getrefcount(c) <span class="comment"># 4</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>对象被作为参数，传入到一个函数中</p>
-<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true" data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(c)</span>:</span></span><br><span class="line">	print(sys.getrefcount(c))</span><br><span class="line">a = <span class="number">3.1415926</span>   </span><br><span class="line">sys.getrefcount(a) <span class="comment"># 2</span></span><br><span class="line">func(a) <span class="comment"># 4</span></span><br></pre></td></tr></table></figure></div>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(c)</span>:</span></span><br><span class="line">	print(sys.getrefcount(c))</span><br><span class="line">a = <span class="number">3.1415926</span>   </span><br><span class="line">sys.getrefcount(a) <span class="comment"># 2</span></span><br><span class="line">func(a) <span class="comment"># 4</span></span><br></pre></td></tr></table></figure>
 </li>
 </ol>
 <p>多加一层函数包装感觉应该只加1才对，即func参数c对3.1415926的引用，为什么会加2呢？实际上在运行<code>func(a)</code>时，会先将函数func和变量a压栈，此时函数栈保存了入参对3.1415926的引用。</p>
 <ol start="4">
 <li><p>对象作为一个元素，存储在容器中</p>
-<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true" data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">3.1415926</span>   <span class="comment"># 增加一个引用  count = 1</span></span><br><span class="line">b = a   <span class="comment"># 增加一个引用  count = 2</span></span><br><span class="line">nums = [a, b]   <span class="comment"># 增加两个引用  count = 4</span></span><br></pre></td></tr></table></figure></div>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">3.1415926</span>   <span class="comment"># 增加一个引用  count = 1</span></span><br><span class="line">b = a   <span class="comment"># 增加一个引用  count = 2</span></span><br><span class="line">nums = [a, b]   <span class="comment"># 增加两个引用  count = 4</span></span><br></pre></td></tr></table></figure>
 <h4 id="对象的引用计数-1的情况-1"><a href="#对象的引用计数-1的情况-1" class="headerlink" title="对象的引用计数-1的情况"></a>对象的引用计数-1的情况</h4></li>
 <li><p>对象的别名被赋予新的对象</p>
-<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true" data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">3.1415926</span>   <span class="comment"># 增加一个引用  count = 1</span></span><br><span class="line">b = a   <span class="comment"># 增加一个引用  count = 2</span></span><br><span class="line">b = <span class="number">-3.1415926</span>   <span class="comment"># 原对象减少一个引用  count = 1</span></span><br><span class="line">sys.getrefcount(a) <span class="comment"># 2</span></span><br></pre></td></tr></table></figure></div>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">3.1415926</span>   <span class="comment"># 增加一个引用  count = 1</span></span><br><span class="line">b = a   <span class="comment"># 增加一个引用  count = 2</span></span><br><span class="line">b = <span class="number">-3.1415926</span>   <span class="comment"># 原对象减少一个引用  count = 1</span></span><br><span class="line">sys.getrefcount(a) <span class="comment"># 2</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>对象的别名被显式销毁</p>
-<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true" data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">3.1415926</span>   <span class="comment"># 增加一个引用  count = 1</span></span><br><span class="line">b = a   <span class="comment"># 增加一个引用  count = 2</span></span><br><span class="line"><span class="keyword">del</span> b   <span class="comment"># 减少一个引用  count = 1</span></span><br><span class="line">sys.getrefcount(a) <span class="comment">#  2</span></span><br></pre></td></tr></table></figure></div>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">3.1415926</span>   <span class="comment"># 增加一个引用  count = 1</span></span><br><span class="line">b = a   <span class="comment"># 增加一个引用  count = 2</span></span><br><span class="line"><span class="keyword">del</span> b   <span class="comment"># 减少一个引用  count = 1</span></span><br><span class="line">sys.getrefcount(a) <span class="comment">#  2</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>一个对象离开它的作用域</p>
-<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true" data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">3.1415926</span>   <span class="comment"># 增加一个引用  count = 1 </span></span><br><span class="line">sys.getrefcount(a)   <span class="comment"># 增加一个引用count=2 -&gt; 打印 2 -&gt; 减少一个引用count=1</span></span><br></pre></td></tr></table></figure></div>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">3.1415926</span>   <span class="comment"># 增加一个引用  count = 1 </span></span><br><span class="line">sys.getrefcount(a)   <span class="comment"># 增加一个引用count=2 -&gt; 打印 2 -&gt; 减少一个引用count=1</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>对象所在的容器被销毁，或从容器中删除对象</p>
-<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true" data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">3.1415926</span> <span class="comment"># 增加一个引用  count = 1 </span></span><br><span class="line">list_ = [a,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>] <span class="comment"># 增加一个引用  count = 2</span></span><br><span class="line"><span class="keyword">del</span> list_ <span class="comment"># 减少一个引用  count = 1</span></span><br></pre></td></tr></table></figure></div>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">3.1415926</span> <span class="comment"># 增加一个引用  count = 1 </span></span><br><span class="line">list_ = [a,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>] <span class="comment"># 增加一个引用  count = 2</span></span><br><span class="line"><span class="keyword">del</span> list_ <span class="comment"># 减少一个引用  count = 1</span></span><br></pre></td></tr></table></figure>
 </li>
 </ol>
 <p>当引用计数为0时，系统会收回这个对象，完成垃圾回收。但是存在一种问题，循环引用。</p>
 <h4 id="循环引用"><a href="#循环引用" class="headerlink" title="循环引用"></a>循环引用</h4><p>当出现引用链成环的时候，会导致引用计数永远不为0，造成内存泄漏。</p>
-<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true" data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> objgraph </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Animal</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line">print(objgraph.count(<span class="string">"Person"</span>)) <span class="comment"># 0</span></span><br><span class="line">print(objgraph.count(<span class="string">"Animal"</span>)) <span class="comment"># 0</span></span><br><span class="line"></span><br><span class="line">P = Person()</span><br><span class="line">A = Animal()</span><br><span class="line">print(objgraph.count(<span class="string">"Person"</span>)) <span class="comment"># 1</span></span><br><span class="line">print(objgraph.count(<span class="string">"Animal"</span>)) <span class="comment"># 1</span></span><br><span class="line"></span><br><span class="line">P.pet = A</span><br><span class="line">A.master = P</span><br><span class="line"><span class="keyword">del</span> P</span><br><span class="line"><span class="keyword">del</span> A</span><br><span class="line"><span class="comment"># 正常情况下，如果删除了P和A，应该为0，但由于循环引用，结果为1</span></span><br><span class="line">print(objgraph.count(<span class="string">"Person"</span>)) <span class="comment"># 1</span></span><br><span class="line">print(objgraph.count(<span class="string">"Animal"</span>)) <span class="comment"># 1</span></span><br></pre></td></tr></table></figure></div>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> objgraph </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Animal</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line">print(objgraph.count(<span class="string">"Person"</span>)) <span class="comment"># 0</span></span><br><span class="line">print(objgraph.count(<span class="string">"Animal"</span>)) <span class="comment"># 0</span></span><br><span class="line"></span><br><span class="line">P = Person()</span><br><span class="line">A = Animal()</span><br><span class="line">print(objgraph.count(<span class="string">"Person"</span>)) <span class="comment"># 1</span></span><br><span class="line">print(objgraph.count(<span class="string">"Animal"</span>)) <span class="comment"># 1</span></span><br><span class="line"></span><br><span class="line">P.pet = A</span><br><span class="line">A.master = P</span><br><span class="line"><span class="keyword">del</span> P</span><br><span class="line"><span class="keyword">del</span> A</span><br><span class="line"><span class="comment"># 正常情况下，如果删除了P和A，应该为0，但由于循环引用，结果为1</span></span><br><span class="line">print(objgraph.count(<span class="string">"Person"</span>)) <span class="comment"># 1</span></span><br><span class="line">print(objgraph.count(<span class="string">"Animal"</span>)) <span class="comment"># 1</span></span><br></pre></td></tr></table></figure>
 <p>这种时候计数就无法解决了，也为我们引入了下面的主题： 标记-清除 &amp;  分代回收。</p>
 <h2 id="标记-清除"><a href="#标记-清除" class="headerlink" title="标记-清除"></a>标记-清除</h2><p>标记清除就是用来解决循环引用的问题的只有容器对象才会出现引用循环，比如列表、字典、类、元组。</p>
 <ul>
@@ -508,9 +500,7 @@
     
     
 
-	
-	
-	
+    
 
     
 
@@ -520,11 +510,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/GAP/" rel="tag"># GAP</a>
+            <a href="/tags/GAP/" rel="tag"><i class="fa fa-tag"></i> GAP</a>
           
-            <a href="/tags/Python/" rel="tag"># Python</a>
+            <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i> Python</a>
           
-            <a href="/tags/GC/" rel="tag"># GC</a>
+            <a href="/tags/GC/" rel="tag"><i class="fa fa-tag"></i> GC</a>
           
         </div>
       
@@ -723,6 +713,13 @@
 
 
 
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
         
 
 
@@ -887,12 +884,12 @@
     });
     new Valine({
         el: '#comments' ,
-        verify: true,
+        verify: false,
         notify: false,
         appId: 'bABdvcserWST8hctdXncW0he-gzGzoHsz',
         appKey: 'Ng2B24N8TgiGzK8fKds99MLc',
-        placeholder: '谢谢你认真看到了最后，这里欢迎你的各种吐槽：',
-        avatar:'identicon',
+        placeholder: '谢谢你认真看到了最后，这里欢迎各种吐槽与交流：',
+        avatar:'monsterid',
         guest_info:guest,
         pageSize:'10' || 10,
     });
@@ -1335,21 +1332,6 @@
   
 
   
-<script>
-(function(){
-    var bp = document.createElement('script');
-    var curProtocol = window.location.protocol.split(':')[0];
-    if (curProtocol === 'https') {
-        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
-    }
-    else {
-        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
-    }
-    var s = document.getElementsByTagName("script")[0];
-    s.parentNode.insertBefore(bp, s);
-})();
-</script>
-
 
   
   

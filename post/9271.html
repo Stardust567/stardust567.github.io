@@ -6,8 +6,6 @@
 
 
 <html class="theme-next pisces use-motion" lang="zh-Hans">
-
-
 <head><meta name="generator" content="Hexo 3.8.0">
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -18,6 +16,10 @@
 
 
 
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
 
 
 
@@ -55,7 +57,7 @@
 <link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
 
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=5.1.4">
 
 
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
@@ -106,7 +108,7 @@
     root: '/',
     scheme: 'Pisces',
     version: '5.1.4',
-    sidebar: {"position":"left","display":"post","offset":15,"b2t":false,"scrollpercent":false,"onmobile":false},
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
     tabs: true,
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
@@ -143,20 +145,10 @@
             (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
           m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-  ga('create', 'UA-130666690-1', 'auto');
+  ga('create', '130666690', 'auto');
   ga('send', 'pageview');
-</script>
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
-
-  <script type="text/javascript">
-    var _hmt = _hmt || [];
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "https://hm.baidu.com/hm.js?HqDOiGSjrA";
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(hm, s);
-    })();
-  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 
@@ -226,7 +218,7 @@
         </li>
       
         
-        <li class="menu-item menu-item-links">
+        <li class="menu-item menu-item-link">
           <a href="/links/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-link"></i> <br>
@@ -327,9 +319,9 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">写于</span>
+                <span class="post-meta-item-text">收藏于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-22T15:35:14+08:00">
+              <time title="写于" itemprop="dateCreated datePublished" datetime="2020-03-22T15:35:14+08:00">
                 2020-03-22
               </time>
             
@@ -338,7 +330,7 @@
 
             
           </span>
-
+			
           
             <span class="post-category">
             
@@ -348,7 +340,7 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">收藏于</span>
+                <span class="post-meta-item-text">分类于</span>
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
@@ -403,10 +395,10 @@
                   <i class="fa fa-file-word-o"></i>
                 </span>
                 
-                  <span class="post-meta-item-text">字数&#58;</span>
+                  <span class="post-meta-item-text">共&#58;</span>
                 
-                <span title="字数">
-                  6.5k
+                <span title="共">
+                  6.5k 字
                 </span>
               
 
@@ -422,7 +414,7 @@
                   <span class="post-meta-item-text">时长 &asymp;</span>
                 
                 <span title="时长">
-                  23min
+                  23 min
                 </span>
               
             </div>
@@ -437,7 +429,7 @@
     
     
     
-    <div class="post-body" itemprop="articleBody">
+    <div class="post-body han-init-context" itemprop="articleBody">
 
       
       
@@ -494,19 +486,19 @@
 <p>要解锁读者锁，只需检查该锁是否处于PASSIVE并相应地将其解锁（<em>ReadUnlock</em>）。因此，在TSO体系结构上的读者公共路径中，不需要原子指令/内存障碍。此外，PASSIVE读者不会相互通信，从而保证了读者的可伸缩性和较低的延迟。</p>
 <p>如果读者被调度时正在PASSIVE模式持有锁，则应通过增加主动计数器（<em>ScheduleOut</em>）转换为ACTIVE锁。</p>
 <p><strong>ReadLock(lock)</strong></p>
-<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true" data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">st ← PerCorePtr(lock.rstatus, CoreID); </span><br><span class="line">st.reader ← PASSIVE; </span><br><span class="line">while lock.writer != FREE do </span><br><span class="line">	st.reader ← FREE; //释放被动锁定</span><br><span class="line">	st.version ← lock.version; </span><br><span class="line"> 	WaitUntil(lock.writer == FREE); </span><br><span class="line"> 	st ← PerCorePtr(lock.rstatus, CoreID); </span><br><span class="line"> 	st.reader ← PASSIVE; </span><br><span class="line">/* Barrier needed here on non-TSO architecture */;</span><br></pre></td></tr></table></figure></div>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">st ← PerCorePtr(lock.rstatus, CoreID); </span><br><span class="line">st.reader ← PASSIVE; </span><br><span class="line">while lock.writer != FREE do </span><br><span class="line">	st.reader ← FREE; //释放被动锁定</span><br><span class="line">	st.version ← lock.version; </span><br><span class="line"> 	WaitUntil(lock.writer == FREE); </span><br><span class="line"> 	st ← PerCorePtr(lock.rstatus, CoreID); </span><br><span class="line"> 	st.reader ← PASSIVE; </span><br><span class="line">/* Barrier needed here on non-TSO architecture */;</span><br></pre></td></tr></table></figure>
 <p><strong>ReadUnlock(lock)</strong> </p>
-<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true" data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">st ← PerCorePtr(lock.rstatus, CoreID);</span><br><span class="line">if st.reader = PASSIVE then st.reader ← FREE;</span><br><span class="line">else AtomicDec(lock.active);</span><br><span class="line">/* Barrier needed here on non-TSO architecture */;</span><br><span class="line">st.version ← lock.version;</span><br></pre></td></tr></table></figure></div>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">st ← PerCorePtr(lock.rstatus, CoreID);</span><br><span class="line">if st.reader = PASSIVE then st.reader ← FREE;</span><br><span class="line">else AtomicDec(lock.active);</span><br><span class="line">/* Barrier needed here on non-TSO architecture */;</span><br><span class="line">st.version ← lock.version;</span><br></pre></td></tr></table></figure>
 <p><strong>ScheduleOut(lock)</strong></p>
-<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true" data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">st ← PerCorePtr(lock.rstatus, CoreID); </span><br><span class="line">if st.reader = PASSIVE then AtomicInc(lock.active);</span><br><span class="line">st.reader ← FREE;</span><br><span class="line">st.version ← lock.version;</span><br></pre></td></tr></table></figure></div>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">st ← PerCorePtr(lock.rstatus, CoreID); </span><br><span class="line">if st.reader = PASSIVE then AtomicInc(lock.active);</span><br><span class="line">st.reader ← FREE;</span><br><span class="line">st.version ← lock.version;</span><br></pre></td></tr></table></figure>
 <h4 id="Write-side-algorithm"><a href="#Write-side-algorithm" class="headerlink" title="Write-side algorithm"></a>Write-side algorithm</h4><p>写者锁的获取可分为两个阶段。一个写者首先锁定writer mutex，然后增加version以进入阶段1。然后，它将检查当前域中的所有联机cores，以确认cores是否已查看最新version。如果ok，则说明读者都在线，即知道此锁已被写者锁定，并在写者释放锁前不会获得读者锁。对于看不到最新version的内核，写者发送IPI并询问其状态。收到IPI后，未锁定的读者将通过更新其本地version（<em>Function Report</em>）向写者报告。锁定的读者在离开读取侧临界区或进入睡眠状态后将稍后报告。在报告了所有核心后，所有passive读者都达成了共识。然后，写者进入阶段2。在此阶段，写者只需等待所有活动的读者退出即可。</p>
 <p>写者可以将锁直接传递给之后的writer，而无需再次达成共识（line2-4 in WriteLock and line1 in WriteUnlock）</p>
 <p><strong>WriteLock(lock)</strong></p>
-<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true" data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">lastState ← Lock(lock.writer);</span><br><span class="line">if lastState = PASS then return;</span><br><span class="line">/* Lock passed from another writer */</span><br><span class="line">newVersion ← AtomicInc(lock.version);</span><br><span class="line">coresWait ← /0;</span><br><span class="line">for ID ∈ AllCores do </span><br><span class="line">	if Online(lock.domain, ID) ∧ ID != CoreID then </span><br><span class="line">		if PerCorePtr(lock.rstatus, CoreID).version != newVersion then </span><br><span class="line">			AskForReport(ID);</span><br><span class="line">			Add(ID, coresWait);</span><br><span class="line">for ID ∈ coresWait do </span><br><span class="line">	while PerCorePtr(lock.rstatus, CoreID).version != newVersion do Relax();</span><br><span class="line">while lock.active != 0 do Schedule();</span><br></pre></td></tr></table></figure></div>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">lastState ← Lock(lock.writer);</span><br><span class="line">if lastState = PASS then return;</span><br><span class="line">/* Lock passed from another writer */</span><br><span class="line">newVersion ← AtomicInc(lock.version);</span><br><span class="line">coresWait ← /0;</span><br><span class="line">for ID ∈ AllCores do </span><br><span class="line">	if Online(lock.domain, ID) ∧ ID != CoreID then </span><br><span class="line">		if PerCorePtr(lock.rstatus, CoreID).version != newVersion then </span><br><span class="line">			AskForReport(ID);</span><br><span class="line">			Add(ID, coresWait);</span><br><span class="line">for ID ∈ coresWait do </span><br><span class="line">	while PerCorePtr(lock.rstatus, CoreID).version != newVersion do Relax();</span><br><span class="line">while lock.active != 0 do Schedule();</span><br></pre></td></tr></table></figure>
 <p><strong>WriteUnlock(lock)</strong></p>
-<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true" data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">if SomeoneWaiting(lock.writer) then Unlock(lock.writer, PASS); </span><br><span class="line">else Unlock(lock.writer, FREE);</span><br></pre></td></tr></table></figure></div>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">if SomeoneWaiting(lock.writer) then Unlock(lock.writer, PASS); </span><br><span class="line">else Unlock(lock.writer, FREE);</span><br></pre></td></tr></table></figure>
 <p><strong>Report(lock)</strong></p>
-<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true" data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">st ← PerCorePtr(lock.rstatus, CoreID);</span><br><span class="line">if st.reader != PASSIVE then st.version ← lock.version;</span><br></pre></td></tr></table></figure></div>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">st ← PerCorePtr(lock.rstatus, CoreID);</span><br><span class="line">if st.reader != PASSIVE then st.version ← lock.version;</span><br></pre></td></tr></table></figure>
 <h4 id="Correctness-on-TSO-architecture"><a href="#Correctness-on-TSO-architecture" class="headerlink" title="Correctness on TSO architecture"></a>Correctness on TSO architecture</h4><p>rwlocks与其他较弱的同步原语之间的主要区别在于，rwlocks在读者写者间有强大的可见性保证。<br>一旦读者看到了FREE的prwlock，可以确定：1）该FREE由直接的前一个写者设置；2）由于在TSO架构下按顺序可见内存写入，因此以前的写者所做的更新也应对该读者可见；3）在该读者退出前，没有写者可以进入临界区。<br>这三个属性共同确保读者始终可以看到受prwlock保护的共享数据的最新一致版本。此外，由于所有读者在获取写者锁期间都明确报告了最新版本，因此还可以保证写者查看读者st的所有更新。<br>在非TSO架构上，读者算法中需要两个额外的存储屏障。第一个确保读者在快速路径中获得锁定后，可以看到共享数据的最新版本。第二个是在释放读者锁之前使写者可以看到读者的内存更新。</p>
 <h3 id="OS内核集成"><a href="#OS内核集成" class="headerlink" title="OS内核集成"></a>OS内核集成</h3><p>将prwlock集成到OS内核中存在几个问题。首先，prwlock的范围可以是全局范围的，也可以是进程范围的，并且每个范围中可能有多个prwlock。每个prwlock可以由多个任务共享。为了减少读者写者之间的消息，prwlock使用锁域抽象来将可以达成共识的相关prwlocks归为一组。域跟踪当前正在执行prwlock相关任务的CPU内核。</p>
 <h4 id="Domain-Online-Offline"><a href="#Domain-Online-Offline" class="headerlink" title="Domain Online/Offline"></a>Domain Online/Offline</h4><p>在操作系统执行期间，可能会关闭一组prwlocks的范围。例如，对于保护进程的地址空间结构的一组锁，可以在地址空间切换期间关闭该结构。在这种情况下，prwlock使用域抽象来避免不必要的共识消息。域维护从cores到其online/offline状态的映射。只有活动域中的CPU内核才需要发送消息。</p>
@@ -516,9 +508,9 @@
 <h3 id="用户级支持"><a href="#用户级支持" class="headerlink" title="用户级支持"></a>用户级支持</h3><p>用户空间实现主要障碍是无法在用户空间获取锁期间禁用抢占。<br>为了解决此问题，prwlock依赖于某些内核支持。背后的想法很简单：当有必要对每个内核状态执行任何操作时，prwlock进入内核并由内核处理。我们没有使用每核数据结构st来维护被动读者状态，而是在用户空间中引入了每线程数据结构。每个线程都应在执行锁定操作前将其实例注册到内核，因为任何时候内核上都只有一个线程在运行。这样的每线程数据结构类似于内核算法中使用的每核数据结构。</p>
 <p>出于性能方面的考虑，读者临界区应完全位于用户空间内，否则syscall开销将破坏prwlock的短延迟优势。<br>在prwlock中，被动锁保持为每核状态，而主动锁则保持在共享计数器中；检查和更改被动锁定模式应自动完成。<br>ReadUnlock算法会在开头2-3行检查读者是否为PASSIVE，如果是，则通过将状态设置为FREE来释放被动锁定。如果线程在第2行和第3行之间被抢占，则该锁可能会转换为活动锁，并且活动计数会增加。稍后进行调度时，由于之前已经做出决定，因此活动计数不会减少。结果，rwlock变得不平衡，并且写者再也无法获取该锁。</p>
 <p>为了克服这个问题，我们在每线程数据结构中添加了抢占检测字段。读取器首先将状态设置为PASSIVE，然后检查是否在被动锁定时被抢占。如果是这样，它将减少活动计数器，因为该锁现在是活动锁。对于写端算法，由于不可能在用户空间中发送IPI，因此几乎所有写者都应进入内核以获取锁。 不过与写者锁获取时间相比，内核和用户空间之间的模式切换成本通常可以忽略不计。</p>
-<p><strong>Function ReadUnlock(lock) for user-level prwlock</strong><br><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true" data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">st ← PerThreadPtr(lock.rstatus);</span><br><span class="line">st.reader ← FREE;</span><br><span class="line">if st.preempted then </span><br><span class="line">	AtomicDec(lock.active);</span><br><span class="line">	st.preempted ← FALSE;</span><br><span class="line">st.version ← lock.version;</span><br></pre></td></tr></table></figure></div></p>
+<p><strong>Function ReadUnlock(lock) for user-level prwlock</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">st ← PerThreadPtr(lock.rstatus);</span><br><span class="line">st.reader ← FREE;</span><br><span class="line">if st.preempted then </span><br><span class="line">	AtomicDec(lock.active);</span><br><span class="line">	st.preempted ← FALSE;</span><br><span class="line">st.version ← lock.version;</span><br></pre></td></tr></table></figure></p>
 <p><strong>Function ScheduleOut(lock)</strong></p>
-<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true" data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">st ← PerThreadPtr(lock.rstatus);</span><br><span class="line">if st.reader = PASSIVE then </span><br><span class="line">	AtomicInc(lock.active);</span><br><span class="line">	st.preempted ← TRUE;</span><br><span class="line">	st.reader ← FREE;</span><br><span class="line">st.version ← lock.version;</span><br></pre></td></tr></table></figure></div>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">st ← PerThreadPtr(lock.rstatus);</span><br><span class="line">if st.reader = PASSIVE then </span><br><span class="line">	AtomicInc(lock.active);</span><br><span class="line">	st.preempted ← TRUE;</span><br><span class="line">	st.reader ← FREE;</span><br><span class="line">st.version ← lock.version;</span><br></pre></td></tr></table></figure>
 <h3 id="性能分析"><a href="#性能分析" class="headerlink" title="性能分析"></a>性能分析</h3><ul>
 <li><p><strong>内存屏障：</strong>在读取侧临界区的通用路径中，没有写者时prwlock不需要任何内存屏障。唯一需要的内存屏障是当CPU内核即将离开锁定域时，例如，切换到另一个任务并使当前的锁定域脱机或联机。但域联机/脱机操作在典型执行中很少见。因此，通常情况下prwlock具有良好的性能可伸缩性。</p>
 </li>
@@ -543,9 +535,7 @@
     
     
 
-	
-	
-	
+    
 
     
 
@@ -555,11 +545,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/GAP/" rel="tag"># GAP</a>
+            <a href="/tags/GAP/" rel="tag"><i class="fa fa-tag"></i> GAP</a>
           
-            <a href="/tags/rwlock/" rel="tag"># rwlock</a>
+            <a href="/tags/rwlock/" rel="tag"><i class="fa fa-tag"></i> rwlock</a>
           
-            <a href="/tags/OS/" rel="tag"># OS</a>
+            <a href="/tags/OS/" rel="tag"><i class="fa fa-tag"></i> OS</a>
           
         </div>
       
@@ -758,6 +748,13 @@
 
 
 
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
         
 
 
@@ -922,12 +919,12 @@
     });
     new Valine({
         el: '#comments' ,
-        verify: true,
+        verify: false,
         notify: false,
         appId: 'bABdvcserWST8hctdXncW0he-gzGzoHsz',
         appKey: 'Ng2B24N8TgiGzK8fKds99MLc',
-        placeholder: '谢谢你认真看到了最后，这里欢迎你的各种吐槽：',
-        avatar:'identicon',
+        placeholder: '谢谢你认真看到了最后，这里欢迎各种吐槽与交流：',
+        avatar:'monsterid',
         guest_info:guest,
         pageSize:'10' || 10,
     });
@@ -1370,21 +1367,6 @@
   
 
   
-<script>
-(function(){
-    var bp = document.createElement('script');
-    var curProtocol = window.location.protocol.split(':')[0];
-    if (curProtocol === 'https') {
-        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
-    }
-    else {
-        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
-    }
-    var s = document.getElementsByTagName("script")[0];
-    s.parentNode.insertBefore(bp, s);
-})();
-</script>
-
 
   
   

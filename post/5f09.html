@@ -471,7 +471,7 @@
 </blockquote>
 </li>
 <li><p>想判断x类型的时候，建议用<code>isinstance(x, 预判类型)</code>而不用<code>type(x)==预判类型</code>因为isinstance可以判断子类对象是否继承于父类，而type不可以。不过对于基本类型而言，type还是很好用的。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>student = Student(<span class="string">"Jone"</span>, <span class="string">"UESTC"</span>) <span class="comment"># class Student(Person)</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>type(Student)==type(Person) <span class="comment"># True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(Person, Student) <span class="comment"># False</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(student, Student) <span class="comment"># True</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>issubclass(Person, Student) <span class="comment"># False</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>issubclass(Student, Person) <span class="comment"># True</span></span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true" data-rel="PYTHON"><figure class="iseeu highlight /python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>student = Student(<span class="string">"Jone"</span>, <span class="string">"UESTC"</span>) <span class="comment"># class Student(Person)</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>type(Student)==type(Person) <span class="comment"># True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(Person, Student) <span class="comment"># False</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(student, Student) <span class="comment"># True</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>issubclass(Person, Student) <span class="comment"># False</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>issubclass(Student, Person) <span class="comment"># True</span></span><br></pre></td></tr></table></figure></div>
 </li>
 <li><p>做大量数据循环的时候建议使用xrange而非range，xrange本质是个生成器，而range是个list，当数据量很大的时候，range需要提前开辟一堆内存空间。</p>
 </li>
@@ -487,7 +487,7 @@
 <li><p>添加 Go Modules Replace的时候，replace配置项的路径只能是<code>~</code>根目录开头，<code>.</code>当前目录开头，<code>..</code>上级目录开头，这点在WSL上就还是安利后两者，毕竟在根目录下VScode估计找不到文件夹orz</p>
 </li>
 <li><p>为变量给予附属属性<code>json</code>，这样子在<code>c.JSON</code>(c *gin.Context)的时候就会自动转换格式，非常的便利。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Name <span class="keyword">string</span> <span class="string">`json:"name"`</span></span><br></pre></td></tr></table></figure>
+<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true" data-rel="GO"><figure class="iseeu highlight /go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Name <span class="keyword">string</span> <span class="string">`json:"name"`</span></span><br></pre></td></tr></table></figure></div>
 </li>
 </ol>
 <h2 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h2><ol>
@@ -541,15 +541,15 @@
 <li>刚开始我在修改代码中途发现自己没下<code>vue-router</code>强停后npm install结果errno -4048 npm ERR! syscall rename，解决方法<code>npm cache clean --force</code>后npm install即可。</li>
 </ol>
 <h2 id="Terminal"><a href="#Terminal" class="headerlink" title="Terminal"></a>Terminal</h2><ol>
-<li>用tree直接导出当前目录下的目录结构：<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tree -L 2 &gt; test.txt</span><br></pre></td></tr></table></figure>
+<li>用tree直接导出当前目录下的目录结构：<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true" data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tree -L 2 &gt; test.txt</span><br></pre></td></tr></table></figure></div>
 </li>
 </ol>
 <ol start="2">
-<li>不想每次都输服务器密码（懒）怎么办：<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-copy-id USER_NAME@IP_ADDRESS</span><br></pre></td></tr></table></figure>
+<li>不想每次都输服务器密码（懒）怎么办：<div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true" data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-copy-id USER_NAME@IP_ADDRESS</span><br></pre></td></tr></table></figure></div>
 </li>
 </ol>
 <ol start="3">
-<li>linux用密钥登录出现 <em>Permissions 0777 are too open.</em> 时可以加个<code>sudo</code><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ssh -i keyfile &lt;user&gt;@ip</span><br></pre></td></tr></table></figure>
+<li>linux用密钥登录出现 <em>Permissions 0777 are too open.</em> 时可以加个<code>sudo</code><div class="highlight-wrap" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true" data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ssh -i keyfile &lt;user&gt;@ip</span><br></pre></td></tr></table></figure></div>
 </li>
 </ol>
 <ol start="4">

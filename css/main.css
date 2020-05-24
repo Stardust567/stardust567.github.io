@@ -487,8 +487,8 @@ pre,
   margin: 20px 0;
   padding: 0;
   font-size: 13px;
-  color: #ccc;
-  background: #2d2d2d;
+  color: #6a5acd;
+  background: rgba(230,230,250,0.3);
   line-height: 1.6;
 }
 pre,
@@ -508,7 +508,7 @@ pre {
 }
 pre code {
   padding: 0;
-  color: #ccc;
+  color: #6a5acd;
   background: none;
   text-shadow: none;
 }
@@ -531,7 +531,7 @@ pre code {
 }
 .highlight figcaption {
   font-size: 1em;
-  color: #ccc;
+  color: #6a5acd;
   line-height: 1em;
   margin-bottom: 1em;
 }
@@ -545,23 +545,23 @@ pre code {
 }
 .highlight figcaption a {
   float: right;
-  color: #ccc;
+  color: #6a5acd;
 }
 .highlight figcaption a:hover {
-  border-bottom-color: #ccc;
+  border-bottom-color: #6a5acd;
 }
 .highlight .gutter pre {
   padding-left: 10px;
   padding-right: 10px;
   color: #999;
   text-align: right;
-  background-color: #1b1b1b;
+  background-color: rgba(70,70,218,0.3);
 }
 .highlight .code pre {
   width: 100%;
   padding-left: 10px;
   padding-right: 10px;
-  background-color: #2d2d2d;
+  background-color: rgba(230,230,250,0.3);
 }
 .highlight .line {
   height: 20px;
@@ -585,7 +585,7 @@ pre .addition {
   background: #800000;
 }
 pre .meta {
-  color: #c9c;
+  color: #dda0dd;
 }
 pre .comment {
   color: #999;
@@ -624,11 +624,11 @@ pre .xml .cdata,
 pre .special,
 pre .number,
 pre .formula {
-  color: #9c9;
+  color: #87ceeb;
 }
 pre .title,
 pre .css .hexcolor {
-  color: #6cc;
+  color: #f1948a;
 }
 pre .function,
 pre .python .decorator,
@@ -642,7 +642,7 @@ pre .coffeescript .title {
 }
 pre .keyword,
 pre .javascript .function {
-  color: #c9c;
+  color: #dda0dd;
 }
 .full-image.full-image.full-image.full-image {
   border: none;
@@ -1877,7 +1877,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #ff55d7;
+  background: #ffffdf;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -3060,18 +3060,6 @@ code {
   background: #fbf7f8;
   margin: 2px;
 }
-.highlight,
-pre {
-  margin: 5px 0;
-  padding: 5px;
-  border-radius: 3px;
-}
-.highlight,
-code,
-pre {
-  border: 1px solid rgba(255,255,255,0);
-  background: rgba(255,255,255,0);
-}
 .footer {
   background: #fbfcfc none repeat scroll !important;
 }
@@ -3095,4 +3083,10 @@ pre {
   box-shadow: 0 2px 6px #dbdbdb;
   background: url("https://i.loli.net/2019/06/03/5cf4d52a4da2f15211.jpg");
   background-size: 100% auto;
+}
+.content-wrap {
+  opacity: 0.9;
+}
+.popup {
+  opacity: 0.9;
 }

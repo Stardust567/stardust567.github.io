@@ -1,98 +1,33 @@
 <!DOCTYPE html>
-
-
-
-  
-
-
-<html class="theme-next pisces use-motion" lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.8.0">
+<html lang="zh-CN">
+<head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.8.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/star.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/star.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/star.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"stardust567.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
 
-
-
-  
-  
-  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
-
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform">
-<meta http-equiv="Cache-Control" content="no-siteapp">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
-
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
-
-<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/star.ico?v=5.1.4">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/star.ico?v=5.1.4">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/star.ico?v=5.1.4">
-
-
-  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
-
-
-
-
-
-  <meta name="keywords" content="GAP,Go,6.824,">
-
-
-
-
-
-  <link rel="alternate" href="/atom.xml" title="Star Trail" type="application/atom+xml">
-
-
-
-
-
-
-<meta name="description" content="结合 MIT-6.824-2018 的各个 lab 来简单写下学习分布式系统的学习心得。 目前主要有：MapReduce, Raft（期待后续更新中）">
+  <meta name="description" content="结合 MIT-6.824-2018 的各个 lab 来简单写下学习分布式系统的学习心得。 目前主要有：MapReduce, Raft（期待后续更新中）">
 <meta name="keywords" content="GAP,Go,6.824">
 <meta property="og:type" content="article">
 <meta property="og:title" content="分布式系统">
 <meta property="og:url" content="https://stardust567.github.io/post/c51c.html">
 <meta property="og:site_name" content="Star Trail">
 <meta property="og:description" content="结合 MIT-6.824-2018 的各个 lab 来简单写下学习分布式系统的学习心得。 目前主要有：MapReduce, Raft（期待后续更新中）">
-<meta property="og:locale" content="zh-Hans">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://i.loli.net/2020/02/18/hQyazOdRUK4YJHF.png">
 <meta property="og:image" content="https://i.loli.net/2020/02/16/QYdfgVnj4aubP6s.png">
 <meta property="og:image" content="https://i.loli.net/2020/02/21/ANVsJ8aCyM5KifD.jpg">
@@ -107,339 +42,245 @@
 <meta name="twitter:description" content="结合 MIT-6.824-2018 的各个 lab 来简单写下学习分布式系统的学习心得。 目前主要有：MapReduce, Raft（期待后续更新中）">
 <meta name="twitter:image" content="https://i.loli.net/2020/02/18/hQyazOdRUK4YJHF.png">
 
+<link rel="canonical" href="https://stardust567.github.io/post/c51c.html">
 
 
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Pisces',
-    version: '5.1.4',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
-    fancybox: true,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    duoshuo: {
-      userId: '0',
-      author: '博主'
-    },
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
   };
 </script>
 
-
-
-  <link rel="canonical" href="https://stardust567.github.io/post/c51c.html">
-
-
-
-
-
   <title>分布式系统 | Star Trail</title>
   
-
-
-
-
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-  ga('create', '130666690', 'auto');
-  ga('send', 'pageview');
-</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=130666690"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '130666690');
+      }
+    </script>
 
 
 
 
 
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Star Trail" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
-<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
-
-  
-  
-    
-  
-
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
-    
-
-    <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Star Trail</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
-      
-        <p class="site-subtitle">stardust1084062596@gmail.com</p>
-      
   </div>
 
-  <div class="site-nav-toggle">
-    <button>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Star Trail</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">stardust1084062596@gmail.com</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
   </div>
 </div>
+
+
+
 
 <nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
-      
-        
+  <ul id="menu" class="main-menu menu">
         <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
-            
-            首页
-          </a>
-        </li>
-      
-        
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
         <li class="menu-item menu-item-categories">
-          <a href="/categories/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
-            
-            分类
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-link">
-          <a href="/links/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-link"></i> <br>
-            
-            友链
-          </a>
-        </li>
-      
 
-      
-        <li class="menu-item menu-item-search">
-          
-            <a href="javascript:;" class="popup-trigger">
-          
-            
-              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
-            
-            搜索
-          </a>
-        </li>
-      
-    </ul>
-  
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
 
-  
-    <div class="site-search">
-      
-  <div class="popup search-popup local-search-popup">
-  <div class="local-search-header clearfix">
-    <span class="search-icon">
-      <i class="fa fa-search"></i>
-    </span>
-    <span class="popup-btn-close">
-      <i class="fa fa-times-circle"></i>
-    </span>
-    <div class="local-search-input-wrapper">
-      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
-    </div>
-  </div>
-  <div id="local-search-result"></div>
-</div>
+  </li>
+        <li class="menu-item menu-item-links">
 
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>友链</a>
 
-
-    </div>
-  
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
 </nav>
 
 
 
- </div>
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" placeholder="搜索..." spellcheck="false" type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
     </header>
 
-    <main id="main" class="main">
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
       <div class="main-inner">
         <div class="content-wrap">
-          <div id="content" class="content">
+          
+
+          <div class="content post posts-expand">
             
 
-  <div id="posts" class="posts-expand">
     
-
-  
-
   
   
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
+  <article itemscope="" itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://stardust567.github.io/post/c51c.html">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Stardust567">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Star Trail">
     </span>
-
-    
       <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">分布式系统</h1>
-        
+        <h1 class="post-title" itemprop="name headline">
+          分布式系统
+        </h1>
 
         <div class="post-meta">
-          <span class="post-time">
-            
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
-              
-                <span class="post-meta-item-text">收藏于</span>
-              
-              <time title="写于" itemprop="dateCreated datePublished" datetime="2020-02-16T13:59:44+08:00">
-                2020-02-16
-              </time>
-            
+              <span class="post-meta-item-text">写于</span>
 
-            
-
-            
-          </span>
-			
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Sys/" itemprop="url" rel="index">
-                    <span itemprop="name">Sys</span>
-                  </a>
-                </span>
-
-                
-                
-              
+              <time title="创建时间：2020-02-16 13:59:44" itemprop="dateCreated datePublished" datetime="2020-02-16T13:59:44+08:00">2020-02-16</time>
             </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/post/c51c.html#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/post/c51c.html" itemprop="commentCount"></span>
-                </a>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
               </span>
-            
-          
-
-          
-          
-             <span id="/post/c51c.html" class="leancloud_visitors" data-flag-title="分布式系统">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">翻阅&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                  <span class="post-meta-divider">|</span>
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
+              <span class="post-meta-item-text">归档</span>
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Sys/" itemprop="url" rel="index"><span itemprop="name">Sys</span></a>
                 </span>
-                
-                  <span class="post-meta-item-text">共&#58;</span>
-                
-                <span title="共">
-                  6.8k 字
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">时长 &asymp;</span>
-                
-                <span title="时长">
-                  26 min
-                </span>
-              
-            </div>
-          
+            </span>
 
           
+            <span id="/post/c51c.html" class="post-meta-item leancloud_visitors" data-flag-title="分布式系统" title="翻阅">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">翻阅：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">吐槽：</span>
+    
+    <a title="valine" href="/post/c51c.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/post/c51c.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <span class="post-meta-item" title="字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">字数：</span>
+              <span>15k</span>
+            </span>
+            <span class="post-meta-item" title="时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">时长 &asymp;</span>
+              <span>27 min</span>
+            </span>
 
         </div>
       </header>
-    
 
     
     
     
-    <div class="post-body han-init-context" itemprop="articleBody">
-
-      
-      
+    <div class="post-body" itemprop="articleBody">
 
       
         <p>结合 MIT-6.824-2018 的各个 lab 来简单写下学习分布式系统的学习心得。</p>
@@ -509,7 +350,7 @@
 </ul>
 <p><em>理由：leader会把前一个entry的index和term写进当前AppendEntries RPC中，如果followers发现在自己的log中找不到符合的entry，就会拒收这个新entry以保证其log和leader的log顺序一致。</em></p>
 <p>正常操作中，logs肯定会保持一致性。但存在这种情况，leader在自己log中写入了一堆entries但在这些entries还没全部committed时leader就先自己崩溃了，下一term它作为follower，就会出现和当前leader的log不一致情况。Raft的解决办法是直接把followers冲突的那部分entries覆盖成leader的对应entries。</p>
-<p>Leader针对每一个follower维护了一个 <strong>nextIndex</strong>（即将要发给followers的entry的index）当一个leader刚获得权力的时候，初始化所有的 nextIndex  = leader log highest index + 1。如果出现AppendEntries RPC被followers拒绝的情况，leader会让 nextIndex– 并重试。最终 nextIndex 会停在两者log一致的点，此时的AppendEntries RPC将不再被拒绝，即可followers冲突的entries全部删除并逐个追加leader的entries。通过这种机制，leader在获得权力的时候就不需要任何特殊的操作来恢复一致性。</p>
+<p>Leader针对每一个follower维护了一个 <strong>nextIndex</strong>（即将要发给followers的entry的index）当一个leader刚获得权力的时候，初始化所有的 nextIndex  = leader log highest index + 1。如果出现AppendEntries RPC被followers拒绝的情况，leader会让 nextIndex— 并重试。最终 nextIndex 会停在两者log一致的点，此时的AppendEntries RPC将不再被拒绝，即可followers冲突的entries全部删除并逐个追加leader的entries。通过这种机制，leader在获得权力的时候就不需要任何特殊的操作来恢复一致性。</p>
 <h4 id="Safety"><a href="#Safety" class="headerlink" title="Safety"></a>Safety</h4><p>我们需要保证每个状态机都会按照相同的顺序执行相同的指令。但如果出现，一些entries被大部分followers接受并commit，但存在一个follower处于unavailable没有接受这些entries，但偏偏该follower在下一term成为了leader，这就会导致那些committed entries明明执行了却被强制删除，即不同状态机执行不同的指令序列。</p>
 <p>Raft通过在leader election中增加一些限制来保证：任何leader对于给定的term，都拥有之前terms里所有的committed entries (即上文提到的 the Leader Completeness Property)</p>
 <p>在raft的投票环节，每个candidates发出的RequestVote RPC都会包含其last log entry的term和index，followers会根据这些信息拒绝掉没有自己新（term越大越新，term相同index越大约新）的投票请求。这样选出来的leader至少和大部分followers一样新，而entries是在大部分followers都复制后才会commit，即committed entries存在于大部分followers上，如果能和大部分followers一样新，就能保证存储了所有的committed entries。</p>
@@ -590,231 +431,159 @@
 <li>Leader在处理只读的请求前必须检查自己是否已经被废黜了。Raft 中通过leader在响应只读请求之前，先和集群中的大多数节点交换一次心跳信息来处理这个问题。</li>
 </ul>
 
-      
     </div>
+
     
     
     
 
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/GAP/" rel="tag"><i class="fa fa-tag"></i> GAP</a>
-          
-            <a href="/tags/Go/" rel="tag"><i class="fa fa-tag"></i> Go</a>
-          
-            <a href="/tags/6-824/" rel="tag"><i class="fa fa-tag"></i> 6.824</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/post/28fa.html" rel="next" title="Go与并发">
-                <i class="fa fa-chevron-left"></i> Go与并发
-              </a>
-            
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/GAP/" rel="tag"># GAP</a>
+              <a href="/tags/Go/" rel="tag"># Go</a>
+              <a href="/tags/6-824/" rel="tag"># 6.824</a>
           </div>
 
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/post/3d2c.html" rel="prev" title="FSCQ文件系统">
-                FSCQ文件系统 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-
-    <div class="post-spread">
-      
-    </div>
-  </div>
-
-
-          </div>
-          
-
-
-          
-
-  
-    <div class="comments" id="comments">
-    </div>
-  
-
-
-
-        </div>
         
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/post/28fa.html" rel="prev" title="Go与并发">
+      <i class="fa fa-chevron-left"></i> Go与并发
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/post/3d2c.html" rel="next" title="FSCQ文件系统">
+      FSCQ文件系统 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
           
   
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
   </div>
 
-  <aside id="sidebar" class="sidebar">
-    
+  <aside class="sidebar">
     <div class="sidebar-inner">
 
-      
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
 
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
-
-      <section class="site-overview-wrap sidebar-panel">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-            
-              <p class="site-author-name" itemprop="name">Stardust567</p>
-              <p class="site-description motion-element" itemprop="description"></p>
-          </div>
-
-          <nav class="site-state motion-element">
-
-            
-              <div class="site-state-item site-state-posts">
-              
-                <a href="/archives">
-              
-                  <span class="site-state-item-count">31</span>
-                  <span class="site-state-item-name">日志</span>
-                </a>
-              </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-categories">
-                <a href="/categories/index.html">
-                  <span class="site-state-item-count">12</span>
-                  <span class="site-state-item-name">分类</span>
-                </a>
-              </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-tags">
-                <a href="/tags/index.html">
-                  <span class="site-state-item-count">33</span>
-                  <span class="site-state-item-name">标签</span>
-                </a>
-              </div>
-            
-
-          </nav>
-
-          
-            <div class="feed-link motion-element">
-              <a href="/atom.xml" rel="alternate">
-                <i class="fa fa-rss"></i>
-                RSS
-              </a>
-            </div>
-          
-
-          
-
-          
-          
-
-          
-          
-
-          
-
-        </div>
-      </section>
-
-      
       <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#MapReduce"><span class="nav-number">1.</span> <span class="nav-text">MapReduce</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#MapReduce-Paper"><span class="nav-number">1.1.</span> <span class="nav-text">MapReduce Paper</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MapReduce-Example"><span class="nav-number">1.1.1.</span> <span class="nav-text">MapReduce Example</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MapReduce-Execution"><span class="nav-number">1.1.2.</span> <span class="nav-text">MapReduce Execution</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MapReduce-Refinements"><span class="nav-number">1.1.3.</span> <span class="nav-text">MapReduce Refinements</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Partitioning-Function"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">Partitioning Function</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Ordering-Guarantees"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">Ordering Guarantees</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Combiner-Function"><span class="nav-number">1.1.3.3.</span> <span class="nav-text">Combiner Function</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Input-and-Output-Types"><span class="nav-number">1.1.3.4.</span> <span class="nav-text">Input and Output Types</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MapReduce-Lab"><span class="nav-number">1.2.</span> <span class="nav-text">MapReduce Lab</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Part-I-Map-Reduce-input-and-output"><span class="nav-number">1.2.1.</span> <span class="nav-text">Part I: Map/Reduce input and output</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#doMap"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">doMap()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#doReduce"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">doReduce()</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Part-II-Single-worker-word-count"><span class="nav-number">1.2.2.</span> <span class="nav-text">Part II: Single-worker word count</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#mapF"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">mapF()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#reduceF"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">reduceF()</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Part-III-Distributing-MapReduce-tasks"><span class="nav-number">1.2.3.</span> <span class="nav-text">Part III: Distributing MapReduce tasks</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#schedule"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">schedule()</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Raft"><span class="nav-number">2.</span> <span class="nav-text">Raft</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Raft-Paper"><span class="nav-number">2.1.</span> <span class="nav-text">Raft Paper</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Raft-Properties"><span class="nav-number">2.1.1.</span> <span class="nav-text">Raft Properties</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Raft-Basics"><span class="nav-number">2.1.2.</span> <span class="nav-text">Raft Basics</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Leader-election"><span class="nav-number">2.1.2.1.</span> <span class="nav-text">Leader election</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Log-replication"><span class="nav-number">2.1.2.2.</span> <span class="nav-text">Log replication</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Safety"><span class="nav-number">2.1.2.3.</span> <span class="nav-text">Safety</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Condenced-Summary"><span class="nav-number">2.1.3.</span> <span class="nav-text">Condenced Summary</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#AppendEntries-RPC"><span class="nav-number">2.1.3.1.</span> <span class="nav-text">AppendEntries RPC</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RequestVote-RPC"><span class="nav-number">2.1.3.2.</span> <span class="nav-text">RequestVote RPC</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Rules-for-Servers"><span class="nav-number">2.1.3.3.</span> <span class="nav-text">Rules for Servers</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#All-Servers"><span class="nav-number">2.1.3.3.1.</span> <span class="nav-text">All Servers</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Followers"><span class="nav-number">2.1.3.3.2.</span> <span class="nav-text">Followers</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Candidates"><span class="nav-number">2.1.3.3.3.</span> <span class="nav-text">Candidates</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Leader"><span class="nav-number">2.1.3.3.4.</span> <span class="nav-text">Leader</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cluster-membership-changes"><span class="nav-number">2.1.4.</span> <span class="nav-text">Cluster membership changes</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Log-compaction"><span class="nav-number">2.1.5.</span> <span class="nav-text">Log compaction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Client-interaction"><span class="nav-number">2.1.6.</span> <span class="nav-text">Client interaction</span></a></li></ol></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
-      
-
-      
-
-    </div>
-  </aside>
-
-
-        
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#MapReduce"><span class="nav-number">1.</span> <span class="nav-text">MapReduce</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#MapReduce-Paper"><span class="nav-number">1.1.</span> <span class="nav-text">MapReduce Paper</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MapReduce-Example"><span class="nav-number">1.1.1.</span> <span class="nav-text">MapReduce Example</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MapReduce-Execution"><span class="nav-number">1.1.2.</span> <span class="nav-text">MapReduce Execution</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MapReduce-Refinements"><span class="nav-number">1.1.3.</span> <span class="nav-text">MapReduce Refinements</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Partitioning-Function"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">Partitioning Function</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Ordering-Guarantees"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">Ordering Guarantees</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Combiner-Function"><span class="nav-number">1.1.3.3.</span> <span class="nav-text">Combiner Function</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Input-and-Output-Types"><span class="nav-number">1.1.3.4.</span> <span class="nav-text">Input and Output Types</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MapReduce-Lab"><span class="nav-number">1.2.</span> <span class="nav-text">MapReduce Lab</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Part-I-Map-Reduce-input-and-output"><span class="nav-number">1.2.1.</span> <span class="nav-text">Part I: Map/Reduce input and output</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#doMap"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">doMap()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#doReduce"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">doReduce()</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Part-II-Single-worker-word-count"><span class="nav-number">1.2.2.</span> <span class="nav-text">Part II: Single-worker word count</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#mapF"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">mapF()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#reduceF"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">reduceF()</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Part-III-Distributing-MapReduce-tasks"><span class="nav-number">1.2.3.</span> <span class="nav-text">Part III: Distributing MapReduce tasks</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#schedule"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">schedule()</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Raft"><span class="nav-number">2.</span> <span class="nav-text">Raft</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Raft-Paper"><span class="nav-number">2.1.</span> <span class="nav-text">Raft Paper</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Raft-Properties"><span class="nav-number">2.1.1.</span> <span class="nav-text">Raft Properties</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Raft-Basics"><span class="nav-number">2.1.2.</span> <span class="nav-text">Raft Basics</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Leader-election"><span class="nav-number">2.1.2.1.</span> <span class="nav-text">Leader election</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Log-replication"><span class="nav-number">2.1.2.2.</span> <span class="nav-text">Log replication</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Safety"><span class="nav-number">2.1.2.3.</span> <span class="nav-text">Safety</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Condenced-Summary"><span class="nav-number">2.1.3.</span> <span class="nav-text">Condenced Summary</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#AppendEntries-RPC"><span class="nav-number">2.1.3.1.</span> <span class="nav-text">AppendEntries RPC</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RequestVote-RPC"><span class="nav-number">2.1.3.2.</span> <span class="nav-text">RequestVote RPC</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Rules-for-Servers"><span class="nav-number">2.1.3.3.</span> <span class="nav-text">Rules for Servers</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#All-Servers"><span class="nav-number">2.1.3.3.1.</span> <span class="nav-text">All Servers</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Followers"><span class="nav-number">2.1.3.3.2.</span> <span class="nav-text">Followers</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Candidates"><span class="nav-number">2.1.3.3.3.</span> <span class="nav-text">Candidates</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Leader"><span class="nav-number">2.1.3.3.4.</span> <span class="nav-text">Leader</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cluster-membership-changes"><span class="nav-number">2.1.4.</span> <span class="nav-text">Cluster membership changes</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Log-compaction"><span class="nav-number">2.1.5.</span> <span class="nav-text">Log compaction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Client-interaction"><span class="nav-number">2.1.6.</span> <span class="nav-text">Client interaction</span></a></li></ol></li></ol></li></ol></div>
       </div>
-    </main>
+      <!--/noindex-->
 
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
-  <span class="with-love">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Stardust567</span>
-
-  
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Stardust567</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
 </div>
 
 
 
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
 
 
+      </div>
+    </main>
 
-  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+    <footer class="footer">
+      <div class="footer-inner">
+        
 
+        
 
-
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Stardust567</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">222k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">6:44</span>
+</div>
 
         
 
@@ -824,41 +593,28 @@
 
 
 
-        
+
       </div>
     </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
-
-    
-
   </div>
 
   
-
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
-</script>
-
-
-
-
-
-
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
 
 
 
   
 
 
-  
+
+
+  <script src="/js/local-search.js"></script>
+
 
 
 
@@ -871,611 +627,39 @@
 
 
   
-  
-    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-  
 
   
-  
-    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
-  
-
 
   
 
 
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
-
-
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
-
-
-
-  
-
-
-  
-
-
-
-
-	
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
-  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
-  
-  <script type="text/javascript">
-    var GUEST = ['nick','mail','link'];
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
     var guest = 'nick,mail,link';
-    guest = guest.split(',').filter(item=>{
-      return GUEST.indexOf(item)>-1;
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
     });
     new Valine({
-        el: '#comments' ,
-        verify: false,
-        notify: false,
-        appId: 'bABdvcserWST8hctdXncW0he-gzGzoHsz',
-        appKey: 'Ng2B24N8TgiGzK8fKds99MLc',
-        placeholder: '谢谢你认真看到了最后，这里欢迎各种吐槽与交流：',
-        avatar:'monsterid',
-        guest_info:guest,
-        pageSize:'10' || 10,
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'bABdvcserWST8hctdXncW0he-gzGzoHsz',
+      appKey     : 'Ng2B24N8TgiGzK8fKds99MLc',
+      placeholder: "谢谢你认真看到了最后，这里欢迎各种吐槽与交流：",
+      avatar     : 'monsterid',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-CN' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
     });
-  </script>
-
-
-
-  
-
-  <script type="text/javascript">
-    // Popup Window;
-    var isfetched = false;
-    var isXml = true;
-    // Search DB path;
-    var search_path = "search.xml";
-    if (search_path.length === 0) {
-      search_path = "search.xml";
-    } else if (/json$/i.test(search_path)) {
-      isXml = false;
-    }
-    var path = "/" + search_path;
-    // monitor main search box;
-
-    var onPopupClose = function (e) {
-      $('.popup').hide();
-      $('#local-search-input').val('');
-      $('.search-result-list').remove();
-      $('#no-result').remove();
-      $(".local-search-pop-overlay").remove();
-      $('body').css('overflow', '');
-    }
-
-    function proceedsearch() {
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
-        .css('overflow', 'hidden');
-      $('.search-popup-overlay').click(onPopupClose);
-      $('.popup').toggle();
-      var $localSearchInput = $('#local-search-input');
-      $localSearchInput.attr("autocapitalize", "none");
-      $localSearchInput.attr("autocorrect", "off");
-      $localSearchInput.focus();
-    }
-
-    // search function;
-    var searchFunc = function(path, search_id, content_id) {
-      'use strict';
-
-      // start loading animation
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
-          '<div id="search-loading-icon">' +
-          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
-          '</div>' +
-          '</div>')
-        .css('overflow', 'hidden');
-      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
-
-      $.ajax({
-        url: path,
-        dataType: isXml ? "xml" : "json",
-        async: true,
-        success: function(res) {
-          // get the contents from search data
-          isfetched = true;
-          $('.popup').detach().appendTo('.header-inner');
-          var datas = isXml ? $("entry", res).map(function() {
-            return {
-              title: $("title", this).text(),
-              content: $("content",this).text(),
-              url: $("url" , this).text()
-            };
-          }).get() : res;
-          var input = document.getElementById(search_id);
-          var resultContent = document.getElementById(content_id);
-          var inputEventFunction = function() {
-            var searchText = input.value.trim().toLowerCase();
-            var keywords = searchText.split(/[\s\-]+/);
-            if (keywords.length > 1) {
-              keywords.push(searchText);
-            }
-            var resultItems = [];
-            if (searchText.length > 0) {
-              // perform local searching
-              datas.forEach(function(data) {
-                var isMatch = false;
-                var hitCount = 0;
-                var searchTextCount = 0;
-                var title = data.title.trim();
-                var titleInLowerCase = title.toLowerCase();
-                var content = data.content.trim().replace(/<[^>]+>/g,"");
-                var contentInLowerCase = content.toLowerCase();
-                var articleUrl = decodeURIComponent(data.url);
-                var indexOfTitle = [];
-                var indexOfContent = [];
-                // only match articles with not empty titles
-                if(title != '') {
-                  keywords.forEach(function(keyword) {
-                    function getIndexByWord(word, text, caseSensitive) {
-                      var wordLen = word.length;
-                      if (wordLen === 0) {
-                        return [];
-                      }
-                      var startPosition = 0, position = [], index = [];
-                      if (!caseSensitive) {
-                        text = text.toLowerCase();
-                        word = word.toLowerCase();
-                      }
-                      while ((position = text.indexOf(word, startPosition)) > -1) {
-                        index.push({position: position, word: word});
-                        startPosition = position + wordLen;
-                      }
-                      return index;
-                    }
-
-                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
-                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
-                  });
-                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
-                    isMatch = true;
-                    hitCount = indexOfTitle.length + indexOfContent.length;
-                  }
-                }
-
-                // show search results
-
-                if (isMatch) {
-                  // sort index by position of keyword
-
-                  [indexOfTitle, indexOfContent].forEach(function (index) {
-                    index.sort(function (itemLeft, itemRight) {
-                      if (itemRight.position !== itemLeft.position) {
-                        return itemRight.position - itemLeft.position;
-                      } else {
-                        return itemLeft.word.length - itemRight.word.length;
-                      }
-                    });
-                  });
-
-                  // merge hits into slices
-
-                  function mergeIntoSlice(text, start, end, index) {
-                    var item = index[index.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    var hits = [];
-                    var searchTextCountInSlice = 0;
-                    while (position + word.length <= end && index.length != 0) {
-                      if (word === searchText) {
-                        searchTextCountInSlice++;
-                      }
-                      hits.push({position: position, length: word.length});
-                      var wordEnd = position + word.length;
-
-                      // move to next position of hit
-
-                      index.pop();
-                      while (index.length != 0) {
-                        item = index[index.length - 1];
-                        position = item.position;
-                        word = item.word;
-                        if (wordEnd > position) {
-                          index.pop();
-                        } else {
-                          break;
-                        }
-                      }
-                    }
-                    searchTextCount += searchTextCountInSlice;
-                    return {
-                      hits: hits,
-                      start: start,
-                      end: end,
-                      searchTextCount: searchTextCountInSlice
-                    };
-                  }
-
-                  var slicesOfTitle = [];
-                  if (indexOfTitle.length != 0) {
-                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
-                  }
-
-                  var slicesOfContent = [];
-                  while (indexOfContent.length != 0) {
-                    var item = indexOfContent[indexOfContent.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    // cut out 100 characters
-                    var start = position - 20;
-                    var end = position + 80;
-                    if(start < 0){
-                      start = 0;
-                    }
-                    if (end < position + word.length) {
-                      end = position + word.length;
-                    }
-                    if(end > content.length){
-                      end = content.length;
-                    }
-                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
-                  }
-
-                  // sort slices in content by search text's count and hits' count
-
-                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
-                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
-                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
-                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
-                      return sliceRight.hits.length - sliceLeft.hits.length;
-                    } else {
-                      return sliceLeft.start - sliceRight.start;
-                    }
-                  });
-
-                  // select top N slices in content
-
-                  var upperBound = parseInt('1');
-                  if (upperBound >= 0) {
-                    slicesOfContent = slicesOfContent.slice(0, upperBound);
-                  }
-
-                  // highlight title and content
-
-                  function highlightKeyword(text, slice) {
-                    var result = '';
-                    var prevEnd = slice.start;
-                    slice.hits.forEach(function (hit) {
-                      result += text.substring(prevEnd, hit.position);
-                      var end = hit.position + hit.length;
-                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
-                      prevEnd = end;
-                    });
-                    result += text.substring(prevEnd, slice.end);
-                    return result;
-                  }
-
-                  var resultItem = '';
-
-                  if (slicesOfTitle.length != 0) {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
-                  } else {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
-                  }
-
-                  slicesOfContent.forEach(function (slice) {
-                    resultItem += "<a href='" + articleUrl + "'>" +
-                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
-                      "...</p>" + "</a>";
-                  });
-
-                  resultItem += "</li>";
-                  resultItems.push({
-                    item: resultItem,
-                    searchTextCount: searchTextCount,
-                    hitCount: hitCount,
-                    id: resultItems.length
-                  });
-                }
-              })
-            };
-            if (keywords.length === 1 && keywords[0] === "") {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
-            } else if (resultItems.length === 0) {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
-            } else {
-              resultItems.sort(function (resultLeft, resultRight) {
-                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
-                  return resultRight.searchTextCount - resultLeft.searchTextCount;
-                } else if (resultLeft.hitCount !== resultRight.hitCount) {
-                  return resultRight.hitCount - resultLeft.hitCount;
-                } else {
-                  return resultRight.id - resultLeft.id;
-                }
-              });
-              var searchResultList = '<ul class=\"search-result-list\">';
-              resultItems.forEach(function (result) {
-                searchResultList += result.item;
-              })
-              searchResultList += "</ul>";
-              resultContent.innerHTML = searchResultList;
-            }
-          }
-
-          if ('auto' === 'auto') {
-            input.addEventListener('input', inputEventFunction);
-          } else {
-            $('.search-icon').click(inputEventFunction);
-            input.addEventListener('keypress', function (event) {
-              if (event.keyCode === 13) {
-                inputEventFunction();
-              }
-            });
-          }
-
-          // remove loading animation
-          $(".local-search-pop-overlay").remove();
-          $('body').css('overflow', '');
-
-          proceedsearch();
-        }
-      });
-    }
-
-    // handle and trigger popup window;
-    $('.popup-trigger').click(function(e) {
-      e.stopPropagation();
-      if (isfetched === false) {
-        searchFunc(path, 'local-search-input', 'local-search-result');
-      } else {
-        proceedsearch();
-      };
-    });
-
-    $('.popup-btn-close').click(onPopupClose);
-    $('.popup').click(function(e){
-      e.stopPropagation();
-    });
-    $(document).on('keyup', function (event) {
-      var shouldDismissSearchPopup = event.which === 27 &&
-        $('.search-popup').is(':visible');
-      if (shouldDismissSearchPopup) {
-        onPopupClose();
-      }
-    });
-  </script>
-
-
-
-
-
-  
-
-  
-  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
-  <script>AV.initialize("bABdvcserWST8hctdXncW0he-gzGzoHsz", "Ng2B24N8TgiGzK8fKds99MLc");</script>
-  <script>
-    function showTime(Counter) {
-      var query = new AV.Query(Counter);
-      var entries = [];
-      var $visitors = $(".leancloud_visitors");
-
-      $visitors.each(function () {
-        entries.push( $(this).attr("id").trim() );
-      });
-
-      query.containedIn('url', entries);
-      query.find()
-        .done(function (results) {
-          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
-
-          if (results.length === 0) {
-            $visitors.find(COUNT_CONTAINER_REF).text(0);
-            return;
-          }
-
-          for (var i = 0; i < results.length; i++) {
-            var item = results[i];
-            var url = item.get('url');
-            var time = item.get('time');
-            var element = document.getElementById(url);
-
-            $(element).find(COUNT_CONTAINER_REF).text(time);
-          }
-          for(var i = 0; i < entries.length; i++) {
-            var url = entries[i];
-            var element = document.getElementById(url);
-            var countSpan = $(element).find(COUNT_CONTAINER_REF);
-            if( countSpan.text() == '') {
-              countSpan.text(0);
-            }
-          }
-        })
-        .fail(function (object, error) {
-          console.log("Error: " + error.code + " " + error.message);
-        });
-    }
-
-    function addCount(Counter) {
-      var $visitors = $(".leancloud_visitors");
-      var url = $visitors.attr('id').trim();
-      var title = $visitors.attr('data-flag-title').trim();
-      var query = new AV.Query(Counter);
-
-      query.equalTo("url", url);
-      query.find({
-        success: function(results) {
-          if (results.length > 0) {
-            var counter = results[0];
-            counter.fetchWhenSave(true);
-            counter.increment("time");
-            counter.save(null, {
-              success: function(counter) {
-                var $element = $(document.getElementById(url));
-                $element.find('.leancloud-visitors-count').text(counter.get('time'));
-              },
-              error: function(counter, error) {
-                console.log('Failed to save Visitor num, with error message: ' + error.message);
-              }
-            });
-          } else {
-            var newcounter = new Counter();
-            /* Set ACL */
-            var acl = new AV.ACL();
-            acl.setPublicReadAccess(true);
-            acl.setPublicWriteAccess(true);
-            newcounter.setACL(acl);
-            /* End Set ACL */
-            newcounter.set("title", title);
-            newcounter.set("url", url);
-            newcounter.set("time", 1);
-            newcounter.save(null, {
-              success: function(newcounter) {
-                var $element = $(document.getElementById(url));
-                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
-              },
-              error: function(newcounter, error) {
-                console.log('Failed to create');
-              }
-            });
-          }
-        },
-        error: function(error) {
-          console.log('Error:' + error.code + " " + error.message);
-        }
-      });
-    }
-
-    $(function() {
-      var Counter = AV.Object.extend("Counter");
-      if ($('.leancloud_visitors').length == 1) {
-        addCount(Counter);
-      } else if ($('.post-title-link').length > 1) {
-        showTime(Counter);
-      }
-    });
-  </script>
-
-
-
-  
-
-  
-
-  
-  
-
-  
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      });
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      });
-    </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
-  
-
-
-  
-
-  
+  }, window.Valine);
+});
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </body>
 </html>

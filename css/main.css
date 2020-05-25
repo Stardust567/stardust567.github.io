@@ -1168,7 +1168,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #5c9d7d;
+  background: #53ff77;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2547,7 +2547,7 @@ mjx-container + br {
   padding: 0;
 }
 body {
-  background: url("https://sm.ms/image/7HFhpYAru8GKE4T");
+  background: url("https://i.loli.net/2020/05/25/7HFhpYAru8GKE4T.jpg");
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;

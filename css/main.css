@@ -925,7 +925,7 @@ pre .javascript .function {
 }
 @media (min-width: 1200px) {
   .main-inner {
-    width: 1060px;
+    width: 1050px;
   }
 }
 @media (min-width: 1600px) {
@@ -947,7 +947,7 @@ pre .javascript .function {
 }
 @media (min-width: 1200px) {
   .header-inner {
-    width: 1060px;
+    width: 1050px;
   }
 }
 @media (min-width: 1600px) {
@@ -1168,7 +1168,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #53ff77;
+  background: #fa2;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -1386,7 +1386,7 @@ pre .javascript .function {
 }
 @media (min-width: 1200px) {
   .footer-inner {
-    width: 1060px;
+    width: 1050px;
   }
 }
 @media (min-width: 1600px) {
@@ -2255,7 +2255,7 @@ mjx-container + br {
 }
 @media (min-width: 1200px) {
   .header {
-    width: 1060px;
+    width: 1050px;
   }
 }
 @media (min-width: 1600px) {
@@ -2584,6 +2584,7 @@ body {
 }
 .sidebar {
   opacity: 0.9;
+  max-width: 1200px;
   box-shadow: 0 2px 6px #dbdbdb;
 }
 .sidebar p {
@@ -2598,6 +2599,15 @@ body {
   color: #5d6d7e;
   font-size: 13px;
 }
+.header {
+  width: 69%;
+}
+.container .main-inner {
+  width: 69%;
+}
+.content-wrap {
+  width: calc(100% - 260px);
+}
 code {
   color: #ff7600;
   background: rgba(254,249,231,0.1);
@@ -2605,6 +2615,9 @@ code {
 }
 .btn {
   border-radius: 12px;
+}
+.content-wrap {
+  padding: 30px;
 }
 .sidebar-inner {
   background: rgba(255,255,255,0.5);

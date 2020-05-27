@@ -30,7 +30,7 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://i.loli.net/2018/12/14/5c1350d47ce76.png">
 <meta property="og:image" content="https://i.loli.net/2018/12/14/5c1374048ece8.png">
-<meta property="og:updated_time" content="2020-05-25T02:14:57.815Z">
+<meta property="og:updated_time" content="2020-05-27T00:31:01.368Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hidden Markov Model">
 <meta name="twitter:description" content="Hidden Markov Model(HMM)是一种关于时序的概率模型，最初由 L. E. Baum 和其它一些学者发表在一系列的统计学论文中，随后在语言识别，自然语言处理以及生物信息等领域体现了很大的价值。本文通过个人的理解以及《统计学习方法》 中的公式推导对HMM的定义及其三个基本问题进行了简单的介绍。">
@@ -282,7 +282,9 @@
 <script type="math/tex; mode=display">p(x_1,...,x_n)=p(x_1)\prod_{i=2}^n p(x_n|x_{n-1}) \quad</script><p> 由于每个事件发生的概率仅于前一件事件有关，即有：</p>
 <script type="math/tex; mode=display">p(x_n |x_1,…,x_{n-1} )=p(x_n |x_{n-1})</script><p> 下面介绍马尔可夫链的一个重要性质，<strong>当n趋向于无穷时，p（Xn）趋向于一个定值。</strong>首先将每个事件的转移概率相整合成一个转移概率矩阵，假设每个事件的发生概率只与前一个事件的状态有关，共计n个状态的话，我们可以用一个n*n的矩阵P来表示转移概率，即 当我们有初始状态矩阵 时（ 表示初始状态为第i个状态的概率）则第n个状态的概率矩阵为 通过线性代数知识将转移概率矩阵做对角化，可得无穷个P矩阵相乘为一个常数，即马尔可夫链的极限收敛定理，马尔可夫链的这一性质对于其实际运用有重要的意义与作用。</p>
 <h2 id="HMM定义"><a href="#HMM定义" class="headerlink" title="HMM定义"></a>HMM定义</h2><p> 在正常的马尔可夫模型中，状态对于观察者来说是直接可见的。这样状态的转换概率便是全部的参数。而在实际情况中，较为本质的状态转换通常是较为<strong>隐性即无法实际观测的</strong>，但是受该状态影响的变量是我们所可以观测的，由此，我们来介绍隐马尔可夫模型。在隐马尔可夫模型中，状态并不是直接可见的，但受状态影响的某些变量则是可见的。每一个隐性状态对于可观测的显性状态都有一概率分布，我们将这个概率称之为<strong>发射概率</strong>。<br> 由此，如果我们有n个隐性状态的状态集合Q和有m个显性状态的观测集合V的话，假设I是长度为T的状态序列，O是对应的观测序列。我们就可设置转移一个$n \times n$的转移概率矩阵A和一个$m \times n$的发射概率矩阵B，π是初始状态概率向量：</p>
-<p>$n \times n$的转移概率矩阵A:<br> $ \qquad a_{ij}=P(i_{t+1}=q_j│i_t=q_i ) \qquad i=1,…,N;j=1,…,N$<br>$m \times n$的发射概率矩阵B:<br> $ \qquad b_j (k)=P(o_t=v_k│i_t=q_j ) \qquad k=1,…,M;j=1,…,N$<br>π是初始状态概率向量:<br> $ \qquad π_i=P(i_1=q_i) \qquad i=1,…,N;j=1,…,N$</p>
+<p>$n \times n$的转移概率矩阵A:<br> $ \qquad a_{ij}=P(i_{t+1}=q_j│i_t=q_i ) \qquad i=1,…,N;j=1,…,N$</p>
+<p>$m \times n$的发射概率矩阵B:<br> $ \qquad b_j (k)=P(o_t=v_k│i_t=q_j ) \qquad k=1,…,M;j=1,…,N$</p>
+<p>π是初始状态概率向量:<br> $ \qquad π_i=P(i_1=q_i) \qquad i=1,…,N;j=1,…,N$</p>
 <p> 状态转移概率矩阵A与初始状态概率向量π确定了隐藏的马尔可夫链，生成不可观测的状态序列。发射概率矩阵B确定了如何从状态生成观测，与状态序列综合确定了如何产生观测序列。隐马尔可夫模型就是由基本的A,B,π三个矩阵或向量加上具体的状态集合Q和观测序列V所构成的。<br> 接下来我以维基百科上的一个经典例子来作为算法实际运用的实例 ：</p>
 <blockquote>
 <p>“Consider two friends, Alice and Bob, who live far apart from each other and who talk together daily over the telephone about what they did that day. Bob is only interested in three activities: walking in the park, shopping, and cleaning his apartment. The choice of what to do is determined exclusively by the weather on a given day. Alice has no definite information about the weather, but she knows general trends. Based on what Bob tells her he did each day, Alice tries to guess what the weather must have been like.<br>Alice believes that the weather operates as a discrete Markov chain. There are two states, “Rainy” and “Sunny”, but she cannot observe them directly, that is, they are hidden from her. On each day, there is a certain chance that Bob will perform one of the following activities, depending on the weather: “walk”, “shop”, or “clean”. Since Bob tells Alice about his activities, those are the observations. The entire system is that of a hidden Markov model (HMM).<br>Alice knows the general weather trends in the area, and what Bob likes to do on average. In other words, the parameters of the HMM are known. 。”</p>
@@ -454,7 +456,7 @@ Q(\lambda,\hat\lambda)=\sum_I[log\pi_(i_1 ) P(O,I|\lambda)]\\\\
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-count">35</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -490,12 +492,12 @@ Q(\lambda,\hat\lambda)=\sum_I[log\pi_(i_1 ) P(O,I|\lambda)]\\\\
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">222k</span>
+    <span title="站点总字数">227k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">6:44</span>
+    <span title="站点阅读时长">6:53</span>
 </div>
 
         

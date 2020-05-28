@@ -178,7 +178,7 @@ body {
   background: var(--body-bg-color);
   color: var(--text-color);
   font-family: 'Lato', "PingFang SC", "Microsoft YaHei", sans-serif;
-  font-size: 0.85em;
+  font-size: 0.88em;
   line-height: 2;
 }
 @media (max-width: 991px) {
@@ -475,7 +475,7 @@ pre .addition {
   background: #008000;
 }
 pre .meta {
-  color: #fdffab;
+  color: #769fcd;
   -moz-user-select: none;
   -ms-user-select: none;
   -webkit-user-select: none;
@@ -1168,7 +1168,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #e332d4;
+  background: #e5f0d9;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2579,9 +2579,6 @@ body {
 .header-inner a {
   font-size: 13px;
 }
-.text {
-  font-size: 16px;
-}
 .sidebar {
   opacity: 0.9;
   max-width: 1200px;
@@ -2599,14 +2596,47 @@ body {
   color: #5d6d7e;
   font-size: 13px;
 }
-.header {
-  width: 69%;
+header {
+  width: 69% !important;
+}
+header.post-header {
+  width: auto !important;
 }
 .container .main-inner {
   width: 69%;
 }
 .content-wrap {
   width: calc(100% - 260px);
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  .header {
+    width: auto !important;
+  }
+}
+@media (max-width: 767px) {
+  .header {
+    width: auto !important;
+  }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  .container .main-inner {
+    width: auto !important;
+  }
+}
+@media (max-width: 767px) {
+  .container .main-inner {
+    width: auto !important;
+  }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  .content-wrap {
+    width: 100% !important;
+  }
+}
+@media (max-width: 767px) {
+  .content-wrap {
+    width: 100% !important;
+  }
 }
 code {
   color: #ff7600;

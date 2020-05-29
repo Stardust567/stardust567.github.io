@@ -72,13 +72,11 @@
 
 
 
-  <meta name="keywords" content="GAP,Go,goroutine,concurrency,">
+  <meta name="keywords" content="GAP,concurrency,Go,goroutine,">
 
 
 
 
-
-  <link rel="alternate" href="/atom.xml" title="Star Trail" type="application/atom+xml">
 
 
 
@@ -86,7 +84,7 @@
 
 
 <meta name="description" content="goroutine是Go并行设计的核心。goroutine算是协程，它比线程更小，十几个goroutine可能体现在底层就是五六个线程，Go语言内部实现了这些goroutine之间的内存共享。执行goroutine只需极少的栈内存(大概是4~5KB)。goroutine比thread更易用、更高效、更轻便。">
-<meta name="keywords" content="GAP,Go,goroutine,concurrency">
+<meta name="keywords" content="GAP,concurrency,Go,goroutine">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Go与并发">
 <meta property="og:url" content="https://stardust567.github.io/post/28fa.html">
@@ -145,8 +143,18 @@
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
   ga('create', '130666690', 'auto');
   ga('send', 'pageview');
-</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</script>
 
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?HqDOiGSjrA";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 
@@ -572,11 +580,11 @@
           
             <a href="/tags/GAP/" rel="tag"><i class="fa fa-tag"></i> GAP</a>
           
+            <a href="/tags/concurrency/" rel="tag"><i class="fa fa-tag"></i> concurrency</a>
+          
             <a href="/tags/Go/" rel="tag"><i class="fa fa-tag"></i> Go</a>
           
             <a href="/tags/goroutine/" rel="tag"><i class="fa fa-tag"></i> goroutine</a>
-          
-            <a href="/tags/concurrency/" rel="tag"><i class="fa fa-tag"></i> concurrency</a>
           
         </div>
       
@@ -681,7 +689,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -703,7 +711,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-count">36</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -711,13 +719,6 @@
 
           </nav>
 
-          
-            <div class="feed-link motion-element">
-              <a href="/atom.xml" rel="alternate">
-                <i class="fa fa-rss"></i>
-                RSS
-              </a>
-            </div>
           
 
           
@@ -1385,13 +1386,28 @@
         showTime(Counter);
       }
     });
-  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  </script>
 
 
 
   
 
   
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
 
   
   

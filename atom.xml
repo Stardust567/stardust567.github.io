@@ -37,11 +37,11 @@
     
       <category term="GAP" scheme="https://stardust567.github.io/tags/GAP/"/>
     
+      <category term="concurrency" scheme="https://stardust567.github.io/tags/concurrency/"/>
+    
       <category term="Python" scheme="https://stardust567.github.io/tags/Python/"/>
     
       <category term="asyncio" scheme="https://stardust567.github.io/tags/asyncio/"/>
-    
-      <category term="concurrency" scheme="https://stardust567.github.io/tags/concurrency/"/>
     
   </entry>
   
@@ -200,11 +200,11 @@
     
       <category term="GAP" scheme="https://stardust567.github.io/tags/GAP/"/>
     
-      <category term="concurrency" scheme="https://stardust567.github.io/tags/concurrency/"/>
-    
       <category term="Go" scheme="https://stardust567.github.io/tags/Go/"/>
     
       <category term="goroutine" scheme="https://stardust567.github.io/tags/goroutine/"/>
+    
+      <category term="concurrency" scheme="https://stardust567.github.io/tags/concurrency/"/>
     
   </entry>
   

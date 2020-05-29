@@ -186,7 +186,7 @@ th {
 body {
   position: relative;
   font-family: 'Lato', "PingFang SC", "Microsoft YaHei", sans-serif;
-  font-size: 14px;
+  font-size: 15px;
   line-height: 2;
   color: #555;
   background: #f5f7f9;
@@ -203,7 +203,7 @@ body {
 }
 @media (min-width: 1600px) {
   body {
-    font-size: 16px;
+    font-size: 17px;
   }
 }
 h1,
@@ -445,7 +445,7 @@ body {
 .header-inner {
   margin: 0 auto;
   padding: 100px 0 70px;
-  width: 780px;
+  width: 840px;
 }
 @media (min-width: 1600px) {
   .container .header-inner {
@@ -457,7 +457,7 @@ body {
 }
 .main-inner {
   margin: 0 auto;
-  width: 780px;
+  width: 840px;
 }
 @media (min-width: 1600px) {
   .container .main-inner {
@@ -474,7 +474,7 @@ body {
 .footer-inner {
   box-sizing: border-box;
   margin: 20px auto;
-  width: 780px;
+  width: 840px;
 }
 @media (min-width: 1600px) {
   .container .footer-inner {
@@ -1238,7 +1238,7 @@ pre .javascript .function {
 .post-body .figure .caption {
   margin: -20px auto 15px;
   text-align: center;
-  font-size: 14px;
+  font-size: 15px;
   color: #999;
   font-weight: bold;
   line-height: 1;
@@ -1645,6 +1645,13 @@ pre .javascript .function {
 .fancybox-close:hover {
   border: none;
 }
+.post-copyright {
+  margin: 2em 0 0;
+  padding: 0.5em 1em;
+  border-left: 3px solid #ff1700;
+  background-color: #f9f9f9;
+  list-style: none;
+}
 .rtl.post-body p,
 .rtl.post-body a,
 .rtl.post-body h1,
@@ -1828,7 +1835,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #2a01ff;
+  background: #f1ffb6;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -2604,7 +2611,7 @@ pre .javascript .function {
 .header {
   position: relative;
   margin: 0 auto;
-  width: 1050px;
+  width: 1110px;
 }
 @media (min-width: 768px) and (max-width: 991px) {
   .header {
@@ -2664,7 +2671,7 @@ pre .javascript .function {
   }
 }
 .container .main-inner {
-  width: 1050px;
+  width: 1110px;
 }
 @media (min-width: 768px) and (max-width: 991px) {
   .container .main-inner {
@@ -2679,8 +2686,8 @@ pre .javascript .function {
 .content-wrap {
   float: right;
   box-sizing: border-box;
-  padding: 40px;
-  width: 780px;
+  padding: 35px;
+  width: 840px;
   background: #fff;
   min-height: 700px;
   box-shadow: initial;
@@ -2723,7 +2730,7 @@ pre .javascript .function {
   display: none;
 }
 .footer-inner {
-  width: 1050px;
+  width: 1110px;
   padding-left: 260px;
 }
 @media (min-width: 768px) and (max-width: 991px) {
@@ -2997,7 +3004,7 @@ pre .javascript .function {
   }
 }
 body {
-  background: url("/images/background.jpg");
+  background: url("https://i.loli.net/2020/05/29/Y5mhbcV8MZk2NoG.jpg");
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;

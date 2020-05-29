@@ -9,9 +9,9 @@
       </categories>
       <tags>
         <tag>GAP</tag>
-        <tag>concurrency</tag>
         <tag>Python</tag>
         <tag>asyncio</tag>
+        <tag>concurrency</tag>
       </tags>
   </entry>
   <entry>
@@ -87,9 +87,9 @@
       </categories>
       <tags>
         <tag>GAP</tag>
+        <tag>concurrency</tag>
         <tag>Go</tag>
         <tag>goroutine</tag>
-        <tag>concurrency</tag>
       </tags>
   </entry>
   <entry>

@@ -73,7 +73,7 @@
 
 
 
-  <meta name="keywords" content="GAP,concurrency,Go,goroutine,">
+  <meta name="keywords" content="GAP,Go,goroutine,concurrency,">
 
 
 
@@ -85,7 +85,7 @@
 
 
 <meta name="description" content="goroutine是Go并行设计的核心。goroutine算是协程，它比线程更小，十几个goroutine可能体现在底层就是五六个线程，Go语言内部实现了这些goroutine之间的内存共享。执行goroutine只需极少的栈内存(大概是4~5KB)。goroutine比thread更易用、更高效、更轻便。">
-<meta name="keywords" content="GAP,concurrency,Go,goroutine">
+<meta name="keywords" content="GAP,Go,goroutine,concurrency">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Go与并发">
 <meta property="og:url" content="https://stardust567.github.io/post/28fa.html">
@@ -544,6 +544,35 @@
     
 
     
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>投币</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.png" alt="Stardust567 微信">
+        <p>微信</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Stardust567 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
 
     
       <div>
@@ -558,7 +587,7 @@
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
-    本博客所有文章均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议，BTW，转载前请先发邮件与我沟通 : )
+    本博客所有文章均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议，转载请务必署名，欢迎邮件私我讨论交流。
   </li>
 </ul>
 
@@ -571,11 +600,11 @@
           
             <a href="/tags/GAP/" rel="tag"><i class="fa fa-tag"></i> GAP</a>
           
-            <a href="/tags/concurrency/" rel="tag"><i class="fa fa-tag"></i> concurrency</a>
-          
             <a href="/tags/Go/" rel="tag"><i class="fa fa-tag"></i> Go</a>
           
             <a href="/tags/goroutine/" rel="tag"><i class="fa fa-tag"></i> goroutine</a>
+          
+            <a href="/tags/concurrency/" rel="tag"><i class="fa fa-tag"></i> concurrency</a>
           
         </div>
       
@@ -680,7 +709,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

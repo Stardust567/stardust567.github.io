@@ -92,7 +92,7 @@
 <meta property="og:site_name" content="Star Trail">
 <meta property="og:description" content="结合 MIT-6.828-2019 的各个 lab 来简单写下学习操作系统的学习心得。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-06-05T14:40:37.998Z">
+<meta property="og:updated_time" content="2020-06-05T15:35:03.898Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MIT 6.828">
 <meta name="twitter:description" content="结合 MIT-6.828-2019 的各个 lab 来简单写下学习操作系统的学习心得。">
@@ -395,7 +395,7 @@
                   <span class="post-meta-item-text">共计&#58;</span>
                 
                 <span title="共计">
-                  987 字
+                  1.3k 字
                 </span>
               
 
@@ -411,7 +411,7 @@
                   <span class="post-meta-item-text">时长 &asymp;</span>
                 
                 <span title="时长">
-                  4 min
+                  6 min
                 </span>
               
             </div>
@@ -549,9 +549,16 @@ table th:nth-of-type(2){width: 70%;}
 <blockquote>
 <p>child: exiting<br>parent: child=31<br>child 31 is done</p>
 </blockquote>
-<p>再比如常用的cat程序,<code>read(fd, buf, n)</code></p>
+<p>下面代码截取自常用的cat程序，从标准输入复制数据到标准输出。<code>read(fd, buf, n)</code>，最多从fd对应文件里读n bytes到buf中，return读取的字节数。<code>write(fd, buf, n)</code>最多从buf里写n bytes到fd对应文件中，return 写入的字节数。<code>n = read() / write()</code>每次读写都会把对应fd的offset往前推n bytes，让读写可以源源不断的按序进行。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> buf[<span class="number">512</span>];</span><br><span class="line"><span class="keyword">int</span> n;</span><br><span class="line"><span class="keyword">for</span>(;;)&#123;</span><br><span class="line">	n = read(<span class="number">0</span>, buf, <span class="keyword">sizeof</span>(buf));</span><br><span class="line">	<span class="keyword">if</span>(n == <span class="number">0</span>) <span class="keyword">break</span>;</span><br><span class="line">	<span class="keyword">if</span>(n &lt; <span class="number">0</span>)&#123;</span><br><span class="line">		<span class="built_in">fprintf</span>(<span class="number">2</span>, <span class="string">"read error\en"</span>);</span><br><span class="line">		<span class="built_in">exit</span>();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(write(<span class="number">1</span>, buf, n) != n)&#123;</span><br><span class="line">		<span class="built_in">fprintf</span>(<span class="number">2</span>, <span class="string">"write error\en"</span>);</span><br><span class="line">		<span class="built_in">exit</span>();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="sleep"><a href="#sleep" class="headerlink" title="sleep"></a>sleep</h2>
+<h2 id="sleep"><a href="#sleep" class="headerlink" title="sleep"></a>sleep</h2><p>Talk is cheap，我们尝试下6.828的第一个简单的exercise，在xv6/user/下写一个sleep.c吧：</p>
+<blockquote>
+<p>Implement the UNIX program sleep for xv6; your sleep should pause for a user-specified number of ticks. (A tick is a notion of time defined by the xv6 kernel, namely the time between two interrupts from the timer chip.) Your solution should be in the file <code>user/sleep.c</code>.</p>
+</blockquote>
+<p>TIPS: The command-line argument is passed as a string; you can convert it to an integer using <code>atoi</code> (see user/ulib.c)</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"kernel/types.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"kernel/stat.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"user/user.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(argc != <span class="number">2</span>) write(<span class="number">2</span>, <span class="string">"Error message"</span>, <span class="built_in">strlen</span>(<span class="string">"Error message"</span>));</span><br><span class="line">    <span class="keyword">int</span> time = atoi(argv[<span class="number">1</span>]);</span><br><span class="line">    sleep(time);</span><br><span class="line">    <span class="built_in">exit</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后打开Makefie输入<code>/UPROGS</code>定位以后加上<code>$U/_sleep\</code>然后wq再键入 <code>make fs.img</code>编译user programs即可。完成之后make qemu输入<code>sleep 20</code>测试下功能是否正常。</p>
+
       
     </div>
     

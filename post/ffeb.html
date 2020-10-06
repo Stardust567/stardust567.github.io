@@ -93,7 +93,8 @@
 <meta property="og:description" content="结合 MIT-6.828-2019 的各个 lab 来简单写下学习操作系统的学习心得。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.loli.net/2020/06/16/J9gEbckrvpmwqOf.png">
-<meta property="og:updated_time" content="2020-07-02T12:49:28.097Z">
+<meta property="og:image" content="https://i.loli.net/2020/10/04/JLqajpNC5sBvr3Z.png">
+<meta property="og:updated_time" content="2020-10-06T08:37:51.899Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MIT 6.828">
 <meta name="twitter:description" content="结合 MIT-6.828-2019 的各个 lab 来简单写下学习操作系统的学习心得。">
@@ -398,7 +399,7 @@
                   <span class="post-meta-item-text">共计&#58;</span>
                 
                 <span title="共计">
-                  7.6k 字
+                  9.9k 字
                 </span>
               
 
@@ -414,7 +415,7 @@
                   <span class="post-meta-item-text">时长 &asymp;</span>
                 
                 <span title="时长">
-                  39 min
+                  49 min
                 </span>
               
             </div>
@@ -436,6 +437,7 @@
 
       
         <p>结合 MIT-6.828-2019 的各个 lab 来简单写下学习操作系统的学习心得。<a id="more"></a></p>
+<p>在进行相关labs前建议先看看xv6的<a href="https://github.com/ranxian/xv6-chinese" target="_blank" rel="noopener">中文文档</a>（当然能直接看英文文档更好）</p>
 <h1 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h1><p>实名羡慕MIT学生不用搭建xv6环境，直接ssh连接MIT提供的配好的环境就可。</p>
 <blockquote>
 <p>xv6 is a re-implementation of Dennis Ritchie’s and Ken Thompson’s Unix Version 6 (v6).  xv6 loosely follows the structure and style of v6, but is implemented for a modern RISC-V multiprocessor using ANSI C.</p>
@@ -688,6 +690,85 @@ table th:nth-of-type(2){width: 70%;}
 </ul>
 <p>As the page below the stack is set PTE_V but not set PTE_U, you can distinguish it in <code>mappages()</code> at vm.c:164. 在vm.c里的mappages()函数把if(*pte &amp; PTE_V)  panic(“remap”);修改为</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(*pte &amp; PTE_V) &#123;</span><br><span class="line">      <span class="keyword">if</span>(*pte &amp; PTE_U) panic(<span class="string">"remap"</span>);	</span><br><span class="line">      <span class="keyword">else</span> <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="Multithreading"><a href="#Multithreading" class="headerlink" title="Multithreading"></a>Multithreading</h1><p>To start the lab, switch to the trap branch:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git fetch</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git checkout syscall</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Before writing code, you should make sure you have read “Chapter 6: Scheduling” from the <a href="https://pdos.csail.mit.edu/6.828/2020/xv6/book-riscv-rev1.pdf" target="_blank" rel="noopener">xv6 book</a> and studied the corresponding code.</p>
+</blockquote>
+<h2 id="多路复用"><a href="#多路复用" class="headerlink" title="多路复用"></a>多路复用</h2><p> 关于IO多路复用，可以看上一篇 <a href="https://stardust567.github.io/post/ddca.html">Linux IO</a> 来回顾一下知识点: )</p>
+<p>关于xv6的IO多路复用，实现如下：当一个进程等待磁盘请求时，xv6 使之进入睡眠状态，然后调度执行另一个进程。另外，当一个进程耗尽了它在处理器上运行的时间片（100ms）后，xv6 使用时钟中断强制它停止运行，这样调度器才能调度运行其他进程。这样的多路复用机制为进程提供了独占处理器的假象，类似于 xv6 使用内存分配器和页表硬件为进程提供了独占内存的假象。</p>
+<h3 id="xv6进程切换"><a href="#xv6进程切换" class="headerlink" title="xv6进程切换"></a>xv6进程切换</h3><ol>
+<li>如何让上下文切换透明化？xv6 只简单地使用时钟中断处理程序来驱动上下文切换。</li>
+<li>可能出现多个 CPU 同时切换进程的情况，所以必须使用一个带锁的方案来避免竞争。</li>
+<li>进程退出时必须释放其占用内存与资源，但由于它本身在使用自己的资源（譬如其内核栈），所以不能由该进程本身释放其占有的所有资源。</li>
+</ol>
+<p>同时xv6 必须为进程提供互相协作的方法。譬如，父进程需要等待子进程结束，以及读取管道数据的进程需要等待其他进程向管道中写入数据。与其让这些等待中的进程消耗 CPU 资源，不如让它们暂时放弃 CPU，进入睡眠状态来等待其他进程发出事件来唤醒它们。但我们必须要小心设计以防睡眠进程遗漏事件通知。</p>
+<p><img src="https://i.loli.net/2020/10/04/JLqajpNC5sBvr3Z.png" alt="6828-processSwitch.png"><br>如图，xv6 在低层次中实现了两种上下文切换：从进程的内核线程切换到当前 CPU 的调度器线程，从调度器线程到进程的内核线程。xv6 永远不会直接从用户态进程切换到另一个用户态进程；这种切换是通过用户态-内核态切换（系统调用或中断）、切换到调度器、切换到新进程的内核线程、最后这个陷入返回实现的。</p>
+<p>每个 xv6 进程都有自己的内核栈以及寄存器集合。每个 CPU 都有一个单独的调度器线程，这样调度就不会发生在进程的内核线程中，而是在此调度器线程中。线程的切换涉及到了保存旧线程的 CPU 寄存器，恢复新线程之前保存的寄存器；其中  <code>%esp</code> 和 <code>%eip</code> 的变换意味着 CPU 会切换运行栈与运行代码。</p>
+<p><code>swtch</code> 并不了解线程，它只是简单地保存和恢复寄存器集合，即<strong>上下文</strong>。当进程让出 CPU 时，进程的内核线程调用 <code>swtch</code> 来保存自己的上下文然后返回到调度器的上下文中。每个上下文都是以结构体 <code>struct context*</code> 表示的，这实际上是一个保存在内核栈中的指针。<code>swtch</code> 有两个参数：<code>struct context **old</code>、<code>struct context *new</code>。它将当前 CPU 的寄存器压入栈中并将栈指针保存在 <code>*old</code> 中。然后 <code>swtch</code> 将 <code>new</code> 拷贝到 <code>%esp</code> 中，弹出之前保存的寄存器，然后返回。</p>
+<ul>
+<li><strong>可能出现多个 CPU 同时切换进程的情况，所以必须使用一个带锁的方案来避免竞争。</strong></li>
+</ul>
+<p>如果将 <code>swtch</code> 看做一个既有功能。进程想要让出 CPU 必须要获得进程表的锁 <code>ptable.lock</code>，并释放其拥有的其他锁，修改自己的状态（<code>proc-&gt;state</code>），然后调用 <code>sched</code>。在对 <code>swtch</code> 的调用的整个过程中，xv6 都持有锁 <code>ptable.lock</code>：<code>swtch</code> 的调用者必须持有该锁，并将锁的控制权转移给切换代码。锁的这种使用方式很少见，通常来说，持有锁的线程应该负责释放该锁，这样更容易让我们理解其正确性。但对于上下文切换来说，我们必须使用这种方式，因为 <code>ptable.lock</code> 会保证进程的 <code>state</code> 和 <code>context</code> 在运行 <code>swtch</code> 时保持不变。如果在 <code>swtch</code> 中没有持有 <code>ptable.lock</code>，可能引发这样的问题：在 <code>yield</code> 将某个进程状态设置为 <code>RUNNABLE</code> 之后，但又是在 <code>swtch</code> 让它停止在其内核栈上运行之前，有另一个 CPU 要运行该进程。其结果将是两个 CPU 都运行在同一个栈上，这显然是不该发生的。</p>
+<h2 id="Warmup-RISC-V-assembly"><a href="#Warmup-RISC-V-assembly" class="headerlink" title="Warmup: RISC-V assembly"></a>Warmup: RISC-V assembly</h2><p>There is a file user/call.c in your xv6 repo. make fs.img builds a user program call and a readable assembly version of the program in user/call.asm.</p>
+<p>打开 <code>user/call.c</code> ，有如下代码片段：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"kernel/param.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"kernel/types.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"kernel/stat.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"user/user.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">g</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> x+<span class="number">3</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> g(x);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"%d %d\n"</span>, f(<span class="number">8</span>)+<span class="number">1</span>, <span class="number">13</span>);</span><br><span class="line">  <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>打开<code>user/call.asm</code>，如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">000000000000001</span>c &lt;main&gt;:</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">  <span class="number">1</span>c:	<span class="number">1141</span>                	addi	sp,sp,<span class="number">-16</span></span><br><span class="line">  <span class="number">1</span>e:	e406                	sd	ra,<span class="number">8</span>(sp)</span><br><span class="line">  <span class="number">20</span>:	e022                	sd	s0,<span class="number">0</span>(sp)</span><br><span class="line">  <span class="number">22</span>:	<span class="number">0800</span>                	addi	s0,sp,<span class="number">16</span></span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"%d %d\n"</span>, f(<span class="number">8</span>)+<span class="number">1</span>, <span class="number">13</span>);</span><br><span class="line">  <span class="number">24</span>:	<span class="number">4635</span>                	li	a2,<span class="number">13</span>   </span><br><span class="line">  <span class="number">26</span>:	<span class="number">45b</span>1                	li	a1,<span class="number">12</span></span><br><span class="line">  <span class="number">28</span>:	<span class="number">00000517</span>          	auipc	a0,<span class="number">0x0</span></span><br><span class="line">  <span class="number">2</span>c:	<span class="number">75050513</span>          	addi	a0,a0,<span class="number">1872</span> # <span class="number">778</span> &lt;<span class="built_in">malloc</span>+<span class="number">0xea</span>&gt;</span><br><span class="line">  <span class="number">30</span>:	<span class="number">00000097</span>          	auipc	ra,<span class="number">0x0</span></span><br><span class="line">  <span class="number">34</span>:	<span class="number">5</span>a0080e7          	jalr	<span class="number">1440</span>(ra) # <span class="number">5</span>d0 &lt;<span class="built_in">printf</span>&gt;</span><br><span class="line">  <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">  <span class="number">38</span>:	<span class="number">4501</span>                	li	a0,<span class="number">0</span></span><br><span class="line">  <span class="number">3</span>a:	<span class="number">00000097</span>          	auipc	ra,<span class="number">0x0</span></span><br><span class="line">  <span class="number">3</span>e:	<span class="number">1f</span>e080e7          	jalr	<span class="number">510</span>(ra) # <span class="number">238</span> &lt;<span class="built_in">exit</span>&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">... lines omitted</span><br><span class="line"></span><br><span class="line"><span class="number">00000000000005</span>d0 &lt;<span class="built_in">printf</span>&gt;:</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="keyword">const</span> <span class="keyword">char</span> *fmt, ...)</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">....</span><br></pre></td></tr></table></figure>
+<p>下面来回答问题：</p>
+<ol>
+<li>Which registers contain arguments to functions? For example, which register holds 13 in main’s call to printf?<ul>
+<li>根据 riscv user-level isa （在 <code>doc/riscv-calling.pdf</code>） ， a0-a7 和 fa0-fa7 共计 16 个寄存器会用于传递参数</li>
+<li>具体而言，根据以上代码，可以得知 a2 寄存器用于存传给 printf 的参数 <code>13</code></li>
+</ul>
+</li>
+<li>Where is the function call to f from main? Where is the call to g? (Hint: the compiler may inline functions.)<ul>
+<li>注意括号里的话。根据笔算我们知道 <code>f(8)+1 = 12</code>，又发现 main 中并未调用 f 函数，说明 f 在编译期被直接优化成一个常量 <code>12</code> 塞到 a1 寄存器里了。</li>
+</ul>
+</li>
+<li>At what address is the function printf located?<ul>
+<li>观察 main 函数，在调用时使用了代码 <code>auipc ra,0x0</code> 和 <code>jalr 1440(ra)</code>，前者取当前指令的 pc 加上 0x0 存入 ra，后者跳转到 ra + 1440。计算知 <code>0x0000000000000030 + 1440 = 0x00000000000005d0</code>。经验证是 printf 的入口地址。</li>
+</ul>
+</li>
+<li>What value is in the register ra just after the jalr to printf in main?<ul>
+<li>此题需要看 rv spec 。<code>jalr</code> 指令完成后，<code>ra</code> 寄存器会存储返回点位置（也即 pc + 4 ）</li>
+</ul>
+</li>
+</ol>
+<h2 id="Uthread-switching-between-threads"><a href="#Uthread-switching-between-threads" class="headerlink" title="Uthread: switching between threads"></a>Uthread: switching between threads</h2><p>In this exercise you will design the context switch mechanism for a user-level threading system, and then implement it. Your job is to come up with a plan to create threads and save/restore registers to switch between threads, and implement that plan.</p>
+<p>You should complete <code>thread_create</code> to create a properly initialized thread so that when the scheduler switches to that thread for the first time, <code>thread_switch</code> returns to the function passed as argument <code>func</code>, running on the thread’s stack. You will have to decide where to save/restore registers. <em>Several solutions are possible.</em> You are allowed to modify struct thread. You’ll need to add a call to <code>thread_switch</code> in <code>thread_schedule</code>; you can pass whatever arguments you need to <code>thread_switch</code>, but the intent is to switch from thread <code>t</code> to the <code>next_thread</code>.</p>
+<blockquote>
+<p>Some hints:</p>
+<ul>
+<li><p><code>thread_switch</code> needs to save/restore only the callee-save registers. Why? 这是因为协程切换的过程本质是一个函数调用，因此 <code>caller-save registers</code> 是被调用者（如 <code>thread_a()</code> ）保存好的。</p>
+</li>
+<li><p>You can add fields to <code>struct thread</code> into which to save registers.</p>
+</li>
+<li><p>You can see the assembly code for uthread in user/uthread.asm, which may be handy for debugging.</p>
+</li>
+<li><p>To test your code it might be helpful to single step through your <code>thread_switch</code> using <code>riscv64-linux-gnu-gdb</code>. You can get started in this way:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;   (gdb) file user/_uthread</span><br><span class="line">&gt;   Reading symbols from user/_uthread...</span><br><span class="line">&gt;   (gdb) b thread.c:60</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>  This sets a breakpoint at a specified line in thread.c. The breakpoint may (or may not) be triggered before you even run <code>uthread</code>. How could that happen?</p>
+<p>  Once your xv6 shell runs, type “uthread”, and gdb will break at line <code>thread_switch</code>. Now you can type commands like the following to inspect the state of <code>uthread</code>:  <code>(gdb) p/x *next_thread</code> </p>
+<p>  With “x”, you can examine the content of a memory location: <code>(gdb) x/x next_thread-&gt;stack</code></p>
+<p>  You can single step assembly instructions using: <code>(gdb) si</code></p>
+<p>  On-line documentation for gdb is <a href="https://sourceware.org/gdb/current/onlinedocs/gdb/" target="_blank" rel="noopener">here</a>.</p>
+</blockquote>
+<p>然后我们研究以下代码该怎么写（抄）：</p>
+<ol>
+<li>首先打开 <code>kernel/swtch.S</code> ，查阅 riscv calling convention ，验证这段代码可以完成寄存器的切换。注意 ra 表示返回地址，sp 表示当前栈顶。直接复制到 <code>user/uthread_switch.S</code> 即可。<ol>
+<li>接着在 <code>kernel/proc.h</code> 中，找到上述代码配套的 <code>context</code> 结构体声明，复制到 <code>user/uthread.c</code> 中。</li>
+</ol>
+</li>
+<li>修改几行代码。当发生协程切换时调用 <code>uthread_switch(old_ctx, new_ctx)</code>，完成寄存器状态的切换；当新建协程时，将 ra 设为协程入口点地址，sp 设为 <code>thread.stack</code> 的最高地址（栈底）。</li>
+</ol>
+<p>第三部相对有思维量的代码如下，可以证明是正确的：</p>
+ <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">t-&gt;ctx.ra = (uint64) func;</span><br><span class="line">t-&gt;ctx.sp = (uint64) (&amp;t-&gt;<span class="built_in">stack</span>) + STACK_SIZE;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -918,7 +999,7 @@ table th:nth-of-type(2){width: 70%;}
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#环境搭建"><span class="nav-number">1.</span> <span class="nav-text">环境搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#构建xv6"><span class="nav-number">1.1.</span> <span class="nav-text">构建xv6</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#syscall"><span class="nav-number">1.2.</span> <span class="nav-text">syscall</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sleep"><span class="nav-number">1.3.</span> <span class="nav-text">sleep</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pingpong"><span class="nav-number">1.4.</span> <span class="nav-text">pingpong</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#primes"><span class="nav-number">1.5.</span> <span class="nav-text">primes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#find"><span class="nav-number">1.6.</span> <span class="nav-text">find</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xargs"><span class="nav-number">1.7.</span> <span class="nav-text">xargs</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Simple-xv6-shell"><span class="nav-number">2.</span> <span class="nav-text">Simple xv6 shell</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Allocator-for-xv6"><span class="nav-number">3.</span> <span class="nav-text">Allocator for xv6</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Task1"><span class="nav-number">3.1.</span> <span class="nav-text">Task1</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#struct-ftable"><span class="nav-number">3.1.1.</span> <span class="nav-text">struct ftable</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#filealloc"><span class="nav-number">3.1.2.</span> <span class="nav-text">filealloc()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fileclose"><span class="nav-number">3.1.3.</span> <span class="nav-text">fileclose()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Task2"><span class="nav-number">3.2.</span> <span class="nav-text">Task2</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#xv6-lazy-page-allocation"><span class="nav-number">4.</span> <span class="nav-text">xv6 lazy page allocation</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Print-page-table"><span class="nav-number">4.1.</span> <span class="nav-text">Print page table</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Eliminate-allocation-from-sbrk"><span class="nav-number">4.2.</span> <span class="nav-text">Eliminate allocation from sbrk()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lazy-allocation"><span class="nav-number">4.3.</span> <span class="nav-text">Lazy allocation</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#环境搭建"><span class="nav-number">1.</span> <span class="nav-text">环境搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#构建xv6"><span class="nav-number">1.1.</span> <span class="nav-text">构建xv6</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#syscall"><span class="nav-number">1.2.</span> <span class="nav-text">syscall</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sleep"><span class="nav-number">1.3.</span> <span class="nav-text">sleep</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pingpong"><span class="nav-number">1.4.</span> <span class="nav-text">pingpong</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#primes"><span class="nav-number">1.5.</span> <span class="nav-text">primes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#find"><span class="nav-number">1.6.</span> <span class="nav-text">find</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xargs"><span class="nav-number">1.7.</span> <span class="nav-text">xargs</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Simple-xv6-shell"><span class="nav-number">2.</span> <span class="nav-text">Simple xv6 shell</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Allocator-for-xv6"><span class="nav-number">3.</span> <span class="nav-text">Allocator for xv6</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Task1"><span class="nav-number">3.1.</span> <span class="nav-text">Task1</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#struct-ftable"><span class="nav-number">3.1.1.</span> <span class="nav-text">struct ftable</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#filealloc"><span class="nav-number">3.1.2.</span> <span class="nav-text">filealloc()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fileclose"><span class="nav-number">3.1.3.</span> <span class="nav-text">fileclose()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Task2"><span class="nav-number">3.2.</span> <span class="nav-text">Task2</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#xv6-lazy-page-allocation"><span class="nav-number">4.</span> <span class="nav-text">xv6 lazy page allocation</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Print-page-table"><span class="nav-number">4.1.</span> <span class="nav-text">Print page table</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Eliminate-allocation-from-sbrk"><span class="nav-number">4.2.</span> <span class="nav-text">Eliminate allocation from sbrk()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lazy-allocation"><span class="nav-number">4.3.</span> <span class="nav-text">Lazy allocation</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Multithreading"><span class="nav-number">5.</span> <span class="nav-text">Multithreading</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#多路复用"><span class="nav-number">5.1.</span> <span class="nav-text">多路复用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#xv6进程切换"><span class="nav-number">5.1.1.</span> <span class="nav-text">xv6进程切换</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Warmup-RISC-V-assembly"><span class="nav-number">5.2.</span> <span class="nav-text">Warmup: RISC-V assembly</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Uthread-switching-between-threads"><span class="nav-number">5.3.</span> <span class="nav-text">Uthread: switching between threads</span></a></li></ol></li></ol></div>
             
 
           </div>

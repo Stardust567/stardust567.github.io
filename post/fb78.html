@@ -1,0 +1,1387 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="HqDOiGSjrA">
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="https://libs.jshub.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+  
+
+<link href="https://libs.jshub.com/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/star.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/star.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/star.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="GAP,Go,MIT,6.824,MapReduce,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="结合 MIT-6.824-2018 的 lab1 来简单写下学习MapReduce的笔记。">
+<meta name="keywords" content="GAP,Go,MIT,6.824,MapReduce">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MapReduce">
+<meta property="og:url" content="https://stardust567.github.io/post/fb78.html">
+<meta property="og:site_name" content="Star Trail">
+<meta property="og:description" content="结合 MIT-6.824-2018 的 lab1 来简单写下学习MapReduce的笔记。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://i.loli.net/2020/02/18/hQyazOdRUK4YJHF.png">
+<meta property="og:image" content="https://i.loli.net/2020/02/16/QYdfgVnj4aubP6s.png">
+<meta property="og:image" content="https://i.loli.net/2020/10/12/YSFPbdJx9pMoCl2.png">
+<meta property="og:image" content="https://i.loli.net/2020/10/12/vXusUpIxL8bHP3B.png">
+<meta property="og:updated_time" content="2020-10-12T08:18:26.248Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MapReduce">
+<meta name="twitter:description" content="结合 MIT-6.824-2018 的 lab1 来简单写下学习MapReduce的笔记。">
+<meta name="twitter:image" content="https://i.loli.net/2020/02/18/hQyazOdRUK4YJHF.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://stardust567.github.io/post/fb78.html">
+
+
+
+
+
+
+  <title>MapReduce | Star Trail</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '130666690', 'auto');
+  ga('send', 'pageview');
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Star Trail</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">stardust1084062596@gmail.com</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-link">
+          <a href="/links/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-link"></i> <br>
+            
+            友链
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://stardust567.github.io/post/fb78.html">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Stardust567">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Star Trail">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">MapReduce</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">写于</span>
+              
+              <time title="写于" itemprop="dateCreated datePublished" datetime="2020-02-16T13:59:44+08:00">
+                2020-02-16
+              </time>
+            
+
+            
+
+            
+          </span>
+			
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">归档</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Sys/" itemprop="url" rel="index">
+                    <span itemprop="name">Sys</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/post/fb78.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/post/fb78.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/post/fb78.html" class="leancloud_visitors" data-flag-title="MapReduce">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">翻阅&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                  <span class="post-meta-divider">|</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">共计&#58;</span>
+                
+                <span title="共计">
+                  2.4k 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">时长 &asymp;</span>
+                
+                <span title="时长">
+                  10 min
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>结合 MIT-6.824-2018 的 lab1 来简单写下学习MapReduce的笔记。<a id="more"></a></p>
+<h1 id="MapReduce-Paper"><a href="#MapReduce-Paper" class="headerlink" title="MapReduce Paper"></a>MapReduce Paper</h1><h2 id="MapReduce-Example"><a href="#MapReduce-Example" class="headerlink" title="MapReduce Example"></a>MapReduce Example</h2><p>我们用最经典的words count来举例介绍MapReduce模型：</p>
+<p>对于一个三行的input file来说，我们按行进行splitting操作。每行分给不同的线程/节点，各节点单独进行mapping任务（单词分割）。各节点在shuffing阶段会进行相互通信，完成“洗牌”工作。然后各节点单独完成reducing任务并将结果输出在各节点本地文件上。最后将这些文件进行归并得到final result。</p>
+<p><img src="https://i.loli.net/2020/02/18/hQyazOdRUK4YJHF.png" alt="Example"></p>
+<p>调用Map的过程发生在本地，之后的结果（键值对）作为中间文件i-j（i&lt;=mMap, j&lt;=nReduce）存储在当前的本地节点上。比如第一个map task会生成temp1-1, 1-2, 1-3 … 1-n共nReduce个中间文件。<del>（虽然上图没生成）</del></p>
+<p>调用shuffing的过程需要多个节点通信，选取相应的中间文件。比如对第一个reduce task，那么相应的shuffing任务会从temp1-1, 2-1, 3-1 … m-1共mMap个中间文件（位于不同m个节点）拉取键值对给相应的reduce task上。shuffing也是MapReduce代价最大的一部分。</p>
+<p>调用reduce从shuffing那边接受结果并进行简单的合并生成reduceFile最后生成final result完成整个调用。</p>
+<h2 id="MapReduce-Execution"><a href="#MapReduce-Execution" class="headerlink" title="MapReduce Execution"></a>MapReduce Execution</h2><p><img src="https://i.loli.net/2020/02/16/QYdfgVnj4aubP6s.png" alt="Execution Overview"></p>
+<ol>
+<li>用户程序调用 MapReduce 库将 Input files 切成 M 个数据片度，然后用户程序在机群中 fork 大量程序副本。</li>
+<li>Fork 的副本中有一个特殊的程序 master，其它都是 worker 程序，由 master 分配任务。有 M 个 Map Task 和 R 个 Reduce Task 将被分配，master 将一个 Map/Reduce Task 分配给一个空闲的 worker。</li>
+<li>被分配 map task 的 worker 读取相关的输入数据片段并解析出 key/value pair，然后把 key/value pair 传递给用户自定义的 Map 函数，由 Map 函数生成并输出中间 key/value pair，并缓存在内存中。 </li>
+<li>缓存中的 key/value pair 通过分区函数分成 R 个区域，之后周期性的写入本地磁盘。缓存的 key/value pair 在本地磁盘上的存储位置将被回传给 master，由 master 负责把这些存储位置再传送给 Reduce worker。</li>
+<li>当 Reduce worker 接收到 master 发来的数据存储位置信息后，使用 RPC 从 Map worker 所在主机的磁盘上读取这些缓存数据。当 Reduce worker 读取了所有的中间数据后，对 key 排序后使具有相同 key 值的数据聚合在一起。由于许多不同的 key 值会映射到相同的 Reduce 任务上，因此必须进行排序。</li>
+<li>Reduce worker 遍历排序后的中间数据，对于每一个唯一的中间 key 值，Reduce worker 将这 个 key 值和它相关的中间 value 值的集合传递给用户自定义的 Reduce 函数。Reduce 函数的输出被追加到所属分区的输出文件。</li>
+<li>当所有的 Map 和 Reduce 任务都完成之后，master 唤醒用户程序。此时在用户程序里对 MapReduce 的调用才返回。 在成功完成任务之后，MapReduce 的输出存放在 R 个输出文件中（对应每个 Reduce 任务产生一个输出文件，文件名由用户指定）</li>
+</ol>
+<h2 id="MapReduce-Refinements"><a href="#MapReduce-Refinements" class="headerlink" title="MapReduce Refinements"></a>MapReduce Refinements</h2><h3 id="Partitioning-Function"><a href="#Partitioning-Function" class="headerlink" title="Partitioning Function"></a>Partitioning Function</h3><p>使用 MapReduce 时通常会指定 Reduce 任务和 Reduce 任务输出文件的数量（R）。我们在中间 key 上使用分区函数来对数据进行分区，再输入到后续任务执行进程。缺省的分区函数是使用 hash 方法，比如 <code>hash(key) mod R</code> 进行分区。</p>
+<h3 id="Ordering-Guarantees"><a href="#Ordering-Guarantees" class="headerlink" title="Ordering Guarantees"></a>Ordering Guarantees</h3><p>确保在给定的分区中，中间 key/value pair 数据的处理顺序是按照 key 值增量顺序处理的。这样的顺序保证对每个分成生成一个有序的输出文件，这对于需要对输出文件按 key 值随机存取的应用非常有意义， 对在排序输出的数据集也很有帮助。</p>
+<h3 id="Combiner-Function"><a href="#Combiner-Function" class="headerlink" title="Combiner Function"></a>Combiner Function</h3><p>在某些情况下，Map 函数产生的中间 key 值的重复数据会占很大的比重，并且，用户自定义的 Reduce 函数满足结合律和交换律。MapReduce 允许用户指定一个可选的 combiner 函数，combiner 函数首先在本地将这些记录进行一次合并，然后将合并的结果再通过网络发送出 去。 Combiner 函数在每台执行 Map 任务的机器上都会被执行一次。一般情况下，Combiner 和 Reduce 函数是 一样的，唯一区别是 Reduce 函数的输出被保存在最终的输出文件里，而 Combiner 函数的输出被写到中间文件里，然后被发送给 Reduce 任务。 部分的合并中间结果可以显著的提高一些 MapReduce 操作的速度。</p>
+<h3 id="Input-and-Output-Types"><a href="#Input-and-Output-Types" class="headerlink" title="Input and Output Types"></a>Input and Output Types</h3><p>MapReduce 库支持几种不同的格式的输入数据。比如，文本模式的输入数据的每一行被视为是一个 key/value pair。key 是文件的偏移量，value 是那一行的内容。另外一种常见的格式是以 key 进行排序来存储的 key/value pair 的序列。每种输入类型的实现都必须能够把输入数据分割成数据片段，该数据片段能够由单独的 Map 任务来进行后续处理。同时也可以通过提供一个简单的 Reader 接口实现就能够支持一个新的输入类型。</p>
+<h1 id="MapReduce-Lab"><a href="#MapReduce-Lab" class="headerlink" title="MapReduce Lab"></a>MapReduce Lab</h1><h2 id="Part-I-Single-worker-word-count"><a href="#Part-I-Single-worker-word-count" class="headerlink" title="Part I: Single-worker word count"></a>Part I: Single-worker word count</h2><p>map和reduce的应用function编写，及单纯的词频统计和键值对的值合并任务。</p>
+<h3 id="mapF"><a href="#mapF" class="headerlink" title="mapF()"></a>mapF()</h3><p>向mapF()传递一个文件名以及该文件的内容，mapF()将文件内容拆分为单词（毕竟对于字数统计，仅将单词用作键才有意义），并返回KeyValue类型的Go切片。</p>
+<p><em>Tips: strings.FieldsFunc()可以用来拆分string，strconv.Itoa()可以将int转换成string类型。</em></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">mapF</span><span class="params">(filename <span class="keyword">string</span>, contents <span class="keyword">string</span>)</span> []<span class="title">mapreduce</span>.<span class="title">KeyValue</span></span> &#123;</span><br><span class="line">	<span class="comment">//单词频率结果</span></span><br><span class="line">	wordsKv := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">int</span>)</span><br><span class="line">	<span class="comment">//分词并遍历</span></span><br><span class="line">	f := <span class="function"><span class="keyword">func</span><span class="params">(r <span class="keyword">rune</span>)</span> <span class="title">bool</span></span> &#123; <span class="keyword">return</span> !unicode.IsLetter(r) &#125;</span><br><span class="line">	<span class="comment">//splits contents at each run of Unicode code points c satisfying f(c)</span></span><br><span class="line">	words := strings.FieldsFunc(contents, f)</span><br><span class="line">	<span class="keyword">for</span> _, word := <span class="keyword">range</span> words &#123;</span><br><span class="line">		<span class="comment">//统计单词</span></span><br><span class="line">		_, ok := wordsKv[word]</span><br><span class="line">		<span class="keyword">if</span> ok &#123; </span><br><span class="line">			wordsKv[word]++ </span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;  </span><br><span class="line">			wordsKv[word] = <span class="number">1</span> </span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//转换为输出格式</span></span><br><span class="line">	<span class="keyword">var</span> rst []mapreduce.KeyValue</span><br><span class="line">	<span class="keyword">for</span> key, value := <span class="keyword">range</span> wordsKv &#123;</span><br><span class="line">		kv := mapreduce.KeyValue&#123; key, strconv.Itoa(value) &#125;</span><br><span class="line">		rst = <span class="built_in">append</span>(rst, kv)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> rst</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="reduceF"><a href="#reduceF" class="headerlink" title="reduceF()"></a>reduceF()</h3><p>每个key都会调用一次reduceF()计算这个key的出现总数，并以string类型return。</p>
+<p><em>Tips: strconv.Atoi()可以将string类型转换成int类型。</em></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">reduceF</span><span class="params">(key <span class="keyword">string</span>, values []<span class="keyword">string</span>)</span> <span class="title">string</span></span> &#123;</span><br><span class="line">	cnt := <span class="number">0</span></span><br><span class="line">    <span class="comment">//合并统计结果</span></span><br><span class="line">	<span class="keyword">for</span> _, value := <span class="keyword">range</span> values &#123;</span><br><span class="line">		num, err := strconv.Atoi(value)</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123; <span class="keyword">break</span> &#125;</span><br><span class="line">		cnt += num</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> strconv.Itoa(cnt)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Part-II-Map-Reduce-input-and-output"><a href="#Part-II-Map-Reduce-input-and-output" class="headerlink" title="Part II: Map/Reduce input and output"></a>Part II: Map/Reduce input and output</h2><h3 id="doMap"><a href="#doMap" class="headerlink" title="doMap()"></a>doMap()</h3><p><em>doMap manages one map task</em>：读取一个输入文件inFile，并为改文件内容调用用户自定义的mapF()，最后将mapF()的输出拆分到nReduce个中间文件中。同时要保证reduce的输出为json格式以方便后续操作。</p>
+<p><img src="https://i.loli.net/2020/10/12/YSFPbdJx9pMoCl2.png" alt="MapReduce-doMap.png"></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">doMap</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">	jobName <span class="keyword">string</span>, // the name of the MapReduce job</span></span></span><br><span class="line"><span class="function"><span class="params">	mapTask <span class="keyword">int</span>, // which <span class="keyword">map</span> task this is</span></span></span><br><span class="line"><span class="function"><span class="params">	inFile <span class="keyword">string</span>,</span></span></span><br><span class="line">	nReduce int, // the number of reduce task that will be run ("R" in the paper)</span><br><span class="line">	mapF <span class="function"><span class="keyword">func</span><span class="params">(filename <span class="keyword">string</span>, contents <span class="keyword">string</span>)</span> []<span class="title">KeyValue</span>,</span></span><br><span class="line"><span class="function">)</span> &#123;</span><br><span class="line">	data, err := ioutil.ReadFile(inFile)</span><br><span class="line">	<span class="keyword">if</span> <span class="literal">nil</span> != err &#123; log.Fatal(err) &#125;</span><br><span class="line">	<span class="comment">// mapF() returns a slice containing the key/value pairs for reduce</span></span><br><span class="line">	kvs := mapF(inFile, <span class="keyword">string</span>(data))</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> outFiles []*os.File</span><br><span class="line">	<span class="keyword">defer</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		<span class="keyword">for</span> _, file := <span class="keyword">range</span> outFiles &#123; file.Close() &#125;</span><br><span class="line">	&#125;()</span><br><span class="line">	<span class="keyword">for</span> i:=<span class="number">0</span>; i&lt;nReduce; i++ &#123;</span><br><span class="line">		<span class="comment">//the filename as the intermediate file for reduce task r.</span></span><br><span class="line">		name := reduceName(jobName, mapTask, i)</span><br><span class="line">		file, err := os.Create(name)</span><br><span class="line">		<span class="keyword">if</span> <span class="literal">nil</span> != err &#123; log.Fatal(err) &#125;</span><br><span class="line">		outFiles = <span class="built_in">append</span>(outFiles, file)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> _, kv := <span class="keyword">range</span> kvs &#123;</span><br><span class="line">		index := ihash(kv.Key) % nReduce</span><br><span class="line">		<span class="comment">//enc opens IO stream of outFiles[index]</span></span><br><span class="line">		enc := json.NewEncoder(outFiles[index])</span><br><span class="line">		<span class="comment">//writes kv in stream</span></span><br><span class="line">		enc.Encode(kv)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="doReduce"><a href="#doReduce" class="headerlink" title="doReduce()"></a>doReduce()</h3><p><em>doReduce manages one reduce task</em>：读取map tasks产生的中间文件，将其根据键值对的key排序后，为每个key调用用户自定义的reduceF()函数，最后将reduceF()的结果写到磁盘outFile文件上。因为doMap()产生的是json格式，要注意解码。</p>
+<p><img src="https://i.loli.net/2020/10/12/vXusUpIxL8bHP3B.png" alt="MapReduce-doReduce.png"></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">doReduce</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">	jobName <span class="keyword">string</span>, // the name of the whole MapReduce job</span></span></span><br><span class="line"><span class="function"><span class="params">	reduceTask <span class="keyword">int</span>, // which reduce task this is</span></span></span><br><span class="line"><span class="function"><span class="params">	outFile <span class="keyword">string</span>, // write the output here</span></span></span><br><span class="line">	nMap int, // the number of map tasks that were run ("M" in the paper)</span><br><span class="line">	reduceF <span class="function"><span class="keyword">func</span><span class="params">(key <span class="keyword">string</span>, values []<span class="keyword">string</span>)</span> <span class="title">string</span>,</span></span><br><span class="line"><span class="function">)</span> &#123;</span><br><span class="line">	<span class="comment">//set of having the same key</span></span><br><span class="line">	kvsMap := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>]([]<span class="keyword">string</span>))</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; nMap; i++ &#123;</span><br><span class="line">		<span class="comment">//yield the filename from map task m</span></span><br><span class="line">		name := reduceName(jobName, i, reduceTask)</span><br><span class="line">		file, err := os.Open(name)</span><br><span class="line">		<span class="keyword">if</span> <span class="literal">nil</span> != err &#123; log.Fatal(err) &#125;</span><br><span class="line">		dec := json.NewDecoder(file)</span><br><span class="line">		<span class="keyword">for</span> &#123;</span><br><span class="line">			<span class="keyword">var</span> kv KeyValue</span><br><span class="line">			err := dec.Decode(&amp;kv)</span><br><span class="line">			<span class="keyword">if</span> err != <span class="literal">nil</span> &#123; <span class="keyword">break</span> &#125;</span><br><span class="line">			kvsMap[kv.Key] = <span class="built_in">append</span>(kvsMap[kv.Key], kv.Value)</span><br><span class="line">		&#125;</span><br><span class="line">		file.Close()</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	reduceFile, err := os.Create(outFile)</span><br><span class="line">	<span class="keyword">if</span> <span class="literal">nil</span> != err &#123; log.Fatal(err) &#125;</span><br><span class="line">	enc := json.NewEncoder(reduceFile)</span><br><span class="line">	<span class="keyword">for</span> key, value := <span class="keyword">range</span> kvsMap &#123;</span><br><span class="line">		<span class="comment">//reduceF() returns the reduced value for that key</span></span><br><span class="line">		data := reduceF(key, value)</span><br><span class="line">		kv := KeyValue&#123;key, data&#125;</span><br><span class="line">		enc.Encode(kv)</span><br><span class="line">	&#125;</span><br><span class="line">	reduceFile.Close()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Part-III-Distributing-MapReduce-tasks"><a href="#Part-III-Distributing-MapReduce-tasks" class="headerlink" title="Part III: Distributing MapReduce tasks"></a>Part III: Distributing MapReduce tasks</h2><h3 id="schedule"><a href="#schedule" class="headerlink" title="schedule()"></a>schedule()</h3><p>在一次mapReduce中会调用两次schedule()，分别在map阶段和reduce阶段。schedule()将任务分发给可用的worker并等待所有任务完成后返回。<code>registerChan</code>参数channel为每个worker程序生成一个字符串，其中包含工作程序的RPC地址。schedule()通过<code>call(worker, &quot;Worker.DoTask&quot;, args, nil)</code>（worker := &lt;-registerChan）将<code>Worker.DoTask</code> RPC 发送给worker程序来通知其执行任务。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">schedule</span><span class="params">(jobName <span class="keyword">string</span>, mapFiles []<span class="keyword">string</span>, nReduce <span class="keyword">int</span>, phase jobPhase, </span></span></span><br><span class="line"><span class="function"><span class="params">              registerChan <span class="keyword">chan</span> <span class="keyword">string</span>)</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> ntasks <span class="keyword">int</span></span><br><span class="line">	<span class="keyword">var</span> n_other <span class="keyword">int</span> <span class="comment">// number of inputs (for reduce) or outputs (for map)</span></span><br><span class="line">	<span class="keyword">switch</span> phase &#123;</span><br><span class="line">	<span class="keyword">case</span> mapPhase:</span><br><span class="line">		ntasks = <span class="built_in">len</span>(mapFiles)</span><br><span class="line">		n_other = nReduce</span><br><span class="line">	<span class="keyword">case</span> reducePhase:</span><br><span class="line">		ntasks = nReduce</span><br><span class="line">		n_other = <span class="built_in">len</span>(mapFiles)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	fmt.Printf(<span class="string">"Schedule: %v %v tasks (%d I/Os)\n"</span>, ntasks, phase, n_other)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// All ntasks tasks have to be scheduled on workers. </span></span><br><span class="line">	<span class="comment">// Once all tasks have completed successfully, </span></span><br><span class="line">    <span class="comment">// schedule() should return.</span></span><br><span class="line">	<span class="keyword">var</span> wg sync.WaitGroup</span><br><span class="line">	wg.Add(ntasks)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; ntasks; i++ &#123;</span><br><span class="line">		<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">(index <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">			<span class="comment">//rpc call args</span></span><br><span class="line">			<span class="keyword">var</span> args DoTaskArgs</span><br><span class="line">			args.Phase = phase</span><br><span class="line">			args.JobName = jobName</span><br><span class="line">			args.NumOtherPhase = n_other</span><br><span class="line">			args.TaskNumber = index</span><br><span class="line">			<span class="keyword">if</span> phase == mapPhase &#123;</span><br><span class="line">				args.File = mapFiles[index]</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			done := <span class="literal">false</span></span><br><span class="line">			<span class="keyword">for</span> !done &#123;</span><br><span class="line">				<span class="comment">// registerChan yields a stream of registered workers</span></span><br><span class="line">				worker := &lt;-registerChan</span><br><span class="line">				done = call(worker, <span class="string">"Worker.DoTask"</span>, args, <span class="literal">nil</span>)</span><br><span class="line">				<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span>&#123; registerChan &lt;- worker &#125;()</span><br><span class="line">			&#125;</span><br><span class="line">			wg.Done()</span><br><span class="line">		&#125;(i)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	wg.Wait()</span><br><span class="line">	fmt.Printf(<span class="string">"Schedule: %v done\n"</span>, phase)</span><br><span class="line">&#125;。</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>投币</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.png" alt="Stardust567 微信">
+        <p>微信</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Stardust567 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Stardust567
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://stardust567.github.io/post/fb78.html" title="MapReduce">https://stardust567.github.io/post/fb78.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议，转载请务必署名，欢迎邮件私我讨论交流。
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/GAP/" rel="tag"><i class="fa fa-tag"></i> GAP</a>
+          
+            <a href="/tags/Go/" rel="tag"><i class="fa fa-tag"></i> Go</a>
+          
+            <a href="/tags/MIT/" rel="tag"><i class="fa fa-tag"></i> MIT</a>
+          
+            <a href="/tags/6-824/" rel="tag"><i class="fa fa-tag"></i> 6.824</a>
+          
+            <a href="/tags/MapReduce/" rel="tag"><i class="fa fa-tag"></i> MapReduce</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/28fa.html" rel="next" title="Go与并发">
+                <i class="fa fa-chevron-left"></i> Go与并发
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/post/3d2c.html" rel="prev" title="FSCQ文件系统">
+                FSCQ文件系统 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Stardust567</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#MapReduce-Paper"><span class="nav-number">1.</span> <span class="nav-text">MapReduce Paper</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#MapReduce-Example"><span class="nav-number">1.1.</span> <span class="nav-text">MapReduce Example</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MapReduce-Execution"><span class="nav-number">1.2.</span> <span class="nav-text">MapReduce Execution</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MapReduce-Refinements"><span class="nav-number">1.3.</span> <span class="nav-text">MapReduce Refinements</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Partitioning-Function"><span class="nav-number">1.3.1.</span> <span class="nav-text">Partitioning Function</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ordering-Guarantees"><span class="nav-number">1.3.2.</span> <span class="nav-text">Ordering Guarantees</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Combiner-Function"><span class="nav-number">1.3.3.</span> <span class="nav-text">Combiner Function</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Input-and-Output-Types"><span class="nav-number">1.3.4.</span> <span class="nav-text">Input and Output Types</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MapReduce-Lab"><span class="nav-number">2.</span> <span class="nav-text">MapReduce Lab</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Part-I-Single-worker-word-count"><span class="nav-number">2.1.</span> <span class="nav-text">Part I: Single-worker word count</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#mapF"><span class="nav-number">2.1.1.</span> <span class="nav-text">mapF()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#reduceF"><span class="nav-number">2.1.2.</span> <span class="nav-text">reduceF()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Part-II-Map-Reduce-input-and-output"><span class="nav-number">2.2.</span> <span class="nav-text">Part II: Map/Reduce input and output</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#doMap"><span class="nav-number">2.2.1.</span> <span class="nav-text">doMap()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#doReduce"><span class="nav-number">2.2.2.</span> <span class="nav-text">doReduce()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Part-III-Distributing-MapReduce-tasks"><span class="nav-number">2.3.</span> <span class="nav-text">Part III: Distributing MapReduce tasks</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#schedule"><span class="nav-number">2.3.1.</span> <span class="nav-text">schedule()</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Stardust567</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="https://libs.jshub.com/jquery/2.1.3/jquery.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://libs.jshub.com/jquery_lazyload/1.9.7/jquery.lazyload.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://libs.jshub.com/velocity/1.2.1/velocity.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://libs.jshub.com/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'bABdvcserWST8hctdXncW0he-gzGzoHsz',
+        appKey: 'Ng2B24N8TgiGzK8fKds99MLc',
+        placeholder: '谢谢你认真看到了最后，这里欢迎各种吐槽与交流：',
+        avatar:'monsterid',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("bABdvcserWST8hctdXncW0he-gzGzoHsz", "Ng2B24N8TgiGzK8fKds99MLc");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

@@ -96,7 +96,7 @@
 <meta property="og:image" content="https://i.loli.net/2020/10/14/tzyr7ZGoQpfmK2A.jpg">
 <meta property="og:image" content="https://i.loli.net/2020/10/14/4rPX9nYqekTpcSl.png">
 <meta property="og:image" content="https://i.loli.net/2020/10/14/x6wTLPSV8tpDrZ4.png">
-<meta property="og:updated_time" content="2020-10-16T08:55:45.765Z">
+<meta property="og:updated_time" content="2020-10-21T14:26:00.675Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Google File System">
 <meta name="twitter:description" content="结合 MIT-6.824-2018 来简单写下学习Google file system的笔记。">
@@ -401,7 +401,7 @@
                   <span class="post-meta-item-text">共计&#58;</span>
                 
                 <span title="共计">
-                  8.6k 字
+                  7.2k 字
                 </span>
               
 
@@ -417,7 +417,7 @@
                   <span class="post-meta-item-text">时长 &asymp;</span>
                 
                 <span title="时长">
-                  30 min
+                  25 min
                 </span>
               
             </div>
@@ -442,10 +442,10 @@
 <h1 id="GFS-介绍"><a href="#GFS-介绍" class="headerlink" title="GFS 介绍"></a>GFS 介绍</h1><h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>GFS是Google针对其数据访问模式而设计的分布式存储系统，数据访问有以下特点：</p>
 <blockquote>
 <ul>
-<li>节点失效是常态。GFS需要较高的容错性、持续监控自身状态，同时还要能顺畅地从失效中快速恢复</li>
+<li>GFS需要较高的容错性、持续监控自身状态，同时还要能顺畅地从失效中快速恢复</li>
 <li><strong>存储内容以大文件为主</strong>。系统需要存储的内容在通常情况下由数量不多的大文件构成，每个文件通常有几百 MB 甚至是几 GB 的大小（系统应当支持小文件，但不需要为其做出优化）</li>
 <li>主要负载为<strong>大容量连续读</strong>、<strong>小容量随机读</strong>以及<strong>追加式的连续写</strong></li>
-<li>系统应当支持<strong>高效且原子的文件追加操作</strong>（这些文件多用于生产者-消费者模式或是多路归并）</li>
+<li>系统应当支持<strong>高效且原子的文件追加操作</strong></li>
 <li>当需要做出取舍时，系统应选择<strong>高数据吞吐量</strong>而不是低延时</li>
 </ul>
 </blockquote>
@@ -534,27 +534,25 @@
 <li>用户发送删除请求和数据被实际删除之间的延迟也有效避免了用户误操作的问题</li>
 </ol>
 <p>不过，如果在存储资源较为稀缺的情况下，用户对存储空间使用的调优可能就会受到该机制的阻碍。为此，GFS 允许客户端再次指定删除该文件，以确实地从 Namespace 层移除该文件。除外，GFS 还可以让用户为 Namespace 中不同的区域指定不同的备份和删除策略，如限制 GFS 不对某个目录下的文件进行 Chunk 备份等。</p>
-<h1 id="GFS-特性"><a href="#GFS-特性" class="headerlink" title="GFS 特性"></a>GFS 特性</h1><h2 id="文件快照"><a href="#文件快照" class="headerlink" title="文件快照"></a>文件快照</h2><p>GFS 提供文件快照操作，可为指定的文件或目录创建一个副本，其实现采用了写时复制（Copy on Write）：</p>
+<h1 id="GFS-特性"><a href="#GFS-特性" class="headerlink" title="GFS 特性"></a>GFS 特性</h1><h2 id="文件快照"><a href="#文件快照" class="headerlink" title="文件快照"></a>文件快照</h2><p>GFS 提供文件快照，可为指定文件或目录创建一个副本，其实现采用了写时复制（Copy on Write）：</p>
 <ol>
 <li>在 Master 接收到快照请求后，它首先会撤回这些 Chunk 的 Lease，以让接下来其他客户端对这些 Chunk 进行写入时都会需要请求 Master 获知 Primary 的位置，Master 便可利用这个机会创建新的 Chunk</li>
 <li>当 Chunk Lease 撤回或失效后，Master 会先写入日志，然后对自己管理的命名空间进行复制操作，复制产生的新记录指向原本的 Chunk</li>
 <li>当有客户端尝试对这些 Chunk 进行写入时，Master 会注意到这个 Chunk 的引用计数大于 1。此时，Master 会为即将产生的新 Chunk 生成一个 Handle，然后通知所有持有这些 Chunk 的 Chunk Server 在本地复制出一个新的 Chunk，应用上新的 Handle，然后再返回给客户端</li>
 </ol>
-<h2 id="Replica-管理"><a href="#Replica-管理" class="headerlink" title="Replica 管理"></a>Replica 管理</h2><p>为了进一步优化 GFS 集群的效率，Master 在 Replica 的位置选取上会采取一定的策略。</p>
-<p>Master 的 Replica 编排策略主要为了实现两个目标：最大化数据的可用性，以及最大化网络带宽的利用率。为此，Replica 不仅需要被保存在不同的机器上，还会需要被保存在不同的机架上，这样如果整个机架不可用了，数据仍然得以存活。如此一来，不同客户端对同一个 Chunk 进行读取时便可以利用上不同机架的出口带宽，但坏处就是进行写入时数据也会需要在不同机架间流转，不过在 GFS 的设计者看来这是个合理的 trade-off。</p>
-<p>Replica 的生命周期转换操作实际只有两个：创建和删除。首先，Replica 的创建可能源于以下三种事件：创建 Chunk、为 Chunk 重备份、以及 Replica 均衡。</p>
-<p>在 Master 创建一个新的 Chunk 时，首先它会需要考虑在哪放置新的 Replica。Master 会考虑如下几个因素：</p>
+<h2 id="Replica-管理"><a href="#Replica-管理" class="headerlink" title="Replica 管理"></a>Replica 管理</h2><p>在 Master 创建一个新的 Chunk 时，首先它会需要考虑在哪放置新的 Replica。Master 会考虑如下几个因素：</p>
 <ol>
 <li>Master 会倾向于把新的 Replica 放在磁盘使用率较低的 Chunk Server 上</li>
 <li>Master 会倾向于确保每个 Chunk Server 上“较新”的 Replica 不会太多，因为新 Chunk 的创建意味着接下来会有大量的写入，如果某些 Chunk Server 上有太多的新 Chunk Replica，那么写操作压力就会集中在这些 Chunk Server 上</li>
 <li>如上文所述，Master 会倾向于把 Replica 放在不同的机架上</li>
 </ol>
+<p><strong>（HDFS的replica存储，会1个放在client同rack的node上，另外2个放在另一个rack的不同node上）</strong></p>
 <p>当某个 Chunk 的 Replica 数量低于用户指定的阈值时，Master 就会对该 Chunk 进行重备份。这可能是由 Chunk Server 失效、Chunk Server 回报 Replica 数据损坏或是用户提高了 Replica 数量阈值所触发。</p>
 <p>首先，Master 会按照以下因素为每个需要重备份的 Chunk 安排优先级：</p>
 <ol>
 <li>该 Chunk 的 Replica 数距离用户指定的 Replica 数量阈值的差距有多大</li>
-<li>优先为未删除的文件（见下文）的 Chunk 进行重备份</li>
-<li>除外，Master 还会提高任何正在阻塞用户操作的 Chunk 的优先级</li>
+<li>优先为未删除的文件的 Chunk 进行重备份</li>
+<li>Master 还会提高任何正在阻塞用户操作的 Chunk 的优先级</li>
 </ol>
 <p>有了 Chunk 的优先级后，Master 会选取当前拥有最高优先级的 Chunk，并指定若干 Chunk Server 直接从现在已有的 Replica 上复制数据。Master 具体会指定哪些 Chunk Server 进行复制操作同样会考虑上面提到的几个因素。除外，为了减少重备份对用户使用的影响，Master 会限制当前整个集群正在进行的复制操作的数量，同时 Chunk Server 也会限制复制操作所使用的带宽。</p>
 <p>最后，Master 会周期地检查每个 Chunk 当前在集群内的分布情况，并在必要时迁移部分 Replica 以更好地均衡各节点的磁盘利用率和负载。新 Replica 的位置选取策略和上面提到的大体相同，除此以外 Master 还会需要选择要移除哪个已有的 Replica：简单概括的话，Master 会倾向于移除磁盘占用较高的 Chunk Server 上的 Replica，以均衡磁盘使用率。</p>
@@ -573,43 +571,6 @@
 </ol>
 <p>不过，较大的 Chunk 会使得小文件占据额外的存储空间；一般的小文件通常只会占据一个 Chunk，这些 Chunk 也容易成为系统的负载热点。但正如之前所设想的需求那样，这样的文件在 Google 的场景下不是普遍存在的，这样的问题并未在 Google 中真正出现过。即便真的出现了，也可以通过提升这类文件的 Replica 数量来将负载进行均衡。</p>
 <h2 id="组件的快速恢复"><a href="#组件的快速恢复" class="headerlink" title="组件的快速恢复"></a>组件的快速恢复</h2><p>GFS 的组件在设计时着重提高了状态恢复的速度，通常能够在几秒钟内完成启动。在这样的保证下，GFS 的组件实际上并不对正常关闭和异常退出做区分：要关闭某个组件时直接 <code>kill -9</code> 即可。</p>
-<h1 id="FAQ"><a href="#FAQ" class="headerlink" title="FAQ"></a>FAQ</h1><p>MIT 6.824 的课程材料中给出了和 GFS 有关的 FAQ，在此我简单地翻译一下其中比较重要的一些内容。</p>
-<blockquote>
-<p>Q：为什么原子记录追加操作是至少一次（At Least Once），而不是确定一次（Exactly Once）？</p>
-</blockquote>
-<p>要让追加操作做到确定一次是不容易的，因为如此一来 Primary 会需要保存一些状态信息以检测重复的数据，而这些信息也需要复制到其他服务器上，以确保 Primary 失效时这些信息不会丢失。在 Lab 3 中你会实现确定一次的行为，但用的是比 GFS 更复杂的协议（Raft）。</p>
-<blockquote>
-<p>Q：应用怎么知道 Chunk 中哪些是填充数据或者重复数据？</p>
-</blockquote>
-<p>要想检测填充数据，应用可以在每个有效记录之前加上一个魔数（Magic Number）进行标记，或者用校验和保证数据的有效性。应用可通过在记录中添加唯一 ID 来检测重复数据，这样应用在读入数据时就可以利用已经读入的 ID 来排除重复的数据了。GFS 本身提供了 library 来支撑这些典型的用例。</p>
-<blockquote>
-<p>Q：考虑到原子记录追加操作会把数据写入到文件的一个不可预知的偏移值中，客户端该怎么找到它们的数据？</p>
-</blockquote>
-<p>追加操作（以及 GFS 本身）主要是面向那些会完整读取文件的应用的。这些应用会读取所有的记录，所以它们并不需要提前知道记录的位置。例如，一个文件中可能包含若干个并行的网络爬虫获取的所有链接 URL。这些 URL 在文件中的偏移值是不重要的，应用只会想要完整读取所有 URL。</p>
-<blockquote>
-<p>Q：如果一个应用使用了标准的 POSIX 文件 API，为了使用 GFS 它会需要做出修改吗？</p>
-</blockquote>
-<p>答案是需要的，不过 GFS 并不是设计给已有的应用的，它主要面向的是新开发的应用，如 MapReduce 程序。</p>
-<blockquote>
-<p>Q：GFS 是怎么确定最近的 Replica 的位置的？</p>
-</blockquote>
-<p>论文中有提到 GFS 是基于保存 Replica 的服务器的 IP 地址来判断距离的。在 2003 年的时候，Google 分配 IP 地址的方式应该确保了如果两个服务器的 IP 地址在 IP 地址空间中较为接近，那么它们在机房中的位置也会较为接近。</p>
-<blockquote>
-<p>Q：Google 现在还在使用 GFS 吗？</p>
-</blockquote>
-<p>Google 仍然在使用 GFS，而且是作为其他如 BigTable 等存储系统的后端。由于工作负载的扩大以及技术的革新，GFS 的设计在这些年里无疑已经经过大量调整了，但我并不了解其细节。HDFS 是公众可用的对 GFS 的设计的一种效仿，很多公司都在使用它。</p>
-<blockquote>
-<p>Q：Master 不会成为性能瓶颈吗？</p>
-</blockquote>
-<p>确实有这个可能，GFS 的设计者也花了很多心思来避免这个问题。例如，Master 会把它的状态保存在内存中以快速地进行响应。从实验数据来看，对于大文件读取（GFS 主要针对的负载类型），Master 不是瓶颈所在；对于小文件操作以及目录操作，Master 的性能也还跟得上（见 6.2.4 节）。</p>
-<blockquote>
-<p>Q：GFS 为了性能和简洁而牺牲了正确性，这样的选择有多合理呢？</p>
-</blockquote>
-<p>这是分布式系统领域的老问题了。保证强一致性通常需要更加复杂且需要机器间进行更多通信的协议（正如我们会在接下来几门课中看到的那样）。通过利用某些类型的应用可以容忍较为松懈的一致性的事实，人们就能够设计出拥有良好性能以及足够的一致性的系统。例如，GFS 对 MapReduce 应用做出了特殊优化，这些应用需要的是对大文件的高读取效率，还能够容忍文件中存在数据空洞、重复记录或是不一致的读取结果；另一方面，GFS 则不适用于存储银行账号的存款信息。</p>
-<blockquote>
-<p>Q：如果 Master 失效了会怎样？</p>
-</blockquote>
-<p>GFS 集群中会有持有 Master 状态完整备份的 Replica Master；通过论文中没有提到的某个机制，GFS 会在 Master 失效时切换到其中一个 Replica（见 5.1.3 节）。有可能这会需要一个人类管理者的介入来指定一个新的 Master。无论如何，我们都可以确定集群中潜伏着一个故障单点，理论上能够让集群无法从 Master 失效中进行自动恢复。我们会在后面的课程中学习如何使用 Raft 协议实现可容错的 Master。</p>
 
       
     </div>
@@ -836,7 +797,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#GFS-介绍"><span class="nav-number">1.</span> <span class="nav-text">GFS 介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#需求"><span class="nav-number">1.1.</span> <span class="nav-text">需求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GFS-集群"><span class="nav-number">1.2.</span> <span class="nav-text">GFS 集群</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#GFS-的元数据"><span class="nav-number">1.2.1.</span> <span class="nav-text">GFS 的元数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#log"><span class="nav-number">1.2.2.</span> <span class="nav-text">log</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对应用的影响"><span class="nav-number">1.2.3.</span> <span class="nav-text">对应用的影响</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GFS-操作"><span class="nav-number">2.</span> <span class="nav-text">GFS 操作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Master-Namespace-管理"><span class="nav-number">2.1.</span> <span class="nav-text">Master Namespace 管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#读文件"><span class="nav-number">2.2.</span> <span class="nav-text">读文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#写文件"><span class="nav-number">2.3.</span> <span class="nav-text">写文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Chunk-Lease"><span class="nav-number">2.3.1.</span> <span class="nav-text">Chunk Lease</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据一致性"><span class="nav-number">2.3.2.</span> <span class="nav-text">数据一致性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#命名空间"><span class="nav-number">2.3.2.1.</span> <span class="nav-text">命名空间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文件修改"><span class="nav-number">2.3.2.2.</span> <span class="nav-text">文件修改</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件写入"><span class="nav-number">2.3.3.</span> <span class="nav-text">文件写入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件追加"><span class="nav-number">2.3.4.</span> <span class="nav-text">文件追加</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除文件"><span class="nav-number">2.4.</span> <span class="nav-text">删除文件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GFS-特性"><span class="nav-number">3.</span> <span class="nav-text">GFS 特性</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#文件快照"><span class="nav-number">3.1.</span> <span class="nav-text">文件快照</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Replica-管理"><span class="nav-number">3.2.</span> <span class="nav-text">Replica 管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据完整性"><span class="nav-number">3.3.</span> <span class="nav-text">数据完整性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#节点缓存"><span class="nav-number">3.4.</span> <span class="nav-text">节点缓存</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Chunk-的大小"><span class="nav-number">3.5.</span> <span class="nav-text">Chunk 的大小</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#组件的快速恢复"><span class="nav-number">3.6.</span> <span class="nav-text">组件的快速恢复</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#FAQ"><span class="nav-number">4.</span> <span class="nav-text">FAQ</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#GFS-介绍"><span class="nav-number">1.</span> <span class="nav-text">GFS 介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#需求"><span class="nav-number">1.1.</span> <span class="nav-text">需求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GFS-集群"><span class="nav-number">1.2.</span> <span class="nav-text">GFS 集群</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#GFS-的元数据"><span class="nav-number">1.2.1.</span> <span class="nav-text">GFS 的元数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#log"><span class="nav-number">1.2.2.</span> <span class="nav-text">log</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对应用的影响"><span class="nav-number">1.2.3.</span> <span class="nav-text">对应用的影响</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GFS-操作"><span class="nav-number">2.</span> <span class="nav-text">GFS 操作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Master-Namespace-管理"><span class="nav-number">2.1.</span> <span class="nav-text">Master Namespace 管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#读文件"><span class="nav-number">2.2.</span> <span class="nav-text">读文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#写文件"><span class="nav-number">2.3.</span> <span class="nav-text">写文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Chunk-Lease"><span class="nav-number">2.3.1.</span> <span class="nav-text">Chunk Lease</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据一致性"><span class="nav-number">2.3.2.</span> <span class="nav-text">数据一致性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#命名空间"><span class="nav-number">2.3.2.1.</span> <span class="nav-text">命名空间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文件修改"><span class="nav-number">2.3.2.2.</span> <span class="nav-text">文件修改</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件写入"><span class="nav-number">2.3.3.</span> <span class="nav-text">文件写入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件追加"><span class="nav-number">2.3.4.</span> <span class="nav-text">文件追加</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除文件"><span class="nav-number">2.4.</span> <span class="nav-text">删除文件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GFS-特性"><span class="nav-number">3.</span> <span class="nav-text">GFS 特性</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#文件快照"><span class="nav-number">3.1.</span> <span class="nav-text">文件快照</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Replica-管理"><span class="nav-number">3.2.</span> <span class="nav-text">Replica 管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据完整性"><span class="nav-number">3.3.</span> <span class="nav-text">数据完整性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#节点缓存"><span class="nav-number">3.4.</span> <span class="nav-text">节点缓存</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Chunk-的大小"><span class="nav-number">3.5.</span> <span class="nav-text">Chunk 的大小</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#组件的快速恢复"><span class="nav-number">3.6.</span> <span class="nav-text">组件的快速恢复</span></a></li></ol></li></ol></div>
             
 
           </div>

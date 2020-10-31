@@ -92,7 +92,7 @@
 <meta property="og:site_name" content="Star Trail">
 <meta property="og:description" content="学习路上总会遇到各种坑，之前一直搞完就算了，总觉得很可惜，就有了记录踩的各种坑的想法…… 未完待续（不断填坑）中……">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-07-31T09:06:49.628Z">
+<meta property="og:updated_time" content="2020-10-31T11:13:54.624Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Tips">
 <meta name="twitter:description" content="学习路上总会遇到各种坑，之前一直搞完就算了，总觉得很可惜，就有了记录踩的各种坑的想法…… 未完待续（不断填坑）中……">
@@ -396,7 +396,7 @@
                   <span class="post-meta-item-text">共计&#58;</span>
                 
                 <span title="共计">
-                  1.5k 字
+                  1.6k 字
                 </span>
               
 
@@ -536,6 +536,8 @@
 <h2 id="Vue-js"><a href="#Vue-js" class="headerlink" title="Vue.js"></a>Vue.js</h2><ol>
 <li>刚开始我在修改代码中途发现自己没下<code>vue-router</code>强停后npm install结果errno -4048 npm ERR! syscall rename，解决方法<code>npm cache clean --force</code>后npm install即可。</li>
 </ol>
+<h2 id="Hadoop"><a href="#Hadoop" class="headerlink" title="Hadoop"></a>Hadoop</h2><p>Hadoop启动没有ResourceManager，查看log发现了报错<code>NoClassDefFoundError: javax/activation/DataSource</code>，直接下载activation-1.1.1.jar到lib目录下，或者本地上传到${HADOOP_HOME}/share/hadoop/yarn/lib目录下后重新启动start-yarn.sh即可。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd $&#123;HADOOP_HOME&#125;/share/hadoop/yarn/lib</span><br><span class="line">wget https://repo1.maven.org/maven2/javax/activation/activation/1.1.1/activation-1.1.1.jar</span><br></pre></td></tr></table></figure>
 <h2 id="Terminal"><a href="#Terminal" class="headerlink" title="Terminal"></a>Terminal</h2><ol>
 <li>用tree直接导出当前目录下的目录结构：<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tree -L 2 &gt; test.txt</span><br></pre></td></tr></table></figure>
 </li>
@@ -556,6 +558,8 @@
 <li><p>linux用vim忘记sudo后无法退出，强制退出用<code>:q!</code>但还是先另存为<code>:w new_filename</code>好一点。</p>
 </li>
 <li><p>网易云音乐，<code>npx @nondanee/unblockneteasemusic -p 16300</code>然后客户端设置代理localhost:16300</p>
+</li>
+<li><p>找寻相关文件的命令，比如<code>find /hadoop -name &quot;*hadoop*.log&quot;</code>在hadoop文件夹下寻找相关log</p>
 </li>
 </ol>
 
@@ -729,7 +733,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">36</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -751,7 +755,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-count">45</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -784,7 +788,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Git"><span class="nav-number">1.</span> <span class="nav-text">Git</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python"><span class="nav-number">2.</span> <span class="nav-text">Python</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Go"><span class="nav-number">3.</span> <span class="nav-text">Go</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker"><span class="nav-number">4.</span> <span class="nav-text">Docker</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL"><span class="nav-number">5.</span> <span class="nav-text">MySQL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PostgreSQL"><span class="nav-number">6.</span> <span class="nav-text">PostgreSQL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis"><span class="nav-number">7.</span> <span class="nav-text">Redis</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Vue-js"><span class="nav-number">8.</span> <span class="nav-text">Vue.js</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Terminal"><span class="nav-number">9.</span> <span class="nav-text">Terminal</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Git"><span class="nav-number">1.</span> <span class="nav-text">Git</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python"><span class="nav-number">2.</span> <span class="nav-text">Python</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Go"><span class="nav-number">3.</span> <span class="nav-text">Go</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker"><span class="nav-number">4.</span> <span class="nav-text">Docker</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL"><span class="nav-number">5.</span> <span class="nav-text">MySQL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PostgreSQL"><span class="nav-number">6.</span> <span class="nav-text">PostgreSQL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis"><span class="nav-number">7.</span> <span class="nav-text">Redis</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Vue-js"><span class="nav-number">8.</span> <span class="nav-text">Vue.js</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hadoop"><span class="nav-number">9.</span> <span class="nav-text">Hadoop</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Terminal"><span class="nav-number">10.</span> <span class="nav-text">Terminal</span></a></li></ol></div>
             
 
           </div>

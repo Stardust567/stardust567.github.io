@@ -73,7 +73,7 @@
 
 
 
-  <meta name="keywords" content="GAP,Go,MIT,6.824,raft,">
+  <meta name="keywords" content="大二,进程,线程,协程,">
 
 
 
@@ -84,25 +84,22 @@
 
 
 
-<meta name="description" content="结合 MIT-6.824-2018 的 lab2 来简单写下学习raft的笔记。">
-<meta name="keywords" content="GAP,Go,MIT,6.824,raft">
+<meta name="description" content="进程线程协程作为基本概念也是实习常被问的基本知识，正好把这一块稍微简单总结一下。">
+<meta name="keywords" content="大二,进程,线程,协程">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Raft">
-<meta property="og:url" content="https://stardust567.github.io/post/c51c.html">
+<meta property="og:title" content="进程线程协程">
+<meta property="og:url" content="https://stardust567.github.io/post/f742.html">
 <meta property="og:site_name" content="Star Trail">
-<meta property="og:description" content="结合 MIT-6.824-2018 的 lab2 来简单写下学习raft的笔记。">
+<meta property="og:description" content="进程线程协程作为基本概念也是实习常被问的基本知识，正好把这一块稍微简单总结一下。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://i.loli.net/2020/02/21/ANVsJ8aCyM5KifD.jpg">
-<meta property="og:image" content="https://i.loli.net/2020/02/28/n4uPxsZJC8eYlgA.jpg">
-<meta property="og:image" content="https://i.loli.net/2020/02/29/7HLPm9AKQG54wvR.jpg">
-<meta property="og:image" content="https://i.loli.net/2020/02/20/NzSX6Eq8yjUhPem.png">
-<meta property="og:image" content="https://i.loli.net/2020/03/01/xXltDZv8yfmi1n6.jpg">
-<meta property="og:image" content="https://i.loli.net/2020/03/01/gbPEGHk894xwdID.png">
-<meta property="og:updated_time" content="2020-10-13T11:58:31.571Z">
+<meta property="og:image" content="https://i.loli.net/2020/04/25/RN7MsZekKYIGiwr.png">
+<meta property="og:image" content="https://i.loli.net/2020/10/31/N6QCBEj3AsGX1hK.jpg">
+<meta property="og:image" content="https://i.loli.net/2020/10/31/tQOvfCdZBgoq42K.png">
+<meta property="og:updated_time" content="2020-10-31T14:25:41.180Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Raft">
-<meta name="twitter:description" content="结合 MIT-6.824-2018 的 lab2 来简单写下学习raft的笔记。">
-<meta name="twitter:image" content="https://i.loli.net/2020/02/21/ANVsJ8aCyM5KifD.jpg">
+<meta name="twitter:title" content="进程线程协程">
+<meta name="twitter:description" content="进程线程协程作为基本概念也是实习常被问的基本知识，正好把这一块稍微简单总结一下。">
+<meta name="twitter:image" content="https://i.loli.net/2020/04/25/RN7MsZekKYIGiwr.png">
 
 
 
@@ -132,14 +129,14 @@
 
 
 
-  <link rel="canonical" href="https://stardust567.github.io/post/c51c.html">
+  <link rel="canonical" href="https://stardust567.github.io/post/f742.html">
 
 
 
 
 
 
-  <title>Raft | Star Trail</title>
+  <title>进程线程协程 | Star Trail</title>
   
 
 
@@ -297,7 +294,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://stardust567.github.io/post/c51c.html">
+    <link itemprop="mainEntityOfPage" href="https://stardust567.github.io/post/f742.html">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Stardust567">
@@ -314,7 +311,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Raft</h1>
+          <h1 class="post-title" itemprop="name headline">进程线程协程</h1>
         
 
         <div class="post-meta">
@@ -326,8 +323,8 @@
               
                 <span class="post-meta-item-text">写于</span>
               
-              <time title="写于" itemprop="dateCreated datePublished" datetime="2020-03-16T13:59:44+08:00">
-                2020-03-16
+              <time title="写于" itemprop="dateCreated datePublished" datetime="2019-03-12T14:23:33+08:00">
+                2019-03-12
               </time>
             
 
@@ -367,8 +364,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/post/c51c.html#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/post/c51c.html" itemprop="commentCount"></span>
+                <a href="/post/f742.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/post/f742.html" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -376,7 +373,7 @@
 
           
           
-             <span id="/post/c51c.html" class="leancloud_visitors" data-flag-title="Raft">
+             <span id="/post/f742.html" class="leancloud_visitors" data-flag-title="进程线程协程">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -403,7 +400,7 @@
                   <span class="post-meta-item-text">共计&#58;</span>
                 
                 <span title="共计">
-                  4.6k 字
+                  4.3k 字
                 </span>
               
 
@@ -419,7 +416,7 @@
                   <span class="post-meta-item-text">时长 &asymp;</span>
                 
                 <span title="时长">
-                  16 min
+                  14 min
                 </span>
               
             </div>
@@ -440,123 +437,73 @@
       
 
       
-        <p>结合 MIT-6.824-2018 的 lab2 来简单写下学习raft的笔记。<a id="more"></a></p>
-<p>Raft是一种共识算法，它在容错和性能上与Paxos等效，但更容易理解学习。可以通过 <a href="http://thesecretlivesofdata.com/raft/" target="_blank" rel="noopener">http://thesecretlivesofdata.com/raft/</a> 简单认知下Raft共识算法。</p>
-<p>共识是容错分布式系统中的一个基本问题，共识涉及多个服务器就价值达成一致。共识通常出现在复制状态机的背景下，每个服务器都有一个状态机和一个日志，每个状态机都从其日志中获取输入命令。以哈希表为例，日志将包含诸如 set x=3 之类的命令，而共识算法要确保所有状态机都 x=3 作为第n个命令应用。即每个状态机处理相同系列的命令，从而产生相同系列的结果并到达相同系列的状态。</p>
-<h1 id="Raft-Paper"><a href="#Raft-Paper" class="headerlink" title="Raft Paper"></a>Raft Paper</h1><p>Raft 选举出一个leader来管理复制日志：leader从客户端接收日志条目，将其复制到其他服务器上，并在保证安全的时候应用日志条目到他们的状态机中。由此，Raft 将一致性问题分解成三个子问题：<strong>Leader Election</strong>, <strong>Log Replication</strong>, <strong>Safety</strong>（所有状态机都应执行相同的命令序列）</p>
-<h2 id="Raft-Properties"><a href="#Raft-Properties" class="headerlink" title="Raft Properties"></a>Raft Properties</h2><p>Raft 在任何时候都保证以下的各个特性。</p>
+        <p>进程线程协程作为基本概念也是实习常被问的基本知识，正好把这一块稍微简单总结一下。<br><a id="more"></a></p>
+<h1 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h1><h2 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h2><p>进程是系统资源分配的最小单位，由程序段数据段+PCB组成。</p>
+<p>进程拥有代码和打开的文件资源、数据资源、独立的内存空间。</p>
+<p>系统中的每个进程都运行在某个进程的上下文中。上下文是由程序正确运行的所需的状态组成的。这个状态包括放在内存中的程序代码和数据，栈，通用目的寄存器的内容，程序计数器，环境变量以及打开文件描述符。</p>
+<h3 id="内存空间"><a href="#内存空间" class="headerlink" title="内存空间"></a>内存空间</h3><p>每个程序都有一片完整连续的逻辑地址空间，这些逻辑空间映射到离散的物理空间。在程序的运行过程，完成虚拟地址到物理地址的转换。进程的地址空间是分段的，存在所谓的数据段，代码段，bbs段，堆，栈等等。</p>
+<p>对32位机器来说，虚拟的地址空间大小就是4G，可能实际物理内存大小才1G到2G（请回想虚拟内存知识点） </p>
 <ul>
-<li><strong>Election Safety</strong>：一个给定term最多能选出一位leader</li>
-<li><strong>Leader Append-Only</strong>：leader不能删除或修改自身log中entries，只能追加新entries</li>
-<li><strong>Log Matching</strong>：如果两个log在某一index处的entries具有相同term，则这两个log在该index前的所有entries相同。 </li>
-<li><strong>Leader Completeness</strong>：一个committed的entry会始终存在于之后terms的leaders的log中。</li>
-<li><strong>State Machine Safety</strong>：若一个给定index的entry已经被某台服务器apply，则不会有服务器会在其log的index位置apply别的entry的。</li>
+<li>从0xc000000000到0xFFFFFFFF共1G的大小是内核地址空间，余下的低地址3G空间则是用户地址空间。</li>
+<li>Code VMA: 程序的代码段，CPU执行的机器指令部分。通常，这一段是可以共享的，即多线程共享进程的代码段。并且，此段是只读的，不能修改。</li>
+<li>Data VMA: 程序的数据段，包含已初始化的全局和静态变量data段和未初始化的全局和静态变量bss段。</li>
+<li>堆和栈: new或者malloc分配的空间在堆上，需要编程者维护，若没有主动释放堆上的空间，进程运行结束后会被释放。栈上的是函数栈临时的变量，还有程序的局部变量，自动释放。</li>
+<li>共享库和mmap内容映射区：位于栈和堆之间，例如程序使用printf，函数共享库printf.o固定在某个物理内存位置上，让许多进程映射共享。mmap是一个系统函数，可以把磁盘文件的一部分直接映射到内存，这样文件中的位置直接就有对应的内存地址。</li>
+<li>命令行参数: 程序的命令行参数</li>
+<li>环境变量：类似于Linux下的PATH，HOME等环境变量，子进程会继承父进程的环境变量。</li>
 </ul>
-<h2 id="Raft-Basics"><a href="#Raft-Basics" class="headerlink" title="Raft Basics"></a>Raft Basics</h2><p>在任何时刻，每一个服务器节点都处于这三个状态之一：leader、followers、candidates。<br>通常系统中只有一个leader且其他节点全都是followers，在一个任期内，leader一直保持，直到自己宕机。Followers都是被动的：他们不会发送任何请求，只是简单的响应来自leader / candidates的请求。<br>Leader处理所有的客户端请求（如果一个客户端和followers联系，那followers会把请求重定向给leader）<br><img src="https://i.loli.net/2020/02/21/ANVsJ8aCyM5KifD.jpg" alt="Go与分布式_Raft_states.png"></p>
-<p>Raft 把时间分割成任意长度的<strong>任期terms</strong>。任期用连续的整数标记。每一段任期从一次<strong>选举</strong>开始。</p>
-<p>每一个节点存储一个当前任期号current term，这一编号在整个时期内单调的增长。当服务器之间通信的时候会交换current term；如果一个服务器的current term比其他人小，那么他会更新到较大的编号值。Raft 算法中服务器节点之间通信使用远程过程调用（RPCs），并且基本的一致性算法只需要两种类型的 RPCs。请求投票（RequestVote） RPCs 由候选人在选举期间发起，然后附加条目（AppendEntries）RPCs 由领导人发起，用来复制日志和提供一种心跳机制。</p>
-<h3 id="Leader-election"><a href="#Leader-election" class="headerlink" title="Leader election"></a>Leader election</h3><p>Raft 使用一种heartbeat机制来触发领导人选举。当服务器程序启动时，各自都是followers。Leader会周期性的向所有followers发送心跳包 (AppendEntries RPCs that carry no log entries) 来维持自己的权威。Followers只要收到了来自 leader / candidates 的有效RPCs就会一直保持followers。但如果一个follower在一段时间（random，一般在150ms-300ms）里没有接收到任何消息，即<strong>选举超时</strong>，那他会认为系统中无可用leader，并发起选举以选出新的leader。</p>
-<p>要开始一次选举过程，followers先要current term++且转换到candidates，然后并行的向集群中的其他服务器节点发送RequestVote的 RPCs 来给自己投票。Candidates会继续保持当前状态直到以下三件事情之一发生：</p>
+<p><img src="https://i.loli.net/2020/04/25/RN7MsZekKYIGiwr.png" alt="OS系统调用_process_address_space.png"></p>
+<h3 id="函数压栈"><a href="#函数压栈" class="headerlink" title="函数压栈"></a>函数压栈</h3><p>我们先用一个直观的图来理解函数调用，首先main()被装入（这是个广为流传的图，我懒得自己再画了，所以请不要介意它写成了mian）此时main函数运行到了调用func_A()的地方，先在自己的栈帧中压入函数返回地址，然后新开辟了func_A的栈帧并压入系统栈，然后func_A又调用func_B，函数结束后通过返回地址回到上一个函数的代码区。</p>
+<p><img src="https://i.loli.net/2020/10/31/N6QCBEj3AsGX1hK.jpg" alt="进程_函数压栈.jpg"></p>
+<p>这是一个大体的认知，然后我们来说一点细节的，首先我们来回顾一下基本概念：</p>
+<p>程序计数器<strong>PC</strong>指向了当前计算机要执行的指令在存储器中的存放地址，CPU从程序计数器取出当前指令来执行。当指令执行后，程序计数器的值自动增加PC: PC+1，指向下一条将要执行的指令。</p>
+<p>指令寄存器<strong>EIP</strong>保存正在执行的指令。</p>
+<p>每个程序都拥有自己的程序栈，栈是<strong>向下生长</strong>的，即从内存高地址-&gt;低地址，那么栈顶的地址要比栈底低。 在C和C++中，临时变量分配在栈中，临时变量拥有函数级的生命周期，即“在当前函数中有效，在函数外无效”。这种现象就是函数调用过程中的参数压栈，堆栈平衡（函数return后，要返还所有使用过的栈空间）所带来的。</p>
+<p>基址指针<strong>ebp</strong>(base pointer)，指向了本次函数调用开始时的栈顶指针，它也是本次函数调用时的“栈底”（在一次函数调用中，ebp向下是函数的临时变量使用的空间）函数调用开始时，会用<code>mov ebp, esp</code>把当前的esp保存在ebp中。</p>
+<p>栈指针<strong>esp</strong>(stack pointer)，指向当前的栈顶，它是动态变化的，随着我们申请更多的临时变量，esp值不断减小（栈是<strong>向下生长</strong>的，下图为了理解方便是反着的）函数调用结束，用<code>mov esp, ebp</code>来还原之前保存的esp。</p>
+<p><img src="https://i.loli.net/2020/10/31/tQOvfCdZBgoq42K.png" alt="进程_函数栈例.png"></p>
+<p> 在函数调用过程中，ebp和esp之间的空间被称为本次函数调用的“栈帧”。函数调用结束后，处于栈帧之前的所有内容都是本次函数调用过程中分配的临时变量，都需要被“返还”。这样在概念上给了函数调用一个更明显的分界。</p>
+<h3 id="进程通信"><a href="#进程通信" class="headerlink" title="进程通信"></a>进程通信</h3><h4 id="管道pipe"><a href="#管道pipe" class="headerlink" title="管道pipe"></a>管道pipe</h4><p>管道是一种半双工的通信方式，数据只能单向流动。管道分为pipe（无名管道）和fifo（命名管道）两种，除了建立、打开、删除的方式不同外，这两种管道几乎是一样的，都是通过内核缓冲区实现数据传输。</p>
 <ul>
-<li><p><em>(a) <strong>it wins the election</strong>：</em>candidate从整个集群的大多数服务器节点获得了针对同一term的选票。每个服务器按先来先服务原则在每个term最多投一张选票。一旦candidate赢得选举，则立即成为leader并向其他的服务器发送heartbeat来建立自己的权威并且阻止产生别的leader。</p>
-</li>
-<li><p><em>(b) <strong>another server establishes itself as leader</strong>：</em>等待投票时candidate收到别的服务器leader声明的AppendEntries RPC，如果该RPC中leader的term &gt;= candidate的term，则candidate承认该leader并回到follower；否则candidate会拒绝该RPC并保持candidate 。</p>
-</li>
-<li><p><em>(c) <strong>a period of time goes by with no winner</strong>：</em>多个followers同时成为candidates来瓜分选票，导致无人能赢得大多数人的支持。为了避免瓜分次数过多，每个candidate在发RequestVote RPCs时都会设置一个<strong>随机的</strong>等待时间，若超时则重新发送RequestVote RPCs 。这样每次瓜分后，所有candidates都会超时，current term++开启新一轮选举。</p>
-</li>
+<li>pipe用于相关进程之间的通信，例如父进程和子进程，它通过pipe()系统调用来创建并打开，当最后一个使用它的进程关闭对他的引用时，pipe将自动撤销。</li>
+<li>FIFO即命名管道，提供了一个路径名与之关联，以有名管道的文件形式存在于文件系统中，类似于直接新建了个文件。pipe只存在于内存中的文件，而FIFO存在于实际的磁盘介质或者文件系统。一旦建立，任何进程都可以通过文件名将其打开和进行读写，而不局限于父子进程，当然前提是进程对FIFO有适当的访问权。当不再被进程使用时，FIFO在内存中释放，但磁盘节点仍然存在。</li>
 </ul>
-<h3 id="Log-replication"><a href="#Log-replication" class="headerlink" title="Log replication"></a>Log replication</h3><p>客户端只和leader交互，leader把客户端指令作为一条log entry附加到自己log中，然后并行的发起 AppendEntries RPCs 给 followers，让他们复制这条entry。当这其被<strong>安全的</strong>复制，leader会将这条entry内容应用在自身状态机上并将其commit，同时return result给客户端。接下来leader会通知followers该entry已经committed，followers将其应用到各自状态机，完成各自log上该entry的commit。leader会不断的重复尝试 AppendEntries RPCs （尽管已经回复了客户端）直到所有的followers都最终存储了所有的日志条目。</p>
-<p><img src="https://i.loli.net/2020/02/28/n4uPxsZJC8eYlgA.jpg" alt="Go与分布式_Raft_log.png"></p>
-<blockquote>
-<p>日志由有序序号标记的条目组成。每个条目都包含创建时的任期号（图中框中的数字）和一个状态机需要执行的指令。一个条目当可以安全的被应用到状态机中去的时候，就认为是可以提交了。</p>
-</blockquote>
-<p>在leader将创建的日志条目复制到大多数的服务器上的时候，此时可以认为该 log entry 应用到状态机中是安全的，即该 log entry is <strong>committed</strong>（如图中条目 7）。同时，leader的日志中之前的所有日志条目也都会被提交，包括之前所有terms里的条目。Leader跟踪 committed entries 的 highest index（例如图中为7），并将其写进未来所有的 AppendEntries RPCs 好让 followers 清楚。Followers会将 committed entries 按 log 顺序应用到本地的状态机中。</p>
-<p>Raft 的日志机制维护了不同服务器的日志之间的高层次的一致性，同时也组成了上文中的日志匹配特性：</p>
-<ul>
-<li>不同log中的两个entry拥有相同index&amp;term -&gt; 他们存了相同的指令且之前的所有entries也全部相同。</li>
-</ul>
-<p><em>理由：leader会把前一个entry的index和term写进当前AppendEntries RPC中，如果followers发现在自己的log中找不到符合的entry，就会拒收这个新entry以保证其log和leader的log顺序一致。</em></p>
-<p>正常操作中，logs肯定会保持一致性。但存在这种情况，leader在自己log中写入了一堆entries但在这些entries还没全部committed时leader就先自己崩溃了，下一term它作为follower，就会出现和当前leader的log不一致情况。Raft的解决办法是直接把followers冲突的那部分entries覆盖成leader的对应entries。</p>
-<p>Leader针对每一个follower维护了一个 <strong>nextIndex</strong>（即将要发给followers的entry的index）当一个leader刚获得权力的时候，初始化所有的 nextIndex  = leader log highest index + 1。如果出现AppendEntries RPC被followers拒绝的情况，leader会让 nextIndex— 并重试。最终 nextIndex 会停在两者log一致的点，此时的AppendEntries RPC将不再被拒绝，即可followers冲突的entries全部删除并逐个追加leader的entries。通过这种机制，leader在获得权力的时候就不需要任何特殊的操作来恢复一致性。</p>
-<h3 id="Safety"><a href="#Safety" class="headerlink" title="Safety"></a>Safety</h3><p>我们需要保证每个状态机都会按照相同的顺序执行相同的指令。但如果出现，一些entries被大部分followers接受并commit，但存在一个follower处于unavailable没有接受这些entries，但偏偏该follower在下一term成为了leader，这就会导致那些committed entries明明执行了却被强制删除，即不同状态机执行不同的指令序列。</p>
-<p>Raft通过在leader election中增加一些限制来保证：任何leader对于给定的term，都拥有之前terms里所有的committed entries (即上文提到的 the Leader Completeness Property)</p>
-<p>在raft的投票环节，每个candidates发出的RequestVote RPC都会包含其last log entry的term和index，followers会根据这些信息拒绝掉没有自己新（term越大越新，term相同index越大约新）的投票请求。这样选出来的leader至少和大部分followers一样新，而entries是在大部分followers都复制后才会commit，即committed entries存在于大部分followers上，如果能和大部分followers一样新，就能保证存储了所有的committed entries。</p>
-<p><img src="https://i.loli.net/2020/02/29/7HLPm9AKQG54wvR.jpg" alt="Go与分布式_Raft_crash.png"></p>
-<p>Leader不能断定之前term中保存到大部分服务器的entry是否已经commit，如图，S1作leader，开始复制entry_2，复制了小部分followers后换leader了。S5作leader，没有entry_2且刚接受到客户端的entry_3，继续换leader。S1作leader，继续复制那条entry_2并成功复制到大部分followers上，但在entry_2即将commit前，又被换leader。若S5作leader（因为entry_3的term&gt;entry_2的term，所以能收到S2,S3,S4的选票），此时entry_3会覆盖所有的entry_2；若S1继续作leader，则S1的entries都会被提交。</p>
-<blockquote>
-<p>leader复制之前term的entries时，这些entries的term不变（图c复制entry_2时，其term依旧为2 ）</p>
-</blockquote>
-<p>由此，对于之前term中的entries，leader不会通过计算其副本数目的方式去commit，事实上leader只会对当前term的entries用计算副本数目的方式来commit。而当前term的entries被commit，由于日志匹配特性，之前的entries都会被间接commit。</p>
-<h2 id="Condenced-Summary"><a href="#Condenced-Summary" class="headerlink" title="Condenced Summary"></a>Condenced Summary</h2><p><img src="https://i.loli.net/2020/02/20/NzSX6Eq8yjUhPem.png" alt="Go与分布式_Raft_summary.png"></p>
-<h3 id="AppendEntries-RPC"><a href="#AppendEntries-RPC" class="headerlink" title="AppendEntries RPC"></a>AppendEntries RPC</h3><p>由leader负责调用来复制日志指令；也会用作heartbeat，receiver实现：</p>
-<ol>
-<li>如果 <code>term &lt; currentTerm</code> 就返回 false </li>
-<li>如果日志在 prevLogIndex 位置处的 entry 和 prevLogTerm 不匹配，则返回 false </li>
-<li>如果已经存在的日志条目和新的产生冲突（index相同但term不同），删除这一条和之后所有的 entries</li>
-<li>附加日志中尚未存在的任何新条目</li>
-<li>如果 <code>leaderCommit &gt; commitIndex</code>，令 commitIndex = MIN(leaderCommit, 新日志条目索引值)</li>
-</ol>
-<h3 id="RequestVote-RPC"><a href="#RequestVote-RPC" class="headerlink" title="RequestVote RPC"></a>RequestVote RPC</h3><p>由candidates负责调用来征集选票，receiver实现：</p>
-<ol>
-<li>如果<code>term &lt; currentTerm</code>返回 false </li>
-<li>如果 votedFor 为 null / candidateId，且candidate的日志至少和receiver一样新，那就投票给他</li>
-</ol>
-<h3 id="Rules-for-Servers"><a href="#Rules-for-Servers" class="headerlink" title="Rules for Servers"></a>Rules for Servers</h3><h4 id="All-Servers"><a href="#All-Servers" class="headerlink" title="All Servers"></a>All Servers</h4><ul>
-<li>如果<code>commitIndex &gt; lastApplied</code>，那就 lastApplied ++，并把<code>log[lastApplied]</code>应用到状态机中</li>
-<li>如果接收到的RPC请求或响应中，term<code>T &gt; currentTerm</code>，则令<code>currentTerm = T</code>，并切换状态为followers</li>
-</ul>
-<h4 id="Followers"><a href="#Followers" class="headerlink" title="Followers"></a>Followers</h4><ul>
-<li>响应来自leader和candidates的RPCs</li>
-<li>如果在选举超时前一直没有收到leader或candidates的RPCs，就自己变成candidate</li>
-</ul>
-<h4 id="Candidates"><a href="#Candidates" class="headerlink" title="Candidates"></a>Candidates</h4><ul>
-<li>在转变成candidates后就立即开始选举过程<ul>
-<li>自增当前的任期号（currentTerm）</li>
-<li>给自己投票</li>
-<li>重置选举计时器</li>
-<li>发送请求投票的 RPC 给其他所有服务器</li>
-</ul>
-</li>
-<li>如果接收到大多数服务器的选票，那么就变成领导人</li>
-<li>如果接收到来自新的领导人的 AppendEntries RPC，转变成跟随者</li>
-<li>如果选举过程超时，再次发起一轮选举</li>
-</ul>
-<h4 id="Leader"><a href="#Leader" class="headerlink" title="Leader"></a>Leader</h4><ul>
-<li>一旦成为领导人：发送空的AppendEntries RPC (heartbeat) 给其他所有的服务器；在一定的空余时间之后不停的重复发送，以阻止followers超时</li>
-<li>如果接收到来自客户端的请求：附加条目到本地日志中，在条目被应用到状态机后响应客户端</li>
-<li>如果对于一个跟随者，最后日志条目的index &gt;= nextIndex，则发送从 nextIndex 开始的所有日志条目：<ul>
-<li>如果成功：更新相应 followers 的 nextIndex 和 matchIndex</li>
-<li>如果因为日志不一致而失败，减少 nextIndex 重试</li>
-</ul>
-</li>
-<li>如果存在一个N满足<code>N &gt; commitIndex</code>，且大多数的<code>matchIndex[i] ≥ N</code>成立，并且<code>log[N].term == currentTerm</code>成立，则令<code>commitIndex = N</code></li>
-</ul>
-<h2 id="Cluster-membership-changes"><a href="#Cluster-membership-changes" class="headerlink" title="Cluster membership changes"></a>Cluster membership changes</h2><p>实际操作中偶尔会改变集群的配置，但服务器直接从旧配置转换到新配置很容易出现分歧。为避免存在新旧配置在同一时间下出现各自leader，即同一时刻新旧配置同时生效的情况，配置更改必须使用两阶段方法。在 Raft 中，集群先切换到一个过渡的配置，称之为共同一致；一旦共同一致被commit，那系统就切换到新配置上。共同一致是老配置和新配置的结合：</p>
-<ul>
-<li>日志条目会被复制给集群中新、老配置的所有服务器。</li>
-<li>新、旧配置的服务器都可以成为leader。</li>
-<li>达成一致（针对选举和提交）需要分别在两种配置上获得大多数的支持。</li>
-</ul>
-<p>当leader接收到一个改变配置从 C-old 到 C-new 的请求，他会创建configuration entry: C-old,new来存储配置，并复制给followers。各个服务器总是用latest configuration entry作为自己的配置，无论他是否committed。</p>
-<p>一旦 C-old,new 被提交（C-old，C-new双方大部分都复制成功），那么无论是 C-old 还是 C-new，在没有经过对方批准的情况下都不可能做出决定，并且领导人完全特性保证了只有拥有 C-old,new 日志条目的服务器才有可能被选举为领导人。这个时候，领导人创建一条关于 C-new 配置的日志条目并复制给集群就是安全的了。</p>
-<p>在关于重新配置还有三个问题需要提出：</p>
-<ul>
-<li><p>新的服务器可能初始化没有存储任何的日志条目。此时他们需要时间来更新追赶，而没法提交新的条目。Raft 在配置更新之前使用了一种额外的阶段：该阶段里，新的服务器加入，接收leader的entries但无投票权，直到追赶上了集群中的其他机器。</p>
-</li>
-<li><p>当前leader不在C-new中，即当前leader节点即将下线。在C-new被commit之后Leader实际已经从集群中脱离，会退位到follower状态，此时可以对Leader节点进行下线操作，而新集群则会在C-new的配置下重新选举出一个Leader。</p>
-</li>
-<li><p>移除不在 C-new 中的服务器可能会扰乱集群。这些服务器因为不在C-new里，所以leader根本不会给他们发心跳，之后这些节点就会选举超时，发送term++的请求投票 RPCs，这样会导致当前leader回退成follower。为了避免这种情况，除非leader超时，不然各节点拒收投票请求RPCs。同时在每次选举前等待一个选举超时时间，这样每次旧节点在发起选举前需要等待一段时间，那这段时间新Leader可以发送心跳，减少影响。 </p>
-</li>
-</ul>
-<h2 id="Log-compaction"><a href="#Log-compaction" class="headerlink" title="Log compaction"></a>Log compaction</h2><p>Raft 需要一定的机制去清除日志里积累的陈旧的信息，快照Snapshotting是最简单的压缩方法。在快照系统中，整个系统的状态都以快照的形式写入到稳定的持久化存储中，然后到那个时间点之前的日志全部丢弃。<br><img src="https://i.loli.net/2020/03/01/xXltDZv8yfmi1n6.jpg" alt="Go与分布式_Raft_snapShot.png"><br>每个服务器独立的创建快照，快照只包括committed entries。Raft 包含状态机状态和少量元数据（last index&amp;term）到快照中，保留元数据是为了支持快照后第一个条目的附加日志请求时的一致性检查，因为这个条目需要前一日志条目的索引值和任期号。为了支持集群成员更新，快照中也将最后的一次配置作为最后一个条目存下来。一旦服务器完成一次快照，他就可以删除最后索引位置之前的所有日志和快照了。</p>
-<p>但当followers运行缓慢或作为C-new刚加入集群时，需要leader发送快照让他们更新到最新状态。这种情况下leader使用 InstallSnapshot RPCs 来发送快照。当followers通过这种 RPC 接收到快照时，会决定如何处理log：通常快照会含当前log没有的信息，此时会丢弃整个log，用快照代替；也可能接收到的快照是自己日志的前面部分（网络重传或者错误），那么被快照包含的entries会被全部删除，但快照后面的entries仍然有效，必须保留。<br><img src="https://i.loli.net/2020/03/01/gbPEGHk894xwdID.png" alt="Go与分布式_Raft_snapShotRPC.png"></p>
-<h2 id="Client-interaction"><a href="#Client-interaction" class="headerlink" title="Client interaction"></a>Client interaction</h2><p>Raft 要求客户端只和leader交互，所以当客户端请求到follower时，如果集群里存在leader，follower会将leader地址发给客户端；如果此时集群里无leader，客户端会等待、重试。</p>
-<p>Raft 的目标是要实现线性化语义(each operation appears to execute instantaneously, exactly once, at some point between its invocation and its response)。但如果，leader在commit该entry之后，回复客户端之前crash，那么客户端会和新leader重试这条指令，导致这条命令就被再次执行。解决方案就是客户端对于每一条指令都赋予一个唯一的序列号。然后，状态机跟踪每条指令最新的序列号和相应的响应。如果接收到一条指令，它的序列号已经被执行了，那么就立即返回结果，而不重新执行指令。</p>
-<p>只读操作可以直接处理而不用写进日志。但在不增加任何限制的情况下，这么做可能会返回脏数据，因为leader可能在response客户端时被退回成follower，此时原先leader的信息已经变脏。线性化的读操作必须不能返回脏数据，Raft 需要使用两个额外的措施在不使用日志的情况下保证这一点。</p>
-<ul>
-<li>Leader必须有关于被提交日志的最新信息。在leader任期开始的时候，他可能不知道哪些是已经被提交的。为了知道这些信息，他需要在他的任期里提交一条日志条目。Raft 中通过leader在任期开始时commit一个空白entry到日志中去来实现。</li>
-<li>Leader在处理只读的请求前必须检查自己是否已经被废黜了。Raft 中通过leader在响应只读请求之前，先和集群中的大多数节点交换一次心跳信息来处理这个问题。</li>
-</ul>
+<p>管道的实质是一个内核缓冲区，进程以先进先出的方式从缓冲区存取数据：管道一端的进程顺序地将进程数据写入缓冲区，另一端的进程则顺序地读取数据，该缓冲区可以看做一个循环队列，读和写的位置都是自动增加的，一个数据只能被读一次，读出以后再缓冲区都不复存在了。当缓冲区读空或者写满时，有一定的规则控制相应的读进程或写进程是否进入等待队列，当空的缓冲区有新数据写入或慢的缓冲区有数据读出时，就唤醒等待队列中的进程继续读写。</p>
+<h4 id="消息队列MessageQueue"><a href="#消息队列MessageQueue" class="headerlink" title="消息队列MessageQueue"></a>消息队列MessageQueue</h4><p>消息队列，就是一个消息的链表，是一系列保存在内核中消息的列表。用户进程可以向消息队列添加消息，也可以向消息队列读取消息。</p>
+<p>与管道不同的是消息队列存放在内核中，只有在内核重启(即OS重启)或者显示地删除一个消息队列时，该消息队列才会被真正的删除。另外，消息队列在某个进程往一个队列写入消息之前，并不需要另外某个进程在该队列上等待消息的到达。</p>
+<p>消息队列与管道通信相比，其优势是对每个消息指定特定的消息类型，接收的时候不需要按照队列次序，而是可以根据自定义条件接收特定类型的消息。</p>
+<p>可以把消息看做一个记录，具有特定的格式以及特定的优先级。对消息队列有写权限的进程可以向消息队列中按照一定的规则添加新消息，对消息队列有读权限的进程可以从消息队列中读取消息。</p>
+<h4 id="共享存储SharedMemory"><a href="#共享存储SharedMemory" class="headerlink" title="共享存储SharedMemory"></a>共享存储SharedMemory</h4><p>为了在多个进程间交换信息，内核专门留出了一块内存区，可以由需要访问的进程将其映射到自己的私有地址空间。进程就可以直接读写这一块内存而不需要进行数据的拷贝，从而大大提高效率。共享内存是最快的 IPC 方式，它是针对其他进程间通信方式运行效率低而专门设计的。它往往与其他通信机制如信号量，配合使用，来实现进程间的同步和通信。</p>
+<h4 id="信号量Semaphore"><a href="#信号量Semaphore" class="headerlink" title="信号量Semaphore"></a>信号量Semaphore</h4><p>信号量是一个计数器，可以用来控制多个进程对共享资源的访问。它常作为一种锁机制，防止某进程正在访问共享资源时，其他进程也访问该资源。因此，主要作为进程间以及同一进程内不同线程之间的同步手段。</p>
+<h4 id="套接字Socket"><a href="#套接字Socket" class="headerlink" title="套接字Socket"></a>套接字Socket</h4><p>套接字是一种通信机制，凭借这种机制，客户/服务器（即要进行通信的进程）系统的开发工作既可以在本地单机上进行，也可以跨网络进行。也就是说它可以让不在同一台计算机但通过网络连接计算机上的进程进行通信。</p>
+<h4 id="信号-sinal"><a href="#信号-sinal" class="headerlink" title="信号 ( sinal )"></a>信号 ( sinal )</h4><p>信号是Linux系统中用于进程之间通信或操作的一种机制，信号可以在任何时候发送给某一进程，而无须知道该进程的状态。如果该进程并未处于执行状态，则该信号就由内核保存起来，知道该进程恢复执行并传递给他为止。如果一个信号被进程设置为阻塞，则该信号的传递被延迟，直到其阻塞被取消时才被传递给进程。</p>
+<p>Linux提供了几十种信号，分别代表着不同的意义。信号之间依靠他们的值来区分，但是通常在程序中使用信号的名字来表示一个信号。在Linux系统中，这些信号和以他们的名称命名的常量被定义在/usr/includebitssignum.h文件中。通常程序中直接包含<signal.h>就好。</signal.h></p>
+<p>信号是在软件层次上对中断机制的一种模拟，是一种异步通信方式，信号可以在用户空间进程和内核之间直接交互。内核也可以利用信号来通知用户空间的进程来通知用户空间发生了哪些系统事件。信号事件有两个来源：</p>
+<p>1）硬件来源，例如按下了cltr+C，通常产生中断信号sigint</p>
+<p>2）软件来源，例如使用系统调用或者命令发出信号。最常用的发送信号的系统函数是kill,raise,setitimer,sigation,sigqueue函数。软件来源还包括一些非法运算等操作。</p>
+<p>一旦有信号产生，用户进程对信号产生的相应有三种方式：</p>
+<p>1）执行默认操作，linux对每种信号都规定了默认操作。</p>
+<p>2）捕捉信号，定义信号处理函数，当信号发生时，执行相应的处理函数。</p>
+<p>3）忽略信号，当不希望接收到的信号对进程的执行产生影响，而让进程继续执行时，可以忽略该信号，即不对信号进程作任何处理。</p>
+<p><em>TIPS：有两个信号是应用进程无法捕捉和忽略的，即SIGKILL和SEGSTOP，这是为了使系统管理员能在任何时候中断或结束某一特定的进程。</em></p>
+<h3 id="父子进程"><a href="#父子进程" class="headerlink" title="父子进程"></a>父子进程</h3><p>在unix/linux中，正常情况下，子进程是通过父进程创建的，子进程再创建新的进程。子进程的结束和父进程的运行是一个异步过程，即父进程无法预测子进程什么时候结束。 当一个进程完成它的工作终止之后，它的父进程需要调用wait()或waitpid()系统调用取得子进程的终止状态。</p>
+<p><strong>孤儿进程</strong>：一个父进程退出，而它的一个或多个子进程还在运行，那么这些子进程将成为孤儿进程。孤儿进程将被系统init进程(pid=1)所收养，并由init进程对它们完成状态收集工作。</p>
+<p><strong>僵尸进程</strong>：一个进程使用fork创建子进程，如果子进程退出，而父进程并没有调用wait或waitpid获取子进程的状态信息，那么子进程的进程描述符仍然保存在系统中。这种进程称之为僵死进程。</p>
+<h2 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h2><p>线程是运行在进程上下文的逻辑流。线程从属于进程，是程序的实际执行者。一个进程至少包含一个主线程，也可以有更多的子线程，所以线程的粒度比进程小，线程由内核调度，也有自己的线程上下文，包括一个唯一的整数线程ID, 栈和栈指针，程序计数器，通用目的寄存器和条件码。但是，所有运行在一个进程里的线程共享该进程的整个虚拟地址空间。</p>
+<h3 id="内存空间-1"><a href="#内存空间-1" class="headerlink" title="内存空间"></a>内存空间</h3><p>每个线程独立的线程上下文：一个唯一的整数线程ID, 栈和栈指针，程序计数器，通用目的寄存器和条件码。</p>
+<p>和其他线程共享的进程上下文的剩余部分：整个用户虚拟地址空间，那就是上图的只读代码段，读/写数据段，堆以及所有的共享库代码和数据区域，也共享所有打开文件的集合。</p>
+<p>线程的寄存器是不共享的，通常栈区是被相应线程独立访问的，但可能出现一个线程去访问另一个线程中的栈区的情况。这是因为这个线程获得了指向另一个线程栈区的指针，那么它就可以读写这个栈的任何部分。</p>
+<h4 id="线程崩溃"><a href="#线程崩溃" class="headerlink" title="线程崩溃"></a>线程崩溃</h4><p>线程有自己的 stack，但是没有单独的 heap 和 address space。只有进程有自己的 address space，而这个 space 中经过合法申请的部分叫做 process space。Process space 之外的地址都是非法地址。当一个线程向非法地址读取或者写入，无法确认这个操作是否会影响同一进程中的其它线程，所以只能是整个进程一起崩溃。</p>
+<h3 id="主线程"><a href="#主线程" class="headerlink" title="主线程"></a>主线程</h3><p>当一个程序启动时，就有一个进程被操作系统创建，与此同时一个线程也立刻运行，该线程为程序的<strong>主线程</strong>（Main Thread）。它是程序开始时就执行的，之后创建的线程都是这个主线程的子线程。每个进程至少都有一个主线程，如main函数。</p>
+<p>线程不像进程，一个进程中的线程之间没有父子之分，都是平级关系。理论上，某个线程的退出不会影响其他线程。但是当main执行完之后，return会使编译器调用进程退出的代码exit()，exit() 会让整个进程over终止，那所有线程自然都会退出。</p>
+<p>exit() 会让整个进程over终止，那所有线程自然都会退出。</p>
+<h3 id="线程通信"><a href="#线程通信" class="headerlink" title="线程通信"></a>线程通信</h3><h4 id="锁机制"><a href="#锁机制" class="headerlink" title="锁机制"></a>锁机制</h4><p>锁机制包括互斥锁、条件变量、读写锁</p>
+<p>互斥锁提供了以排他方式防止数据结构被并发修改的方法。<br>读写锁允许多个线程同时读共享数据，而对写操作是互斥的。<br>条件变量可以以原子的方式阻塞进程，直到某个特定条件为真为止。对条件的测试是在互斥锁的保护下进行的。条件变量始终与互斥锁一起使用。</p>
+<h4 id="信号量机制-Semaphore"><a href="#信号量机制-Semaphore" class="headerlink" title="信号量机制(Semaphore)"></a>信号量机制(Semaphore)</h4><p>信号量机制包括无名线程信号量和命名线程信号量</p>
+<h4 id="信号机制-Signal"><a href="#信号机制-Signal" class="headerlink" title="信号机制(Signal)"></a>信号机制(Signal)</h4><p>信号机制类似进程间的信号处理<br>线程间的通信目的主要是用于线程同步，所以线程没有像进程通信中的用于数据交换的通信机制。</p>
+<h2 id="协程"><a href="#协程" class="headerlink" title="协程"></a>协程</h2><p>协程Coroutine，作用是在执行函数A时，可以随时中断，去执行函数B，然后中断继续执行函数A。但这一过程并不是函数调用（没有调用语句），这一整个过程看似像多线程，然而协程只有一个线程执行。协程由于由程序主动控制切换，没有线程切换的开销，所以执行效率极高。</p>
+<p>一个线程可以拥有多个协程。协程不被操作系统内核所管理，而完全是由程序所控制（也就是在用户态执行）</p>
+<p>比如python中的<code>yield</code>就是个经典的使用协程的例子，执行到<code>yield</code>后将暂停在这里，直到下一次被启动。</p>
 
       
     </div>
@@ -606,7 +553,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://stardust567.github.io/post/c51c.html" title="Raft">https://stardust567.github.io/post/c51c.html</a>
+    <a href="https://stardust567.github.io/post/f742.html" title="进程线程协程">https://stardust567.github.io/post/f742.html</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
@@ -621,15 +568,13 @@
       
         <div class="post-tags">
           
-            <a href="/tags/GAP/" rel="tag"><i class="fa fa-tag"></i> GAP</a>
+            <a href="/tags/大二/" rel="tag"><i class="fa fa-tag"></i> 大二</a>
           
-            <a href="/tags/Go/" rel="tag"><i class="fa fa-tag"></i> Go</a>
+            <a href="/tags/进程/" rel="tag"><i class="fa fa-tag"></i> 进程</a>
           
-            <a href="/tags/MIT/" rel="tag"><i class="fa fa-tag"></i> MIT</a>
+            <a href="/tags/线程/" rel="tag"><i class="fa fa-tag"></i> 线程</a>
           
-            <a href="/tags/6-824/" rel="tag"><i class="fa fa-tag"></i> 6.824</a>
-          
-            <a href="/tags/raft/" rel="tag"><i class="fa fa-tag"></i> raft</a>
+            <a href="/tags/协程/" rel="tag"><i class="fa fa-tag"></i> 协程</a>
           
         </div>
       
@@ -642,8 +587,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/post/3d2c.html" rel="next" title="FSCQ文件系统">
-                <i class="fa fa-chevron-left"></i> FSCQ文件系统
+              <a href="/post/16623.html" rel="next" title="恋与L">
+                <i class="fa fa-chevron-left"></i> 恋与L
               </a>
             
           </div>
@@ -652,8 +597,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/post/9271.html" rel="prev" title="被动读写锁">
-                被动读写锁 <i class="fa fa-chevron-right"></i>
+              <a href="/post/22713.html" rel="prev" title="System Call">
+                System Call <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -789,7 +734,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Raft-Paper"><span class="nav-number">1.</span> <span class="nav-text">Raft Paper</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Raft-Properties"><span class="nav-number">1.1.</span> <span class="nav-text">Raft Properties</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Raft-Basics"><span class="nav-number">1.2.</span> <span class="nav-text">Raft Basics</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Leader-election"><span class="nav-number">1.2.1.</span> <span class="nav-text">Leader election</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Log-replication"><span class="nav-number">1.2.2.</span> <span class="nav-text">Log replication</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Safety"><span class="nav-number">1.2.3.</span> <span class="nav-text">Safety</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Condenced-Summary"><span class="nav-number">1.3.</span> <span class="nav-text">Condenced Summary</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#AppendEntries-RPC"><span class="nav-number">1.3.1.</span> <span class="nav-text">AppendEntries RPC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RequestVote-RPC"><span class="nav-number">1.3.2.</span> <span class="nav-text">RequestVote RPC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Rules-for-Servers"><span class="nav-number">1.3.3.</span> <span class="nav-text">Rules for Servers</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#All-Servers"><span class="nav-number">1.3.3.1.</span> <span class="nav-text">All Servers</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Followers"><span class="nav-number">1.3.3.2.</span> <span class="nav-text">Followers</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Candidates"><span class="nav-number">1.3.3.3.</span> <span class="nav-text">Candidates</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Leader"><span class="nav-number">1.3.3.4.</span> <span class="nav-text">Leader</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cluster-membership-changes"><span class="nav-number">1.4.</span> <span class="nav-text">Cluster membership changes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Log-compaction"><span class="nav-number">1.5.</span> <span class="nav-text">Log compaction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Client-interaction"><span class="nav-number">1.6.</span> <span class="nav-text">Client interaction</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基础概念"><span class="nav-number">1.</span> <span class="nav-text">基础概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#进程"><span class="nav-number">1.1.</span> <span class="nav-text">进程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#内存空间"><span class="nav-number">1.1.1.</span> <span class="nav-text">内存空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数压栈"><span class="nav-number">1.1.2.</span> <span class="nav-text">函数压栈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程通信"><span class="nav-number">1.1.3.</span> <span class="nav-text">进程通信</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#管道pipe"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">管道pipe</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#消息队列MessageQueue"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">消息队列MessageQueue</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#共享存储SharedMemory"><span class="nav-number">1.1.3.3.</span> <span class="nav-text">共享存储SharedMemory</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#信号量Semaphore"><span class="nav-number">1.1.3.4.</span> <span class="nav-text">信号量Semaphore</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#套接字Socket"><span class="nav-number">1.1.3.5.</span> <span class="nav-text">套接字Socket</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#信号-sinal"><span class="nav-number">1.1.3.6.</span> <span class="nav-text">信号 ( sinal )</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#父子进程"><span class="nav-number">1.1.4.</span> <span class="nav-text">父子进程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程"><span class="nav-number">1.2.</span> <span class="nav-text">线程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#内存空间-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">内存空间</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#线程崩溃"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">线程崩溃</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主线程"><span class="nav-number">1.2.2.</span> <span class="nav-text">主线程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程通信"><span class="nav-number">1.2.3.</span> <span class="nav-text">线程通信</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#锁机制"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">锁机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#信号量机制-Semaphore"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">信号量机制(Semaphore)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#信号机制-Signal"><span class="nav-number">1.2.3.3.</span> <span class="nav-text">信号机制(Signal)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#协程"><span class="nav-number">1.3.</span> <span class="nav-text">协程</span></a></li></ol></li></ol></div>
             
 
           </div>

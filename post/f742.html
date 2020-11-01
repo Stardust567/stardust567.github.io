@@ -93,9 +93,12 @@
 <meta property="og:description" content="进程线程协程作为基本概念也是实习常被问的基本知识，正好把这一块稍微简单总结一下。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.loli.net/2020/04/25/RN7MsZekKYIGiwr.png">
+<meta property="og:image" content="https://i.loli.net/2019/03/18/5c8fa09144527.jpg">
 <meta property="og:image" content="https://i.loli.net/2020/10/31/N6QCBEj3AsGX1hK.jpg">
 <meta property="og:image" content="https://i.loli.net/2020/10/31/tQOvfCdZBgoq42K.png">
-<meta property="og:updated_time" content="2020-10-31T14:25:41.180Z">
+<meta property="og:image" content="https://i.loli.net/2020/11/01/cvKB2jkt9iXf5FQ.jpg">
+<meta property="og:image" content="https://i.loli.net/2020/11/01/B1eZVzLtyEk6rDq.jpg">
+<meta property="og:updated_time" content="2020-11-01T03:35:09.841Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="进程线程协程">
 <meta name="twitter:description" content="进程线程协程作为基本概念也是实习常被问的基本知识，正好把这一块稍微简单总结一下。">
@@ -400,7 +403,7 @@
                   <span class="post-meta-item-text">共计&#58;</span>
                 
                 <span title="共计">
-                  4.3k 字
+                  5.8k 字
                 </span>
               
 
@@ -416,7 +419,7 @@
                   <span class="post-meta-item-text">时长 &asymp;</span>
                 
                 <span title="时长">
-                  14 min
+                  20 min
                 </span>
               
             </div>
@@ -453,16 +456,8 @@
 <li>环境变量：类似于Linux下的PATH，HOME等环境变量，子进程会继承父进程的环境变量。</li>
 </ul>
 <p><img src="https://i.loli.net/2020/04/25/RN7MsZekKYIGiwr.png" alt="OS系统调用_process_address_space.png"></p>
-<h3 id="函数压栈"><a href="#函数压栈" class="headerlink" title="函数压栈"></a>函数压栈</h3><p>我们先用一个直观的图来理解函数调用，首先main()被装入（这是个广为流传的图，我懒得自己再画了，所以请不要介意它写成了mian）此时main函数运行到了调用func_A()的地方，先在自己的栈帧中压入函数返回地址，然后新开辟了func_A的栈帧并压入系统栈，然后func_A又调用func_B，函数结束后通过返回地址回到上一个函数的代码区。</p>
-<p><img src="https://i.loli.net/2020/10/31/N6QCBEj3AsGX1hK.jpg" alt="进程_函数压栈.jpg"></p>
-<p>这是一个大体的认知，然后我们来说一点细节的，首先我们来回顾一下基本概念：</p>
-<p>程序计数器<strong>PC</strong>指向了当前计算机要执行的指令在存储器中的存放地址，CPU从程序计数器取出当前指令来执行。当指令执行后，程序计数器的值自动增加PC: PC+1，指向下一条将要执行的指令。</p>
-<p>指令寄存器<strong>EIP</strong>保存正在执行的指令。</p>
-<p>每个程序都拥有自己的程序栈，栈是<strong>向下生长</strong>的，即从内存高地址-&gt;低地址，那么栈顶的地址要比栈底低。 在C和C++中，临时变量分配在栈中，临时变量拥有函数级的生命周期，即“在当前函数中有效，在函数外无效”。这种现象就是函数调用过程中的参数压栈，堆栈平衡（函数return后，要返还所有使用过的栈空间）所带来的。</p>
-<p>基址指针<strong>ebp</strong>(base pointer)，指向了本次函数调用开始时的栈顶指针，它也是本次函数调用时的“栈底”（在一次函数调用中，ebp向下是函数的临时变量使用的空间）函数调用开始时，会用<code>mov ebp, esp</code>把当前的esp保存在ebp中。</p>
-<p>栈指针<strong>esp</strong>(stack pointer)，指向当前的栈顶，它是动态变化的，随着我们申请更多的临时变量，esp值不断减小（栈是<strong>向下生长</strong>的，下图为了理解方便是反着的）函数调用结束，用<code>mov esp, ebp</code>来还原之前保存的esp。</p>
-<p><img src="https://i.loli.net/2020/10/31/tQOvfCdZBgoq42K.png" alt="进程_函数栈例.png"></p>
-<p> 在函数调用过程中，ebp和esp之间的空间被称为本次函数调用的“栈帧”。函数调用结束后，处于栈帧之前的所有内容都是本次函数调用过程中分配的临时变量，都需要被“返还”。这样在概念上给了函数调用一个更明显的分界。</p>
+<h3 id="陷入与中断"><a href="#陷入与中断" class="headerlink" title="陷入与中断"></a>陷入与中断</h3><p>运行进程时，cpu 一直处于一个大循环中：取指，更新 PC，执行，取指……。但有些情况下用户程序需要进入内核，而不是执行下一条用户指令。这些情况包括设备信号的发出、用户程序的非法操作（例如引用一个找不到页表项的虚拟地址）。处理这些情况面临三大挑战：1）内核必须使处理器能够从用户态转换到内核态（并且再转换回用户态）2）内核和设备必须协调好他们并行的活动。3）内核必须知道硬件接口的细节。</p>
+<p>这部分展开就太多了，详细请移步本博客下另一篇文章：<a href="https://stardust567.github.io/post/22713.html">System Call</a></p>
 <h3 id="进程通信"><a href="#进程通信" class="headerlink" title="进程通信"></a>进程通信</h3><h4 id="管道pipe"><a href="#管道pipe" class="headerlink" title="管道pipe"></a>管道pipe</h4><p>管道是一种半双工的通信方式，数据只能单向流动。管道分为pipe（无名管道）和fifo（命名管道）两种，除了建立、打开、删除的方式不同外，这两种管道几乎是一样的，都是通过内核缓冲区实现数据传输。</p>
 <ul>
 <li>pipe用于相关进程之间的通信，例如父进程和子进程，它通过pipe()系统调用来创建并打开，当最后一个使用它的进程关闭对他的引用时，pipe将自动撤销。</li>
@@ -489,7 +484,12 @@
 <h3 id="父子进程"><a href="#父子进程" class="headerlink" title="父子进程"></a>父子进程</h3><p>在unix/linux中，正常情况下，子进程是通过父进程创建的，子进程再创建新的进程。子进程的结束和父进程的运行是一个异步过程，即父进程无法预测子进程什么时候结束。 当一个进程完成它的工作终止之后，它的父进程需要调用wait()或waitpid()系统调用取得子进程的终止状态。</p>
 <p><strong>孤儿进程</strong>：一个父进程退出，而它的一个或多个子进程还在运行，那么这些子进程将成为孤儿进程。孤儿进程将被系统init进程(pid=1)所收养，并由init进程对它们完成状态收集工作。</p>
 <p><strong>僵尸进程</strong>：一个进程使用fork创建子进程，如果子进程退出，而父进程并没有调用wait或waitpid获取子进程的状态信息，那么子进程的进程描述符仍然保存在系统中。这种进程称之为僵死进程。</p>
-<h2 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h2><p>线程是运行在进程上下文的逻辑流。线程从属于进程，是程序的实际执行者。一个进程至少包含一个主线程，也可以有更多的子线程，所以线程的粒度比进程小，线程由内核调度，也有自己的线程上下文，包括一个唯一的整数线程ID, 栈和栈指针，程序计数器，通用目的寄存器和条件码。但是，所有运行在一个进程里的线程共享该进程的整个虚拟地址空间。</p>
+<h2 id="进程状态"><a href="#进程状态" class="headerlink" title="进程状态"></a>进程状态</h2><p>下面简单介绍下进程的状态：分linux内核代码定义的状态和常用状态。<br>由Linux内核代码宏定义出的“TASK_REPORT”：</p>
+<blockquote>
+<p><code>/* get_task_state() */</code><br><code>#define TASK_REPORT    (TASK_RUNNING | TASK_INTERRUPTIBLE |</code><br><code>TASK_UNINTERRUPTIBLE | __TASK_STOPPED |&gt;</code><br><code>__TASK_TRACED | EXIT_ZOMBIE | EXIT_DEAD)</code></p>
+<p>可以得到七个基本的进程状态，即：<br><strong>R运行状态TASK_RUNNING</strong>进程要么正在执行，要么正要准备执行。<br><strong>S可中断睡眠状态TASK_INTERRUPTIBLE</strong>进程被阻塞，直到某个条件变为真。条件一旦达成，进程的状态就被设置为TASK_RUNNING。<br><strong>D不可中断睡眠状态TASK_UNINTERRUPTIBLE</strong>进程不会立即响应信号。这种状态一般用于内核某些不能被打断的进程，比如等待磁盘或网络I / O的设备驱动程序使用。<br><strong>T停止状态__TASK_STOPPED</strong>可以通过发送SIGSTOP信号给进程来停止进程，可以发送SIGCONT信号让进程继续运行<br><strong>t追踪状态__TASK_TRACED</strong>进程被debugger等进程监视。处于TASK_TRACED状态的进程不能响应SIGCONT信号而被唤醒。<br><strong>Z僵尸状态EXIT_ZOMBIE</strong>进程的执行被终止，但是其父进程还没有使用wait()等系统调用来获知它的终止信息。此时进程几乎的所有资源将被回收，没有任何可执行代码，也不能被调度，仅留下task_struct结构（以及少数资源）记载了些供人凭吊的信息。<br><strong>X死亡状态EXIT_DEAD</strong>进程的最终状态，即将被销毁，ls都没了的那种。<br>常用的状态转换图：<br><img src="https://i.loli.net/2019/03/18/5c8fa09144527.jpg" alt=""></p>
+</blockquote>
+<h1 id=""><a href="#" class="headerlink" title="#"></a>#</h1><h2 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h2><p>线程是运行在进程上下文的逻辑流。线程从属于进程，是程序的实际执行者。一个进程至少包含一个主线程，也可以有更多的子线程，所以线程的粒度比进程小，线程由内核调度，也有自己的线程上下文，包括一个唯一的整数线程ID, 栈和栈指针，程序计数器，通用目的寄存器和条件码。但是，所有运行在一个进程里的线程共享该进程的整个虚拟地址空间。</p>
 <h3 id="内存空间-1"><a href="#内存空间-1" class="headerlink" title="内存空间"></a>内存空间</h3><p>每个线程独立的线程上下文：一个唯一的整数线程ID, 栈和栈指针，程序计数器，通用目的寄存器和条件码。</p>
 <p>和其他线程共享的进程上下文的剩余部分：整个用户虚拟地址空间，那就是上图的只读代码段，读/写数据段，堆以及所有的共享库代码和数据区域，也共享所有打开文件的集合。</p>
 <p>线程的寄存器是不共享的，通常栈区是被相应线程独立访问的，但可能出现一个线程去访问另一个线程中的栈区的情况。这是因为这个线程获得了指向另一个线程栈区的指针，那么它就可以读写这个栈的任何部分。</p>
@@ -497,13 +497,38 @@
 <h3 id="主线程"><a href="#主线程" class="headerlink" title="主线程"></a>主线程</h3><p>当一个程序启动时，就有一个进程被操作系统创建，与此同时一个线程也立刻运行，该线程为程序的<strong>主线程</strong>（Main Thread）。它是程序开始时就执行的，之后创建的线程都是这个主线程的子线程。每个进程至少都有一个主线程，如main函数。</p>
 <p>线程不像进程，一个进程中的线程之间没有父子之分，都是平级关系。理论上，某个线程的退出不会影响其他线程。但是当main执行完之后，return会使编译器调用进程退出的代码exit()，exit() 会让整个进程over终止，那所有线程自然都会退出。</p>
 <p>exit() 会让整个进程over终止，那所有线程自然都会退出。</p>
-<h3 id="线程通信"><a href="#线程通信" class="headerlink" title="线程通信"></a>线程通信</h3><h4 id="锁机制"><a href="#锁机制" class="headerlink" title="锁机制"></a>锁机制</h4><p>锁机制包括互斥锁、条件变量、读写锁</p>
-<p>互斥锁提供了以排他方式防止数据结构被并发修改的方法。<br>读写锁允许多个线程同时读共享数据，而对写操作是互斥的。<br>条件变量可以以原子的方式阻塞进程，直到某个特定条件为真为止。对条件的测试是在互斥锁的保护下进行的。条件变量始终与互斥锁一起使用。</p>
+<h3 id="函数压栈"><a href="#函数压栈" class="headerlink" title="函数压栈"></a>函数压栈</h3><p>我们先用一个直观的图来理解函数调用，首先main()被装入（这是个广为流传的图，我懒得自己再画了，所以请不要介意它写成了mian）此时main函数运行到了调用func_A()的地方，先在自己的栈帧中压入函数返回地址，然后新开辟了func_A的栈帧并压入系统栈，然后func_A又调用func_B，函数结束后通过返回地址回到上一个函数的代码区。</p>
+<p><img src="https://i.loli.net/2020/10/31/N6QCBEj3AsGX1hK.jpg" alt="进程_函数压栈.jpg"></p>
+<p>这是一个大体的认知，然后我们来说一点细节的，首先我们来回顾一下基本概念：</p>
+<p>程序计数器<strong>PC</strong>指向了当前计算机要执行的指令在存储器中的存放地址，CPU从程序计数器取出当前指令来执行。当指令执行后，程序计数器的值自动增加PC: PC+1，指向下一条将要执行的指令。</p>
+<p>指令寄存器<strong>EIP</strong>保存正在执行的指令。</p>
+<p>每个程序都拥有自己的程序栈，栈是<strong>向下生长</strong>的，即从内存高地址-&gt;低地址，那么栈顶的地址要比栈底低。 在C和C++中，临时变量分配在栈中，临时变量拥有函数级的生命周期，即“在当前函数中有效，在函数外无效”。这种现象就是函数调用过程中的参数压栈，堆栈平衡（函数return后，要返还所有使用过的栈空间）所带来的。</p>
+<p>基址指针<strong>ebp</strong>(base pointer)，指向了本次函数调用开始时的栈顶指针，它也是本次函数调用时的“栈底”（在一次函数调用中，ebp向下是函数的临时变量使用的空间）函数调用开始时，会用<code>mov ebp, esp</code>把当前的esp保存在ebp中。</p>
+<p>栈指针<strong>esp</strong>(stack pointer)，指向当前的栈顶，它是动态变化的，随着我们申请更多的临时变量，esp值不断减小（栈是<strong>向下生长</strong>的，下图为了理解方便是反着的）函数调用结束，用<code>mov esp, ebp</code>来还原之前保存的esp。</p>
+<p><img src="https://i.loli.net/2020/10/31/tQOvfCdZBgoq42K.png" alt="进程_函数栈例.png"></p>
+<p> 在函数调用过程中，ebp和esp之间的空间被称为本次函数调用的“栈帧”。函数调用结束后，处于栈帧之前的所有内容都是本次函数调用过程中分配的临时变量，都需要被“返还”。这样在概念上给了函数调用一个更明显的分界。</p>
+<h3 id="线程通信"><a href="#线程通信" class="headerlink" title="线程通信"></a>线程通信</h3><p>由于多线程共享地址空间和数据空间，所以多个线程间的通信是一个线程的数据可以直接提供给其他线程使用，而不必通过操作系统，也就是内核的调度。线程间的通信目的主要是用于线程同步，所以线程没有像进程通信中的用于数据交换的通信机制。</p>
+<h4 id="锁机制"><a href="#锁机制" class="headerlink" title="锁机制"></a>锁机制</h4><ol>
+<li>互斥锁提供了以排他方式防止数据结构被并发修改的方法。</li>
+<li>读写锁允许多个线程同时读共享数据，而对写操作是互斥的。</li>
+<li>条件变量可以以原子的方式阻塞进程，直到某个特定条件为真为止。对条件的测试是在互斥锁的保护下进行的。条件变量始终与互斥锁一起使用。</li>
+</ol>
 <h4 id="信号量机制-Semaphore"><a href="#信号量机制-Semaphore" class="headerlink" title="信号量机制(Semaphore)"></a>信号量机制(Semaphore)</h4><p>信号量机制包括无名线程信号量和命名线程信号量</p>
-<h4 id="信号机制-Signal"><a href="#信号机制-Signal" class="headerlink" title="信号机制(Signal)"></a>信号机制(Signal)</h4><p>信号机制类似进程间的信号处理<br>线程间的通信目的主要是用于线程同步，所以线程没有像进程通信中的用于数据交换的通信机制。</p>
+<h4 id="信号机制-Signal"><a href="#信号机制-Signal" class="headerlink" title="信号机制(Signal)"></a>信号机制(Signal)</h4><p>信号机制类似进程间的信号处理</p>
 <h2 id="协程"><a href="#协程" class="headerlink" title="协程"></a>协程</h2><p>协程Coroutine，作用是在执行函数A时，可以随时中断，去执行函数B，然后中断继续执行函数A。但这一过程并不是函数调用（没有调用语句），这一整个过程看似像多线程，然而协程只有一个线程执行。协程由于由程序主动控制切换，没有线程切换的开销，所以执行效率极高。</p>
 <p>一个线程可以拥有多个协程。协程不被操作系统内核所管理，而完全是由程序所控制（也就是在用户态执行）</p>
-<p>比如python中的<code>yield</code>就是个经典的使用协程的例子，执行到<code>yield</code>后将暂停在这里，直到下一次被启动。</p>
+<p>比如python中的<code>yield</code>就是个经典的使用协程的例子，执行到<code>yield</code>后将暂停在这里，CPU去执行其他任务，直到该任务再次被启动（比如数据爬取到了来返回）。</p>
+<p>当然最典型的协程例子还是go中的goroutin，</p>
+<h3 id="协程与线程"><a href="#协程与线程" class="headerlink" title="协程与线程"></a>协程与线程</h3><h4 id="栈大小"><a href="#栈大小" class="headerlink" title="栈大小"></a>栈大小</h4><p>首先一般线程都有固定的函数栈大小（2MB）用于保存局部变量，用于在函数切换时使用，goroutin采用了动态扩张收缩的策略：初始化为2KB，最大可扩张到1GB。</p>
+<h4 id="有无id"><a href="#有无id" class="headerlink" title="有无id"></a>有无id</h4><p>每个线程都有一个id，这个在线程创建时就会返回，所以可以很方便的通过id操作某个线程。但是在goroutine内没有这个概念，这个是go语言设计之初考虑的，防止被滥用，所以你不能在一个协程中杀死另外一个协程，编码时需要考虑到协程什么时候创建，什么时候释放。</p>
+<h4 id="GOMAXPROCS"><a href="#GOMAXPROCS" class="headerlink" title="GOMAXPROCS"></a>GOMAXPROCS</h4><p> <code>GOMAXPROCS</code>用于设置上下文个数，这个上下文用于协程间的切换，默认值是CPU的个数，即该个数是指定<strong>同时执行协程的OS线程数</strong>，比如下例，如果只启动一个上下文，虽然一个线程可以有很多个协程，但由于是映射到1个OS线程，1次只能跑一个协程，所以会跑一段时间再进行切换（由调度器进行判断什么时候切换，而不是内核）。第二次启动二个上下文，映射到2个OS线程，同一时间有2个干活的OS线程，所以能看到0和1交替打印。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> &#123;  </span><br><span class="line">    <span class="keyword">go</span> fmt.Print(<span class="number">0</span>)</span><br><span class="line">    fmt.Print(<span class="number">1</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$ GOMAXPROCS=<span class="number">1</span> <span class="keyword">go</span> run example.<span class="keyword">go</span></span><br><span class="line"><span class="number">11111111111111111100000000000000000000111111111.</span>..  </span><br><span class="line">$ GOMAXPROCS=<span class="number">2</span> <span class="keyword">go</span> run example.<span class="keyword">go</span></span><br><span class="line"><span class="number">01010101010010101001110010101010010101010101010.</span>..</span><br></pre></td></tr></table></figure>
+<h4 id="调度"><a href="#调度" class="headerlink" title="调度"></a>调度</h4><p>线程切换需要陷入内核，然后进行上下文切换，而协程在用户态由协程调度器完成，不需要陷入内核，这代价就小了；另外，协程的切换时间点是由调度器决定的，而不是系统内核决定的，尽管他们切换点都是时间片超过一定阈值，或者进入I/O或睡眠等状态；再次，还有垃圾回收的考虑，因为go实现了垃圾回收，而垃圾回收的必要条件是内存位于一致状态，这就需要暂停所有的线程，如果交给系统去做，那么会暂停所有的线程使其一致，而在go里面调度器知道什么时候内存位于一致状态，就没必要暂停所有运行的协程。</p>
+<p>go调度里面有三个角色：三角形M代表内核线程，正方形P代表上下文，圆形G代表协程。一个M对应一个P，一个P下面挂多个G，但一个时候只有一个G在跑，其余都是放入等待队列，等待下一次切换时使用。</p>
+<p><img src="https://i.loli.net/2020/11/01/cvKB2jkt9iXf5FQ.jpg" alt="进程_goroutine1.jpg"></p>
+<p>假如一个运行的协程G调用syscall进入阻塞，如图左G0进入阻塞，那么P会转移到另外一个内核线程M1（此时还是1对1）当syscall返回后，需要抢占一个P继续执行，如果抢占不到，G0挂入全局就绪队列runqueue，等待下次调度，理论上会被挂入到一个具体P下面的就绪队列runqueu（区别于全局runqueue）</p>
+<p>假如一个P0下面的所有G都跑完了，P0会从别的P1下面就绪队列抢占G进行运行，个数为P1就绪队列的一半。</p>
+<p><img src="https://i.loli.net/2020/11/01/B1eZVzLtyEk6rDq.jpg" alt="进程_goroutine2.jpg"></p>
 
       
     </div>
@@ -734,7 +759,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基础概念"><span class="nav-number">1.</span> <span class="nav-text">基础概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#进程"><span class="nav-number">1.1.</span> <span class="nav-text">进程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#内存空间"><span class="nav-number">1.1.1.</span> <span class="nav-text">内存空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数压栈"><span class="nav-number">1.1.2.</span> <span class="nav-text">函数压栈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程通信"><span class="nav-number">1.1.3.</span> <span class="nav-text">进程通信</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#管道pipe"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">管道pipe</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#消息队列MessageQueue"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">消息队列MessageQueue</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#共享存储SharedMemory"><span class="nav-number">1.1.3.3.</span> <span class="nav-text">共享存储SharedMemory</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#信号量Semaphore"><span class="nav-number">1.1.3.4.</span> <span class="nav-text">信号量Semaphore</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#套接字Socket"><span class="nav-number">1.1.3.5.</span> <span class="nav-text">套接字Socket</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#信号-sinal"><span class="nav-number">1.1.3.6.</span> <span class="nav-text">信号 ( sinal )</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#父子进程"><span class="nav-number">1.1.4.</span> <span class="nav-text">父子进程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程"><span class="nav-number">1.2.</span> <span class="nav-text">线程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#内存空间-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">内存空间</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#线程崩溃"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">线程崩溃</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主线程"><span class="nav-number">1.2.2.</span> <span class="nav-text">主线程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程通信"><span class="nav-number">1.2.3.</span> <span class="nav-text">线程通信</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#锁机制"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">锁机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#信号量机制-Semaphore"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">信号量机制(Semaphore)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#信号机制-Signal"><span class="nav-number">1.2.3.3.</span> <span class="nav-text">信号机制(Signal)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#协程"><span class="nav-number">1.3.</span> <span class="nav-text">协程</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基础概念"><span class="nav-number">1.</span> <span class="nav-text">基础概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#进程"><span class="nav-number">1.1.</span> <span class="nav-text">进程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#内存空间"><span class="nav-number">1.1.1.</span> <span class="nav-text">内存空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#陷入与中断"><span class="nav-number">1.1.2.</span> <span class="nav-text">陷入与中断</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程通信"><span class="nav-number">1.1.3.</span> <span class="nav-text">进程通信</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#管道pipe"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">管道pipe</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#消息队列MessageQueue"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">消息队列MessageQueue</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#共享存储SharedMemory"><span class="nav-number">1.1.3.3.</span> <span class="nav-text">共享存储SharedMemory</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#信号量Semaphore"><span class="nav-number">1.1.3.4.</span> <span class="nav-text">信号量Semaphore</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#套接字Socket"><span class="nav-number">1.1.3.5.</span> <span class="nav-text">套接字Socket</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#信号-sinal"><span class="nav-number">1.1.3.6.</span> <span class="nav-text">信号 ( sinal )</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#父子进程"><span class="nav-number">1.1.4.</span> <span class="nav-text">父子进程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程状态"><span class="nav-number">1.2.</span> <span class="nav-text">进程状态</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#"><span class="nav-number">2.</span> <span class="nav-text">#</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#线程"><span class="nav-number">2.1.</span> <span class="nav-text">线程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#内存空间-1"><span class="nav-number">2.1.1.</span> <span class="nav-text">内存空间</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#线程崩溃"><span class="nav-number">2.1.1.1.</span> <span class="nav-text">线程崩溃</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主线程"><span class="nav-number">2.1.2.</span> <span class="nav-text">主线程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数压栈"><span class="nav-number">2.1.3.</span> <span class="nav-text">函数压栈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程通信"><span class="nav-number">2.1.4.</span> <span class="nav-text">线程通信</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#锁机制"><span class="nav-number">2.1.4.1.</span> <span class="nav-text">锁机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#信号量机制-Semaphore"><span class="nav-number">2.1.4.2.</span> <span class="nav-text">信号量机制(Semaphore)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#信号机制-Signal"><span class="nav-number">2.1.4.3.</span> <span class="nav-text">信号机制(Signal)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#协程"><span class="nav-number">2.2.</span> <span class="nav-text">协程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#协程与线程"><span class="nav-number">2.2.1.</span> <span class="nav-text">协程与线程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#栈大小"><span class="nav-number">2.2.1.1.</span> <span class="nav-text">栈大小</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#有无id"><span class="nav-number">2.2.1.2.</span> <span class="nav-text">有无id</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GOMAXPROCS"><span class="nav-number">2.2.1.3.</span> <span class="nav-text">GOMAXPROCS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#调度"><span class="nav-number">2.2.1.4.</span> <span class="nav-text">调度</span></a></li></ol></li></ol></li></ol></li></ol></div>
             
 
           </div>

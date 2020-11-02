@@ -93,7 +93,7 @@
 <meta property="og:description" content="Prwlock 为TSO架构系统提供了可扩展读者侧性能和写者低延迟，其关键在于多个无交互读者和一个不确定写者间基于version的共识协议。Prwlock 利用内存一致性的有界旧一致性(bounded staleness)来避免读者侧的原子操作和内存屏障，同时用消息传递(IPI)落伍的读者来限定写锁获取延迟。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.loli.net/2020/03/25/ECLQfDs536FGhmk.png">
-<meta property="og:updated_time" content="2020-04-01T06:59:23.671Z">
+<meta property="og:updated_time" content="2020-11-01T12:28:21.250Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="被动读写锁">
 <meta name="twitter:description" content="Prwlock 为TSO架构系统提供了可扩展读者侧性能和写者低延迟，其关键在于多个无交互读者和一个不确定写者间基于version的共识协议。Prwlock 利用内存一致性的有界旧一致性(bounded staleness)来避免读者侧的原子操作和内存屏障，同时用消息传递(IPI)落伍的读者来限定写锁获取延迟。">
@@ -398,7 +398,7 @@
                   <span class="post-meta-item-text">共计&#58;</span>
                 
                 <span title="共计">
-                  6.5k 字
+                  6.6k 字
                 </span>
               
 
@@ -450,7 +450,7 @@
 <ol>
 <li><p><strong>RMW(read-modify-write)</strong>：在 intel 64 架构中，即为 locked 指令。</p>
 </li>
-<li><p><strong>Memory barrier</strong>：一种特别的屏障指令，其导致 CPU 或编译器强制约束内存指令，使之在屏障之前或之后发射。以 mfence 这个指令为例，其保证在程序顺序中，mfence 之前的所有访存指令，其结果都能为 mfence 之后的访存指令所见。</p>
+<li><p><strong>Memory barrier</strong>：一种特别的屏障指令，其导致 CPU 或编译器强制约束内存指令，使之在屏障之前或之后发射。以 mfence 这个指令为例，其保证在程序顺序中，mfence 之前的所有访存指令，其结果都能为 mfence 之后的访存指令所见。一般来说高级语言编程时我们是不会注意到内存屏障的，内存共享等多线程行为时，我们常用的mutexes and semaphores会调用memory barrier来完成相关工作。</p>
 </li>
 </ol>
 <blockquote>
@@ -701,7 +701,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">37</span>
+                  <span class="site-state-item-count">38</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -723,7 +723,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-count">47</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

@@ -92,7 +92,7 @@
 <meta property="og:site_name" content="Star Trail">
 <meta property="og:description" content="面试常问的HTTPS中的那个S：SSL协议，这边简单总结一下，以免下次面试再被问到。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-11-02T08:11:47.493Z">
+<meta property="og:updated_time" content="2020-11-06T05:35:00.445Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SSL协议">
 <meta name="twitter:description" content="面试常问的HTTPS中的那个S：SSL协议，这边简单总结一下，以免下次面试再被问到。">
@@ -396,7 +396,7 @@
                   <span class="post-meta-item-text">共计&#58;</span>
                 
                 <span title="共计">
-                  1.5k 字
+                  1.7k 字
                 </span>
               
 
@@ -488,7 +488,8 @@
 <p>（2）服务器握手结束通知，表示服务器的握手阶段已经结束。这一项同时也是前面发送的所有内容的hash值，用来供客户端校验。</p>
 </blockquote>
 <p>至此，整个握手阶段全部结束。接下来，客户端与服务器进入加密通信，就完全是使用普通的HTTP协议，只不过用”会话密钥”加密内容。</p>
-<h2 id="TIPS"><a href="#TIPS" class="headerlink" title="TIPS"></a>TIPS</h2><p>http2.0比http1.0，用二进制文件传输而不是文本文件，同时采取多路复用，每个request都有request id，这样多个client的requests可以用一个连接，server端用request id判断来自哪个client。</p>
+<h2 id="TIPS"><a href="#TIPS" class="headerlink" title="TIPS"></a>TIPS</h2><p>http1.1比http1.0，HTTP/1.1 最大的变化就是引入了持久连接（persistent connection）默认 <code>Connection: keep-alive</code>，即TCP连接默认不关闭，可以被多个请求复用。同时HTTP/1.1中引入了管道机制（pipelining）即在同一个TCP连接中，客户端可以<strong>同时</strong>发送多个请求，但这是个队列会阻塞，即下一个请求要等上一个请求处理完才处理。</p>
+<p>http2.0比http1.0，HTTP/1.1的头信息是文本（ASCII编码），数据体可以是文本，也可以是二进制；HTTP/2 头信息和数据体都是二进制，统称为“帧”：头信息帧和数据帧。同时采取多路复用，即在一个连接里，客户端和浏览器都可以同时发送多个请求和响应，而不用按照顺序一一对应，避免了“队头堵塞”。</p>
 
       
     </div>

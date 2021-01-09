@@ -76,9 +76,9 @@
       </categories>
       <tags>
         <tag>GAP</tag>
-        <tag>concurrency</tag>
         <tag>Python</tag>
         <tag>asyncio</tag>
+        <tag>concurrency</tag>
       </tags>
   </entry>
   <entry>
@@ -172,8 +172,8 @@
       <tags>
         <tag>GAP</tag>
         <tag>Go</tag>
-        <tag>goroutine</tag>
         <tag>concurrency</tag>
+        <tag>goroutine</tag>
       </tags>
   </entry>
   <entry>
@@ -249,8 +249,8 @@
       </categories>
       <tags>
         <tag>大二</tag>
-        <tag>scrapy</tag>
         <tag>crawl</tag>
+        <tag>scrapy</tag>
       </tags>
   </entry>
   <entry>

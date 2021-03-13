@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="HqDOiGSjrA">
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/star.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/star.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/star.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="大三,test,Go,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="测试是代码流程中很重要的一个环节，但是课程内容上所说的测试过于简单，实际实习时候发现测试时候还是有很多点学校里都没怎么提到的，下面对于go的test做一个简短的总结。">
+<meta name="keywords" content="大三,test,Go">
+<meta property="og:type" content="article">
+<meta property="og:title" content="go test">
+<meta property="og:url" content="https://stardust567.github.io/post/a6b0.html">
+<meta property="og:site_name" content="Star Trail">
+<meta property="og:description" content="测试是代码流程中很重要的一个环节，但是课程内容上所说的测试过于简单，实际实习时候发现测试时候还是有很多点学校里都没怎么提到的，下面对于go的test做一个简短的总结。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2021-03-13T08:38:21.592Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="go test">
+<meta name="twitter:description" content="测试是代码流程中很重要的一个环节，但是课程内容上所说的测试过于简单，实际实习时候发现测试时候还是有很多点学校里都没怎么提到的，下面对于go的test做一个简短的总结。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://stardust567.github.io/post/a6b0.html">
+
+
+
+
+
+
+  <title>go test | Star Trail</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '130666690', 'auto');
+  ga('send', 'pageview');
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Star Trail</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">stardust1084062596@gmail.com</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-link">
+          <a href="/links/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-link"></i> <br>
+            
+            友链
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://stardust567.github.io/post/a6b0.html">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Stardust567">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Star Trail">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">go test</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">写于</span>
+              
+              <time title="写于" itemprop="dateCreated datePublished" datetime="2021-03-13T10:10:12+08:00">
+                2021-03-13
+              </time>
+            
+
+            
+
+            
+          </span>
+			
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">归档</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Go/" itemprop="url" rel="index">
+                    <span itemprop="name">Go</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/post/a6b0.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/post/a6b0.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/post/a6b0.html" class="leancloud_visitors" data-flag-title="go test">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">翻阅&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                  <span class="post-meta-divider">|</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">共计&#58;</span>
+                
+                <span title="共计">
+                  2.3k 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">时长 &asymp;</span>
+                
+                <span title="时长">
+                  10 min
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>测试是代码流程中很重要的一个环节，但是课程内容上所说的测试过于简单，实际实习时候发现测试时候还是有很多点学校里都没怎么提到的，下面对于go的test做一个简短的总结。<a id="more"></a></p>
+<h2 id="Unit-test"><a href="#Unit-test" class="headerlink" title="Unit test"></a>Unit test</h2><h3 id="Construct-UT-with-Ginkgo-Gomega"><a href="#Construct-UT-with-Ginkgo-Gomega" class="headerlink" title="Construct UT with Ginkgo/Gomega"></a>Construct UT with Ginkgo/Gomega</h3><p>对想测试的文件的文件夹下，输入<code>ginkgo bootstrap</code> 生成 <code>*_suite_test.go</code> 文件，可以run直接启动测试。然后对于想要测试的文件 filenameA.go 用 <code>ginkgo generate filenameA.go</code> 生成测试用例代码。</p>
+<h4 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h4><p><strong>生成框架</strong></p>
+<p>对于这样一个 book.go 的代码文件，我们要对其进行测试：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> books</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">        <span class="string">"errors"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Book <span class="keyword">struct</span> &#123;</span><br><span class="line">    Title  <span class="keyword">string</span></span><br><span class="line">    Author <span class="keyword">string</span></span><br><span class="line">    Pages  <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(b *Book)</span> <span class="title">CategoryByLength</span><span class="params">()</span> <span class="params">(<span class="keyword">string</span>, err.Error)</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> b.Pages &lt; <span class="number">0</span> &#123;</span><br><span class="line">        err := errors.New(<span class="string">"the number of pages is less than zero"</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span>, err.Error</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> b.Pages &gt;= <span class="number">300</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"NOVEL"</span>, <span class="literal">nil</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"SHORT STORY"</span>, <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>首先用 ginkgo bootstrap 生成 book_suite_test.go 文件：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> books_test</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    . <span class="string">"github.com/onsi/ginkgo"</span></span><br><span class="line">    . <span class="string">"github.com/onsi/gomega"</span></span><br><span class="line">    <span class="string">"testing"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">TestBooks</span><span class="params">(t *testing.T)</span></span> &#123;</span><br><span class="line">    RegisterFailHandler(Fail)</span><br><span class="line">    RunSpecs(t, <span class="string">"Books Suite"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>TIPS</strong>：Go允许我们在books包同目录下指定books_test包。使用books_test而不是books可以让我们不破坏books包的封装：你的测试需要导入books包并从外部访问它，就像导入其它任何包一样。这是进入包，测试其内部结构并进行更多行为测试的首选。</p>
+<p>•     TestBooks是一个testing测试，运行go test或ginkgo时，Go测试运行器将运行此功能。</p>
+<p>•     Ginkgo 测试通过调用<code>Fail(description string)</code>功能来表示失败。我们使用<code>RegisterFailHandler</code>将此函数传递给Gomega。这是Ginkgo和Gomega之间的唯一连接点。</p>
+<p>•     <code>RunSpecs(t *testing.T, suiteDescription string)</code>通知Ginkgo启动测试套件。任何specs失败，Ginkgo将自动使testing.T失败。</p>
+<p>这个时候我们已经可以直接运行 go test 来进行测试流程了。</p>
+<p><strong>添加specs</strong></p>
+<p>对于 book.go 文件，我们用 ginkgo generate book.go 生成测试用例代码：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> books_test</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    . <span class="string">"/path/to/books"</span></span><br><span class="line">    . <span class="string">"github.com/onsi/ginkgo"</span></span><br><span class="line">    . <span class="string">"github.com/onsi/gomega"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> _ = Describe(<span class="string">"Book"</span>, <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line"></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>•     我们使用Ginkgo的<code>Describe(text string, body func()) bool</code>函数添加了顶级Describe容器。</p>
+<p>•     <code>var _ = ...</code>技巧允许我们在顶级评估Describe，而不必将其包装在func init() {}</p>
+<p>接下来我们来编写自己所需要的 case ：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> _ = Describe(<span class="string">"Book"</span>, <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> (</span><br><span class="line">        longBook  Book</span><br><span class="line">        shortBook Book</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    BeforeEach(<span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">        longBook = Book&#123;</span><br><span class="line">            Title:  <span class="string">"Les Miserables"</span>,</span><br><span class="line">            Author: <span class="string">"Victor Hugo"</span>,</span><br><span class="line">            Pages:  <span class="number">1488</span>,</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        shortBook = Book&#123;</span><br><span class="line">            Title:  <span class="string">"Fox In Socks"</span>,</span><br><span class="line">            Author: <span class="string">"Dr. Seuss"</span>,</span><br><span class="line">            Pages:  <span class="number">24</span>,</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        errorBook = Book&#123;</span><br><span class="line">            Title:  <span class="string">"Failure"</span>,</span><br><span class="line">            Author: <span class="string">"Dr. Mistake"</span>,</span><br><span class="line">            Pages:  <span class="number">-1</span>,</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    Describe(<span class="string">"Categorizing book length"</span>, <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">        Context(<span class="string">"With more than 300 pages"</span>, <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">            It(<span class="string">"should be a novel"</span>, <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">                str, _ := longBook.CategoryByLength()</span><br><span class="line">                Expect(str).To(Equal(<span class="string">"NOVEL"</span>))</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;)</span><br><span class="line"></span><br><span class="line">        Context(<span class="string">"With fewer than 300 pages"</span>, <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">            It(<span class="string">"should be a short story"</span>, <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">                str, _ := shortBook.CategoryByLength()</span><br><span class="line">                Expect(str).To(Equal(<span class="string">"SHORT STORY"</span>))</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;)</span><br><span class="line">        </span><br><span class="line">        Context(<span class="string">"With fewer than 0 pages"</span>, <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">            It(<span class="string">"should be a failed story"</span>, <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">                _, err := errorBook.CategoryByLength()</span><br><span class="line">                Expect(err).To(HaveOccurred())</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>BeforeEach是在多个测试用例中去除重复的步骤以及共享通用的设置。</p>
+</li>
+<li><p>Context 是为了测试同一请求的用例，例如，我们有一个处理程序来处理用户撤回请求。 可能是成功或失败，因此可以将两种情况放在相同的上下文中，它们是相同行为的结果，但情况不同。</p>
+</li>
+<li><p>It 是将同一测试用例的断言分开。 在上述示例中，在成功案例中，我们要验证结果，订单状态和资金帐户。 我们需要查询两个tables然后挨个检查字段，我们就可以编写两个It部分来分别验证这两个表。</p>
+</li>
+</ul>
+<p><code>ginkgo -r -coverpkg=$proj/service/... -cover -outputdir=$curPath -coverprofile=cov.out</code></p>
+<p><em>(官方建议CI时候：ginkgo -r —randomizeAllSpecs —randomizeSuites —failOnPending —cover —trace —race —progress）</em></p>
+<h3 id="Mock"><a href="#Mock" class="headerlink" title="Mock"></a>Mock</h3><p>当我们想对某个函数进行测试时候，这个函数内部调用了一些RPC和http请求（比如DB），这时候我们假设这些外部请求自身的功能都是正确的，那么我们就可以将这些服务在测试函数中的接口mock掉，以免影响这些别的模块的服务正常运行。</p>
+<p><strong>TIPS：</strong>gomock配合ginkgo/gomega使用，只能用于测试，不建议在程序流程中使用。</p>
+<h4 id="mock步骤"><a href="#mock步骤" class="headerlink" title="mock步骤"></a>mock步骤</h4><ol>
+<li>​    想清楚整体逻辑</li>
+<li>定义想要（模拟）依赖项的 interface（接口）</li>
+<li>使用 mockgen 命令对所需 mock 的 interface 生成 mock 文件</li>
+<li>编写单元测试的逻辑，在测试中使用 mock</li>
+<li>进行单元测试的验证</li>
+</ol>
+<h4 id="Example-1"><a href="#Example-1" class="headerlink" title="Example"></a>Example</h4><p>对于这样一个目录树：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">├── mock</span><br><span class="line">├── person</span><br><span class="line">│   └── male.go</span><br><span class="line">└── user</span><br><span class="line">    ├── user.go</span><br><span class="line">    └── user_test.go</span><br></pre></td></tr></table></figure>
+<p> person/male.go : </p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> person</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> male MaleInf</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> MaleInf <span class="keyword">interface</span> &#123;</span><br><span class="line">   Get(id <span class="keyword">int64</span>) (<span class="keyword">int64</span>, error)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Male <span class="keyword">struct</span> &#123;</span><br><span class="line">   user <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">init</span><span class="params">()</span></span> &#123;</span><br><span class="line">   male = &amp;Male&#123;user: <span class="string">"caoxujie"</span>&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Set</span><span class="params">(inf MaleInf)</span></span> &#123;</span><br><span class="line">   male = inf</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(m *Male)</span> <span class="title">Get</span> <span class="params">(id <span class="keyword">int64</span>)</span> <span class="params">(<span class="keyword">int64</span>, error)</span></span> &#123;</span><br><span class="line">   <span class="keyword">return</span> id+<span class="number">1</span>, <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>很多情况下，并不会有一个现成的interface供我们使用，我们需要创建一个包含我需要mock掉的函数的interface，然后用一个struct去实现这个interface（这里的实现方法是mock前的origin的方法），这样用到原先origin方法的地方都改成用接口变量的方法。此时正常线上会走<code>init()</code>方法，创建有origin方法的结构体并赋给接口变量。但mock的时候会走我们专门留的Set()方法，传一个写好了mock函数的struct进去赋给接口变量。这样再调用接口变量方法的时候，就会走我们新写的mock函数，大成功！</p>
+<p>user/user.go:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> user</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"code.byted.org/caoxujie/mockdemo/person"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> &#123;</span><br><span class="line">   Person person.MaleInf</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NewUser</span><span class="params">(p person.MaleInf)</span> *<span class="title">User</span></span> &#123;</span><br><span class="line">   <span class="keyword">return</span> &amp;User&#123;Person: p&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(u *User)</span> <span class="title">GetUserInfo</span><span class="params">(id <span class="keyword">int64</span>)</span> <span class="params">(<span class="keyword">int64</span>, error)</span></span> &#123;</span><br><span class="line">   result, err := u.Person.Get(id)</span><br><span class="line">   <span class="keyword">return</span> result, err</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对于这样的代码，我们可以在根目录执行<code>mockgen -source=./person/male.go -destination=./mock/male_mock.go -package=mock</code> 来生成测试文件<code>mock/male_mock.go</code>：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Code generated by MockGen. DO NOT EDIT.</span></span><br><span class="line"><span class="comment">// Source: ./person/male.go</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Package mock is a generated GoMock package.</span></span><br><span class="line"><span class="keyword">package</span> mock</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">   gomock <span class="string">"github.com/golang/mock/gomock"</span></span><br><span class="line">   reflect <span class="string">"reflect"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// MockMaleInf is a mock of MaleInf interface</span></span><br><span class="line"><span class="keyword">type</span> MockMaleInf <span class="keyword">struct</span> &#123;</span><br><span class="line">   ctrl     *gomock.Controller</span><br><span class="line">   recorder *MockMaleInfMockRecorder</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// MockMaleInfMockRecorder is the mock recorder for MockMaleInf</span></span><br><span class="line"><span class="keyword">type</span> MockMaleInfMockRecorder <span class="keyword">struct</span> &#123;</span><br><span class="line">   mock *MockMaleInf</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// NewMockMaleInf creates a new mock instance</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NewMockMaleInf</span><span class="params">(ctrl *gomock.Controller)</span> *<span class="title">MockMaleInf</span></span> &#123;</span><br><span class="line">   mock := &amp;MockMaleInf&#123;ctrl: ctrl&#125;</span><br><span class="line">   mock.recorder = &amp;MockMaleInfMockRecorder&#123;mock&#125;</span><br><span class="line">   <span class="keyword">return</span> mock</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// EXPECT returns an object that allows the caller to indicate expected use</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(m *MockMaleInf)</span> <span class="title">EXPECT</span><span class="params">()</span> *<span class="title">MockMaleInfMockRecorder</span></span> &#123;</span><br><span class="line">   <span class="keyword">return</span> m.recorder</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Get mocks base method</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(m *MockMaleInf)</span> <span class="title">Get</span><span class="params">(id <span class="keyword">int64</span>)</span> <span class="params">(<span class="keyword">int64</span>, error)</span></span> &#123;</span><br><span class="line">   m.ctrl.T.Helper()</span><br><span class="line">   ret := m.ctrl.Call(m, <span class="string">"Get"</span>, id)</span><br><span class="line">   ret0, _ := ret[<span class="number">0</span>].(<span class="keyword">int64</span>)</span><br><span class="line">   ret1, _ := ret[<span class="number">1</span>].(error)</span><br><span class="line">   <span class="keyword">return</span> ret0, ret1</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Get indicates an expected call of Get</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(mr *MockMaleInfMockRecorder)</span> <span class="title">Get</span><span class="params">(id <span class="keyword">interface</span>&#123;&#125;)</span> *<span class="title">gomock</span>.<span class="title">Call</span></span> &#123;</span><br><span class="line">   mr.mock.ctrl.T.Helper()</span><br><span class="line">   <span class="keyword">return</span> mr.mock.ctrl.RecordCallWithMethodType(mr.mock, <span class="string">"Get"</span>, reflect.TypeOf((*MockMaleInf)(<span class="literal">nil</span>).Get), id)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>之后我们就可以打开我们的test文件 user/user_test.go :</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> user</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">   <span class="string">"testing"</span></span><br><span class="line">   <span class="string">"code.byted.org/caoxujie/mockdemo/mock"</span></span><br><span class="line">   <span class="string">"github.com/golang/mock/gomock"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">TestUser_GetUserInfo</span><span class="params">(t *testing.T)</span></span> &#123;</span><br><span class="line">   ctl := gomock.NewController(t)</span><br><span class="line">   <span class="keyword">defer</span> ctl.Finish()</span><br><span class="line"></span><br><span class="line">   <span class="keyword">var</span> id <span class="keyword">int64</span> = <span class="number">1</span></span><br><span class="line">   mockMale := mock.NewMockMaleInf(ctl)</span><br><span class="line">   gomock.InOrder(</span><br><span class="line">      mockMale.EXPECT().Get(id).Return(id+<span class="number">1</span>, <span class="literal">nil</span>),</span><br><span class="line">   )</span><br><span class="line"></span><br><span class="line">   user := NewUser(mockMale)</span><br><span class="line">   res, err := user.GetUserInfo(id)</span><br><span class="line">   <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">      t.Errorf(<span class="string">"user.GetUserInfo err: %v"</span>, err)</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="built_in">println</span>(id, res)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="gomock提供的功能"><a href="#gomock提供的功能" class="headerlink" title="gomock提供的功能"></a>gomock提供的功能</h4><h5 id="参数匹配"><a href="#参数匹配" class="headerlink" title="参数匹配"></a>参数匹配</h5><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mockObj.EXPECT().SomeMethod(gomock.Any(), <span class="string">"a"</span>).Return(<span class="string">"4a"</span>) <span class="comment">// x匹配任意值</span></span><br><span class="line">mockObj.EXPECT().SomeMethod(gomock.Equal(<span class="number">4</span>), <span class="string">"a"</span>).Return(<span class="string">"4a"</span>) <span class="comment">// x == 4</span></span><br><span class="line">gomock.Len(length) <span class="comment">// slice, array, map lenght</span></span><br><span class="line">gomock.Nil()</span><br><span class="line">gomock.Not()</span><br></pre></td></tr></table></figure>
+<h5 id="调用次数限制"><a href="#调用次数限制" class="headerlink" title="调用次数限制"></a>调用次数限制</h5><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mockObj.EXPECT().SomeMethod(gomock.Any(),  <span class="string">"a"</span>).Return(<span class="string">"4a"</span>) <span class="comment">// 一次  mockObj.EXPECT().SomeMethod(gomock.Any(),  "a").Return("4a").AnyTimes() // 0或多次  mockObj.EXPECT().SomeMethod(gomock.Any(),  "a").Return("4a").Times(n) // n次  mockObj.EXPECT().SomeMethod(gomock.Any(),  "a").Return("4a").MaxTimes(n) //最多n次  mockObj.EXPECT().SomeMethod(gomock.Any(),  "a").Return("4a").MinTimes(n) //至少n次</span></span><br></pre></td></tr></table></figure>
+<h5 id="调用顺序"><a href="#调用顺序" class="headerlink" title="调用顺序"></a>调用顺序</h5><p>默认情况下期待的函数调用没有顺序上的要求，需要时，通过After， InOrder限定顺序</p>
+<p>After:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">firstCall := mockObj.EXPECT().SomeMethod(<span class="number">1</span>, <span class="string">"first"</span>)  </span><br><span class="line">secondCall := mockObj.EXPECT().SomeMethod(<span class="number">2</span>,  <span class="string">"second"</span>).After(firstCall) mockObj.EXPECT().SomeMethod(<span class="number">3</span>, <span class="string">"third"</span>).After(secondCall)</span><br></pre></td></tr></table></figure>
+<p>InOrder:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">gomock.InOrder(    </span><br><span class="line">	mockObj.EXPECT().SomeMethod(<span class="number">1</span>,  <span class="string">"first"</span>),    </span><br><span class="line">	mockObj.EXPECT().SomeMethod(<span class="number">2</span>,  <span class="string">"second"</span>),    </span><br><span class="line">	mockObj.EXPECT().SomeMethod(<span class="number">3</span>,  <span class="string">"third"</span>),  </span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<h5 id="自定义内部流程"><a href="#自定义内部流程" class="headerlink" title="自定义内部流程"></a>自定义内部流程</h5><p>对于难以构造的输入（比如含rand, time相关的结构体）我们可以先用gomock.any()接受任意输入，然后自定义处理函数来判断到此层函数的输入是否符合我们的预期）</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mockRuleDBWriteHandler.EXPECT().MCreateFactorRelations(gomock.Any(),  gomock.Any()).DoAndReturn(<span class="function"><span class="keyword">func</span><span class="params">(ctx context.Context ,  actualCreatefactorRelation []*dbmodel.FactorRelation)</span> <span class="params">(<span class="keyword">int64</span>, errs.Error)</span></span> &#123;</span><br><span class="line">	<span class="comment">// ...</span></span><br><span class="line">&#125;).AnyTimes()</span><br></pre></td></tr></table></figure>
+<p><strong>TIPS：</strong>用monky库来快速mock掉time.Now.UTC()，将所有的time.Now()输出都设置为定值：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">monkey.Patch(time.Now, <span class="function"><span class="keyword">func</span><span class="params">()</span> <span class="title">time</span>.<span class="title">Time</span></span> &#123;    </span><br><span class="line">	<span class="keyword">return</span> time.Date(<span class="number">2009</span>, <span class="number">11</span>, <span class="number">17</span>,  <span class="number">20</span>, <span class="number">34</span>, <span class="number">58</span>, <span class="number">651387237</span>, time.UTC)  </span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>有时甚至需要对http的req和resp进行mock，此时可以按原先方法在函数里构造response结构，也可以直接使用http_mock包对http传给transport层的接口和结构体进行mock（使用时不感知，但应该是全局mock我猜不能同时跑mock http和使用http的case，我也不太确定有没有并发问题）</p>
+<p><strong>Mock rpc interface</strong></p>
+<p> 这边就不过多举例了，不然我怕容易被公司开orz</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> _ = Describe(<span class="string">"Rule"</span>, <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">var</span> (</span><br><span class="line">      mockCtrl        *gomock.Controller</span><br><span class="line">      mockRuleDataInf *mock.MockRuleDataInf</span><br><span class="line">   )</span><br><span class="line"></span><br><span class="line">   BeforeEach(<span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">      mockCtrl = gomock.NewController(GinkgoT())</span><br><span class="line">      <span class="keyword">defer</span> mockCtrl.Finish()</span><br><span class="line">      mockRuleDataInf = mock.NewMockRuleDataInf(mockCtrl)</span><br><span class="line">      rpc.SetRuleDataInf(&amp;mock.RuleDataRpcMock&#123;&#125;)</span><br><span class="line">   &#125;)</span><br><span class="line"></span><br><span class="line">   Context(<span class="string">"Successful"</span>, <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">      It(<span class="string">"normal InsertRule case successfully"</span>, <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">         ctx := context.Background()</span><br><span class="line">         ctx = context.WithValue(ctx,<span class="string">"employee_key"</span>,<span class="string">"caoxujie"</span>)</span><br><span class="line"></span><br><span class="line">         r := &amp;front_model.CreateRulePara &#123;</span><br><span class="line">            RuleName          :<span class="string">"rule1"</span>,</span><br><span class="line">            Desc              :<span class="string">"test rule"</span>,</span><br><span class="line">            RuleGroupId       :<span class="string">"1"</span>,</span><br><span class="line">            Status            :<span class="string">"2"</span>,</span><br><span class="line">            Priority          :<span class="number">3</span>,</span><br><span class="line">            ExpressionContent :<span class="string">"test"</span>,</span><br><span class="line">            DecisionList      :[]front_model.Decision &#123;&#123;</span><br><span class="line">               DecisionType :<span class="string">"var_assignment"</span>,</span><br><span class="line">               RetType      :<span class="string">"test"</span>,</span><br><span class="line">               VariableName :<span class="string">"test"</span>,</span><br><span class="line">               Value        :<span class="string">"test"</span>,</span><br><span class="line">               FactorName   :<span class="string">"test"</span>,</span><br><span class="line">            &#125;&#125;,</span><br><span class="line">            NamespaceId       :<span class="string">"111"</span>,</span><br><span class="line"></span><br><span class="line">         &#125;</span><br><span class="line">         mockRuleDataInf.EXPECT().InsertRule(ctx, r).AnyTimes()</span><br><span class="line"></span><br><span class="line">         err := service.InsertRule(ctx, r)</span><br><span class="line">         Expect(err).Should(BeNil())</span><br><span class="line">      &#125;)</span><br><span class="line">   &#125;)    </span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>投币</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.png" alt="Stardust567 微信">
+        <p>微信</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Stardust567 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Stardust567
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://stardust567.github.io/post/a6b0.html" title="go test">https://stardust567.github.io/post/a6b0.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议，转载请务必署名，欢迎邮件私我讨论交流。
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/大三/" rel="tag"><i class="fa fa-tag"></i> 大三</a>
+          
+            <a href="/tags/test/" rel="tag"><i class="fa fa-tag"></i> test</a>
+          
+            <a href="/tags/Go/" rel="tag"><i class="fa fa-tag"></i> Go</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/7d58.html" rel="next" title="实习记录">
+                <i class="fa fa-chevron-left"></i> 实习记录
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Stardust567</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">38</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Unit-test"><span class="nav-number">1.</span> <span class="nav-text">Unit test</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Construct-UT-with-Ginkgo-Gomega"><span class="nav-number">1.1.</span> <span class="nav-text">Construct UT with Ginkgo/Gomega</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Example"><span class="nav-number">1.1.1.</span> <span class="nav-text">Example</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mock"><span class="nav-number">1.2.</span> <span class="nav-text">Mock</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#mock步骤"><span class="nav-number">1.2.1.</span> <span class="nav-text">mock步骤</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-1"><span class="nav-number">1.2.2.</span> <span class="nav-text">Example</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#gomock提供的功能"><span class="nav-number">1.2.3.</span> <span class="nav-text">gomock提供的功能</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#参数匹配"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">参数匹配</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#调用次数限制"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">调用次数限制</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#调用顺序"><span class="nav-number">1.2.3.3.</span> <span class="nav-text">调用顺序</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#自定义内部流程"><span class="nav-number">1.2.3.4.</span> <span class="nav-text">自定义内部流程</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Stardust567</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'bABdvcserWST8hctdXncW0he-gzGzoHsz',
+        appKey: 'Ng2B24N8TgiGzK8fKds99MLc',
+        placeholder: '谢谢你认真看到了最后，这里欢迎各种吐槽与交流：',
+        avatar:'monsterid',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("bABdvcserWST8hctdXncW0he-gzGzoHsz", "Ng2B24N8TgiGzK8fKds99MLc");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

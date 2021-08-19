@@ -80,21 +80,21 @@
 
 
 
-<meta name="description" content="在实习时候用到了local cache组件，当时在本地缓存和redis之间还是纠结过，最后选了go的freecache来作本地缓存，之后有时间在写一篇关于Redis的介绍。">
+<meta name="description" content="在实习时候用到了local cache组件，当时在本地缓存和redis之间还是纠结过，最后选了go的freecache来作本地缓存，结合底层相关知识整理了一篇总结，之后有时间在写一篇关于Redis的介绍。">
 <meta name="keywords" content="大三,Go,cache">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Local Cache">
 <meta property="og:url" content="https://stardust567.github.io/post/a9cc.html">
 <meta property="og:site_name" content="Star Trail">
-<meta property="og:description" content="在实习时候用到了local cache组件，当时在本地缓存和redis之间还是纠结过，最后选了go的freecache来作本地缓存，之后有时间在写一篇关于Redis的介绍。">
+<meta property="og:description" content="在实习时候用到了local cache组件，当时在本地缓存和redis之间还是纠结过，最后选了go的freecache来作本地缓存，结合底层相关知识整理了一篇总结，之后有时间在写一篇关于Redis的介绍。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.loli.net/2020/09/06/L3ckTpHjSW4JAZq.png">
 <meta property="og:image" content="https://i.loli.net/2020/09/06/4rizWsFMXOuNtU6.png">
 <meta property="og:image" content="https://i.loli.net/2021/08/11/c9mkSVWQp5Eg3zX.jpg">
-<meta property="og:updated_time" content="2021-08-17T15:52:26.180Z">
+<meta property="og:updated_time" content="2021-08-19T05:33:14.737Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Local Cache">
-<meta name="twitter:description" content="在实习时候用到了local cache组件，当时在本地缓存和redis之间还是纠结过，最后选了go的freecache来作本地缓存，之后有时间在写一篇关于Redis的介绍。">
+<meta name="twitter:description" content="在实习时候用到了local cache组件，当时在本地缓存和redis之间还是纠结过，最后选了go的freecache来作本地缓存，结合底层相关知识整理了一篇总结，之后有时间在写一篇关于Redis的介绍。">
 <meta name="twitter:image" content="https://i.loli.net/2020/09/06/L3ckTpHjSW4JAZq.png">
 
 
@@ -396,7 +396,7 @@
                   <span class="post-meta-item-text">共计&#58;</span>
                 
                 <span title="共计">
-                  3.8k 字
+                  4.3k 字
                 </span>
               
 
@@ -412,7 +412,7 @@
                   <span class="post-meta-item-text">时长 &asymp;</span>
                 
                 <span title="时长">
-                  13 min
+                  15 min
                 </span>
               
             </div>
@@ -433,7 +433,7 @@
       
 
       
-        <p>在实习时候用到了local cache组件，当时在本地缓存和redis之间还是纠结过，最后选了go的freecache来作本地缓存，之后有时间在写一篇关于Redis的介绍。<a id="more"></a></p>
+        <p>在实习时候用到了local cache组件，当时在本地缓存和redis之间还是纠结过，最后选了go的freecache来作本地缓存，结合底层相关知识整理了一篇总结，之后有时间在写一篇关于Redis的介绍。<a id="more"></a></p>
 <h1 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h1><p>在将local cache组件之前，我们先来讲点关于缓存的事情。一次性读取一块内存的数据存放到 cache 中， 这个块称为  <em>cache line</em> ， cache line 的大小是固定的，通常是 2 的 N 次方（16 ~ 256 byte）</p>
 <h2 id="缓存结构"><a href="#缓存结构" class="headerlink" title="缓存结构"></a>缓存结构</h2><p>假设内存容量为M，内存地址为m位：那么寻址范围为000…00~FFF…F(m位) 我们可以把内存地址分为以下三个区间：</p>
 <p><img src="https://i.loli.net/2020/09/06/L3ckTpHjSW4JAZq.png" alt="cache-addr.png"></p>
@@ -472,28 +472,28 @@
 <li><p><strong>invalid</strong> 状态时 cache line 是空的。当新的数据要进入 cache 的时候优先选择 invalid 的 cache line ，之所以如此是因为如果选中其他状态的 cache line 会涉及到 cache line 中数据的置换 ， 而之后如果这个被替换的数据被访问到会造成 cache miss ，这样造成很大的开销。</p>
 </li>
 </ul>
-<h3 id="状态变迁"><a href="#状态变迁" class="headerlink" title="状态变迁"></a>状态变迁</h3><h4 id="modify"><a href="#modify" class="headerlink" title="modify"></a>modify</h4><p>场景：当前CPU中数据的状态是modify，表示当前CPU中拥有最新数据，虽然主存中的数据和当前CPU中的数据不一致，但是以当前CPU中的数据为准；</p>
+<h3 id="状态变迁"><a href="#状态变迁" class="headerlink" title="状态变迁"></a>状态变迁</h3><h4 id="modify"><a href="#modify" class="headerlink" title="modify"></a>modify</h4><p>当前CPU中数据的状态是modify，表示当前CPU中拥有最新数据，虽然主存中的数据和当前CPU中的数据不一致，但是以当前CPU中的数据为准；</p>
 <ul>
 <li>LR：此时如果发生local read，即当前CPU读数据，直接从cache中获取数据，拥有最新数据，因此状态不变；</li>
 <li>LW：直接修改本地cache数据，修改后也是当前CPU拥有最新数据，因此状态不变；</li>
 <li>RR：因为本地内存中有最新数据，当本地cache控制器监听到总线上有RR发生的时，必然是其他CPU发生了读主存的操作，此时为了保证一致性，当前CPU应该将数据写回主存，而随后的RR将会使得其他CPU和当前CPU拥有共同的数据，因此状态修改为S；</li>
 <li>RW：同RR，当cache控制器监听到总线发生RW，当前CPU会将数据写回主存，因为随后的RW将会导致主存的数据修改，因此状态修改成I；</li>
 </ul>
-<h4 id="exclusive"><a href="#exclusive" class="headerlink" title="exclusive"></a>exclusive</h4><p>场景：当前CPU中的数据状态是exclusive，表示当前CPU独占数据（其他CPU没有数据），并且和主存的数据一致；</p>
+<h4 id="exclusive"><a href="#exclusive" class="headerlink" title="exclusive"></a>exclusive</h4><p>当前CPU中的数据状态是exclusive，表示当前CPU独占数据（其他CPU没有数据），并且和主存的数据一致；</p>
 <ul>
 <li>LR：从本地cache中直接获取数据，状态不变；</li>
 <li>LW：修改本地cache中的数据，状态修改成M（因为其他CPU中并没有该数据，因此不存在共享问题，不需要通知其他CPU修改cache line的状态为I）；</li>
 <li>RR：本地cache中有最新数据，当cache控制器监听到总线上发生RR的时候，必然是其他CPU发生了读取主存的操作，而RR操作不会导致数据修改，因此两个CPU中的数据和主存中的数据一致，此时cache line状态修改为S；</li>
 <li>RW：同RR，当cache控制器监听到总线发生RW，发生其他CPU将最新数据写回到主存，此时为了保证缓存一致性，当前CPU的数据状态修改为I；</li>
 </ul>
-<h4 id="shared"><a href="#shared" class="headerlink" title="shared"></a>shared</h4><p>场景：当前CPU中的数据状态是shared，表示当前CPU和其他CPU共享数据，且数据在多个CPU之间一致、多个CPU之间的数据和主存一致；</p>
+<h4 id="shared"><a href="#shared" class="headerlink" title="shared"></a>shared</h4><p>当前CPU中的数据状态是shared，表示当前CPU和其他CPU共享数据，且数据在多个CPU之间一致、多个CPU之间的数据和主存一致；</p>
 <ul>
 <li>LR：直接从cache中读取数据，状态不变；</li>
 <li>LW：发生本地写，并不会将数据立即写回主存，而是在稍后的一个时间再写回主存，因此为了保证缓存一致性，当前CPU的cache line状态修改为M，并通知其他拥有该数据的CPU该数据失效，其他CPU将cache line状态修改为I；</li>
 <li>RR：状态不变，因为多个CPU中的数据和主存一致；</li>
 <li>RW：当监听到总线发生了RW，意味着其他CPU发生了写主存操作，此时本地cache中的数据既不是最新数据，和主存也不再一致，因此当前CPU的cache line状态修改为I；</li>
 </ul>
-<h4 id="invalid"><a href="#invalid" class="headerlink" title="invalid"></a>invalid</h4><p>场景：当前CPU中的数据状态是invalid，表示当前CPU中是脏数据，不可用，其他CPU可能有数据、也可能没有数据；</p>
+<h4 id="invalid"><a href="#invalid" class="headerlink" title="invalid"></a>invalid</h4><p>当前CPU中的数据状态是invalid，表示当前CPU中是脏数据，不可用，其他CPU可能有数据、也可能没有数据；</p>
 <ul>
 <li><p>LR：因为当前CPU的cache line数据不可用，因此会发生读内存，此时的情形如下。</p>
 <ul>
@@ -518,7 +518,11 @@
 <p>即便增加了 snoop，store buffer 仍然会违背 global memory ordering，导致的解决方案是 memory barrier：我们知道程序员书写两个写操作的时候，隐含的假定是如果能观察到后一个写的结果，那么前一个写的结果势必也会发生，这是一个非常符合人直觉的行为，但是由于 store buffer 的存在，这个结论可能并不正确：这是因为如果观察线程位于另一个 core，首先读取后一个写（该地址并不在 cache 内）需要向写入线程所在 core 要对应地址的值，由于该 core 从 store buffer 返回了新值的时候这个 buffer 里面的写操作可能尚未发生，所以观察线程在获取了后一个写的最新结果时，前一个写的结果依然无法观察到，这违背了 sequential consistency 的假定，往往程序员更倾向于这个 consistency model 下的 reasoning。</p>
 <p>硬件 level 上很难揣度软件上这种前后依赖关系，因此往往无法通过某种手段自动的避免这种问题，只有通过软件的手段表示（对应也需要硬件提供某种指令来支持这种语义），这个就是 <strong>memory barrier</strong>，从硬件上来看这个 barrier 就是 CPU flush 其 store buffer 的指令，那么一种做法就是提供给程序员对应的指令（封装到函数里面）要求在合适的时候插入表达这种关系，另一种做法就是通过某种标识让编译器翻译的时候自动的插入这个指令。</p>
 <p>往往 store buffer 都很小，针对连续写操作力不从心，类似的情况也发生在碰到 memory barrier 之后。开始写之前首先需要 invalidate 其他 cache 里面的数据，为了加速这个过程硬件设计者又加入了 <strong>invalidate queue</strong>，这个 queue 将 incoming 的 invalidate 消息存放，立即返回对应的 response 这样以便发起者能尽快做后面的事情，而这个 CPU 可以通过 invalidate queue 后续处理这些内存。invalidate queue 的存在会使得我们有更多的地方需要 memory barrier（理由与 store buffer 类似）实际 memory barrier 又有一些细分，如 read/write 的，软件上会通过 smb_mb/rmb/wmb 等表示，对应的硬件指令不同平台下各不相同。实际实现的时候由于某些指令集之间的关系使得 memory barrier 的实现不可能做到最优，很多常见的平台都使用了简单粗暴的 bus 锁（x86、amd64、armv7），这也就是 Sutter talk 里面认为硬件平台往往提供了一些“过度”的指令的原因，最终软件需要的 sequential consistency 尽管得以实现，但是产生了一些不必要的代价。</p>
-<h2 id="local-cache"><a href="#local-cache" class="headerlink" title="local cache"></a>local cache</h2><p>回顾了一下底层的知识，我们接下来谈谈本地缓存组件。</p>
+<h2 id="local-cache"><a href="#local-cache" class="headerlink" title="local cache"></a>local cache</h2><p>回顾了一下底层的知识，我们接下来谈谈本地缓存组件。首先是我当时为什么不用redis而用了local cache。</p>
+<p>我实际需要的场景是：我上个服务会发大量数据给这个服务，我需要将拥有相同tag的数据识别为一类，生成一个unique key，即一个tag对应一个key的一对一关系。每条数据落库时都会写下这个key。那我为什么不用redis来维护这个 tag-&gt;key 的映射关系呢？<del>因为公司没资源了</del>，当时部门有一个通用的redis资源，但我这个项目完全是脱离开的离线项目，和那些个在线项目抢资源总是不太放心。其次是会需要缓存一些重复的rpc请求，综合来说我更倾向于用local cache来做。</p>
+<p>但是local cache就有个问题，多个实例间的cache是不共享的，因此我需要将同一个tag的数据收敛到同一个实例上，来保证cache映射对的正确性。这点就交由消息队列的partition key来做，设置partition key = {tag}，然后某RMQ保证了相同partition key的数据会hash发送到同一实例的同一协程（worker）下，完美地解决了该问题。在确定好了 RMQ + local cache 的技术方案后就是 cache 组件的选取了。</p>
+<p>首先抽象出我需要的cache特性，一个tag下的最后一条数据处理完前，该tag下的第一条数据不能被逐出cache。</p>
+<p>但这样的一条特性太过于抽象不宜满足，但如果我们可以保证数据满足相同tag的数据彼此相邻的话，在LRU策略下只需要一块很小的cache就可以满足需要。而上游处理数据时确实是按tag顺序处理的，只需要发送给RMQ时采用有序消息即可。最后基于该特性，我选择了go下的freecache来完成需求。</p>
 
       
     </div>

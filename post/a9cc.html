@@ -91,7 +91,7 @@
 <meta property="og:image" content="https://i.loli.net/2020/09/06/L3ckTpHjSW4JAZq.png">
 <meta property="og:image" content="https://i.loli.net/2020/09/06/4rizWsFMXOuNtU6.png">
 <meta property="og:image" content="https://i.loli.net/2021/08/11/c9mkSVWQp5Eg3zX.jpg">
-<meta property="og:updated_time" content="2021-08-19T05:33:14.737Z">
+<meta property="og:updated_time" content="2021-09-09T06:20:04.463Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Local Cache">
 <meta name="twitter:description" content="在实习时候用到了local cache组件，当时在本地缓存和redis之间还是纠结过，最后选了go的freecache来作本地缓存，结合底层相关知识整理了一篇总结，之后有时间在写一篇关于Redis的介绍。">
@@ -396,7 +396,7 @@
                   <span class="post-meta-item-text">共计&#58;</span>
                 
                 <span title="共计">
-                  4.3k 字
+                  4.4k 字
                 </span>
               
 
@@ -412,7 +412,7 @@
                   <span class="post-meta-item-text">时长 &asymp;</span>
                 
                 <span title="时长">
-                  15 min
+                  16 min
                 </span>
               
             </div>
@@ -523,6 +523,18 @@
 <p>但是local cache就有个问题，多个实例间的cache是不共享的，因此我需要将同一个tag的数据收敛到同一个实例上，来保证cache映射对的正确性。这点就交由消息队列的partition key来做，设置partition key = {tag}，然后某RMQ保证了相同partition key的数据会hash发送到同一实例的同一协程（worker）下，完美地解决了该问题。在确定好了 RMQ + local cache 的技术方案后就是 cache 组件的选取了。</p>
 <p>首先抽象出我需要的cache特性，一个tag下的最后一条数据处理完前，该tag下的第一条数据不能被逐出cache。</p>
 <p>但这样的一条特性太过于抽象不宜满足，但如果我们可以保证数据满足相同tag的数据彼此相邻的话，在LRU策略下只需要一块很小的cache就可以满足需要。而上游处理数据时确实是按tag顺序处理的，只需要发送给RMQ时采用有序消息即可。最后基于该特性，我选择了go下的freecache来完成需求。</p>
+<p>freecache具有以下优势：</p>
+<ul>
+<li>能存储数亿条记录（entry） 。</li>
+<li>零GC开销。</li>
+<li>高并发线程安全访问。</li>
+<li>纯Golang代码实现。</li>
+<li>支持记录（entry）过期。</li>
+<li>接近LRU的替换算法。</li>
+<li>严格限制内存的使用。</li>
+<li>提供一个测试用的服务器，支持一些基本 Redis 命令。</li>
+<li>支持迭代器。</li>
+</ul>
 
       
     </div>
@@ -614,6 +626,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/post/8369.html" rel="prev" title="大学回忆">
+                大学回忆 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -692,7 +708,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-count">40</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -703,7 +719,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-count">14</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -714,7 +730,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">49</span>
+                  <span class="site-state-item-count">50</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

@@ -8,8 +8,8 @@
         <category>回忆</category>
       </categories>
       <tags>
-        <tag>随记</tag>
         <tag>大四</tag>
+        <tag>随记</tag>
       </tags>
   </entry>
   <entry>
@@ -34,8 +34,8 @@
       </categories>
       <tags>
         <tag>大三</tag>
-        <tag>test</tag>
         <tag>Go</tag>
+        <tag>test</tag>
       </tags>
   </entry>
   <entry>
@@ -46,9 +46,9 @@
         <category>实习</category>
       </categories>
       <tags>
+        <tag>随记</tag>
         <tag>大三</tag>
         <tag>实习</tag>
-        <tag>随记</tag>
       </tags>
   </entry>
   <entry>
@@ -127,9 +127,9 @@
       </categories>
       <tags>
         <tag>GAP</tag>
+        <tag>concurrency</tag>
         <tag>Python</tag>
         <tag>asyncio</tag>
-        <tag>concurrency</tag>
       </tags>
   </entry>
   <entry>
@@ -223,8 +223,8 @@
       <tags>
         <tag>GAP</tag>
         <tag>Go</tag>
-        <tag>concurrency</tag>
         <tag>goroutine</tag>
+        <tag>concurrency</tag>
       </tags>
   </entry>
   <entry>
@@ -378,8 +378,8 @@
         <category>机器学习</category>
       </categories>
       <tags>
-        <tag>机器学习</tag>
         <tag>大二</tag>
+        <tag>机器学习</tag>
         <tag>概率模型</tag>
       </tags>
   </entry>
@@ -404,8 +404,8 @@
         <category>机器学习</category>
       </categories>
       <tags>
-        <tag>机器学习</tag>
         <tag>大二</tag>
+        <tag>机器学习</tag>
         <tag>优化算法</tag>
       </tags>
   </entry>

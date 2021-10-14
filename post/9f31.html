@@ -1,0 +1,1470 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="HqDOiGSjrA">
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/star.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/star.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/star.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="大四,CSAPP,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="CSAPP的配套lab">
+<meta name="keywords" content="大四,CSAPP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ICS lab">
+<meta property="og:url" content="https://stardust567.github.io/post/9f31.html">
+<meta property="og:site_name" content="Star Trail">
+<meta property="og:description" content="CSAPP的配套lab">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://i.loli.net/2021/10/14/Tgv1pU8zqs5bt7o.png">
+<meta property="og:updated_time" content="2021-10-14T14:53:37.647Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ICS lab">
+<meta name="twitter:description" content="CSAPP的配套lab">
+<meta name="twitter:image" content="https://i.loli.net/2021/10/14/Tgv1pU8zqs5bt7o.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://stardust567.github.io/post/9f31.html">
+
+
+
+
+
+
+  <title>ICS lab | Star Trail</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '130666690', 'auto');
+  ga('send', 'pageview');
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Star Trail</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">stardust1084062596@gmail.com</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-link">
+          <a href="/links/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-link"></i> <br>
+            
+            友链
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://stardust567.github.io/post/9f31.html">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Stardust567">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Star Trail">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">ICS lab</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">写于</span>
+              
+              <time title="写于" itemprop="dateCreated datePublished" datetime="2021-10-14T14:19:54+08:00">
+                2021-10-14
+              </time>
+            
+
+            
+
+            
+          </span>
+			
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">归档</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Sys/" itemprop="url" rel="index">
+                    <span itemprop="name">Sys</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/post/9f31.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/post/9f31.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/post/9f31.html" class="leancloud_visitors" data-flag-title="ICS lab">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">翻阅&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                  <span class="post-meta-divider">|</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">共计&#58;</span>
+                
+                <span title="共计">
+                  1.8k 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">时长 &asymp;</span>
+                
+                <span title="时长">
+                  8 min
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>CSAPP的配套lab<a id="more"></a></p>
+<h1 id="Bomb"><a href="#Bomb" class="headerlink" title="Bomb"></a>Bomb</h1><p>Bomb实验要求是给一个用C语言编写的可执行文件bomb，你可以看到它主函数的C语言代码，除此之外，一概不知，实验分为六个阶段，每个阶段需要输入一串字符，有点像破译密码，如果六次输入的密码都是对的，炸弹解除，否则炸弹会爆炸(退出，并打印爆炸信息)</p>
+<h2 id="解决思路"><a href="#解决思路" class="headerlink" title="解决思路"></a>解决思路</h2><p>根据题目的要求以及提示，我们可以将bomb可执行文件反汇编，对汇编语言代码进行逆向分析，而gdb是我们调试汇编语言的有效工具。</p>
+<h3 id="gdb常用命令"><a href="#gdb常用命令" class="headerlink" title="gdb常用命令"></a>gdb常用命令</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>gdb filename</td>
+<td>开始调试</td>
+</tr>
+<tr>
+<td>run</td>
+<td>开始运行</td>
+</tr>
+<tr>
+<td>run 1 2 3</td>
+<td>开始运行,并且传入参数1，2，3</td>
+</tr>
+<tr>
+<td>kill</td>
+<td>停止运行</td>
+</tr>
+<tr>
+<td>quit</td>
+<td>退出gdb</td>
+</tr>
+<tr>
+<td>break sum</td>
+<td>在sum函数的开头设置断点</td>
+</tr>
+<tr>
+<td>break *0x8048c3</td>
+<td>在0x8048c3的地址处设置断点</td>
+</tr>
+<tr>
+<td>delete 1</td>
+<td>删除断点1</td>
+</tr>
+<tr>
+<td>clear sum</td>
+<td>删除在sum函数入口的断点</td>
+</tr>
+<tr>
+<td>stepi</td>
+<td>运行一条指令</td>
+</tr>
+<tr>
+<td>stepi 4</td>
+<td>运行4条指令</td>
+</tr>
+<tr>
+<td>continue</td>
+<td>运行到下一个断点</td>
+</tr>
+<tr>
+<td>disas sum</td>
+<td>反汇编sum函数</td>
+</tr>
+<tr>
+<td>disas 0X12345</td>
+<td>反汇编入口在0x12345的函数</td>
+</tr>
+<tr>
+<td>print /x /d /t $rax</td>
+<td>将rax里的内容以16进制，10进制，2进制的形式输出</td>
+</tr>
+<tr>
+<td>print 0x888</td>
+<td>输出0x888的十进制形式</td>
+</tr>
+<tr>
+<td>print <em>(int</em>)0x123456</td>
+<td>将0x123456地址所存储的内容以数字形式输出</td>
+</tr>
+<tr>
+<td>print (char*)0x123456</td>
+<td>输出存储在0x123456的字符串</td>
+</tr>
+<tr>
+<td>x/w $rsp</td>
+<td>解析在rsp所指向位置的word</td>
+</tr>
+<tr>
+<td>x/2w $rsp</td>
+<td>解析在rsp所指向位置的两个word</td>
+</tr>
+<tr>
+<td>x/2wd $rsp</td>
+<td>解析在rsp所指向位置的word，以十进制形式输出</td>
+</tr>
+<tr>
+<td>info registers</td>
+<td>寄存器信息</td>
+</tr>
+<tr>
+<td>info functions</td>
+<td>函数信息</td>
+</tr>
+<tr>
+<td>info stack</td>
+<td>栈信息</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="x86-64寄存器"><a href="#x86-64寄存器" class="headerlink" title="x86-64寄存器"></a>x86-64寄存器</h3><p><img src="https://i.loli.net/2021/10/14/Tgv1pU8zqs5bt7o.png" alt="ICS-bomb-register.png"></p>
+<h2 id="解决流程"><a href="#解决流程" class="headerlink" title="解决流程"></a>解决流程</h2><p>先通过<code>objdump -d bomb &gt; bomb.txt</code>将可执行文件反汇编出来观察一下，会在main函数里发现这样的汇编：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">400</span>e32:	e8 <span class="number">67</span> <span class="number">06</span> <span class="number">00</span> <span class="number">00</span>       	callq  <span class="number">40149</span>e &lt;read_line&gt;</span><br><span class="line"><span class="number">400</span>e37:	<span class="number">48</span> <span class="number">89</span> c7             	mov    %rax,%rdi</span><br><span class="line"><span class="number">400</span>e3a:	e8 a1 <span class="number">00</span> <span class="number">00</span> <span class="number">00</span>       	callq  <span class="number">400</span>ee0 &lt;phase_1&gt;</span><br><span class="line"><span class="number">400</span>e3f:	e8 <span class="number">80</span> <span class="number">07</span> <span class="number">00</span> <span class="number">00</span>       	callq  <span class="number">4015</span>c4 &lt;phase_defused&gt;</span><br><span class="line"><span class="number">400</span>e44:	bf a8 <span class="number">23</span> <span class="number">40</span> <span class="number">00</span>       	mov    <span class="variable">$0x4023a8</span>,%edi</span><br><span class="line"><span class="number">400</span>e49:	e8 c2 fc ff ff       	callq  <span class="number">400</span>b10 &lt;puts@plt&gt;</span><br><span class="line"><span class="number">400</span>e4e:	e8 <span class="number">4</span>b <span class="number">06</span> <span class="number">00</span> <span class="number">00</span>       	callq  <span class="number">40149</span>e &lt;read_line&gt;</span><br><span class="line"><span class="number">400</span>e53:	<span class="number">48</span> <span class="number">89</span> c7             	mov    %rax,%rdi</span><br><span class="line"><span class="number">400</span>e56:	e8 a1 <span class="number">00</span> <span class="number">00</span> <span class="number">00</span>       	callq  <span class="number">400</span>efc &lt;phase_2&gt;</span><br><span class="line"><span class="number">400</span>e5b:	e8 <span class="number">64</span> <span class="number">07</span> <span class="number">00</span> <span class="number">00</span>       	callq  <span class="number">4015</span>c4 &lt;phase_defused&gt;</span><br><span class="line"><span class="number">400</span>e60:	bf ed <span class="number">22</span> <span class="number">40</span> <span class="number">00</span>       	mov    <span class="variable">$0x4022ed</span>,%edi</span><br><span class="line"><span class="number">400</span>e65:	e8 a6 fc ff ff       	callq  <span class="number">400</span>b10 &lt;puts@plt&gt;</span><br></pre></td></tr></table></figure>
+<p>可以看到这个函数的作用是通过readline读取输入值然后调用<phase_1>函数，那我们再来看看<phase_1>函数：</phase_1></phase_1></p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0000000000400</span>ee0 &lt;phase_1&gt;:</span><br><span class="line">  <span class="number">400</span>ee0:	<span class="number">48</span> <span class="number">83</span> ec <span class="number">08</span>          	sub    <span class="variable">$0x8</span>,%rsp</span><br><span class="line">  <span class="number">400</span>ee4:	be <span class="number">00</span> <span class="number">24</span> <span class="number">40</span> <span class="number">00</span>       	mov    <span class="variable">$0x402400</span>,%esi</span><br><span class="line">  <span class="number">400</span>ee9:	e8 <span class="number">4</span>a <span class="number">04</span> <span class="number">00</span> <span class="number">00</span>       	callq  <span class="number">401338</span> &lt;strings_not_equal&gt;</span><br><span class="line">  <span class="number">400</span>eee:	<span class="number">85</span> c0                	test   %eax,%eax</span><br><span class="line">  <span class="number">400</span>ef0:	<span class="number">74</span> <span class="number">05</span>                	je     <span class="number">400</span>ef7 &lt;phase_1+<span class="number">0</span>x17&gt;</span><br><span class="line">  <span class="number">400</span>ef2:	e8 <span class="number">43</span> <span class="number">05</span> <span class="number">00</span> <span class="number">00</span>       	callq  <span class="number">40143</span>a &lt;explode_bomb&gt;</span><br><span class="line">  <span class="number">400</span>ef7:	<span class="number">48</span> <span class="number">83</span> c4 <span class="number">08</span>          	add    <span class="variable">$0x8</span>,%rsp</span><br><span class="line">  <span class="number">400</span>efb:	c3                   	retq</span><br></pre></td></tr></table></figure>
+<p>那么我们有理由猜测<explode_bomb>函数所实现的功能就是“BOMB”于是我们开始设置断点找到关键词。</explode_bomb></p>
+<h3 id="phase-1"><a href="#phase-1" class="headerlink" title="phase_1"></a>phase_1</h3><p>设置断点然后用随便的test值运行一下：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">(gdb) <span class="keyword">break</span> explode_bomb</span><br><span class="line">Breakpoint <span class="number">1</span> at <span class="number">0</span>x40143a</span><br><span class="line">(gdb) <span class="keyword">break</span> phase_1</span><br><span class="line">Breakpoint <span class="number">2</span> at <span class="number">0</span>x400ee0</span><br><span class="line">(gdb) run</span><br><span class="line">Starting program: /mnt/e/Program/ipads/training/ics-lab/bomb</span><br><span class="line">Welcome to my fiendish little bomb. You have <span class="number">6</span> phases with</span><br><span class="line">which to blow yourself up. Have a nice day!</span><br><span class="line">test</span><br><span class="line"></span><br><span class="line">Breakpoint <span class="number">2</span>, <span class="number">0</span>x0000000000400ee0 <span class="keyword">in</span> phase_1 ()</span><br></pre></td></tr></table></figure>
+<p>观察对应汇编代码：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">(gdb) disas</span><br><span class="line">Dump of assembler code <span class="keyword">for</span> <span class="keyword">function</span> phase_1:</span><br><span class="line">=&gt; <span class="number">0</span>x0000000000400ee0 &lt;+<span class="number">0</span>&gt;:     sub    <span class="variable">$0x8</span>,%rsp</span><br><span class="line">   <span class="number">0</span>x0000000000400ee4 &lt;+<span class="number">4</span>&gt;:     mov    <span class="variable">$0x402400</span>,%esi</span><br><span class="line">   <span class="number">0</span>x0000000000400ee9 &lt;+<span class="number">9</span>&gt;:     callq  <span class="number">0</span>x401338 &lt;strings_not_equal&gt;</span><br><span class="line">   <span class="number">0</span>x0000000000400eee &lt;+<span class="number">14</span>&gt;:    test   %eax,%eax</span><br><span class="line">   <span class="number">0</span>x0000000000400ef0 &lt;+<span class="number">16</span>&gt;:    je     <span class="number">0</span>x400ef7 &lt;phase_1+<span class="number">23</span>&gt;</span><br><span class="line">   <span class="number">0</span>x0000000000400ef2 &lt;+<span class="number">18</span>&gt;:    callq  <span class="number">0</span>x40143a &lt;explode_bomb&gt;</span><br><span class="line">   <span class="number">0</span>x0000000000400ef7 &lt;+<span class="number">23</span>&gt;:    add    <span class="variable">$0x8</span>,%rsp</span><br><span class="line">   <span class="number">0</span>x0000000000400efb &lt;+<span class="number">27</span>&gt;:    retq</span><br><span class="line"><span class="keyword">End</span> of assembler dump.</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>read_line函数会将读入字符串地址存放在rdi 和rsi中，strings_not_equal函数会使用edi和esi中的值当做两个字符址，并且判断他们是否相等，相等返回0</p>
+</blockquote>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">(gdb) stepi <span class="number">2</span></span><br><span class="line"><span class="number">0</span>x0000000000400ee9 <span class="keyword">in</span> phase_1 ()</span><br><span class="line">(gdb) info registers</span><br><span class="line">rax            <span class="number">0</span>x603780 <span class="number">6305664</span></span><br><span class="line">rbx            <span class="number">0</span>x0      <span class="number">0</span></span><br><span class="line">rcx            <span class="number">0</span>x4      <span class="number">4</span></span><br><span class="line">rdx            <span class="number">0</span>x1      <span class="number">1</span></span><br><span class="line">rsi            <span class="number">0</span>x402400 <span class="number">4203520</span></span><br><span class="line">rdi            <span class="number">0</span>x603780 <span class="number">6305664</span></span><br><span class="line">rbp            <span class="number">0</span>x402210 <span class="number">0</span>x402210 &lt;__libc_csu_init&gt;</span><br><span class="line">rsp            <span class="number">0</span>x7ffffffedb60   <span class="number">0</span>x7ffffffedb60</span><br><span class="line">r8             <span class="number">0</span>x604475 <span class="number">6308981</span></span><br><span class="line">r9             <span class="number">0</span>x7fffff7e1540   <span class="number">140737479841088</span></span><br><span class="line">r10            <span class="number">0</span>x3      <span class="number">3</span></span><br><span class="line">r11            <span class="number">0</span>x7fffff030890   <span class="number">140737471776912</span></span><br><span class="line">r12            <span class="number">0</span>x400c90 <span class="number">4197520</span></span><br><span class="line">r13            <span class="number">0</span>x7ffffffedc50   <span class="number">140737488280656</span></span><br><span class="line">r14            <span class="number">0</span>x0      <span class="number">0</span></span><br><span class="line">r15            <span class="number">0</span>x0      <span class="number">0</span></span><br><span class="line">rip            <span class="number">0</span>x400ee9 <span class="number">0</span>x400ee9 &lt;phase_1+<span class="number">9</span>&gt;</span><br><span class="line">eflags         <span class="number">0</span>x206    [ PF <span class="keyword">IF</span> ]</span><br><span class="line">cs             <span class="number">0</span>x33     <span class="number">51</span></span><br><span class="line">ss             <span class="number">0</span>x2b     <span class="number">43</span></span><br><span class="line">ds             <span class="number">0</span>x0      <span class="number">0</span></span><br><span class="line">es             <span class="number">0</span>x0      <span class="number">0</span></span><br><span class="line">fs             <span class="number">0</span>x0      <span class="number">0</span></span><br><span class="line">gs             <span class="number">0</span>x0      <span class="number">0</span></span><br><span class="line">(gdb) print (char*)<span class="number">0</span>x603780</span><br><span class="line"><span class="variable">$3</span> = <span class="number">0</span>x603780 &lt;input_strings&gt; <span class="string">"test"</span></span><br><span class="line">(gdb) print (char*)<span class="number">0</span>x402400</span><br><span class="line"><span class="variable">$4</span> = <span class="number">0</span>x402400 <span class="string">"Border relations with Canada have never been better."</span></span><br></pre></td></tr></table></figure>
+<p>phase_1函数首先将0x402400这个赋值给esi，然后调用strings_not_equal,　而在每次调用phase_n之前都会先调用read_line读入一行并且放在edi和esi。显然这里是调用字符串比较函数比较我们输入的字符串和存放在0x402400地址的字符串是否相等，紧接着调用test指令，如果eax为0也就是两个字符串相等就跳转到函数结尾，否则调用explode_bomb函数，这个就是引爆炸弹的函数。到这里答案也就出来了，我们需要输入的就是存放在0x402400处的字符串。</p>
+<h3 id="phase-2"><a href="#phase-2" class="headerlink" title="phase_2"></a>phase_2</h3><p>接下来让我们开始第二个phase：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">(gdb) <span class="keyword">continue</span></span><br><span class="line">Continuing.</span><br><span class="line">Phase <span class="number">1</span> defused. How about the next one?</span><br><span class="line"><span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span></span><br><span class="line"></span><br><span class="line">Breakpoint <span class="number">3</span>, <span class="number">0</span>x0000000000400efc <span class="keyword">in</span> phase_2 ()</span><br><span class="line">(gdb) disas</span><br><span class="line">Dump of assembler code <span class="keyword">for</span> <span class="keyword">function</span> phase_2:</span><br><span class="line">=&gt; <span class="number">0</span>x0000000000400efc &lt;+<span class="number">0</span>&gt;:     push   %rbp</span><br><span class="line">   <span class="number">0</span>x0000000000400efd &lt;+<span class="number">1</span>&gt;:     push   %rbx</span><br><span class="line">   <span class="number">0</span>x0000000000400efe &lt;+<span class="number">2</span>&gt;:     sub    <span class="variable">$0x28</span>,%rsp</span><br><span class="line">   <span class="number">0</span>x0000000000400f02 &lt;+<span class="number">6</span>&gt;:     mov    %rsp,%rsi</span><br><span class="line">   <span class="number">0</span>x0000000000400f05 &lt;+<span class="number">9</span>&gt;:     callq  <span class="number">0</span>x40145c &lt;read_six_numbers&gt;</span><br><span class="line">   <span class="number">0</span>x0000000000400f0a &lt;+<span class="number">14</span>&gt;:    cmpl   <span class="variable">$0x1</span>,(%rsp)</span><br><span class="line">   <span class="number">0</span>x0000000000400f0e &lt;+<span class="number">18</span>&gt;:    je     <span class="number">0</span>x400f30 &lt;phase_2+<span class="number">52</span>&gt;</span><br><span class="line">   <span class="number">0</span>x0000000000400f10 &lt;+<span class="number">20</span>&gt;:    callq  <span class="number">0</span>x40143a &lt;explode_bomb&gt;</span><br><span class="line">   <span class="number">0</span>x0000000000400f15 &lt;+<span class="number">25</span>&gt;:    jmp    <span class="number">0</span>x400f30 &lt;phase_2+<span class="number">52</span>&gt;</span><br><span class="line">   <span class="number">0</span>x0000000000400f17 &lt;+<span class="number">27</span>&gt;:    mov    -<span class="number">0</span>x4(%rbx),%eax</span><br><span class="line">   <span class="number">0</span>x0000000000400f1a &lt;+<span class="number">30</span>&gt;:    add    %eax,%eax</span><br><span class="line">   <span class="number">0</span>x0000000000400f1c &lt;+<span class="number">32</span>&gt;:    cmp    %eax,(%rbx)</span><br><span class="line">   <span class="number">0</span>x0000000000400f1e &lt;+<span class="number">34</span>&gt;:    je     <span class="number">0</span>x400f25 &lt;phase_2+<span class="number">41</span>&gt;</span><br><span class="line">   <span class="number">0</span>x0000000000400f20 &lt;+<span class="number">36</span>&gt;:    callq  <span class="number">0</span>x40143a &lt;explode_bomb&gt;</span><br><span class="line">   <span class="number">0</span>x0000000000400f25 &lt;+<span class="number">41</span>&gt;:    add    <span class="variable">$0x4</span>,%rbx</span><br><span class="line">   <span class="number">0</span>x0000000000400f29 &lt;+<span class="number">45</span>&gt;:    cmp    %rbp,%rbx</span><br><span class="line">   <span class="number">0</span>x0000000000400f2c &lt;+<span class="number">48</span>&gt;:    jne    <span class="number">0</span>x400f17 &lt;phase_2+<span class="number">27</span>&gt;</span><br><span class="line">   <span class="number">0</span>x0000000000400f2e &lt;+<span class="number">50</span>&gt;:    jmp    <span class="number">0</span>x400f3c &lt;phase_2+<span class="number">64</span>&gt;</span><br><span class="line">   <span class="number">0</span>x0000000000400f30 &lt;+<span class="number">52</span>&gt;:    lea    <span class="number">0</span>x4(%rsp),%rbx</span><br><span class="line">   <span class="number">0</span>x0000000000400f35 &lt;+<span class="number">57</span>&gt;:    lea    <span class="number">0</span>x18(%rsp),%rbp</span><br><span class="line">   <span class="number">0</span>x0000000000400f3a &lt;+<span class="number">62</span>&gt;:    jmp    <span class="number">0</span>x400f17 &lt;phase_2+<span class="number">27</span>&gt;</span><br><span class="line">   <span class="number">0</span>x0000000000400f3c &lt;+<span class="number">64</span>&gt;:    add    <span class="variable">$0x28</span>,%rsp</span><br><span class="line">   <span class="number">0</span>x0000000000400f40 &lt;+<span class="number">68</span>&gt;:    pop    %rbx</span><br><span class="line">   <span class="number">0</span>x0000000000400f41 &lt;+<span class="number">69</span>&gt;:    pop    %rbp</span><br><span class="line">   <span class="number">0</span>x0000000000400f42 &lt;+<span class="number">70</span>&gt;:    retq</span><br><span class="line"><span class="keyword">End</span> of assembler dump.</span><br></pre></td></tr></table></figure>
+<p>一开始调用了read_six_numbers函数，显然这次要求的输入是6个数字，但为了严谨我们还是跳进去看一眼：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">......</span><br><span class="line">   <span class="number">0</span>x0000000000401480 &lt;+<span class="number">36</span>&gt;:    mov    <span class="variable">$0x4025c3</span>,%esi</span><br><span class="line">   <span class="number">0</span>x0000000000401485 &lt;+<span class="number">41</span>&gt;:    mov    <span class="variable">$0x0</span>,%eax</span><br><span class="line">   <span class="number">0</span>x000000000040148a &lt;+<span class="number">46</span>&gt;:    callq  <span class="number">0</span>x400bf0 &lt;__isoc99_sscanf@plt&gt;</span><br><span class="line">......</span><br><span class="line">(gdb) stepi <span class="number">17</span></span><br><span class="line"><span class="number">0</span>x0000000000400bf0 <span class="keyword">in</span> __isoc99_sscanf@plt ()</span><br><span class="line">(gdb) disas</span><br><span class="line">Dump of assembler code <span class="keyword">for</span> <span class="keyword">function</span> __isoc99_sscanf@plt:</span><br><span class="line">=&gt; <span class="number">0</span>x0000000000400bf0 &lt;+<span class="number">0</span>&gt;:     jmpq   *<span class="number">0</span>x202492(%rip)        <span class="comment"># 0x603088 &lt;__isoc99_sscanf@got.plt&gt;</span></span><br><span class="line">   <span class="number">0</span>x0000000000400bf6 &lt;+<span class="number">6</span>&gt;:     pushq  <span class="variable">$0x11</span></span><br><span class="line">   <span class="number">0</span>x0000000000400bfb &lt;+<span class="number">11</span>&gt;:    jmpq   <span class="number">0</span>x400ad0</span><br><span class="line">(gdb) info register</span><br><span class="line">......</span><br><span class="line">rsi            <span class="number">0</span>x4025c3 <span class="number">4203971</span></span><br><span class="line">rdi            <span class="number">0</span>x6037d0 <span class="number">6305744</span></span><br><span class="line">......</span><br><span class="line">(gdb) print (char*)<span class="number">0</span>x6037d0</span><br><span class="line"><span class="variable">$2</span> = <span class="number">0</span>x6037d0 &lt;input_strings+<span class="number">80</span>&gt; <span class="string">"1 2 3 4 5 6"</span> </span><br><span class="line">(gdb) print (char*)<span class="number">0</span>x4025c3</span><br><span class="line"><span class="variable">$5</span> = <span class="number">0</span>x4025c3 <span class="string">"%d %d %d %d %d %d"</span></span><br></pre></td></tr></table></figure>
+<p>由调用类scanf函数，参数是输入字符串和”%d %d %d %d %d %d”，可以确定输入格式是空格隔开的六个数字。</p>
+<blockquote>
+<p>je     0x400f30 <phase_2+52>  中的 je 为 jmp equal，可以理解为等于就跳转，cmpl   $0x1,(%rsp) 比较栈指针指向的第一个数字是否为1，如果是1则跳转到 lea    0x4(%rsp),%rbx，否则执行 explode_bomb</phase_2+52></p>
+</blockquote>
+<p>然后第一个数字必须是1，否则会爆炸，数字为1则跳转到+52，即<code>lea 0x4(%rsp),%rbx</code> 把0x4(%rsp)偏移量传送给rbx，%rsp是栈指针的地址，每个int的数据长度为4个bytes，这句话的意思就是说读取下一个数字的地址，存入%rbx里。</p>
+<p>然后57行把第六个数字的地址存入rbp里，再跳转到27行，取上一个数字的地址</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>投币</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.png" alt="Stardust567 微信">
+        <p>微信</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Stardust567 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Stardust567
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://stardust567.github.io/post/9f31.html" title="ICS lab">https://stardust567.github.io/post/9f31.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议，转载请务必署名，欢迎邮件私我讨论交流。
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/大四/" rel="tag"><i class="fa fa-tag"></i> 大四</a>
+          
+            <a href="/tags/CSAPP/" rel="tag"><i class="fa fa-tag"></i> CSAPP</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/3d2.html" rel="next" title="Makefile">
+                <i class="fa fa-chevron-left"></i> Makefile
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Stardust567</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">53</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Bomb"><span class="nav-number">1.</span> <span class="nav-text">Bomb</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#解决思路"><span class="nav-number">1.1.</span> <span class="nav-text">解决思路</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#gdb常用命令"><span class="nav-number">1.1.1.</span> <span class="nav-text">gdb常用命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#x86-64寄存器"><span class="nav-number">1.1.2.</span> <span class="nav-text">x86-64寄存器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决流程"><span class="nav-number">1.2.</span> <span class="nav-text">解决流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#phase-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">phase_1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#phase-2"><span class="nav-number">1.2.2.</span> <span class="nav-text">phase_2</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Stardust567</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'JYnD0OKLKim6sRc0a0s3J4kK-gzGzoHsz',
+        appKey: 'HmTcztUucDEpy2MxiXT1AkXF',
+        placeholder: '谢谢你认真看到了最后，这里欢迎各种吐槽与交流：',
+        avatar:'monsterid',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("JYnD0OKLKim6sRc0a0s3J4kK-gzGzoHsz", "HmTcztUucDEpy2MxiXT1AkXF");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

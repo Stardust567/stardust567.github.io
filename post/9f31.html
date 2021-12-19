@@ -92,7 +92,7 @@
 <meta property="og:image" content="https://i.loli.net/2021/10/17/PnhSeJwqE1ZLvjC.jpg">
 <meta property="og:image" content="https://i.loli.net/2021/11/07/nKRrPxZClsQac27.png">
 <meta property="og:image" content="https://i.loli.net/2021/11/07/IiEweaxW5J9fQYq.png">
-<meta property="og:updated_time" content="2021-11-09T16:18:47.188Z">
+<meta property="og:updated_time" content="2021-12-19T14:52:35.019Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ICS lab">
 <meta name="twitter:description" content="CSAPP的配套lab，之前混日子欠的债迟早是要还的orz">
@@ -762,10 +762,19 @@
 <p>运行一下试试：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">stardust@LAPTOP-4IJ6JI22:/mnt/e/Program/ipads/training/ics-lab$ make test09</span><br><span class="line">./sdriver.pl -t trace09.txt -s ./tsh -a "-p"</span><br><span class="line"><span class="meta">#</span><span class="bash"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> trace09.txt - Process <span class="built_in">bg</span> <span class="built_in">builtin</span> <span class="built_in">command</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"></span></span><br><span class="line"><span class="meta">tsh&gt;</span><span class="bash"> ./myspin 4 &amp;</span></span><br><span class="line">[1] (385) ./myspin 4 &amp;</span><br><span class="line"><span class="meta">tsh&gt;</span><span class="bash"> ./myspin 5</span></span><br><span class="line">Job [2] (387) stopped by signal 20</span><br><span class="line"><span class="meta">tsh&gt;</span><span class="bash"> <span class="built_in">jobs</span></span></span><br><span class="line">[1] (385) Running ./myspin 4 &amp;</span><br><span class="line">[2] (387) Stopped ./myspin 5</span><br><span class="line"><span class="meta">tsh&gt;</span><span class="bash"> <span class="built_in">bg</span> %2</span></span><br><span class="line">[2] (387) ./myspin 5</span><br><span class="line"><span class="meta">tsh&gt;</span><span class="bash"> <span class="built_in">jobs</span></span></span><br><span class="line">[1] (385) Running ./myspin 4 &amp;</span><br><span class="line">[2] (387) Running ./myspin 5</span><br></pre></td></tr></table></figure>
 <p>主要功能实现就是跟着test01~test10，这样就可以完成所有函数的补充了，确实对信号机制理解深很多。</p>
-<h1 id="Malloc"><a href="#Malloc" class="headerlink" title="Malloc"></a>Malloc</h1><h2 id="前置知识-1"><a href="#前置知识-1" class="headerlink" title="前置知识"></a>前置知识</h2><h3 id="三种适配方式："><a href="#三种适配方式：" class="headerlink" title="三种适配方式："></a>三种适配方式：</h3><p>　　　- fitst fit：最为直接的办法。扫描所有的块，只要当前块的大小满足要求就使用，速度较快。但容易导致空闲列表中前面的块被不断地细分，而后面的一些块却一直迟迟得不到利用。<br>　　　- next fit：扫描的时候，每次从上一次扫描的下一个块开始，这样可以使得整个列表的块都可以被使用，这使得效率更高。然而，实际应用中，作用也很有限，容易产生很大的空间浪费，造成大量碎片。<br>　　　- best fit：这种方式最大的好处是可以充分地利用空间。找到所有满足要求的块中最小的那一个，这样可以很大程度上避免浪费。当然，这也使得时间成本较高，尤其是如果空间链表的组织方式不太恰当的话，容易导致每次都要遍历一整个列表。</p>
-<h3 id="四种空闲列表的组织方式"><a href="#四种空闲列表的组织方式" class="headerlink" title="四种空闲列表的组织方式"></a>四种空闲列表的组织方式</h3><p>　　　- implicit free list：这种方式最为简单，直接将所有的块（不管是否有分配）串在一起，然后遍历。这种方式可也使得块最小可以达到8 bytes。当然，这种方式效率很低，尤其是当块的数量较多的时候。<br>　　　- explicit free list：在每一个free 块中保存两个指针，将所有空闲的块组成一个双向链表。和隐式相比，这种方式最大的好处在于我们不需要遍历已经分配的块，速度上快了很多，当然，由于需要保存指针，所以每一个块最小为16 bytes。<br>　　　- segregated free list：这种方式的特点在于，根据块的不同大小，分成k组，组织成k条双向链表。分类的方式有很多，比如可以采用2的倍数的分类方式，{1},{2},{3-4},{5-8}……大小为6的块放在第四条链中，大小为3的块则放在第三条链中等等。<br>　　　- Red-Black Tree：按大小排序的平衡树，在每个空闲块中使用一个带指针的平衡树，并使用长度作为权值。</p>
-<h3 id="两种合并的方式"><a href="#两种合并的方式" class="headerlink" title="两种合并的方式"></a>两种合并的方式</h3><p>　　　- immediate coalescing：每次释放后立即合并，当内存块被释放后，立即与相邻的空闲内存块合并，以获得一个更大的空闲块，插入到链表的相应位置。这样可以减少碎片化。</p>
-<ul>
+<h1 id="Malloc"><a href="#Malloc" class="headerlink" title="Malloc"></a>Malloc</h1><h2 id="前置知识-1"><a href="#前置知识-1" class="headerlink" title="前置知识"></a>前置知识</h2><h3 id="三种适配方式："><a href="#三种适配方式：" class="headerlink" title="三种适配方式："></a>三种适配方式：</h3><ul>
+<li>fitst fit：最为直接的办法。扫描所有的块，只要当前块的大小满足要求就使用，速度较快。但容易导致空闲列表中前面的块被不断地细分，而后面的一些块却一直迟迟得不到利用。</li>
+<li>next fit：扫描的时候，每次从上一次扫描的下一个块开始，这样可以使得整个列表的块都可以被使用，这使得效率更高。然而，实际应用中，作用也很有限，容易产生很大的空间浪费，造成大量碎片。</li>
+<li>best fit：这种方式最大的好处是可以充分地利用空间。找到所有满足要求的块中最小的那一个，这样可以很大程度上避免浪费。当然，这也使得时间成本较高，尤其是如果空间链表的组织方式不太恰当的话，容易导致每次都要遍历一整个列表。</li>
+</ul>
+<h3 id="四种空闲列表的组织方式"><a href="#四种空闲列表的组织方式" class="headerlink" title="四种空闲列表的组织方式"></a>四种空闲列表的组织方式</h3><ul>
+<li>implicit free list：这种方式最为简单，直接将所有的块（不管是否有分配）串在一起，然后遍历。这种方式可也使得块最小可以达到8 bytes。当然，这种方式效率很低，尤其是当块的数量较多的时候。</li>
+<li>explicit free list：在每一个free 块中保存两个指针，将所有空闲的块组成一个双向链表。和隐式相比，这种方式最大的好处在于我们不需要遍历已经分配的块，速度上快了很多，当然，由于需要保存指针，所以每一个块最小为16 bytes。</li>
+<li>segregated free list：这种方式的特点在于，根据块的不同大小，分成k组，组织成k条双向链表。分类的方式有很多，比如可以采用2的倍数的分类方式，{1},{2},{3-4},{5-8}……大小为6的块放在第四条链中，大小为3的块则放在第三条链中等等。</li>
+<li>Red-Black Tree：按大小排序的平衡树，在每个空闲块中使用一个带指针的平衡树，并使用长度作为权值。</li>
+</ul>
+<h3 id="两种合并的方式"><a href="#两种合并的方式" class="headerlink" title="两种合并的方式"></a>两种合并的方式</h3><ul>
+<li>immediate coalescing：每次释放后立即合并，当内存块被释放后，立即与相邻的空闲内存块合并，以获得一个更大的空闲块，插入到链表的相应位置。这样可以减少碎片化。</li>
 <li>deferred coalescing： 尝试通过延迟合并，即直到需要才合并来提高释放的性能，例如:<ul>
 <li>为 <strong>malloc</strong> 扫描空闲链表时可以合并</li>
 <li>外部碎片达到阈值时可以合并<h3 id="带边界标记的合并"><a href="#带边界标记的合并" class="headerlink" title="带边界标记的合并"></a>带边界标记的合并</h3></li>
@@ -778,7 +787,10 @@
 <p><img src="https://i.loli.net/2021/11/07/nKRrPxZClsQac27.png" alt="ICS-malloc-使用边界标记的堆块的格式.png"></p>
 <p>边界标记的概念是简单优雅的，它对许多不同类型的分配器和空闲链表组织都是通用的。然而，它也存在一个潜在的缺陷。它要求每个块都保持一个头部和一个脚部，在应用程序操作许多个小块时，会产生显著的内存开销。例如，如果一个图形应用通过反复调用 malloc 和 free 来动态地创建和销毁图形节点，并且每个图形节点都只要求两个内存字，那么头部和脚部将占用每个已分配块的一半的空间。</p>
 <p>幸运的是，有一种非常聪明的边界标记的优化方法，能够使得在已分配块中不再需要脚部。回想一下，当我们试图在内存中合并当前块以及前面的块和后面的块时，只有在前面的块是空闲时，才会需要用到它的脚部。如果我们把前面块的已分配/空闲位存放在当前块中多出来的低位中，那么已分配的块就不需要脚部了，这样我们就可以将这个多出来的空间用作有效载荷了。不过请注意，空闲块仍然需要脚部。</p>
-<h3 id="两种内存碎片"><a href="#两种内存碎片" class="headerlink" title="两种内存碎片"></a>两种内存碎片</h3><p>　　　- internal fragmentation：内部碎片，即是已经被分配出去（能明确指出属于哪个进程）却不能被利用的内存空间。比如当前我需要44 bytes的内存，然后malloc的时候分配到了一个48 bytes的块，这样的话，剩下的4 bytes的内存尽管我不需要用到，但是其他程序也无法使用，这就是内部碎片。<br>　　　- external fragmentation：外部碎片，即还没有被分配出去（不属于任何进程），但由于太小了无法分配给申请内存空间的新进程的内存空闲区域。</p>
+<h3 id="两种内存碎片"><a href="#两种内存碎片" class="headerlink" title="两种内存碎片"></a>两种内存碎片</h3><ul>
+<li>internal fragmentation：内部碎片，即是已经被分配出去（能明确指出属于哪个进程）却不能被利用的内存空间。比如当前我需要44 bytes的内存，然后malloc的时候分配到了一个48 bytes的块，这样的话，剩下的4 bytes的内存尽管我不需要用到，但是其他程序也无法使用，这就是内部碎片。</li>
+<li>external fragmentation：外部碎片，即还没有被分配出去（不属于任何进程），但由于太小了无法分配给申请内存空间的新进程的内存空闲区域。</li>
+</ul>
 <h2 id="实验开始之前"><a href="#实验开始之前" class="headerlink" title="实验开始之前"></a>实验开始之前</h2><p>一般来说，做这个实验都会遇到首次make时报错的问题：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">“fatal error: bits/libc-header-start.h: No such file or directory” while compiling</span><br></pre></td></tr></table></figure>
 <p>这个只需要使用如下命令安装32位的库（不知道为什么我wsl和debian虚拟机都各种报错，直到ubuntu才成功</p>

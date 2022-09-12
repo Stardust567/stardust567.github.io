@@ -429,7 +429,7 @@
       
 
       
-        <p>相比于C这种需要你手动malloc和free的语言，Python实现了自动内存管理。一般而言，手动内存管理显然容易出问题，比如忘记free导致的内存泄漏，提前free导致的悬空指针。那么自动内存管理的垃圾回收是怎么一回事呢，简单来说：引用计数，标记-清除，分代回收。 <a id="more"></a></p>
+        <link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>相比于C这种需要你手动malloc和free的语言，Python实现了自动内存管理。一般而言，手动内存管理显然容易出问题，比如忘记free导致的内存泄漏，提前free导致的悬空指针。那么自动内存管理的垃圾回收是怎么一回事呢，简单来说：引用计数，标记-清除，分代回收。 <a id="more"></a></p>
 <h2 id="引用计数"><a href="#引用计数" class="headerlink" title="引用计数"></a>引用计数</h2><h3 id="引用拷贝"><a href="#引用拷贝" class="headerlink" title="引用拷贝"></a>引用拷贝</h3><p>我们先要考虑什么叫<strong>引用</strong>。在python中赋值语句是在建立对象的引用值，而非复制对象。因此python变量更像是指针，而不是数据存储区域。当你写出<code>a = 1</code>的时候，实际上是变量a通过引用指向了一个int对象3。</p>
 <p>再举个经典例子，<code>nums = [1]</code>然后<code>nums.append(nums)</code>如果是直观上的赋值操作，那结果应该是<code>[1, [1]]</code>但实际运行下就会发现<code>[1, [...]]</code>这是因为一个object的自身引用造成的不断递归死循环。如果想完成原先想法的话，可以用<code>nums.append(nums[:])</code>或者<code>nums.append(nums.copy())</code>这样就完成了一次浅拷贝。不过浅拷贝只是当前层的拷贝，如果拷贝的对象中存在引用的话，只会拷贝相关引用，而不会拷贝深层的对象。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a = [<span class="number">1</span>, [<span class="number">1</span>]]</span><br><span class="line">b = a.copy()</span><br><span class="line">b[<span class="number">0</span>] = <span class="number">0</span></span><br><span class="line">b[<span class="number">1</span>][<span class="number">0</span>] = <span class="number">0</span></span><br><span class="line">print(a) <span class="comment"># [1, [0]]</span></span><br></pre></td></tr></table></figure>
@@ -662,7 +662,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-count">42</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

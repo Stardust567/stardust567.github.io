@@ -429,7 +429,7 @@
       
 
       
-        <p>Linux内核中设置了一组用于实现各种系统功能的子程序，称为<em>系统调用（system call）</em>。同时它还提供些C语言函数库，这些库对系统调用进行包装和扩展。由于这些库函数与系统调用的关系非常紧密，习惯上把这些函数也称为系统调用。本篇文章以xv6为例，毕竟好歹写了一点6828的lab，对这边还是比较熟悉。<br><a id="more"></a></p>
+        <link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>Linux内核中设置了一组用于实现各种系统功能的子程序，称为<em>系统调用（system call）</em>。同时它还提供些C语言函数库，这些库对系统调用进行包装和扩展。由于这些库函数与系统调用的关系非常紧密，习惯上把这些函数也称为系统调用。本篇文章以xv6为例，毕竟好歹写了一点6828的lab，对这边还是比较熟悉。<br><a id="more"></a></p>
 <h1 id="System-Call"><a href="#System-Call" class="headerlink" title="System Call"></a>System Call</h1><h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><p>xv6 使用了传统的<strong>内核</strong>概念：一个向其他运行中程序提供服务的特殊程序。每一个运行中程序（即<strong>进程</strong>）都拥有包含指令、数据、栈的内存空间。指令实现了程序的运算，数据是用于运算过程的变量，栈管理了程序的过程调用。</p>
 <p>进程通过<strong>系统调用</strong>使用内核服务。系统调用会进入内核，让内核执行服务然后返回。所以进程总是在用户空间和内核空间之间交替运行。</p>
 <p>内核使用了 CPU 的硬件保护机制来保证用户进程只能访问自己的内存空间。内核拥有实现保护机制所需的硬件权限(hardware privileges)，而用户程序没有这些权限。当一个用户程序进行一次系统调用时，硬件会提升特权级并且开始执行一些内核中预定义的功能。</p>
@@ -837,7 +837,7 @@ table th:nth-of-type(2){width: 70%;}
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-count">42</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

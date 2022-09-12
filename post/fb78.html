@@ -434,7 +434,7 @@
       
 
       
-        <p>结合 MIT-6.824-2018 的 lab1 来简单写下学习MapReduce的笔记。<a id="more"></a></p>
+        <link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>结合 MIT-6.824-2018 的 lab1 来简单写下学习MapReduce的笔记。<a id="more"></a></p>
 <h1 id="MapReduce-Paper"><a href="#MapReduce-Paper" class="headerlink" title="MapReduce Paper"></a>MapReduce Paper</h1><h2 id="MapReduce-Example"><a href="#MapReduce-Example" class="headerlink" title="MapReduce Example"></a>MapReduce Example</h2><p>我们用最经典的words count来举例介绍MapReduce模型：</p>
 <p>对于一个三行的input file来说，我们按行进行splitting操作。每行分给不同的线程/节点，各节点单独进行mapping任务（单词分割）。各节点在shuffing阶段会进行相互通信，完成“洗牌”工作。然后各节点单独完成reducing任务并将结果输出在各节点本地文件上。最后将这些文件进行归并得到final result。</p>
 <p><img src="https://i.loli.net/2020/02/18/hQyazOdRUK4YJHF.png" alt="Example"></p>
@@ -647,7 +647,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-count">42</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

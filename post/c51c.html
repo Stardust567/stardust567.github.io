@@ -436,7 +436,7 @@
       
 
       
-        <p>结合 MIT-6.824-2018 的 lab2 来简单写下学习raft的笔记。<a id="more"></a></p>
+        <link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>结合 MIT-6.824-2018 的 lab2 来简单写下学习raft的笔记。<a id="more"></a></p>
 <p>Raft是一种共识算法，它在容错和性能上与Paxos等效，但更容易理解学习。可以通过 <a href="http://thesecretlivesofdata.com/raft/" target="_blank" rel="noopener">http://thesecretlivesofdata.com/raft/</a> 简单认知下Raft共识算法。</p>
 <p>共识是容错分布式系统中的一个基本问题，共识涉及多个服务器就价值达成一致。共识通常出现在复制状态机的背景下，每个服务器都有一个状态机和一个日志，每个状态机都从其日志中获取输入命令。以哈希表为例，日志将包含诸如 set x=3 之类的命令，而共识算法要确保所有状态机都 x=3 作为第n个命令应用。即每个状态机处理相同系列的命令，从而产生相同系列的结果并到达相同系列的状态。</p>
 <h1 id="Raft-Paper"><a href="#Raft-Paper" class="headerlink" title="Raft Paper"></a>Raft Paper</h1><p>Raft 选举出一个leader来管理复制日志：leader从客户端接收日志条目，将其复制到其他服务器上，并在保证安全的时候应用日志条目到他们的状态机中。由此，Raft 将一致性问题分解成三个子问题：<strong>Leader Election</strong>, <strong>Log Replication</strong>, <strong>Safety</strong>（所有状态机都应执行相同的命令序列）</p>
@@ -730,7 +730,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-count">42</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

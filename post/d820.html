@@ -432,7 +432,7 @@
       
 
       
-        <p>翻看CSAPP的时候，发现本科教学cache讲得过于水了，就想直接再整理一篇相关的总结，以便之后翻看。<a id="more"></a></p>
+        <link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>翻看CSAPP的时候，发现本科教学cache讲得过于水了，就想直接再整理一篇相关的总结，以便之后翻看。<a id="more"></a></p>
 <h1 id="cache"><a href="#cache" class="headerlink" title="cache"></a>cache</h1><p>早期计算机存储系统结构就是，CPU的寄存器、DRAM主存、磁盘，但由于CPU和主存之间的性能差距越来越大，不得已在两者间插入了个SRAM高速缓存存储器，即L1高速缓存(一级缓存)。最后cache存储结构就成了L1(4个时钟周期) - L2(10个时钟周期) - L3(50个时钟周期)，L1一般为CPU专有，不在多个CPU中共享；L2 cache一般是多个CPU共享的，也可能装在主板上。L1 cache还可能分为instruction cache, data cache，这样CPU能同时取指令和数据。同时cache对于程序员是不可见的，完全是由硬件控制。</p>
 <p>cache，高速缓冲存储器，其作用是为了更好的利用局部性原理，减少CPU访问主存的次数。简单地说，第一次访问这一块区域时，将其复制到cache中，以后访问该区域的指令或者数据时，就不用再从主存中取出。</p>
 <h2 id="cache结构"><a href="#cache结构" class="headerlink" title="cache结构"></a>cache结构</h2><p>假设内存容量为M，内存地址为m位：那么寻址范围为000…00~FFF…F(m位)<br>我们可以把内存地址分为以下三个区间：</p>
@@ -629,7 +629,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-count">42</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

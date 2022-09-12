@@ -429,7 +429,7 @@
       
 
       
-        <p>普通的查找匹配需要在失配时回溯到失配后一位继续从头匹配，复杂度过高。<br>于是我们想着能不能一次不回头的走到底，针对模式串创建了一个辅助数组（next数组）<br><a id="more"></a></p>
+        <link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>普通的查找匹配需要在失配时回溯到失配后一位继续从头匹配，复杂度过高。<br>于是我们想着能不能一次不回头的走到底，针对模式串创建了一个辅助数组（next数组）<br><a id="more"></a></p>
 <p>当P与T失配时，已经匹配的那小段是相同的，假设已经匹配部分为abbaab，分析如下：</p>
 <p>abbaab 的头部有 a, ab, abb, abba, abbaa（不包含最后一个字符。下文称之为「真前缀」）<br>abbaab 的尾部有 b, ab, aab, baab, bbaab（不包含第一个字符。下文称之为「真后缀」）<br>这样最长匹配是 ab。即P不回退时，T会滑到头部ab与P尾部的ab相对的位置继续匹配。</p>
 <p>next数组值：固定字符串的最长真前缀和最长真后缀相同的长度。</p>
@@ -665,7 +665,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-count">42</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

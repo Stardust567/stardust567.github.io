@@ -431,7 +431,7 @@
       
 
       
-        <p>FSCQ：可以应对crash的文件系统，with a machine-checkable proof (using the Coq proof assistant) 为说明FSCQ的定理，本文介绍了Crash Hoare Logic（CHL），它扩展了传统的Hoare逻辑，包括崩溃条件，恢复过程和用于指定不同抽象级别磁盘状态的逻辑地址空间。<a id="more"></a></p>
+        <link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>FSCQ：可以应对crash的文件系统，with a machine-checkable proof (using the Coq proof assistant) 为说明FSCQ的定理，本文介绍了Crash Hoare Logic（CHL），它扩展了传统的Hoare逻辑，包括崩溃条件，恢复过程和用于指定不同抽象级别磁盘状态的逻辑地址空间。<a id="more"></a></p>
 <h1 id="FSCQ论文"><a href="#FSCQ论文" class="headerlink" title="FSCQ论文"></a>FSCQ论文</h1><h2 id="基础背景"><a href="#基础背景" class="headerlink" title="基础背景"></a>基础背景</h2><h3 id="文件系统"><a href="#文件系统" class="headerlink" title="文件系统"></a>文件系统</h3><p>为避免操作系统知识的遗忘而影响接下来的阅读体验，这里简单给出一点OS文件系统的基础知识。</p>
 <p>所谓文件系统，就是文件的储存方式。简单说，它就是一个门牌系统，为储存设备划分门牌号，每个文件分配一个门牌，然后就能按照门牌找到文件。没有文件系统的硬盘，就是片原始丛林，你根本不知道那户文件住在哪，就更别谈去高效访问了。</p>
 <h4 id="文件存取单位"><a href="#文件存取单位" class="headerlink" title="文件存取单位"></a>文件存取单位</h4><p>文件储存在硬盘上，硬盘最小存储单位叫做<strong>扇区</strong>（Sector），每个扇区储存512字节（0.5KB）但OS读取硬盘时，不会一个个扇区地读取，而是一次性连续读取多个扇区以提高效率，即一次性读取一个<strong>块</strong>（block）。这种由多个扇区组成的块，是文件存取的最小单位。块的大小，最常见的是4KB，即连续八个 sector 组成一个 block。</p>
@@ -711,7 +711,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-count">42</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

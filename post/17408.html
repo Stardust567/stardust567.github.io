@@ -429,7 +429,7 @@
       
 
       
-        <p>梯度下降算法是机器学习领域中非常常用的优化算法。本文通过对梯度下降算法、AdaGrad算法、SGD算法、动量算法以及牛顿动量算法的介绍，将比较基础的梯度下降算法变种介绍给读者。<a id="more"></a></p>
+        <link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>梯度下降算法是机器学习领域中非常常用的优化算法。本文通过对梯度下降算法、AdaGrad算法、SGD算法、动量算法以及牛顿动量算法的介绍，将比较基础的梯度下降算法变种介绍给读者。<a id="more"></a></p>
 <h3 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h3><p>对于一个含参的函数，通过不断求解当前点的梯度值，并以该梯度值成负比例的步长不断更新所求点，以求解出使其函数值最小的一组参数。</p>
 <h3 id="思想"><a href="#思想" class="headerlink" title="思想"></a>思想</h3><p>对于一个含参的函数，以与函数在当前点梯度（近似）成负比例的步长来不断更新该参数，使其不断向该参数偏导为0的点逼近，以找到函数的局部最小值。    当我们从损失函数的某一点出发，在该点附近做出以常数η为参数的一个邻域，根据微积分所学的知识可知，我们在该邻域上一定可以找出一个找到极小值。我们以该极小值点为下一步我们需要跟进的点，更新之后我们再在该点附近做出以常数η为参数的一个邻域并重复以上过程。通过这样的不断更新，我们理论上一定可以找出一个全局的极小值点或者是导数为0的驻点。<br>关于在某一邻域上如何找到该邻域上的局部最小值点。我们可以通过泰勒展开，该邻域上的损失函数可以近似写成 $L(\theta)=L(a,b)+u(\theta_1-a)+v(\theta_2-b)$也就是我们所熟知的全微分方程。令 $\Delta\theta_1=\theta_1-a;\Delta\theta_2=\theta_2-b$ 因为L(a,b)为一个常数，所以L的极小值直接取决于 u+ v同时我们可以将其书写成向量的形式$(\Delta\theta_1,\Delta\theta_2)·(u,v)$显然$(\Delta\theta_1,\Delta\theta_2)$与(u,v)反向时L最小，即</p>
 <p>$$<br>  \begin{bmatrix}<br>   \Delta\theta_1 \\\\<br>   \Delta\theta_2<br>  \end{bmatrix}<br>=-\eta<br>  \begin{bmatrix}<br>   u \\\\<br>   v<br>  \end{bmatrix} </p>
@@ -617,7 +617,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-count">42</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
